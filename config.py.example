@@ -1,0 +1,21 @@
+# User-defined settings
+
+CLOUD_FIELD = ""
+
+# Other settings. Optional
+
+HELP = False # set to True to see help when running Bootleg (will not install)
+
+# Do not edit past here if you don't know what you're doing
+
+LOG_FILE = "bootleg"
+LOG_EXT = "log"
+
+PRESET_FILE = ""
+PREVIOUS_PRESET = ""
+PRESET_EXT = "bp"
+TEMP_PRESET = False
+
+CFG_OVER_SETTINGS = False
+
+DEBUG_MODE = False

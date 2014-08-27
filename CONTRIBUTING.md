@@ -1,0 +1,1 @@
+Bootleg 041 is currently in development. Pull requests may get merged if they bring actual content. Issues will be ignored and closed for now. I can be joined on IRC, #Vgr on the EsperNet IRC network.
