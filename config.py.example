@@ -18,4 +18,7 @@ TEMP_PRESET = False
 
 CFG_OVER_SETTINGS = False
 
+# Debug mode options. edit at your own risk
+
 DEBUG_MODE = False
+VERBOSE = False

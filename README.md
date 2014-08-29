@@ -4,8 +4,8 @@
 
 1. You need Python 3.2 or higher
 2. Copy or rename `config.py.example` to `config.py`
-* If using the User Interface, that's all you need to do
-* Else, edit `config.py` to fit your settings
+3. If using the User Interface, that's all you need to do
+4. Else, edit `config.py` to fit your settings
 
 ### Presets
 

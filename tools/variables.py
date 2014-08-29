@@ -3,6 +3,8 @@
 INITIALIZE = False
 HELP = False
 FATAL_ERROR = False
+PARSABLE_SETTINGS = None
+EMPTY_SETTINGS = []
 
 # various settings
 
