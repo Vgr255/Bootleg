@@ -1,10 +1,7 @@
 # system variables
 
-INITIALIZE = False
-HELP = False
-FATAL_ERROR = False
-PARSABLE_SETTINGS = None
-EMPTY_SETTINGS = []
+CURRENT_RELEASE = "041"
+RELEASE_INFO = "Alpha Build - August 29th, 2014"
 
 # various settings
 
