@@ -13,8 +13,14 @@ PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
 POSSIBLE_HELP = ["programming", "support", "code"]
 
+CURRENT_RELEASE = "041"
+BUILD_INFO = "Alpha"
+RELEASE_INFO = "August 29th, 2014"
+
 USER_VAR = "/"
 SYS_VAR = "-"
+
+COMMANDS = ["help", "run"]
 
 # System defaults
 

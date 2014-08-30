@@ -5,13 +5,14 @@ import config
 import os
 
 def initialize(): # initialize variables on startup and/or retry
-    var.INITIALIZE = True
     var.USED_HELP = False
     var.FATAL_ERROR = False
     var.PARSABLE_SETTINGS = [name for name in par.__dict__ if name.isupper()]
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
+    var.INITIALIZED = True
+    var.RETRY = False
 
 def config_into_var():
     for parsable in var.PARSABLE_SETTINGS:
@@ -61,7 +62,7 @@ def parse_settings_from_input(input):
         if input[0] == setting:
             var.PARSING = parsable
             parsed = input[1:]
-            if " " in parsed and "=" not in parsed:
+            if " " in parsed:
                 if input[1] == " ":
                     parsed = input[2:]
                     if " " in parsed:
@@ -70,18 +71,16 @@ def parse_settings_from_input(input):
                 else:
                     space = parsed.index(" ")
                     parsed = input[1:space]
-            if "=" in parsed and " " not in parsed:
+            if "=" in parsed:
                 if input[1] == "=":
                     parsed = input[2:]
                     if "=" in parsed:
                         equal = parsed.index("=")
-                        equal = equal-1 # equal equal equal? now that is redundant
+                        equal = equal - 1 # equal equal equal? now that is redundant
                         parsed = input[2:equal]
                 else:
                     equal = parsed.index("=")
                     parsed = input[1:equal]
-            if "=" in parsed and " " in parsed:
-                # still todo
 
 def chk_empty_settings():
     var.EMPTY_SETTINGS = []
@@ -94,7 +93,10 @@ def use_defaults(empty):
         if parsable not in empty:
             continue
         parsarg = getattr(con, parsable)
-        setattr(var, parsable, parsarg)
+        if parsarg:
+            setattr(var, parsable, parsarg)
+        else:
+            setattr(var, parsable, 0) # Use 0 as default in case one is not specified for some reason
 
 def settings_to_int():
     for parsable in var.PARSABLE_SETTINGS:
@@ -114,3 +116,20 @@ def end_bootleg_early():
             print("An unhandled error occured. Please report this.")
         if var.FATAL_ERROR == "int":
             print("Make sure your settings are numbers only (No letters allowed).")
+
+def logger(type="normal", output): # log everything to file
+    if type == "normal": # regular logging
+        logtype = "LOG"
+    if type == "error": # all errors
+        logtype = "ERROR"
+    if type == "debug": # random debug stuff
+        logtype = "DEBUG"
+    if type == "traceback": # traceback for errors
+        logtype = "TRACE"
+    if config.LOG_EVERYTHING:
+        logtype = "MIXED"
+    logfile = getattr(config, logtype + "_FILE")
+    log_ext = getattr(config, logtype + "_EXT")
+    file = logfile + "." + log_ext
+    f = open(os.getcwd() + "/" + file, "w")
+    f.write(output)

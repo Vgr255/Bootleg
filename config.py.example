@@ -2,14 +2,24 @@
 
 CLOUD_FIELD = ""
 
-# Other settings. Optional
-
-HELP = False # set to True to see help when running Bootleg (will not install)
-
 # Do not edit past here if you don't know what you're doing
 
 LOG_FILE = "bootleg"
 LOG_EXT = "log"
+
+ERROR_FILE = "error"
+ERROR_EXT = "log"
+
+DEBUG_FILE = "debug"
+DEBUG_EXT = "log"
+
+TRACE_FILE = "traceback"
+TRACE_EXT = "dmp"
+
+MIXED_FILE = "bootleg"
+MIXED_EXT = "dmp"
+
+LOG_EVERYTHING = False
 
 PRESET_FILE = ""
 PREVIOUS_PRESET = ""

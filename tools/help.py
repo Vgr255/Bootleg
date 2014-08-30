@@ -7,10 +7,10 @@ def get_help(helping=""):
     print(" * Help file *")
     print("")
     if not helping:
-        if var.CURRENT_RELEASE:
+        if con.CURRENT_RELEASE:
             print("Bootleg - Final Fantasy VII Configurator - Version {0}".format(var.CURRENT_RELEASE))
-        if var.RELEASE_INFO and var.BUILD_INFO:
-            print(var.BUILD_INFO, "build", var.RELEASE_INFO)
+        if con.RELEASE_INFO and con.BUILD_INFO:
+            print(con.BUILD_INFO, "build", con.RELEASE_INFO)
         if con.FIRST_DEV:
             print("First developper and base idea: {0}.".format(", ".join(con.FIRST_DEV)))
         if con.USER_HELP:

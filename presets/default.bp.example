@@ -1,8 +1,1 @@
-# This is a comment
-C=1 # Anything after this is ignored
-D = 2 # that will work
-/R 4 # and so will this
-/X1 # and this
-
-# you can have empty lines
-# You can use this file as an example
+C=1
