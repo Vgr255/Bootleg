@@ -1,7 +1,8 @@
 # system variables
 
 CURRENT_RELEASE = "041"
-RELEASE_INFO = "Alpha Build - August 29th, 2014"
+BUILD_INFO = "Alpha"
+RELEASE_INFO = "August 29th, 2014"
 
 # various settings
 
