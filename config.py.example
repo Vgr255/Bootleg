@@ -7,7 +7,7 @@ CLOUD_FIELD = ""
 LOG_FILE = "bootleg"
 LOG_EXT = "log"
 
-ERROR_FILE = "error"
+ERROR_FILE = "errors"
 ERROR_EXT = "log"
 
 DEBUG_FILE = "debug"
@@ -15,6 +15,9 @@ DEBUG_EXT = "log"
 
 TRACE_FILE = "traceback"
 TRACE_EXT = "dmp"
+
+INPUT_FILE = "input"
+INPUT_EXT = "log"
 
 MIXED_FILE = "bootleg"
 MIXED_EXT = "dmp"

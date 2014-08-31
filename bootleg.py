@@ -22,6 +22,7 @@ from tools import functions as fn
 from tools import help
 import config
 import sys
+import traceback
 
 DEBUG_MODE = config.DEBUG_MODE
 VERBOSE = config.VERBOSE
@@ -31,11 +32,15 @@ def main():
         if not var.INITIALIZED or var.RETRY:
             fn.initialize()
         input = sys.stdin.read()
+        logger(type="input", display=False input)
         input = input.split()
         command = input[0]
         params = input[1:]
-        if not command.lower() in con.COMMANDS:
-            print("'{0}' is not a valid command.".format(command))
+        if command.lower() not in con.COMMANDS and command.lower() not in con.HIDDEN_COMMANDS:
+            logger(write=False, "'{0}' is not a valid command.".format(command))
+            logger(write=False, "Available commands: {0}".format(", ".join(con.COMMANDS))
+            if DEBUG_MODE:
+                logger("Hidden commands: {0}".format(", ".join(con.HIDDEN_COMMANDS)))
         elif command == "help":
             help.get_help(helping=params)
         elif command == "run":
@@ -50,4 +55,4 @@ if __name__ == "__main__":
     try:
         main()
     except:
-        fn.logger(type="error")
+        fn.logger(type="traceback", traceback.format_exc())

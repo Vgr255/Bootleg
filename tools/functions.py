@@ -1,6 +1,7 @@
 from tools import constants as con
 from tools import variables as var
 from tools import parsables as par
+from datetime import datetime
 import config
 import os
 
@@ -13,6 +14,7 @@ def initialize(): # initialize variables on startup and/or retry
     var.PARSING = None
     var.INITIALIZED = True
     var.RETRY = False
+    log_all(display=False, "Beginning Bootleg operation")
 
 def config_into_var():
     for parsable in var.PARSABLE_SETTINGS:
@@ -23,7 +25,7 @@ def parse_settings_from_params(input):
     for param in input:
         if param[0] == con.USER_VAR: # setting is an actual user setting
             for parsable in var.PARSABLE_SETTINGS:
-                if param[1] == getattr(con, parsable):
+                if param[1] == getattr(par, parsable):
                     setattr(var, parsable, param[2:])
         elif param[0] == con.SYS_VAR: # setting is a system/debug setting. always takes priority
             if param[1] == con.DEBUG_MODE:
@@ -32,16 +34,16 @@ def parse_settings_from_params(input):
                 VERBOSE = True
 
 def parse_settings_from_file(input):
-    fexist = os.path.isfile(os.getcwd() + "/" + input)
+    fexist = os.path.isfile(os.getcwd() + "/presets/" + input)
     if not fexist:
         var.NONEXISTANT_FILE = True
         return
     else:
-        file = open(input)
+        file = open("/presets/" + input)
         file.seek(0) # make sure we're at the beginning of the file
         for parsable in var.PARSABLE_SETTINGS:
-            f = file.readline()
             f.replace("\n", "")
+            f = file.readline()
             if f[0] == getattr(par, parsable) and f[1] == "=":
                 setattr(var, parsable, f[2:])
                 if "#" in f:
@@ -52,7 +54,7 @@ def parse_settings_from_file(input):
             elif "#" in f or f == "":
                 continue # ignore this
             else:
-                print("Invalid setting found in {0} ({2}): {1}".format(input, f, fexist))
+                logger(type="error", "Invalid setting found in {0}: {1}".format(input, f))
 
 def parse_settings_from_input(input):
     if input[0] == con.USER_VAR or input[0] == con.SYS_VAR: # proper parsing
@@ -104,20 +106,24 @@ def settings_to_int():
         setattr(var, parsable, int(parsarg))
         except ValueError: # something went wrong and settings aren't integers
             if DEBUG_MODE:
-                print("{0} - setting not integer ({1})".format(parsable, parsarg))
+                logger(type="debug", "{0} - setting not integer ({1})".format(parsable, parsarg))
                 continue # debug mode, let's assume the person knows what's going on
+            else:
+                logger(type="error", display=False, "{0} - setting not integer ({1})".format(parsable, parsarg))
             var.FATAL_ERROR = "int"
             break
 
 def end_bootleg_early():
     if var.FATAL_ERROR:
-        print(" - FATAL ERROR -")
+        logger(type="error", " - FATAL ERROR -")
         if var.FATAL_ERROR == True:
-            print("An unhandled error occured. Please report this.")
-        if var.FATAL_ERROR == "int":
-            print("Make sure your settings are numbers only (No letters allowed).")
+            logger(type="error", "An unhandled error occured. Please report this.")
+        elif var.FATAL_ERROR == "int":
+            logger(type="error", "Make sure your settings are numbers only (No letters allowed).")
 
-def logger(type="normal", output): # log everything to file
+def logger(type="normal", display=True, write=True, output): # log everything to file and/or screen. always use this
+    timestamp = str(datetime.now())
+    timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if type == "normal": # regular logging
         logtype = "LOG"
     if type == "error": # all errors
@@ -126,10 +132,27 @@ def logger(type="normal", output): # log everything to file
         logtype = "DEBUG"
     if type == "traceback": # traceback for errors
         logtype = "TRACE"
+    if type == "input": # all user input
+        logtype = "INPUT"
     if config.LOG_EVERYTHING:
         logtype = "MIXED"
     logfile = getattr(config, logtype + "_FILE")
     log_ext = getattr(config, logtype + "_EXT")
     file = logfile + "." + log_ext
     f = open(os.getcwd() + "/" + file, "w")
-    f.write(output)
+    if DEBUG_MODE:
+        display = True
+        write = True
+    if write:
+        if logtype == "MIXED":
+            output = "{0} - {1}".format(type, output)
+        f.write(timestamp + output)
+    if display:
+        print(output)
+
+def log_all(display=True, write=True, output):
+    if config.LOG_EVERYTHING:
+        logger(type="", display=display, write=write, output)
+        return
+    for logged in con.LOGGERS:
+        logger(type=logged, display=display, write=write, output)
