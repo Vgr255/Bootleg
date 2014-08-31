@@ -18,10 +18,10 @@ def initialize(): # initialize variables on startup and/or retry
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
-    show_help(" - Bootleg Final Fantasy VII -")
+    show_help("\n".join(con.BOOT_ASCII))
     show_help("")
     show_help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
-    show_help("Available commands: {0}{1}{2}".format(", ".join(con.COMMANDS), " " if config.SHOW_HIDDEN_COMMANDS else "", ", ".join(con.HIDDEN_COMMANDS) if config.SHOW_HIDDEN_COMMANDS else ""))
+    show_help("Available commands: {0}{1}{2}".format(", ".join(con.COMMANDS), " " if var.SHOW_HIDDEN_COMMANDS else "", ", ".join(con.HIDDEN_COMMANDS) if var.SHOW_HIDDEN_COMMANDS else ""))
 
 def config_into_var():
     for parsable in var.PARSABLE_SETTINGS:
@@ -137,11 +137,11 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
             logtype = con.LOGGERS[type]
         except KeyError: # empty type
             logtype = "LOG" # use default instead
-    if config.LOG_EVERYTHING or config.DEV_LOG:
+    if var.LOG_EVERYTHING or var.DEV_LOG:
         logtype = "MIXED"
-    if var.DEBUG_MODE or config.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
+    if var.DEBUG_MODE or var.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
         write = True
-    if var.DEBUG_MODE or config.DISPLAY_EVERYTHING:
+    if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
         display = True
     if display:
         print(output)
@@ -163,19 +163,24 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
             f.write(timestamp + output + "\n")
 
 def log_all(output, display=True, write=True):
-    if config.LOG_EVERYTHING or config.DEV_LOG:
+    if var.LOG_EVERYTHING or var.DEV_LOG:
         logger(output, type="", display=display, write=write)
         return
     log_it = []
     for logged in con.LOGGERS.keys():
+        if logged == "all":
+            continue
         if con.LOGGERS[logged] not in log_it:
             log_it.append(con.LOGGERS[logged])
     for l in log_it:
         logger(output, logtype=l, display=display, write=write)
 
+def log_multiple(output, types=[], display=True, write=True):
+    if types and "all" not in types:
+        for t in types:
+            logger(output, type=t, display=display, write=write)
+    if "all" in types:
+        log_all(output, display=display, write=write)
+
 def show_help(output, type="help", write=False):
     logger(output, type=type, write=write)
-
-def get_traceback(traceback):
-    logger("", type="traceback")
-    logger(traceback, type="traceback")

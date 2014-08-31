@@ -20,12 +20,26 @@ from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
 from tools.help import get_help
-import config
+import shutil
+import argparse
 import sys
+import os
 import traceback
 
-var.DEBUG_MODE = config.DEBUG_MODE
-var.VERBOSE = config.VERBOSE
+try:
+    import config
+except ImportError: # user did not rename the config file, let's silently copy it
+    shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+    import config
+
+for x in var.__dict__.keys():
+    if not x.isupper():
+        continue
+    if config.DISALLOW_CONFIG:
+        break
+    if x in config.__dict__.keys():
+        setting = getattr(config, x)
+        setattr(var, x, setting)
 
 def main():
     while var.ALLOW_RUN:
@@ -58,7 +72,14 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception:
-        fn.get_traceback(traceback.format_exc())
     except:
-        fn.logger(sys.exc_info(), type="error")
+        if traceback.format_exc(): # if there's a traceback, let's have it
+            fn.logger("", type="traceback")
+            fn.logger(traceback.format_exc(), type="traceback")
+            logname = con.LOGGERS["traceback"]
+            if var.DEV_LOG or var.LOG_EVERYTHING:
+                logname = con.LOGGERS["all"]
+            logfile = getattr(config, logname + "_FILE")
+            log_ext = getattr(config, logname + "_EXT")
+            fn.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext))
+        fn.logger(sys.exc_info(), type="error", display=False) # log which exception occured

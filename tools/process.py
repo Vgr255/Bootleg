@@ -4,5 +4,5 @@ from tools import functions as fn
 from tools import parser
 import config
 
-#def run(silent=False, params=""):
+#def run(params="", silent=False):
     # todo. oh well
