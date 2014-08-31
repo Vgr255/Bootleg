@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Emanuel Barry
+# Copyright (c) 2014 Emanuel 'Vgr' Barry
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -19,7 +19,7 @@ from tools import process as pro
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
-from tools import help
+from tools.help import get_help
 import config
 import sys
 import traceback
@@ -31,6 +31,8 @@ def main():
     while var.ALLOW_RUN:
         if not var.INITIALIZED or var.RETRY:
             fn.initialize()
+            fn.begin_anew()
+        fn.logger("\n", write=False)
         inp = input().strip()
         fn.logger(inp, type="input", display=False)
         inp = inp.split()
@@ -39,10 +41,10 @@ def main():
         if command.lower() not in con.COMMANDS and command.lower() not in con.HIDDEN_COMMANDS:
             fn.logger("'{0}' is not a valid command.".format(command), write=False)
             fn.logger("Available commands: {0}".format(", ".join(con.COMMANDS)), write=False)
-            if DEBUG_MODE or config.SHOW_HIDDEN_COMMANDS:
+            if var.DEBUG_MODE or config.SHOW_HIDDEN_COMMANDS:
                 fn.logger("Hidden commands: {0}".format(", ".join(con.HIDDEN_COMMANDS)))
         elif command == "help":
-            help.get_help(helping=params)
+            get_help(helping=" ".join(params))
         elif command == "run":
             if params[0] == "silent":
                 pro.run(params=" ".join(params[1:]), silent=True)
@@ -51,7 +53,7 @@ def main():
             else:
                 pro.run(params=" ".join(params))
         else: # command is there but it's not there?
-            fn.logger("Error: '{0}' was not found but is in the database. Critical error.", type="error")
+            fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
 
 if __name__ == "__main__":
     try:

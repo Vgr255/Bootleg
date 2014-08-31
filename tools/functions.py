@@ -6,6 +6,7 @@ import config
 import os
 
 def initialize(): # initialize variables on startup and/or retry
+    log_all("{0} Bootleg operation".format("Beginning" if not var.INITIALIZED else "Restarting"), display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = False
     var.PARSABLE_SETTINGS = [name for name in par.__dict__ if name.isupper()]
@@ -14,7 +15,13 @@ def initialize(): # initialize variables on startup and/or retry
     var.PARSING = None
     var.INITIALIZED = True
     var.RETRY = False
-    log_all("\n\nBeginning Bootleg operation", display=False)
+
+def begin_anew():
+    os.system("cls") # clear the screen off everything.
+    show_help(" - Bootleg Final Fantasy VII -")
+    show_help("")
+    show_help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
+    show_help("Available commands: {0}{1}{2}".format(", ".join(con.COMMANDS), " " if config.SHOW_HIDDEN_COMMANDS else "", ", ".join(con.HIDDEN_COMMANDS) if config.SHOW_HIDDEN_COMMANDS else ""))
 
 def config_into_var():
     for parsable in var.PARSABLE_SETTINGS:
@@ -126,13 +133,18 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if not logtype:
-        logtype = con.LOGGERS[type]
+        try:
+            logtype = con.LOGGERS[type]
+        except KeyError: # empty type
+            logtype = "LOG" # use default instead
     if config.LOG_EVERYTHING or config.DEV_LOG:
         logtype = "MIXED"
     if var.DEBUG_MODE or config.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
         write = True
     if var.DEBUG_MODE or config.DISPLAY_EVERYTHING:
         display = True
+    if display:
+        print(output)
     if write:
         logfile = getattr(config, logtype + "_FILE")
         log_ext = getattr(config, logtype + "_EXT")
@@ -141,12 +153,14 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
             f = open(os.getcwd() + "/" + file, "r+")
         except IOError:
             f = open(os.getcwd() + "/" + file, "w") # file doesn't exist, let's create it
+            var.NEWFILE = True
         if logtype == "MIXED":
             output = "{0} - {1}".format(type, output)
         f.seek(0, 2)
-        f.write(timestamp + output + "\n")
-    if display:
-        print(output)
+        if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
+            f.write("\n\n" + timestamp + output + "\n")
+        else:
+            f.write(timestamp + output + "\n")
 
 def log_all(output, display=True, write=True):
     if config.LOG_EVERYTHING or config.DEV_LOG:
@@ -159,8 +173,8 @@ def log_all(output, display=True, write=True):
     for l in log_it:
         logger(output, logtype=l, display=display, write=write)
 
-def show_help(output):
-    logger(output, type="help", write=False)
+def show_help(output, type="help", write=False):
+    logger(output, type=type, write=write)
 
 def get_traceback(traceback):
     logger("", type="traceback")
