@@ -2,6 +2,10 @@
 
 CLOUD_FIELD = ""
 
+# Developper/debugger options. enable only if a dev asks you to
+
+DEV_LOG = False
+
 # Do not edit past here if you don't know what you're doing
 
 LOG_FILE = "bootleg"
@@ -14,7 +18,7 @@ DEBUG_FILE = "debug"
 DEBUG_EXT = "log"
 
 TRACE_FILE = "traceback"
-TRACE_EXT = "dmp"
+TRACE_EXT = "log"
 
 INPUT_FILE = "input"
 INPUT_EXT = "log"
@@ -23,6 +27,10 @@ MIXED_FILE = "bootleg"
 MIXED_EXT = "dmp"
 
 LOG_EVERYTHING = False
+DISPLAY_EVERYTHING = False
+
+SHOW_HIDDEN_COMMANDS = False
+SHOW_HIDDEN_HELP = False
 
 PRESET_FILE = ""
 PREVIOUS_PRESET = ""

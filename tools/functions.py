@@ -14,7 +14,7 @@ def initialize(): # initialize variables on startup and/or retry
     var.PARSING = None
     var.INITIALIZED = True
     var.RETRY = False
-    log_all(display=False, "Beginning Bootleg operation")
+    log_all("\n\nBeginning Bootleg operation", display=False)
 
 def config_into_var():
     for parsable in var.PARSABLE_SETTINGS:
@@ -29,9 +29,9 @@ def parse_settings_from_params(input):
                     setattr(var, parsable, param[2:])
         elif param[0] == con.SYS_VAR: # setting is a system/debug setting. always takes priority
             if param[1] == con.DEBUG_MODE:
-                DEBUG_MODE = True
+                var.DEBUG_MODE = True
             elif param[1] == con.VERBOSE:
-                VERBOSE = True
+                var.VERBOSE = True
 
 def parse_settings_from_file(input):
     fexist = os.path.isfile(os.getcwd() + "/presets/" + input)
@@ -48,13 +48,13 @@ def parse_settings_from_file(input):
                 setattr(var, parsable, f[2:])
                 if "#" in f:
                     hash = f.index("#")
-                    setattr(var, parsable, f[2:hash[)
+                    setattr(var, parsable, f[2:hash])
             elif f[0] == getattr(par, parsable) and f[1:4] == " = ": # this can work
                 setattr(var, parsable, f[5:])
             elif "#" in f or f == "":
                 continue # ignore this
             else:
-                logger(type="error", "Invalid setting found in {0}: {1}".format(input, f))
+                logger("Invalid setting found in {0}: {1}".format(input, f), type="error")
 
 def parse_settings_from_input(input):
     if input[0] == con.USER_VAR or input[0] == con.SYS_VAR: # proper parsing
@@ -103,56 +103,65 @@ def use_defaults(empty):
 def settings_to_int():
     for parsable in var.PARSABLE_SETTINGS:
         parsarg = getattr(var, parsable)
-        setattr(var, parsable, int(parsarg))
+        try:
+            setattr(var, parsable, int(parsarg))
         except ValueError: # something went wrong and settings aren't integers
-            if DEBUG_MODE:
-                logger(type="debug", "{0} - setting not integer ({1})".format(parsable, parsarg))
+            if var.DEBUG_MODE:
+                logger("{0} - setting not integer ({1})".format(parsable, parsarg), type="debug")
                 continue # debug mode, let's assume the person knows what's going on
             else:
-                logger(type="error", display=False, "{0} - setting not integer ({1})".format(parsable, parsarg))
+                logger("{0} - setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
             var.FATAL_ERROR = "int"
             break
 
 def end_bootleg_early():
     if var.FATAL_ERROR:
-        logger(type="error", " - FATAL ERROR -")
+        logger(" - FATAL ERROR -", type="error")
         if var.FATAL_ERROR == True:
-            logger(type="error", "An unhandled error occured. Please report this.")
+            logger("An unhandled error occured. Please report this.", type="error")
         elif var.FATAL_ERROR == "int":
-            logger(type="error", "Make sure your settings are numbers only (No letters allowed).")
+            logger("Make sure your settings are numbers only (No letters allowed).", type="error")
 
-def logger(type="normal", display=True, write=True, output): # log everything to file and/or screen. always use this
+def logger(output, logtype="", type="normal", display=True, write=True): # logs everything to file and/or screen. always use this
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
-    if type == "normal": # regular logging
-        logtype = "LOG"
-    if type == "error": # all errors
-        logtype = "ERROR"
-    if type == "debug": # random debug stuff
-        logtype = "DEBUG"
-    if type == "traceback": # traceback for errors
-        logtype = "TRACE"
-    if type == "input": # all user input
-        logtype = "INPUT"
-    if config.LOG_EVERYTHING:
+    if not logtype:
+        logtype = con.LOGGERS[type]
+    if config.LOG_EVERYTHING or config.DEV_LOG:
         logtype = "MIXED"
-    logfile = getattr(config, logtype + "_FILE")
-    log_ext = getattr(config, logtype + "_EXT")
-    file = logfile + "." + log_ext
-    f = open(os.getcwd() + "/" + file, "w")
-    if DEBUG_MODE:
-        display = True
+    if var.DEBUG_MODE or config.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
         write = True
+    if var.DEBUG_MODE or config.DISPLAY_EVERYTHING:
+        display = True
     if write:
+        logfile = getattr(config, logtype + "_FILE")
+        log_ext = getattr(config, logtype + "_EXT")
+        file = logfile + "." + log_ext
+        try:
+            f = open(os.getcwd() + "/" + file, "r+")
+        except IOError:
+            f = open(os.getcwd() + "/" + file, "w") # file doesn't exist, let's create it
         if logtype == "MIXED":
             output = "{0} - {1}".format(type, output)
-        f.write(timestamp + output)
+        f.seek(0, 2)
+        f.write(timestamp + output + "\n")
     if display:
         print(output)
 
-def log_all(display=True, write=True, output):
-    if config.LOG_EVERYTHING:
-        logger(type="", display=display, write=write, output)
+def log_all(output, display=True, write=True):
+    if config.LOG_EVERYTHING or config.DEV_LOG:
+        logger(output, type="", display=display, write=write)
         return
-    for logged in con.LOGGERS:
-        logger(type=logged, display=display, write=write, output)
+    log_it = []
+    for logged in con.LOGGERS.keys():
+        if con.LOGGERS[logged] not in log_it:
+            log_it.append(con.LOGGERS[logged])
+    for l in log_it:
+        logger(output, logtype=l, display=display, write=write)
+
+def show_help(output):
+    logger(output, type="help", write=False)
+
+def get_traceback(traceback):
+    logger("", type="traceback")
+    logger(traceback, type="traceback")

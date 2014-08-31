@@ -1,8 +1,9 @@
 # system variables
 
-var.INITALIZED = False
-var.RETRY = False
-var.ALLOW_RUN = True
+INITIALIZED = False
+RETRY = False
+ALLOW_RUN = True
+DEBUG_MODE = False
 
 # user settings
 

@@ -24,35 +24,39 @@ import config
 import sys
 import traceback
 
-DEBUG_MODE = config.DEBUG_MODE
-VERBOSE = config.VERBOSE
+var.DEBUG_MODE = config.DEBUG_MODE
+var.VERBOSE = config.VERBOSE
 
 def main():
     while var.ALLOW_RUN:
         if not var.INITIALIZED or var.RETRY:
             fn.initialize()
-        input = sys.stdin.read()
-        logger(type="input", display=False input)
-        input = input.split()
-        command = input[0]
-        params = input[1:]
+        inp = input().strip()
+        fn.logger(inp, type="input", display=False)
+        inp = inp.split()
+        command = inp[0]
+        params = inp[1:]
         if command.lower() not in con.COMMANDS and command.lower() not in con.HIDDEN_COMMANDS:
-            logger(write=False, "'{0}' is not a valid command.".format(command))
-            logger(write=False, "Available commands: {0}".format(", ".join(con.COMMANDS))
-            if DEBUG_MODE:
-                logger("Hidden commands: {0}".format(", ".join(con.HIDDEN_COMMANDS)))
+            fn.logger("'{0}' is not a valid command.".format(command), write=False)
+            fn.logger("Available commands: {0}".format(", ".join(con.COMMANDS)), write=False)
+            if DEBUG_MODE or config.SHOW_HIDDEN_COMMANDS:
+                fn.logger("Hidden commands: {0}".format(", ".join(con.HIDDEN_COMMANDS)))
         elif command == "help":
             help.get_help(helping=params)
         elif command == "run":
             if params[0] == "silent":
-                pro.run(silent=True, params=" ".join(params[1:]))
+                pro.run(params=" ".join(params[1:]), silent=True)
             elif params[0] == "extract":
                 pro.extract()
             else:
                 pro.run(params=" ".join(params))
+        else: # command is there but it's not there?
+            fn.logger("Error: '{0}' was not found but is in the database. Critical error.", type="error")
 
 if __name__ == "__main__":
     try:
         main()
+    except Exception:
+        fn.get_traceback(traceback.format_exc())
     except:
-        fn.logger(type="traceback", traceback.format_exc())
+        fn.logger(sys.exc_info(), type="error")

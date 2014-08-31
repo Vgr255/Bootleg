@@ -1,5 +1,6 @@
-import variables as var
-import constants as con
+from tools import variables as var
+from tools import constants as con
+from tools.functions import show_help as print # that can be done but it's a very bad idea
 
 def get_help(helping=""):
     helping = helping.lower()
@@ -32,16 +33,17 @@ def get_help(helping=""):
         if con.POSSIBLE_HELP:
             print("")
             print("Possible help topic{1}: {0}.".format(", ".join(con.POSSIBLE_HELP), "s" if len(con.POSSIBLE_HELP) > 1 else ""))
+            if (con.HIDDEN_HELP and DEBUG_MODE) or (con.HIDDEN_HELP and config.SHOW_HIDDEN_HELP):
+                print("Hidden help command{1}: {0}.".format(", ".join(con.HIDDEN_HELP), "s" if len(con.HIDDEN_HELP) > 1 else ""))
             print("Use 'help <item>' to view a specific help.")
     if helping == "programming":
         msg = "The current version of Bootleg is coded in Python 3.2"
         if con.PROCESS_CODERS:
             msg = msg + " by {0}".format(", ".join(con.PROCESS_CODERS))
-        print(msg + ".")
-        msg2 = "The Graphical User Interface is coded in C#"
+        msg = msg + ".\nThe Graphical User Interface is coded in C#"
         if con.GUI_CODERS:
-            msg2 = msg2 + " by {0}".format(", ".join(con.GUI_CODERS))
-        print(msg2 + ".")
+            msg = msg + " by {0}".format(", ".join(con.GUI_CODERS))
+        print(msg + ".")
     if helping == "code":
         msg = "The {0}Bootleg code is completely open-source"
         if con.PROCESS_CODE:
@@ -57,4 +59,11 @@ def get_help(helping=""):
             msg = msg + "; {1} {2} the official helper{3}"
         msg = msg + "."
         msg.format(con.EMAIL, ", ".join(con.USER_HELP), "are" if len(con.USER_HELP) > 1 else "is", "s" if len(con.USER_HELP) > 1 else "")
+        print(msg)
+    if helping == "commands":
+        msg = "There are no available commands."
+        if con.COMMANDS:
+            msg = "Available command{1}: {0}.".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else "")
+        if (con.HIDDEN_COMMANDS and DEBUG_MODE) or (con.HIDDEN_COMMANDS and config.SHOW_HIDDEN_COMMANDS):
+            msg = msg + "\nHidden command{1}: {0}.".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else "")
         print(msg)

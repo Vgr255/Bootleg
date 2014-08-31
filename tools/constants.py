@@ -11,8 +11,11 @@ EMAIL = "Bootleg@DadaData.net"
 
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
-POSSIBLE_HELP = ["programming", "support", "code"]
-HIDDEN_HELP = ["vgr", "bootleg", "help"] # may not use
+COMMANDS = ["help", "run"]
+HIDDEN_COMMANDS = ["remove", "debug"]
+
+POSSIBLE_HELP = ["programming", "support", "code", "commands"]
+HIDDEN_HELP = ["vgr", "bootleg", "help"]
 
 CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"
@@ -21,10 +24,7 @@ RELEASE_INFO = "August 29th, 2014"
 USER_VAR = "/"
 SYS_VAR = "-"
 
-COMMANDS = ["help", "run"]
-HIDDEN_COMMANDS = ["remove", "debug"]
-
-LOGGERS = ["normal", "error", "debug", "traceback", "input"]
+LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "DEBUG"}
 
 # System defaults
 
