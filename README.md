@@ -1,12 +1,9 @@
 ## Bootleg
 
-### Running the code yourself
+Hello and welcome to the Bootleg 041 code. Please note that, while the code currently runs, it cannot currently install anything and is unsupported.
 
-1. You need Python 3.2 or higher
-2. Copy or rename `config.py.example` to `config.py`
-3. If using the User Interface, that's all you need to do
-4. Else, edit `config.py` to fit your settings
+See [CONTRIBUTING.md][0] if you want to contribute to this repository.
 
-### Presets
+Release date: None yet. Aiming towards a 2014 release.
 
-The User Interface can add, edit or remove any presets. If you wish to do so yourself, you can open a *.bp file with any text editor and change settings. If you forked the repository, the Bootleg Presets files are ignored, should you make any commit.
+[0]: https://github.com/Vgr255/Bootleg/blob/master/CONTRIBUTING.md
