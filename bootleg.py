@@ -36,10 +36,12 @@ for x in var.__dict__.keys():
     if not x.isupper():
         continue
     if config.DISALLOW_CONFIG:
-        break
+        break # let's not copy config if disallowed
     if x in config.__dict__.keys():
         setting = getattr(config, x)
         setattr(var, x, setting)
+
+fn.get_settings()
 
 def main():
     while var.ALLOW_RUN:
@@ -54,18 +56,21 @@ def main():
         params = inp[1:]
         if command.lower() not in con.COMMANDS and command.lower() not in con.HIDDEN_COMMANDS:
             fn.logger("'{0}' is not a valid command.".format(command), write=False)
-            fn.logger("Available commands: {0}".format(", ".join(con.COMMANDS)), write=False)
-            if var.DEBUG_MODE or config.SHOW_HIDDEN_COMMANDS:
-                fn.logger("Hidden commands: {0}".format(", ".join(con.HIDDEN_COMMANDS)))
+            fn.logger("Available command{1}: {0}".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else ""), write=False)
+            if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
+                fn.logger("Hidden command{1}: {0}".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else ""))
+            if var.DEBUG_MODE:
+                fn.logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""))
         elif command == "help":
             get_help(helping=" ".join(params))
         elif command == "run":
-            if params[0] == "silent":
-                pro.run(params=" ".join(params[1:]), silent=True)
-            elif params[0] == "extract":
-                pro.extract()
-            else:
-                pro.run(params=" ".join(params))
+            if params:
+                if params[0] == "silent":
+                    pro.run(params=" ".join(params[1:]), silent=True)
+                elif params[0] == "extract":
+                    pro.extract()
+                else:
+                    pro.run(params=" ".join(params))
         else: # command is there but it's not there?
             fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
 

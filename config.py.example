@@ -1,6 +1,47 @@
 # User-defined settings
+# Please read SETTINGS.md for an information on each variable
 
-CLOUD_FIELD = ""
+USER_SETTINGS = {
+
+"CLOUD_FIELD":       "",
+"TRISH_SAVE":        "",
+"TRISH_PHOENIX":     "",
+"TRISH_MASAMUNE":    "",
+"AERITH_REVIVAL":    "",
+"REUNION":           "",
+"SPELL_PATCH":       "",
+"AVALANCHE":         "",
+"NEW_AERITH":        "",
+"CLOUD_BATTLE":      "",
+"LIMIT_BREAK":       "",
+"MENU_BACKGROUND":   "",
+"KERNEL_SELECT":     "",
+"MOVIES":            "",
+"FIELD_TEXTURES":    "",
+"AVATARS":           "",
+"IND_AVATARS":       "", # aka huge pain
+"BUNNY_GIRLS":       "",
+"SOUNDTRACK":        "",
+"ANY_CD":            "",
+"OPENING_CREDITS":   "",
+"CLOUD_SWORDS":      "",
+"FFVII_IMAGE":       "",
+"FFVII_PATH":        "",
+"BOOTLEG_TEMP":      "",
+"MOD_LOCATION":      "",
+"BRAT_PACK":         "", # might get rid of that one for more efficient variables
+
+}
+
+# other settings
+# Information is in SETTINGS.md
+
+SYS_VARIABLES = {
+
+"DEBUG_CODE":        "",
+"CREATE_IMAGE":      "",
+
+}
 
 # Developper/debugger options. enable only if a dev asks you to
 
@@ -37,7 +78,9 @@ PREVIOUS_PRESET = ""
 PRESET_EXT = "bp"
 TEMP_PRESET = False
 
-CFG_OVER_SETTINGS = False
+CFG_OVER_SETTINGS = False # use config settings over presets if True
+
+DISALLOW_CONFIG = False # ignores config, do not ever use
 
 # Debug mode options. edit at your own risk
 

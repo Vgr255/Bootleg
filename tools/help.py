@@ -1,18 +1,17 @@
 from tools import variables as var
 from tools import constants as con
 from tools.functions import show_help
-import config
 
 def get_help(helping=""):
     helping = helping.lower()
-    show_help(" - Final Fantasy VII Bootleg Mod Configurator -")
-    show_help(" * Help file *")
+    show_help("        - Final Fantasy VII Bootleg Mod Configurator -")
+    show_help("                         * Help file *")
     show_help("")
     if helping and helping not in con.POSSIBLE_HELP and helping not in con.HIDDEN_HELP:
         show_help("'{0}' is not a valid help topic.".format(helping))
         if con.POSSIBLE_HELP:
             show_help("Possible help topic{1}: {0}.".format(", ".join(con.POSSIBLE_HELP), "s" if len(con.POSSIBLE_HELP) > 1 else ""))
-            if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and config.SHOW_HIDDEN_HELP):
+            if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and var.SHOW_HIDDEN_HELP):
                 show_help("Hidden help command{1}: {0}.".format(", ".join(con.HIDDEN_HELP), "s" if len(con.HIDDEN_HELP) > 1 else ""))
             show_help("Use 'help <item>' to view a specific help.")
     elif not helping:
@@ -21,7 +20,7 @@ def get_help(helping=""):
         if con.RELEASE_INFO and con.BUILD_INFO:
             show_help(con.BUILD_INFO + " build " + con.RELEASE_INFO)
         if con.FIRST_DEV:
-            show_help("First developper and base idea: {0}.".format(", ".join(con.FIRST_DEV)))
+            show_help("First developper{1} and base idea: {0}.".format(", ".join(con.FIRST_DEV), "s" if len(con.FIRST_DEV) >1 else ""))
         if con.USER_HELP:
             show_help("User helper{0} and support team: {1}.".format("s" if len(con.USER_HELP) > 1 else "", ", ".join(con.USER_HELP)))
         if con.CODERS:
@@ -41,7 +40,7 @@ def get_help(helping=""):
         if con.POSSIBLE_HELP:
             show_help("")
             show_help("Possible help topic{1}: {0}.".format(", ".join(con.POSSIBLE_HELP), "s" if len(con.POSSIBLE_HELP) > 1 else ""))
-            if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and config.SHOW_HIDDEN_HELP):
+            if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and var.SHOW_HIDDEN_HELP):
                 show_help("Hidden help command{1}: {0}.".format(", ".join(con.HIDDEN_HELP), "s" if len(con.HIDDEN_HELP) > 1 else ""))
             show_help("Use 'help <item>' to view a specific help.")
     elif helping == "programming":
@@ -70,7 +69,7 @@ def get_help(helping=""):
         msg = "There are no available commands."
         if con.COMMANDS:
             msg = "Available command{1}: {0}.".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else "")
-        if (con.HIDDEN_COMMANDS and DEBUG_MODE) or (con.HIDDEN_COMMANDS and config.SHOW_HIDDEN_COMMANDS):
+        if (con.HIDDEN_COMMANDS and DEBUG_MODE) or (con.HIDDEN_COMMANDS and var.SHOW_HIDDEN_COMMANDS):
             msg = msg + "\nHidden command{1}: {0}.".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else "")
         show_help(msg)
     else:

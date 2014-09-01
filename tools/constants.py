@@ -12,10 +12,15 @@ EMAIL = "Bootleg@DadaData.net"
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
 COMMANDS = ["help", "run"]
-HIDDEN_COMMANDS = ["remove", "debug", "vgr"]
+HIDDEN_COMMANDS = ["debug", "vgr", "eval", "exec"]
+
+DEBUG_COMMANDS = ["remove", "copy"]
 
 POSSIBLE_HELP = ["programming", "support", "code", "commands"]
 HIDDEN_HELP = ["vgr", "bootleg", "help"]
+
+POSSIBLE_RUN = ["help", "silent"]
+HIDDEN_RUN = []
 
 CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"
@@ -31,10 +36,46 @@ LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TR
 DEBUG_MODE = "!"
 VERBOSE = "$"
 
-# Defaults in case not specified
+# parsables
 
-CLOUD_FIELD = "0"
+USER_SETTINGS = { # uses USER_VAR
 
+"CLOUD_FIELD":       "C",
+"TRISH_SAVE":        "S",
+"TRISH_PHOENIX":     "P",
+"TRISH_MASAMUNE":    "U",
+"AERITH_REVIVAL":    "R",
+"REUNION":           "O",
+"SPELL_PATCH":       "N",
+"AVALANCHE":         "A",
+"NEW_AERITH":        "V",
+"CLOUD_BATTLE":      "H",
+"LIMIT_BREAK":       "L",
+"MENU_BACKGROUND":   "M",
+"KERNEL_SELECT":     "K",
+"MOVIES":            "E",
+"FIELD_TEXTURES":    "T",
+"AVATARS":           "Z",
+"IND_AVATARS":       "J",
+"BUNNY_GIRLS":       "B",
+"SOUNDTRACK":        "W",
+"ANY_CD":            "Y",
+"OPENING_CREDITS":   "Q",
+"CLOUD_SWORDS":      "G",
+"FFVII_IMAGE":       "I",
+"FFVII_PATH":        "D",
+"BOOTLEG_TEMP":      "X",
+"MOD_LOCATION":      "F",
+"BRAT_PACK":         "@",
+
+}
+
+SYS_VARIABLES = { # uses SYS_VAR
+
+"DEBUG_CODE":        "",
+"CREATE_IMAGE":      "",
+
+}
 # Random stuff
 
 BOOT_ASCII = [

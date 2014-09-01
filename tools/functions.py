@@ -1,15 +1,14 @@
 from tools import constants as con
 from tools import variables as var
-from tools import parsables as par
 from datetime import datetime
 import config
 import os
 
 def initialize(): # initialize variables on startup and/or retry
-    log_all("{0} Bootleg operation".format("Beginning" if not var.INITIALIZED else "Restarting"), display=False)
+    log_multiple("{0} Bootleg operation.".format("Beginning" if not var.INITIALIZED else "Restarting"), types=["all"], display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = False
-    var.PARSABLE_SETTINGS = [name for name in par.__dict__ if name.isupper()]
+    var.PARSABLE_SETTINGS = con.USER_SETTINGS.keys()
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
@@ -101,11 +100,10 @@ def use_defaults(empty):
     for parsable in var.PARSABLE_SETTINGS:
         if parsable not in empty:
             continue
-        parsarg = getattr(con, parsable)
-        if parsarg:
-            setattr(var, parsable, parsarg)
-        else:
-            setattr(var, parsable, 0) # Use 0 as default in case one is not specified for some reason
+        if parsable in var.USER_SETTINGS.keys():
+            setattr(var, parsable, 0) # Use 0 as default for every setting
+        if parsable in var.SYSTEM_SETTINGS.keys():
+            setattr(var, parsable, "")
 
 def settings_to_int():
     for parsable in var.PARSABLE_SETTINGS:
@@ -132,13 +130,13 @@ def end_bootleg_early():
 def logger(output, logtype="", type="normal", display=True, write=True): # logs everything to file and/or screen. always use this
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    if var.LOG_EVERYTHING or var.DEV_LOG:
+        type = "all"
     if not logtype:
         try:
             logtype = con.LOGGERS[type]
         except KeyError: # empty type
             logtype = "LOG" # use default instead
-    if var.LOG_EVERYTHING or var.DEV_LOG:
-        logtype = "MIXED"
     if var.DEBUG_MODE or var.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
@@ -154,7 +152,7 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
         except IOError:
             f = open(os.getcwd() + "/" + file, "w") # file doesn't exist, let's create it
             var.NEWFILE = True
-        if logtype == "MIXED":
+        if logtype == con.LOGGERS["all"]:
             output = "{0} - {1}".format(type, output)
         f.seek(0, 2)
         if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
@@ -162,25 +160,30 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
         else:
             f.write(timestamp + output + "\n")
 
-def log_all(output, display=True, write=True):
-    if var.LOG_EVERYTHING or var.DEV_LOG:
-        logger(output, type="", display=display, write=write)
-        return
-    log_it = []
-    for logged in con.LOGGERS.keys():
-        if logged == "all":
-            continue
-        if con.LOGGERS[logged] not in log_it:
-            log_it.append(con.LOGGERS[logged])
-    for l in log_it:
-        logger(output, logtype=l, display=display, write=write)
-
 def log_multiple(output, types=[], display=True, write=True):
-    if types and "all" not in types:
+    if "all" in types:
+        if var.LOG_EVERYTHING or var.DEV_LOG:
+            logger(output, type="all", display=display, write=write)
+            return
+        log_it = []
+        for logged in con.LOGGERS.keys():
+            if logged == "all":
+                continue
+            if con.LOGGERS[logged] not in log_it:
+                log_it.append(con.LOGGERS[logged])
+        for l in log_it:
+            logger(output, logtype=l, display=display, write=write)
+    elif types:
         for t in types:
             logger(output, type=t, display=display, write=write)
-    if "all" in types:
-        log_all(output, display=display, write=write)
+    else: # no type
+        logger("Error: Log type is empty.", type="error")
 
-def show_help(output, type="help", write=False):
-    logger(output, type=type, write=write)
+def show_help(output, type="help", write=False, display=True):
+    logger(output, type=type, write=write, display=display)
+
+def get_settings():
+    for s, x in var.USER_SETTINGS.items():
+        setattr(var, s, x)
+    for t, y in var.SYSTEM_SETTINGS.items():
+        setattr(var, t, y)
