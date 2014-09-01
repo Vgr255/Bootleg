@@ -19,7 +19,7 @@ USER_SETTINGS = {
 "MOVIES":            "",
 "FIELD_TEXTURES":    "",
 "AVATARS":           "",
-"IND_AVATARS":       "", # aka huge pain
+"IND_AVATARS":       "",
 "BUNNY_GIRLS":       "",
 "SOUNDTRACK":        "",
 "ANY_CD":            "",

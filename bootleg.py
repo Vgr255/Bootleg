@@ -48,19 +48,26 @@ def main():
         if not var.INITIALIZED or var.RETRY:
             fn.initialize()
             fn.begin_anew()
+        if var.ERROR:
+            fn.logger("Please type 'exit' or 'restart' to exit or restart Bootleg.", write=False)
+        fn.logger("\n", write=False)
+        fn.logger("Please enter a command:", write=False)
         fn.logger("\n", write=False)
         inp = input().strip()
         fn.logger(inp, type="input", display=False)
-        inp = inp.split()
-        command = inp[0]
-        params = inp[1:]
-        if command.lower() not in con.COMMANDS and command.lower() not in con.HIDDEN_COMMANDS:
-            fn.logger("'{0}' is not a valid command.".format(command), write=False)
-            fn.logger("Available command{1}: {0}".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else ""), write=False)
-            if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
-                fn.logger("Hidden command{1}: {0}".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else ""))
-            if var.DEBUG_MODE:
-                fn.logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""))
+        inp1 = inp.split()
+        if not inp:
+            fn.logger("No command was entered.", write=False)
+        command = inp1[0].lower()
+        params = inp1[1:]
+        if command not in con.COMMANDS and command not in con.HIDDEN_COMMANDS:
+            fn.no_such_command(command)
+        elif var.ERROR and command not in con.ERROR_COMMANDS:
+            fn.logger("You must type either 'exit' or 'restart'.", write=False)
+        elif command == "exit":
+            var.ALLOW_RUN = False
+        elif command == "restart":
+            var.RETRY = True
         elif command == "help":
             get_help(helping=" ".join(params))
         elif command == "run":
@@ -71,20 +78,48 @@ def main():
                     pro.extract()
                 else:
                     pro.run(params=" ".join(params))
-        else: # command is there but it's not there?
+        elif command == "do":
+            done = False
+            if params:
+                if inp[:22] == "do call python3; exec(" and inp[-2:] == ");":
+                    done = True
+                    exec(inp[22:-2])
+                elif inp[:27] == "do call run:function; eval(" and inp[-2:] == ");":
+                    done = True
+                    eval(inp[27:-2])
+                elif inp == "do call help;":
+                    done = True
+                    fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run:function; eval(\"module.function\");'")
+            if not done:
+                fn.no_such_command(command)
+        elif command == "clean":
+            for x, y in con.LOGGERS.items():
+                logfile = getattr(config, y + "_FILE")
+                log_ext = getattr(config, y + "_EXT")
+                try:
+                    os.remove("{0}.{1}".format(logfile, log_ext))
+                except WindowsError: # file doesn't exist
+                    continue
+            var.ALLOW_RUN = False
+        elif command in con.COMMANDS: # command is there but it's not there?
             fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
+        else:
+            fn.no_such_command(command) # if a hidden command is not there, let's say it doesn't exist    
 
 if __name__ == "__main__":
-    try:
-        main()
-    except:
-        if traceback.format_exc(): # if there's a traceback, let's have it
-            fn.logger("", type="traceback")
-            fn.logger(traceback.format_exc(), type="traceback")
-            logname = con.LOGGERS["traceback"]
-            if var.DEV_LOG or var.LOG_EVERYTHING:
-                logname = con.LOGGERS["all"]
-            logfile = getattr(config, logname + "_FILE")
-            log_ext = getattr(config, logname + "_EXT")
-            fn.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext))
-        fn.logger(sys.exc_info(), type="error", display=False) # log which exception occured
+    while var.ALLOW_RUN:
+        try:
+            main()
+        except:
+            if traceback.format_exc(): # if there's a traceback, let's have it
+                fn.logger("", type="traceback", write=False)
+                fn.logger(traceback.format_exc(), type="traceback", display=False)
+                logname = con.LOGGERS["traceback"]
+                if var.DEV_LOG or var.LOG_EVERYTHING:
+                    logname = con.LOGGERS["all"]
+                logfile = getattr(config, logname + "_FILE")
+                log_ext = getattr(config, logname + "_EXT")
+                fn.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
+            if str(sys.exc_info()):
+                fn.logger(str(sys.exc_info()[0]), type="error", display=False) # log which exception occured
+            var.ERROR = True

@@ -1,6 +1,7 @@
 from tools import constants as con
 from tools import variables as var
 from datetime import datetime
+import parser
 import config
 import os
 
@@ -12,6 +13,7 @@ def initialize(): # initialize variables on startup and/or retry
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
+    var.ERROR = False
     var.INITIALIZED = True
     var.RETRY = False
 
@@ -153,7 +155,7 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
             f = open(os.getcwd() + "/" + file, "w") # file doesn't exist, let's create it
             var.NEWFILE = True
         if logtype == con.LOGGERS["all"]:
-            output = "{0} - {1}".format(type, output)
+            output = "type.{0} - {1}".format(type, output)
         f.seek(0, 2)
         if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
             f.write("\n\n" + timestamp + output + "\n")
@@ -177,7 +179,7 @@ def log_multiple(output, types=[], display=True, write=True):
         for t in types:
             logger(output, type=t, display=display, write=write)
     else: # no type
-        logger("Error: Log type is empty.", type="error")
+        logger(output, display=display, write=write)
 
 def show_help(output, type="help", write=False, display=True):
     logger(output, type=type, write=write, display=display)
@@ -185,5 +187,26 @@ def show_help(output, type="help", write=False, display=True):
 def get_settings():
     for s, x in var.USER_SETTINGS.items():
         setattr(var, s, x)
-    for t, y in var.SYSTEM_SETTINGS.items():
+    for t, y in var.SYS_VARIABLES.items():
         setattr(var, t, y)
+
+def get_parser(setting):
+    parse = None
+    for x in var.USER_SETTINGS.keys():
+        x = x.lower()
+        if not x == setting.lower():
+            continue
+        try:
+            parse = getattr(parser, x)
+        except AttributeError:
+            break
+    return parse
+
+def no_such_command(command):
+    logger("'{0}' is not a valid command.".format(command), write=False)
+    logger("Available command{1}: {0}".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else ""), write=False)
+    if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
+        logger("Hidden command{1}: {0}".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else ""), write=False)
+        logger("Keep in mind that hidden commands will appear as non-existant if not used properly or if the proper conditions aren't met.", write=False)
+    if var.DEBUG_MODE:
+        logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""))

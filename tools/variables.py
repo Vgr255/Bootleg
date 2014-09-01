@@ -6,6 +6,7 @@ ALLOW_RUN = True
 NEWFILE = False
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False
+ERROR = False
 
 # defaults
 
