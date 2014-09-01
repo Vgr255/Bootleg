@@ -10,6 +10,6 @@ If you have skills in Python and wish to help improve Bootleg, you can Fork the 
 
 ### Help, feedback or chat
 
-If you need help understanding the code (if you want to contribute), want to provide feedback or simply to chat, I am always online on IRC as Vgr in [#Vgr on the EsperNet IRC network][0].
+If you need help understanding the code (if you want to contribute), want to provide feedback or simply to chat, I am always online on IRC as Vgr in [#Bootleg_Dev on the EsperNet IRC network][0].
 
-[0] = http://webchat.esper.net/?channels=Vgr&nick=
+[0]: http://webchat.esper.net/?channels=Bootleg_Dev&nick=
