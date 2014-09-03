@@ -1,7 +1,7 @@
 from tools import constants as con
 from tools import variables as var
 from datetime import datetime
-import parser
+from tools import parser
 import config
 import os
 
@@ -9,7 +9,6 @@ def initialize(): # initialize variables on startup and/or retry
     log_multiple("{0} Bootleg operation.".format("Beginning" if not var.INITIALIZED else "Restarting"), types=["all"], display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = False
-    var.PARSABLE_SETTINGS = con.USER_SETTINGS.keys()
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
@@ -22,17 +21,12 @@ def begin_anew():
     show_help("\n".join(con.BOOT_ASCII))
     show_help("")
     show_help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
-    show_help("Available commands: {0}{1}{2}".format(", ".join(con.COMMANDS), " " if var.SHOW_HIDDEN_COMMANDS else "", ", ".join(con.HIDDEN_COMMANDS) if var.SHOW_HIDDEN_COMMANDS else ""))
-
-def config_into_var():
-    for parsable in var.PARSABLE_SETTINGS:
-        parsarg = getattr(config, parsable)
-        setattr(var, parsable, parsarg)
+    show_help("Available commands: {0}{1}{2}{3}{4}".format(", ".join(con.COMMANDS), " " if (var.SHOW_HIDDEN_COMMANDS and con.HIDDEN_COMMANDS) else "", ", ".join(con.HIDDEN_COMMANDS) if var.SHOW_HIDDEN_COMMANDS else "", " " if (var.DEBUG_MODE and con.DEBUG_COMMANDS) else "", ", ".join(con.DEBUG_COMMANDS) if var.DEBUG_MODE else ""))
 
 def parse_settings_from_params(input):
     for param in input:
         if param[0] == con.USER_VAR: # setting is an actual user setting
-            for parsable in var.PARSABLE_SETTINGS:
+            for parsable in var.USER_SETTINGS.keys():
                 if param[1] == getattr(par, parsable):
                     setattr(var, parsable, param[2:])
         elif param[0] == con.SYS_VAR: # setting is a system/debug setting. always takes priority
@@ -47,9 +41,9 @@ def parse_settings_from_file(input):
         var.NONEXISTANT_FILE = True
         return
     else:
-        file = open("/presets/" + input)
+        file = open(os.getcwd() + "/presets/" + input)
         file.seek(0) # make sure we're at the beginning of the file
-        for parsable in var.PARSABLE_SETTINGS:
+        for parsable in var.USER_SETTINGS.keys():
             f.replace("\n", "")
             f = file.readline()
             if f[0] == getattr(par, parsable) and f[1] == "=":
@@ -67,7 +61,7 @@ def parse_settings_from_file(input):
 def parse_settings_from_input(input):
     if input[0] == con.USER_VAR or input[0] == con.SYS_VAR: # proper parsing
         input = input[1:] # remove the forward slash
-    for parsable in var.PARSABLE_SETTINGS:
+    for parsable in var.USER_SETTINGS.keys():
         setting = getattr(par, parsable)
         if input[0] == setting:
             var.PARSING = parsable
@@ -94,21 +88,24 @@ def parse_settings_from_input(input):
 
 def chk_empty_settings():
     var.EMPTY_SETTINGS = []
-    for parsable in var.PARSABLE_SETTINGS:
+    for parsable in var.USER_SETTINGS.keys():
         if not getattr(var, parsable):
             var.EMPTY_SETTINGS.append(parsable)
 
 def use_defaults(empty):
-    for parsable in var.PARSABLE_SETTINGS:
+    for parsable in var.USER_SETTINGS.keys():
         if parsable not in empty:
             continue
+        parsarg = getattr(var, parsable)
         if parsable in var.USER_SETTINGS.keys():
             setattr(var, parsable, 0) # Use 0 as default for every setting
         if parsable in var.SYSTEM_SETTINGS.keys():
             setattr(var, parsable, "")
+        if parsarg:
+            setattr(var, parsable, parsarg)
 
 def settings_to_int():
-    for parsable in var.PARSABLE_SETTINGS:
+    for parsable in var.USER_SETTINGS.keys():
         parsarg = getattr(var, parsable)
         try:
             setattr(var, parsable, int(parsarg))
@@ -157,10 +154,14 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
         if logtype == con.LOGGERS["all"]:
             output = "type.{0} - {1}".format(type, output)
         f.seek(0, 2)
-        if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
-            f.write("\n\n" + timestamp + output + "\n")
-        else:
-            f.write(timestamp + output + "\n")
+        try:
+            if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
+                f.write("\n\n" + timestamp + output + "\n")
+            else:
+                f.write(timestamp + output + "\n")
+        except TypeError:
+            output = str(output)
+            logger(output, logtype=logtype, display=False, write=write) # display false because it already displayed anyway
 
 def log_multiple(output, types=[], display=True, write=True):
     if "all" in types:
@@ -188,6 +189,12 @@ def get_settings():
     for s, x in var.USER_SETTINGS.items():
         setattr(var, s, x)
     for t, y in var.SYS_VARIABLES.items():
+        setattr(var, t, y)
+
+def get_config():
+    for s, x in config.USER_SETTINGS.items():
+        setattr(var, s, x)
+    for t, y in config.SYS_VARIABLES.items():
         setattr(var, t, y)
 
 def get_parser(setting):

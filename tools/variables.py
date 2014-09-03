@@ -23,42 +23,43 @@ SHOW_HIDDEN_HELP = False
 
 # user settings
 # currently a dict for simplicity, gets converted to each variable on runtime
+# those are defaults
 
 USER_SETTINGS = {
 
-"CLOUD_FIELD":       "",
-"TRISH_SAVE":        "",
-"TRISH_PHOENIX":     "",
-"TRISH_MASAMUNE":    "",
-"AERITH_REVIVAL":    "",
-"REUNION":           "",
-"SPELL_PATCH":       "",
-"AVALANCHE":         "",
-"NEW_AERITH":        "",
-"CLOUD_BATTLE":      "",
-"LIMIT_BREAK":       "",
-"MENU_BACKGROUND":   "",
-"KERNEL_SELECT":     "",
-"MOVIES":            "",
-"FIELD_TEXTURES":    "",
-"AVATARS":           "",
-"IND_AVATARS":       "",
-"BUNNY_GIRLS":       "",
-"SOUNDTRACK":        "",
-"ANY_CD":            "",
-"OPENING_CREDITS":   "",
-"CLOUD_SWORDS":      "",
-"FFVII_IMAGE":       "",
-"FFVII_PATH":        "",
-"BOOTLEG_TEMP":      "",
-"MOD_LOCATION":      "",
-"BRAT_PACK":         "",
+"CLOUD_FIELD":       "0",
+"TRISH_SAVE":        "0",
+"TRISH_PHOENIX":     "0",
+"TRISH_MASAMUNE":    "0",
+"AERITH_REVIVAL":    "0",
+"REUNION":           "0",
+"SPELL_PATCH":       "0",
+"AVALANCHE":         "0",
+"NEW_AERITH":        "0",
+"CLOUD_BATTLE":      "0",
+"LIMIT_BREAK":       "0",
+"MENU_BACKGROUND":   "0",
+"KERNEL_SELECT":     "0",
+"MOVIES":            "0",
+"FIELD_TEXTURES":    "0",
+"AVATARS":           "0",
+"IND_AVATARS":       "0",
+"BUNNY_GIRLS":       "0",
+"SOUNDTRACK":        "0",
+"ANY_CD":            "0",
+"OPENING_CREDITS":   "0",
+"CLOUD_SWORDS":      "0",
+"FFVII_IMAGE":       "0",
+"FFVII_PATH":        "0",
+"BOOTLEG_TEMP":      "0",
+"MOD_LOCATION":      "0",
+"BRAT_PACK":         "0",
 
 }
 
 SYS_VARIABLES = {
 
-"DEBUG_CODE":        "",
-"CREATE_IMAGE":      "",
+"DEBUG_CODE":        "0",
+"CREATE_IMAGE":      "0",
 
 }

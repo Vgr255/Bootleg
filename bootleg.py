@@ -19,6 +19,7 @@ from tools import process as pro
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
+from tools import parser
 from tools.help import get_help
 import shutil
 import argparse
@@ -60,9 +61,7 @@ def main():
             fn.logger("No command was entered.", write=False)
         command = inp1[0].lower()
         params = inp1[1:]
-        if command not in con.COMMANDS and command not in con.HIDDEN_COMMANDS:
-            fn.no_such_command(command)
-        elif var.ERROR and command not in con.ERROR_COMMANDS:
+        if var.ERROR and command not in con.ERROR_COMMANDS:
             fn.logger("You must type either 'exit' or 'restart'.", write=False)
         elif command == "exit":
             var.ALLOW_RUN = False
@@ -87,9 +86,12 @@ def main():
                 elif inp[:27] == "do call run:function; eval(" and inp[-2:] == ");":
                     done = True
                     eval(inp[27:-2])
-                elif inp == "do call help;":
+                elif inp[:9] == "do print(" and inp[-2:] == ");":
                     done = True
-                    fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run:function; eval(\"module.function\");'")
+                    exec(print(inp[9:-2]))
+                elif inp == "do call help; get help;":
+                    done = True
+                    fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run:function; eval(\"module.function\");'\n'do print(\"string\");'")
             if not done:
                 fn.no_such_command(command)
         elif command == "clean":
@@ -104,7 +106,7 @@ def main():
         elif command in con.COMMANDS: # command is there but it's not there?
             fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
         else:
-            fn.no_such_command(command) # if a hidden command is not there, let's say it doesn't exist    
+            fn.no_such_command(command) # if a hidden command is not there, let's say it doesn't exist
 
 if __name__ == "__main__":
     while var.ALLOW_RUN:
