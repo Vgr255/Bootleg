@@ -7,6 +7,9 @@ NEWFILE = False
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False
 ERROR = False
+ARCHITECTURE = None # '32bit' or '64bit'
+REGISTRY = None # location of the registry
+ON_WINDOWS = True
 
 # defaults
 

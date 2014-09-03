@@ -42,7 +42,7 @@ for x in var.__dict__.keys():
         setting = getattr(config, x)
         setattr(var, x, setting)
 
-fn.get_settings()
+fn.do_init()
 
 def main():
     while var.ALLOW_RUN:

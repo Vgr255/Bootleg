@@ -4,6 +4,13 @@ from datetime import datetime
 from tools import parser
 import config
 import os
+import platform
+
+try:
+    import winreg
+except ImportError:
+    logger("Bootleg will not work properly on a different operating system than Windows.", type="error")
+    var.ON_WINDOWS = False
 
 def initialize(): # initialize variables on startup and/or retry
     log_multiple("{0} Bootleg operation.".format("Beginning" if not var.INITIALIZED else "Restarting"), types=["all"], display=False)
@@ -15,6 +22,10 @@ def initialize(): # initialize variables on startup and/or retry
     var.ERROR = False
     var.INITIALIZED = True
     var.RETRY = False
+
+def do_init(): # initialize on startup only
+    get_settings()
+    get_architecture()
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -211,6 +222,23 @@ def get_parser(setting): # get function xyz() in parser.py for variable XYZ
         parse = getattr(parser, x)
         break # we got what we wanted
     return parse
+
+def get_architecture(): # find processor architecture
+    var.ARCHITECTURE = platform.architecture()[0]
+    logger(platform.architecture(), display=False, type="debug")
+    logger("Running Bootleg on {0}.".format(var.ARCHITECTURE))
+
+def get_registry():
+    if not var.ON_WINDOWS:
+        return # not on Windows
+    try:
+        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
+        if var.ARCHITECTURE == "64bit":
+            reg = winreg.OpenKey(reg, "Wow6432Node")
+        reg = winreg.OpenKey(reg, "Square Soft, Inc.")
+        var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
+    except WindowsError: # it failed
+        logger("Error in registry: File could not be found.", type="error")
 
 def no_such_command(command):
     logger("'{0}' is not a valid command.".format(command), write=False)
