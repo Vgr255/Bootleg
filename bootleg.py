@@ -83,7 +83,7 @@ def main():
                 if inp[:22] == "do call python3; exec(" and inp[-2:] == ");":
                     done = True
                     exec(inp[22:-2])
-                elif inp[:27] == "do call run:function; eval(" and inp[-2:] == ");":
+                elif inp[:27] == "do call run function; eval(" and inp[-2:] == ");":
                     done = True
                     eval(inp[27:-2])
                 elif inp[:9] == "do print(" and inp[-2:] == ");":
@@ -91,7 +91,7 @@ def main():
                     exec(print(inp[9:-2]))
                 elif inp == "do call help; get help;":
                     done = True
-                    fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run:function; eval(\"module.function\");'\n'do print(\"string\");'")
+                    fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'")
             if not done:
                 fn.no_such_command(command)
         elif command == "clean":
@@ -102,6 +102,7 @@ def main():
                     os.remove("{0}.{1}".format(logfile, log_ext))
                 except WindowsError: # file doesn't exist
                     continue
+            shutil.rmtree(os.getcwd() + '/__pycache__')
             var.ALLOW_RUN = False
         elif command in con.COMMANDS: # command is there but it's not there?
             fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
@@ -123,5 +124,5 @@ if __name__ == "__main__":
                 log_ext = getattr(config, logname + "_EXT")
                 fn.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
             if str(sys.exc_info()):
-                fn.logger(str(sys.exc_info()[0]), type="error", display=False) # log which exception occured
+                fn.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
             var.ERROR = True

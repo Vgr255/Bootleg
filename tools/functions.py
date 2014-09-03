@@ -21,7 +21,13 @@ def begin_anew():
     show_help("\n".join(con.BOOT_ASCII))
     show_help("")
     show_help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
-    show_help("Available commands: {0}{1}{2}{3}{4}".format(", ".join(con.COMMANDS), " " if (var.SHOW_HIDDEN_COMMANDS and con.HIDDEN_COMMANDS) else "", ", ".join(con.HIDDEN_COMMANDS) if var.SHOW_HIDDEN_COMMANDS else "", " " if (var.DEBUG_MODE and con.DEBUG_COMMANDS) else "", ", ".join(con.DEBUG_COMMANDS) if var.DEBUG_MODE else ""))
+    commands = con.COMMANDS
+    if var.SHOW_HIDDEN_COMMANDS:
+        commands.extend(con.HIDDEN_COMMANDS)
+        commands.extend(con.ERROR_COMMANDS)
+    if var.DEBUG_MODE:
+        commands.extend(con.DEBUG_COMMANDS)
+    show_help("Available commands: {0}.".format(", ".join(commands)))
 
 def parse_settings_from_params(input):
     for param in input:
@@ -197,16 +203,13 @@ def get_config():
     for t, y in config.SYS_VARIABLES.items():
         setattr(var, t, y)
 
-def get_parser(setting):
+def get_parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
-    for x in var.USER_SETTINGS.keys():
-        x = x.lower()
+    for x in parser.__dict__.keys():
         if not x == setting.lower():
             continue
-        try:
-            parse = getattr(parser, x)
-        except AttributeError:
-            break
+        parse = getattr(parser, x)
+        break # we got what we wanted
     return parse
 
 def no_such_command(command):
