@@ -227,7 +227,7 @@ def get_parser(setting): # get function xyz() in parser.py for variable XYZ
 
 def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]
-    logger(platform.architecture(), display=False, type="debug")
+    logger("Operating System: {0} on {1}.".format(str(platform.architecture()[1]), var.ARCHITECTURE), display=False, type="debug")
     logger("Running Bootleg on {0}.".format(var.ARCHITECTURE), display=False)
 
 def get_registry():
@@ -261,16 +261,16 @@ def add_to_reg(drive, app):
         app = app + "\\"
     if not drive[-1:] == "\\":
         drive = drive + "\\"
-    drive = drive.replace("\\", "\\\\\\\\") # need to print two backslahses
-    app = app.replace("\\", "\\\\\\\\")
+    drive = drive.replace("\\", "\\\\") # need to print two backslahses
+    app = app.replace("\\", "\\\\")
     write_reg('"DataDrive"="{0}"'.format(drive))
     write_reg('"AppPath"="{0}"'.format(app))
-    write_reg('"DataPath"="{0}Data\\\\\\\\"'.format(app))
-    write_reg('"MoviePath"="{0}movies\\\\\\\\"'.format(app))
+    write_reg('"DataPath"="{0}Data\\\\"'.format(app))
+    write_reg('"MoviePath"="{0}movies\\\\"'.format(app))
     write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
     write_reg('')
     if var.ARCHITECTURE == "64bit":
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\1.00\\Graphics]')
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
     else:
         write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
     write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))

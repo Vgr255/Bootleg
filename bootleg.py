@@ -50,11 +50,14 @@ def main():
             fn.initialize()
             fn.begin_anew()
         if var.ERROR:
-            fn.logger("Please type 'exit' or 'restart' to exit or restart Bootleg.", write=False)
+            fn.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
         fn.logger("\n", write=False)
         fn.logger("Please enter a command:", write=False)
         fn.logger("\n", write=False)
-        inp = input().strip()
+        try:
+            inp = input().strip()
+        except EOFError:
+            pass # probably Ctrl-C'd anyway
         fn.logger(inp, type="input", display=False)
         inp1 = inp.split()
         if not inp:
@@ -117,6 +120,13 @@ if __name__ == "__main__":
     while var.ALLOW_RUN:
         try:
             main()
+        except KeyboardInterrupt:
+            if var.ERROR:
+                var.ALLOW_RUN = False
+                fn.logger("Received SIGTERM.", type="debug", display=False)
+            else:
+                fn.logger("WARNING: SIGTERM Detected.", type="debug")
+                var.ERROR = True
         except:
             if traceback.format_exc(): # if there's a traceback, let's have it
                 fn.logger("", type="traceback", write=False)

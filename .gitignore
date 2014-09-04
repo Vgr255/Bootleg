@@ -11,5 +11,8 @@ config.py
 # Preset files
 *.bp
 
-# Batch files (for testing)
+# Batch files
 *.bat
+
+# Registry files
+*.reg
