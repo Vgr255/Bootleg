@@ -102,6 +102,10 @@ def main():
                     os.remove("{0}.{1}".format(logfile, log_ext))
                 except WindowsError: # file doesn't exist
                     continue
+            try:
+                os.remove(os.getcwd() + "/" + var.TEMP_REG + ".reg")
+            except WindowsError:
+                pass
             shutil.rmtree(os.getcwd() + '/__pycache__')
             var.ALLOW_RUN = False
         elif command in con.COMMANDS: # command is there but it's not there?

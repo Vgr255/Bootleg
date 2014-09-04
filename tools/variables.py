@@ -24,6 +24,8 @@ DISPLAY_EVERYTHING = False
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False
 
+TEMP_REG = "bootleg"
+
 # user settings
 # currently a dict for simplicity, gets converted to each variable on runtime
 # those are defaults

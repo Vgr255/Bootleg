@@ -31,6 +31,7 @@ def do_init(): # initialize on startup only
 def begin_anew():
     os.system("cls") # clear the screen off everything.
     show_help("\n".join(con.BOOT_ASCII))
+    show_help("       Running Bootleg on {0}                      |___/".format(var.ARCHITECTURE))
     show_help("")
     show_help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
     commands = con.COMMANDS
@@ -227,7 +228,7 @@ def get_parser(setting): # get function xyz() in parser.py for variable XYZ
 def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]
     logger(platform.architecture(), display=False, type="debug")
-    logger("Running Bootleg on {0}.".format(var.ARCHITECTURE))
+    logger("Running Bootleg on {0}.".format(var.ARCHITECTURE), display=False)
 
 def get_registry():
     if not var.ON_WINDOWS:
@@ -249,15 +250,111 @@ def get_reg_key(value):
         make_reg_key(value) # totally not a safe thing to do
     return reg
 
-def make_reg(drive="", app="", file="boot_temp"):
-    f = open(os.getcwd() + "/{0}.reg".format(file), "w")
-    # not done yet
+def add_to_reg(drive, app):
+    write_reg("Windows Registry Editor Version 5.00")
+    write_reg("")
+    if var.ARCHITECTURE == "64bit":
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII]")
+    else:
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII]")
+    if not app[-1:] == "\\":
+        app = app + "\\"
+    if not drive[-1:] == "\\":
+        drive = drive + "\\"
+    drive = drive.replace("\\", "\\\\\\\\") # need to print two backslahses
+    app = app.replace("\\", "\\\\\\\\")
+    write_reg('"DataDrive"="{0}"'.format(drive))
+    write_reg('"AppPath"="{0}"'.format(app))
+    write_reg('"DataPath"="{0}Data\\\\\\\\"'.format(app))
+    write_reg('"MoviePath"="{0}movies\\\\\\\\"'.format(app))
+    write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
+    write_reg('')
+    if var.ARCHITECTURE == "64bit":
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\1.00\\Graphics]')
+    else:
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
+    write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
+
+def set_new_reg(): # make a new registry entry if it doesn't exist. need to call append_to_reg() after
+    write_reg("Windows Registry Editor Version 5.00")
+    write_reg("")
+    if var.ARCHITECTURE == "64bit":
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII]")
+        write_reg("")
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.]")
+    else:
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII]")
+        write_reg("")
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.]")
+    write_reg('"DataDrive"=""')
+    write_reg('"AppPath"=""')
+    write_reg('"DataPath"=""')
+    write_reg('"MoviePath"=""')
+    write_reg('"DiskNo"=dword:00000000')
+    write_reg('"FullInstall"=dword:00000001')
+    write_reg('"SSI_DEBUG"=hex:53,48,4f,57,4d,45,54,48,45,41,50,50,4c,4f,47,00')
+    write_reg('"DriverPath"=""')
+    write_reg('')
+    if var.ARCHITECTURE == "64bit":
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00]')
+        write_reg('')
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
+    else:
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00]')
+        write_reg('')
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
+    write_reg('"DD_GUID"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00')
+    write_reg('"DriverPath"=""')
+    write_reg('"Driver"=dword:00000003')
+    write_reg('"Mode"=dword:00000002')
+    write_reg('"Options"=dword:00000000')
+    write_reg('')
+    if var.ARCHITECTURE == "64bit":
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\MIDI]')
+    else:
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\MIDI]')
+    write_reg('"MIDI_DeviceID"=dword:00000000')
+    write_reg('"MIDI_data"="GENERAL_MIDI"')
+    write_reg('"MusicVolume"=dword:00000064')
+    write_reg('"Options"=dword:00000001')
+    write_reg('')
+    if var.ARCHITECTURE == "64bit":
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Sound]')
+    else:
+        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Sound]')
+    write_reg('"Sound_GUID"=hex:dd,39,42,c5,d1,6b,e0,4f,83,42,5f,7b,7d,11,a0,f5')
+    write_reg('"Options"=dword:00000000')
+    write_reg('"SFXVolume"=dword:00000064')
+
+def write_reg(input, dir=os.getcwd(), file=var.TEMP_REG):
+    exists = False
+    if not dir[-1:] == "/":
+        dir = dir + "/"
+    dir = dir.replace("/", "\\")
+    if not file[-4:] == ".reg":
+        file = file + ".reg"
+    if input == "Windows Registry Editor Version 5.00":
+        try:
+            os.remove(dir + file)
+        except WindowsError:
+            pass
+    try:
+        f = open("{1}{0}".format(file, dir), "r+")
+        exists = True
+    except IOError: # path or file is inexistant
+        f = open(os.getcwd() + "\\{0}".format(file), "w") # let's use the current directory and/or create the file
+    f.seek(0, 2)
+    if exists:
+        f.write("\n")
+    f.write(input)
 
 def no_such_command(command):
     logger("'{0}' is not a valid command.".format(command), write=False)
     logger("Available command{1}: {0}".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else ""), write=False)
     if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
-        logger("Hidden command{1}: {0}".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else ""), write=False)
+        hidc = con.HIDDEN_COMMANDS
+        hidc.extend(con.ERROR_COMMANDS)
+        logger("Hidden command{1}: {0}".format(", ".join(hidc), "s" if len(con.HIDDEN_COMMANDS) > 1 else ""), write=False)
         logger("Keep in mind that hidden commands will appear as non-existant if not used properly or if the proper conditions aren't met.", write=False)
     if var.DEBUG_MODE:
         logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""))
