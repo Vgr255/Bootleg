@@ -26,6 +26,7 @@ def initialize(): # initialize variables on startup and/or retry
 def do_init(): # initialize on startup only
     get_settings()
     get_architecture()
+    get_registry()
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -238,7 +239,19 @@ def get_registry():
         reg = winreg.OpenKey(reg, "Square Soft, Inc.")
         var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
     except WindowsError: # it failed
-        logger("Error in registry: File could not be found.", type="error")
+        set_new_reg()
+
+def get_reg_key(value):
+    reg = None
+    try:
+        reg = winreg.QueryValueEx(var.REGISTRY, value)
+    except WindowsError:
+        make_reg_key(value) # totally not a safe thing to do
+    return reg
+
+def make_reg(drive="", app="", file="boot_temp"):
+    f = open(os.getcwd() + "/{0}.reg".format(file), "w")
+    # not done yet
 
 def no_such_command(command):
     logger("'{0}' is not a valid command.".format(command), write=False)

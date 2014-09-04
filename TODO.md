@@ -12,4 +12,5 @@
 
 * Main function
 * Some functions and the parser for each parameter
+* Need to finish the registry parser
 * Much more that I can't remember right now
