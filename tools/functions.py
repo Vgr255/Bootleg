@@ -233,14 +233,22 @@ def get_architecture(): # find processor architecture
 def get_registry():
     if not var.ON_WINDOWS:
         return # not on Windows
+    reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
+    if var.ARCHITECTURE == "64bit":
+        reg = winreg.OpenKey(reg, "Wow6432Node")
     try:
-        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
-        if var.ARCHITECTURE == "64bit":
-            reg = winreg.OpenKey(reg, "Wow6432Node")
         reg = winreg.OpenKey(reg, "Square Soft, Inc.")
         var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
-    except WindowsError: # it failed
-        set_new_reg()
+    except WindowsError: # does not exist
+        try:
+            reg = winreg.OpenKey(reg, "Microsoft")
+            reg = winreg.OpenKey(reg, "Windows")
+            reg = winreg.OpenKey(reg, "CurrentVersion")
+            reg = winreg.OpenKey(reg, "Uninstall")
+            var.REGISTRY = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
+            change_reg()
+        except WindowsError:
+            set_new_reg()
 
 def get_reg_key(value):
     reg = None
@@ -279,13 +287,13 @@ def set_new_reg(): # make a new registry entry if it doesn't exist. need to call
     write_reg("Windows Registry Editor Version 5.00")
     write_reg("")
     if var.ARCHITECTURE == "64bit":
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII]")
-        write_reg("")
         write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.]")
-    else:
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII]")
         write_reg("")
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII]")
+    else:
         write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.]")
+        write_reg("")
+        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII]")
     write_reg('"DataDrive"=""')
     write_reg('"AppPath"=""')
     write_reg('"DataPath"=""')

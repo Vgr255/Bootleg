@@ -42,7 +42,10 @@ for x in var.__dict__.keys():
         setting = getattr(config, x)
         setattr(var, x, setting)
 
-fn.do_init()
+if var.ALLOW_INIT:
+    fn.do_init()
+else:
+    fn.logger("Initialization was disabled. System variables are not set.", type="debug")
 
 def main():
     while var.ALLOW_RUN:
@@ -91,7 +94,8 @@ def main():
                     eval(inp[27:-2])
                 elif inp[:9] == "do print(" and inp[-2:] == ");":
                     done = True
-                    exec(print(inp[9:-2]))
+                    prnt = eval(inp[9:-2])
+                    fn.logger(prnt, type="debug", write=False)
                 elif inp == "do call help; get help;":
                     done = True
                     fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'")

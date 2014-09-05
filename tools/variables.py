@@ -26,6 +26,8 @@ SHOW_HIDDEN_HELP = False
 
 TEMP_REG = "bootleg"
 
+ALLOW_INIT = True
+
 # user settings
 # currently a dict for simplicity, gets converted to each variable on runtime
 # those are defaults
