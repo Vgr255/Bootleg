@@ -22,8 +22,10 @@ def initialize(): # initialize variables on startup and/or retry
     var.ERROR = False
     var.INITIALIZED = True
     var.RETRY = False
+    begin_anew()
 
 def do_init(): # initialize on startup only
+    initialize()
     get_settings()
     get_architecture()
     get_registry()
@@ -229,6 +231,13 @@ def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]
     logger("Operating System: {0} on {1}.".format(str(platform.architecture()[1]), var.ARCHITECTURE), display=False, type="debug")
     logger("Running Bootleg on {0}.".format(var.ARCHITECTURE), display=False)
+    if str(platform.architecture()[1]) == "WindowsPE":
+        var.ON_WINDOWS = True
+    rgent = "HKEY_LOCAL_MACHINE\\SOFTWARE\\"
+    if var.ARCHITECTURE == "64bit":
+        rgent = rgent + "Wow6432Node\\"
+    var.SHORT_REG = rgent + "Square Soft, Inc."
+    var.REG_ENTRY = var.SHORT_REG + "\\Final Fantasy VII"
 
 def get_registry():
     if not var.ON_WINDOWS:
@@ -250,6 +259,9 @@ def get_registry():
         except WindowsError:
             set_new_reg()
 
+def change_reg(): # converts 2012 registry keys to 1998
+    # todo
+
 def get_reg_key(value):
     reg = None
     try:
@@ -258,13 +270,13 @@ def get_reg_key(value):
         make_reg_key(value) # totally not a safe thing to do
     return reg
 
-def add_to_reg(drive, app):
+def add_to_reg(drive, app, new_reg=False):
     write_reg("Windows Registry Editor Version 5.00")
     write_reg("")
-    if var.ARCHITECTURE == "64bit":
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII]")
-    else:
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII]")
+    if new_reg:
+        write_reg(var.SHORT_REG)
+        write_reg("")
+    write_reg(var.REG_ENTRY)
     if not app[-1:] == "\\":
         app = app + "\\"
     if not drive[-1:] == "\\":
@@ -277,23 +289,15 @@ def add_to_reg(drive, app):
     write_reg('"MoviePath"="{0}movies\\\\"'.format(app))
     write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
     write_reg('')
-    if var.ARCHITECTURE == "64bit":
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
-    else:
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
+    write_reg(var.REG_ENTRY + '\\1.00\\Graphics]')
     write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
 
 def set_new_reg(): # make a new registry entry if it doesn't exist. need to call append_to_reg() after
     write_reg("Windows Registry Editor Version 5.00")
     write_reg("")
-    if var.ARCHITECTURE == "64bit":
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.]")
-        write_reg("")
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII]")
-    else:
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.]")
-        write_reg("")
-        write_reg("[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII]")
+    write_reg(var.SHORT_REG)
+    write_reg("")
+    write_reg(var.REG_ENTRY)
     write_reg('"DataDrive"=""')
     write_reg('"AppPath"=""')
     write_reg('"DataPath"=""')
@@ -303,45 +307,34 @@ def set_new_reg(): # make a new registry entry if it doesn't exist. need to call
     write_reg('"SSI_DEBUG"=hex:53,48,4f,57,4d,45,54,48,45,41,50,50,4c,4f,47,00')
     write_reg('"DriverPath"=""')
     write_reg('')
-    if var.ARCHITECTURE == "64bit":
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00]')
-        write_reg('')
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
-    else:
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00]')
-        write_reg('')
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Graphics]')
+    write_reg(var.REG_ENTRY + '\\1.00')
+    write_reg('')
+    write_reg(var.REG_ENTRY + '\\1.00\\Graphics')
     write_reg('"DD_GUID"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00')
     write_reg('"DriverPath"=""')
     write_reg('"Driver"=dword:00000003')
     write_reg('"Mode"=dword:00000002')
     write_reg('"Options"=dword:00000000')
     write_reg('')
-    if var.ARCHITECTURE == "64bit":
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\MIDI]')
-    else:
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\MIDI]')
+    write_reg(var.REG_ENTRY + '\\1.00\\MIDI]')
     write_reg('"MIDI_DeviceID"=dword:00000000')
     write_reg('"MIDI_data"="GENERAL_MIDI"')
     write_reg('"MusicVolume"=dword:00000064')
     write_reg('"Options"=dword:00000001')
     write_reg('')
-    if var.ARCHITECTURE == "64bit":
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Sound]')
-    else:
-        write_reg('[HKEY_LOCAL_MACHINE\\SOFTWARE\\Square Soft, Inc.\\Final Fantasy VII\\1.00\\Sound]')
+    write_reg(var.REG_ENTRY + '\\1.00\\Sound]')
     write_reg('"Sound_GUID"=hex:dd,39,42,c5,d1,6b,e0,4f,83,42,5f,7b,7d,11,a0,f5')
     write_reg('"Options"=dword:00000000')
     write_reg('"SFXVolume"=dword:00000064')
 
-def write_reg(input, dir=os.getcwd(), file=var.TEMP_REG):
+def write_reg(inp, dir=os.getcwd(), file=var.TEMP_REG):
     exists = False
     if not dir[-1:] == "/":
         dir = dir + "/"
     dir = dir.replace("/", "\\")
     if not file[-4:] == ".reg":
         file = file + ".reg"
-    if input == "Windows Registry Editor Version 5.00":
+    if inp == "Windows Registry Editor Version 5.00":
         try:
             os.remove(dir + file)
         except WindowsError:
@@ -350,7 +343,16 @@ def write_reg(input, dir=os.getcwd(), file=var.TEMP_REG):
         f = open("{1}{0}".format(file, dir), "r+")
         exists = True
     except IOError: # path or file is inexistant
-        f = open(os.getcwd() + "\\{0}".format(file), "w") # let's use the current directory and/or create the file
+        try:
+            f = open("{1}{0}".format(file, dir), "w") # let's create the file in the same directory...
+        except IOError:
+            try:
+                f = open(os.getcwd() + "\\{0}", "r+") # let's try the already-existing file in the current directory
+                exists = True
+            except IOError:
+                f = open(os.getcwd() + "\\{0}", "w") # I hope to simplify that
+    if inp[0] == "["
+    inp = inp + "]"
     f.seek(0, 2)
     if exists:
         f.write("\n")

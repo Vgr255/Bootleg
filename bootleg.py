@@ -49,9 +49,8 @@ else:
 
 def main():
     while var.ALLOW_RUN:
-        if not var.INITIALIZED or var.RETRY:
+        if var.RETRY:
             fn.initialize()
-            fn.begin_anew()
         if var.ERROR:
             fn.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
         fn.logger("\n", write=False)
