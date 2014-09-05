@@ -15,7 +15,7 @@ except ImportError:
 def initialize(): # initialize variables on startup and/or retry
     log_multiple("{0} Bootleg operation.".format("Beginning" if not var.INITIALIZED else "Restarting"), types=["all"], display=False)
     var.USED_HELP = False
-    var.FATAL_ERROR = False
+    var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
@@ -29,6 +29,7 @@ def do_init(): # initialize on startup only
     get_settings()
     get_architecture()
     get_registry()
+    format_variables()
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -43,6 +44,20 @@ def begin_anew():
     if var.DEBUG_MODE:
         commands.extend(con.DEBUG_COMMANDS)
     show_help("Available commands: {0}.".format(", ".join(commands)))
+
+def format_variables(): # formats a few variables to make sure they're correct
+    if not var.FFVII_PATH[-1:] == "/":
+        var.FFVII_PATH = var.FFVII_PATH + "/"
+    var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
+    if var.BOOTLEG_TEMP:
+        boot_temp = var.BOOTLEG_TEMP.split(";")
+        bttmp = []
+        for semicolon in boot_temp:
+            if semicolon == "":
+                continue
+            bttmp.append(semicolon)
+        if bttmp:
+            var.BOOTLEG_TEMP = bttmp
 
 def parse_settings_from_params(input):
     for param in input:
@@ -132,12 +147,25 @@ def settings_to_int():
             setattr(var, parsable, int(parsarg))
         except ValueError: # something went wrong and settings aren't integers
             if var.DEBUG_MODE:
-                logger("{0} - setting not integer ({1})".format(parsable, parsarg), type="debug")
+                logger("{0} - user setting not integer ({1})".format(parsable, parsarg), type="debug")
                 continue # debug mode, let's assume the person knows what's going on
             else:
-                logger("{0} - setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
-            var.FATAL_ERROR = "int"
-            break
+                logger("{0} - user setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
+                var.FATAL_ERROR = "int"
+                break
+
+    for parsable in var.SYS_SETTINGS.keys():
+        parsarg = getattr(var, parsable)
+        try:
+            setattr(var, parsable, int(parsarg))
+        except ValueError:
+            if var.DEBUG_MODE:
+            logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="debug")
+                continue
+            else:
+                logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
+                var.FATAL_ERROR = "int"
+                break
 
 def end_bootleg_early():
     if var.FATAL_ERROR:
@@ -263,11 +291,10 @@ def change_reg(): # converts 2012 registry keys to 1998
     # todo
 
 def get_reg_key(value):
-    reg = None
     try:
         reg = winreg.QueryValueEx(var.REGISTRY, value)
     except WindowsError:
-        make_reg_key(value) # totally not a safe thing to do
+        reg = None
     return reg
 
 def add_to_reg(drive, app, new_reg=False):

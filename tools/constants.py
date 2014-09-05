@@ -72,6 +72,7 @@ SYS_VARIABLES = { # uses SYS_VAR
 "CREATE_IMAGE":      "$",
 
 }
+
 # Random stuff
 
 BOOT_ASCII = [

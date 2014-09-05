@@ -7,6 +7,7 @@ NEWFILE = False
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False
 ERROR = False
+FATAL_ERROR = None
 ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
 ON_WINDOWS = False # will set it to True if used on Windows. set it here to bypass that on Linux
@@ -29,6 +30,8 @@ SHOW_HIDDEN_HELP = False
 TEMP_REG = "bootleg"
 
 ALLOW_INIT = True
+
+IGNORE_FATAL_ERROR = False
 
 # user settings
 # currently a dict for simplicity, gets converted to each variable on runtime
@@ -58,10 +61,6 @@ USER_SETTINGS = {
 "ANY_CD":            "0",
 "OPENING_CREDITS":   "0",
 "CLOUD_SWORDS":      "0",
-"FFVII_IMAGE":       "0",
-"FFVII_PATH":        "0",
-"BOOTLEG_TEMP":      "0",
-"MOD_LOCATION":      "0",
 "BRAT_PACK":         "0",
 
 }
@@ -70,5 +69,14 @@ SYS_VARIABLES = {
 
 "DEBUG_CODE":        "0",
 "CREATE_IMAGE":      "0",
+
+}
+
+PATH_VARIABLES = {
+
+"FFVII_IMAGE":       "None",
+"FFVII_PATH":        "None",
+"BOOTLEG_TEMP":      "None",
+"MOD_LOCATION":      "None",
 
 }

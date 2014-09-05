@@ -31,6 +31,7 @@ try:
     import config
 except ImportError: # user did not rename the config file, let's silently copy it
     shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+    fn.logger("Config file not found: Silently copied example config file.", type="debug", display=False)
     import config
 
 for x in var.__dict__.keys():
@@ -45,7 +46,7 @@ for x in var.__dict__.keys():
 if var.ALLOW_INIT:
     fn.do_init()
 else:
-    fn.logger("Initialization was disabled. System variables are not set.", type="debug")
+    fn.logger("WARNING: Initialization was disabled. System variables are not set.", type="debug")
 
 def main():
     while var.ALLOW_RUN:
@@ -53,6 +54,11 @@ def main():
             fn.initialize()
         if var.ERROR:
             fn.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
+        if var.FATAL_ERROR:
+            if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
+                var.FATAL_ERROR = None
+            else:
+                fn.end_bootleg_early()
         fn.logger("\n", write=False)
         fn.logger("Please enter a command:", write=False)
         fn.logger("\n", write=False)
