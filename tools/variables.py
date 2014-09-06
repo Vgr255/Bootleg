@@ -1,3 +1,6 @@
+# Note: Any setting contained here will be overriden by the config's equivalent setting on startup
+# unless DISALLOW_CONFIG is set to True in the config.
+
 # system variables
 
 INITIALIZED = False
@@ -10,7 +13,6 @@ ERROR = False
 FATAL_ERROR = None
 ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
-ON_WINDOWS = False # will set it to True if used on Windows. set it here to bypass that on Linux
 REG_ENTRY = None
 SHORT_REG = None
 
@@ -32,6 +34,8 @@ TEMP_REG = "bootleg"
 ALLOW_INIT = True
 
 IGNORE_FATAL_ERROR = False
+
+ON_WINDOWS = False
 
 # user settings
 # currently a dict for simplicity, gets converted to each variable on runtime
@@ -65,14 +69,14 @@ USER_SETTINGS = {
 
 }
 
-SYS_VARIABLES = {
+SYS_SETTINGS = {
 
 "DEBUG_CODE":        "0",
 "CREATE_IMAGE":      "0",
 
 }
 
-PATH_VARIABLES = {
+PATH_SETTINGS = {
 
 "FFVII_IMAGE":       "None",
 "FFVII_PATH":        "None",

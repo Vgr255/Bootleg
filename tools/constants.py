@@ -27,8 +27,13 @@ CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"
 RELEASE_INFO = "August 29th, 2014"
 
-USER_VAR = "/"
-SYS_VAR = "-"
+SETTINGS_PREFIXES = {
+
+"USER_VAR":    "/",
+"SYS_VAR":     "-",
+"PATH_VAR":    "/", # for simplicity, keep it the same
+
+}
 
 LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "DEBUG", "all": "MIXED"}
 
@@ -58,20 +63,28 @@ USER_SETTINGS = { # uses USER_VAR
 "ANY_CD":            "Y",
 "OPENING_CREDITS":   "Q",
 "CLOUD_SWORDS":      "G",
-"FFVII_IMAGE":       "I",
-"FFVII_PATH":        "D",
-"BOOTLEG_TEMP":      "X",
-"MOD_LOCATION":      "F",
 "BRAT_PACK":         "@",
 
 }
 
-SYS_VARIABLES = { # uses SYS_VAR
+SYS_SETTINGS = { # uses SYS_VAR
 
 "DEBUG_CODE":        "!",
 "CREATE_IMAGE":      "$",
 
 }
+
+PATH_SETTINGS = { # uses PATH_VAR
+
+"FFVII_IMAGE":       "I",
+"FFVII_PATH":        "D",
+"BOOTLEG_TEMP":      "X",
+"MOD_LOCATION":      "F",
+
+}
+
+NON_INT_SETTINGS = ["PATH"]
+ALLOWED_DEFAULTS = ["USER", "SYS"]
 
 # Random stuff
 

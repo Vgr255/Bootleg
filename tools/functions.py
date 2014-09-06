@@ -59,19 +59,21 @@ def format_variables(): # formats a few variables to make sure they're correct
         if bttmp:
             var.BOOTLEG_TEMP = bttmp
 
-def parse_settings_from_params(inp):
-    for param in inp:
-        if param[0] == con.USER_VAR: # setting is an actual user setting
-            for parsable in var.USER_SETTINGS.keys():
-                if param[1] == getattr(par, parsable):
-                    setattr(var, parsable, param[2:])
-        elif param[0] == con.SYS_VAR: # setting is a system/debug setting. always takes priority
-            if param[1] == con.DEBUG_MODE:
-                var.DEBUG_MODE = True
-            elif param[1] == con.VERBOSE:
-                var.VERBOSE = True
+def parse_settings_from_params(inp): # parse settings from launch parameters
+    for x, prefix in con.SETTINGS_PREFIXES.items():
+        for param in inp:
+            if param[0] == prefix:
+                x = x.replace("VAR", "SETTINGS")
+                y = getattr(con, x)
+                z = getattr(var, x)
+                for parsable in z.keys()
+                    if param[1] == y[parsable]:
+                        setattr(var, parsable, param[2:])
 
 def parse_settings_from_file(inp):
+    x = len(config.PRESET_EXT) + 1
+    if not inp[-x:] == "." + config.PRESET_EXT:
+        inp = inp + "." + config.PRESET_EXT
     fexist = os.path.isfile(os.getcwd() + "/presets/" + inp)
     if not fexist:
         var.NONEXISTANT_FILE = True
@@ -79,91 +81,95 @@ def parse_settings_from_file(inp):
     else:
         file = open(os.getcwd() + "/presets/" + inp)
         file.seek(0) # make sure we're at the beginning of the file
-        for parsable in var.USER_SETTINGS.keys():
-            f.replace("\n", "")
-            f = file.readline()
-            if f[0] == getattr(par, parsable) and f[1] == "=":
-                setattr(var, parsable, f[2:])
-                if "#" in f:
-                    hash = f.index("#")
-                    setattr(var, parsable, f[2:hash])
-            elif f[0] == getattr(par, parsable) and f[1:4] == " = ": # this can work
-                setattr(var, parsable, f[5:])
-            elif "#" in f or f == "":
-                continue # ignore this
-            else:
-                logger("Invalid setting found in {0}: {1}".format(inp, f), type="error")
+        for y in con.SETTINGS_PREFIXES.keys():
+            y = y.replace("VAR", "SETTINGS")
+            u = getattr(con, y)
+            for e, i in u.items():
+                f = file.readline()
+                f.replace("\n", "")
+                if f[0] == i and f[1] == "=":
+                    setattr(var, e, f[2:])
+                    if "#" in f:
+                        hash = f.index("#")
+                        setattr(var, e, f[2:hash])
+                elif f[0] == i and f[1:4] == " = ": # this can work
+                    setattr(var, e, f[5:])
+                elif "#" in f or f == "":
+                    continue # ignore this
+                else:
+                    logger("Invalid setting found in {0}: {1}".format(inp, f), type="error")
 
 def parse_settings_from_input(inp):
-    if inp[0] == con.USER_VAR or inp[0] == con.SYS_VAR: # proper parsing
-        inp = inp[1:] # remove the forward slash
-    for parsable in var.USER_SETTINGS.keys():
-        setting = getattr(par, parsable)
-        if inp[0] == setting:
-            var.PARSING = parsable
-            parsed = inp[1:]
-            if " " in parsed:
-                if inp[1] == " ":
-                    parsed = inp[2:]
+    for x, y in con.SETTINGS_PREFIXES.items(): # proper parsing
+        if inp[0] == y:
+            inp = inp[1:] # remove the prefix
+        x = x.replace("VAR", "SETTING")
+        s = getattr(var, x)
+        for parsable in s.keys():
+            setting = getattr(con, parsable)
+            for t, u in setting.items():
+                if inp[0] == u:
+                    var.PARSING = parsable
+                    parsed = inp[1:]
                     if " " in parsed:
-                        space = parsed.index(" ")
-                        parsed = inp[2:space] # surprisingly enough, that actually works
-                else:
-                    space = parsed.index(" ")
-                    parsed = inp[1:space]
-            if "=" in parsed:
-                if inp[1] == "=":
-                    parsed = inp[2:]
+                        if inp[1] == " ":
+                            parsed = inp[2:]
+                            if " " in parsed:
+                                space = parsed.index(" ")
+                                parsed = inp[2:space]
+                        else:
+                            space = parsed.index(" ")
+                            parsed = inp[1:space]
                     if "=" in parsed:
-                        equal = parsed.index("=")
-                        equal = equal - 1 # equal equal equal? now that is redundant
-                        parsed = inp[2:equal]
-                else:
-                    equal = parsed.index("=")
-                    parsed = inp[1:equal]
+                        if inp[1] == "=":
+                            parsed = inp[2:]
+                            if "=" in parsed:
+                                equal = parsed.index("=")
+                                equal = equal - 1 # equal equal equal? now that is redundant
+                                parsed = inp[2:equal]
+                        else:
+                            equal = parsed.index("=")
+                            parsed = inp[1:equal]
 
 def chk_empty_settings():
     var.EMPTY_SETTINGS = []
-    for parsable in var.USER_SETTINGS.keys():
-        if not getattr(var, parsable):
-            var.EMPTY_SETTINGS.append(parsable)
+    for x in con.SETTINGS_PREFIXES.keys():
+        x = x.replace("VAR", "SETTINGS")
+        y = getattr(var, x)
+        for parsable in y.keys():
+            if not hasattr(var, parsable):
+                var.EMPTY_SETTINGS.append(parsable)
 
 def use_defaults(empty):
-    for parsable in var.USER_SETTINGS.keys():
-        if parsable not in empty:
+    for x in con.SETTINGS_PREFIXES.keys():
+        u = x.replace("_VAR", "")
+        x = x.replace("VAR", "SETTINGS")
+        y = getattr(var, x)
+        if u not in con.ALLOWED_DEFAULTS:
             continue
-        parsarg = getattr(var, parsable)
-        if parsable in var.USER_SETTINGS.keys():
-            setattr(var, parsable, 0) # Use 0 as default for every setting
-        if parsable in var.SYSTEM_SETTINGS.keys():
-            setattr(var, parsable, "")
-        if parsarg:
-            setattr(var, parsable, parsarg)
+        for parsable in y.keys():
+            if parsable not in empty:
+                continue
+            if parsable in y.keys():
+                setattr(var, parsable, "0")
 
 def settings_to_int():
-    for parsable in var.USER_SETTINGS.keys():
+    for x in con.SETTINGS_PREFIXES:
+        u = x.replace("_VAR", "")
+        if u in con.NON_INT_SETTINGS:
+            continue
+        x = x.replace("VAR", "SETTINGS")
+        y = getattr(var, x)
+    for parsable in y.keys():
         parsarg = getattr(var, parsable)
         try:
             setattr(var, parsable, int(parsarg))
         except ValueError: # something went wrong and settings aren't integers
             if var.DEBUG_MODE:
-                logger("{0} - user setting not integer ({1})".format(parsable, parsarg), type="debug")
+                logger("{0} - {2} setting not integer ({1})".format(parsable, parsarg, u.lower()), type="debug")
                 continue # debug mode, let's assume the person knows what's going on
             else:
-                logger("{0} - user setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
-                var.FATAL_ERROR = "int"
-                break
-
-    for parsable in var.SYS_SETTINGS.keys():
-        parsarg = getattr(var, parsable)
-        try:
-            setattr(var, parsable, int(parsarg))
-        except ValueError:
-            if var.DEBUG_MODE:
-                logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="debug")
-                continue
-            else:
-                logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
+                logger("{0} - {2} setting not integer ({1})".format(parsable, parsarg, u.lower()), type="error", display=False)
                 var.FATAL_ERROR = "int"
                 break
 
@@ -179,7 +185,7 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if var.LOG_EVERYTHING or var.DEV_LOG:
-        type = "all"
+        logtype = con.LOGGERS["all"]
     if not logtype:
         try:
             logtype = con.LOGGERS[type]
@@ -235,20 +241,18 @@ def show_help(output, type="help", write=False, display=True):
     logger(output, type=type, write=write, display=display)
 
 def get_settings():
-    for s, x in var.USER_SETTINGS.items():
-        setattr(var, s, x)
-    for t, y in var.SYS_VARIABLES.items():
-        setattr(var, t, y)
-    for u, i in var.PATH_VARIABLES.items():
-        setattr(var, u, i)
+    for x in con.SETTINGS_PREFIXES.keys():
+        x = x.replace("VAR", "SETTINGS")
+        y = getattr(var, x)
+        for s, u in y.items():
+            setattr(var, s, u)
 
 def get_config():
-    for s, x in config.USER_SETTINGS.items():
-        setattr(var, s, x)
-    for t, y in config.SYS_VARIABLES.items():
-        setattr(var, t, y)
-    for u, i in config.PATH_VARIABLES.items():
-        setattr(var, u, i)
+    for x in con.SETTINGS_PREFIXES.keys():
+        x = x.replace("VAR", "SETTINGS")
+        y = getattr(config, x)
+        for s, u in y.items():
+            setattr(var, s, u)
 
 def get_parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
