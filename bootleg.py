@@ -62,6 +62,7 @@ def main():
         fn.logger("\n", write=False)
         fn.logger("Please enter a command:", write=False)
         fn.logger("\n", write=False)
+        inp = ""
         try:
             inp = input().strip()
         except EOFError:
