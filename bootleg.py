@@ -122,6 +122,11 @@ def main():
                 pass
             shutil.rmtree(os.getcwd() + '/__pycache__')
             var.ALLOW_RUN = False
+        elif command == "git":
+            pass # still todo
+        elif command == "copy":
+            if params and " ".join(params) == "config":
+                shutil.copy(os.getcwd() + "/config.py", os.getcwd() + "/config.py.example")
         elif command in con.COMMANDS: # command is there but it's not there?
             fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
         else:

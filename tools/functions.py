@@ -62,11 +62,17 @@ def format_variables(): # formats a few variables to make sure they're correct
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
         for param in inp:
+            u = x.replace("_VAR", "")
+            x = x.replace("VAR", "SETTINGS")
             if param[0] == prefix:
-                x = x.replace("VAR", "SETTINGS")
                 y = getattr(con, x)
                 z = getattr(var, x)
-                for parsable in z.keys()
+                for l in con.USE_INDEX:
+                    for s in y.keys():
+                        if s == l and param[1] == y[s]: # so many letters
+                            use_index(param[2:])
+                            return
+                for parsable in z.keys():
                     if param[1] == y[parsable]:
                         setattr(var, parsable, param[2:])
 
@@ -82,8 +88,14 @@ def parse_settings_from_file(inp):
         file = open(os.getcwd() + "/presets/" + inp)
         file.seek(0) # make sure we're at the beginning of the file
         for y in con.SETTINGS_PREFIXES.keys():
+            t = y.replace("_VAR", "")
             y = y.replace("VAR", "SETTINGS")
             u = getattr(con, y)
+            if t in con.USE_INDEX:
+                f = file.readlines()
+                f = f.replace("\n", "")
+                use_index(f)
+                return
             for e, i in u.items():
                 f = file.readline()
                 f.replace("\n", "")
@@ -103,7 +115,9 @@ def parse_settings_from_input(inp):
     for x, y in con.SETTINGS_PREFIXES.items(): # proper parsing
         if inp[0] == y:
             inp = inp[1:] # remove the prefix
+        p = x.replace("_VAR", "")
         x = x.replace("VAR", "SETTING")
+        q = getattr(con, x)
         s = getattr(var, x)
         for parsable in s.keys():
             setting = getattr(con, parsable)
@@ -130,6 +144,12 @@ def parse_settings_from_input(inp):
                         else:
                             equal = parsed.index("=")
                             parsed = inp[1:equal]
+                    if p in con.USE_INDEX and u == q[p]:
+                        use_index(parsed)
+                    setattr(var, parsable, parsed)
+
+def use_index(inp):
+    pass # still todo
 
 def chk_empty_settings():
     var.EMPTY_SETTINGS = []

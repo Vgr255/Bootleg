@@ -12,7 +12,7 @@ EMAIL = "Bootleg@DadaData.net"
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
 COMMANDS = ["help", "run"]
-HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean"] # some of these don't work
+HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these don't work
 
 DEBUG_COMMANDS = ["remove", "copy"]
 ERROR_COMMANDS = ["exit", "restart"]
@@ -29,9 +29,10 @@ RELEASE_INFO = "August 29th, 2014"
 
 SETTINGS_PREFIXES = {
 
-"USER_VAR":    "/",
-"SYS_VAR":     "-",
-"PATH_VAR":    "/", # for simplicity, keep it the same
+"USER_VAR":          "/",
+"SYS_VAR":           "-",
+"PATH_VAR":          "/", # for simplicity, keep it the same
+"BOOT_PACK_VAR":     "@", # unusued for now
 
 }
 
@@ -63,7 +64,7 @@ USER_SETTINGS = { # uses USER_VAR
 "ANY_CD":            "Y",
 "OPENING_CREDITS":   "Q",
 "CLOUD_SWORDS":      "G",
-"BRAT_PACK":         "@",
+"BOOT_PACK":         "@",
 
 }
 
@@ -83,8 +84,16 @@ PATH_SETTINGS = { # uses PATH_VAR
 
 }
 
+BOOT_PACK_SETTINGS = { # the numbers here are start and end of index
+
+"ROMEO_MAT":         "0:1", # starts at 0, ends at 1. length=1
+"CONDOR_MINIGAME":   "1:2",
+
+}
+
 NON_INT_SETTINGS = ["PATH"]
-ALLOWED_DEFAULTS = ["USER", "SYS"]
+ALLOWED_DEFAULTS = ["USER", "SYS", "BOOT_PACK"]
+USE_INDEX = ["BOOT_PACK"]
 
 # Random stuff
 
