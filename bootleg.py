@@ -121,6 +121,7 @@ def main():
             except WindowsError:
                 pass
             shutil.rmtree(os.getcwd() + '/__pycache__')
+            shutil.rmtree(os.getcwd() + '/tools/__pycache__')
             var.ALLOW_RUN = False
         elif command == "git":
             pass # still todo
