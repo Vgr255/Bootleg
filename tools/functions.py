@@ -25,11 +25,11 @@ def initialize(): # initialize variables on startup and/or retry
     begin_anew()
 
 def do_init(): # initialize on startup only
-    initialize()
     get_settings()
     get_architecture()
     get_registry()
     format_variables()
+    initialize() # needs to be called after get_architecture()
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -59,8 +59,8 @@ def format_variables(): # formats a few variables to make sure they're correct
         if bttmp:
             var.BOOTLEG_TEMP = bttmp
 
-def parse_settings_from_params(input):
-    for param in input:
+def parse_settings_from_params(inp):
+    for param in inp:
         if param[0] == con.USER_VAR: # setting is an actual user setting
             for parsable in var.USER_SETTINGS.keys():
                 if param[1] == getattr(par, parsable):
@@ -71,13 +71,13 @@ def parse_settings_from_params(input):
             elif param[1] == con.VERBOSE:
                 var.VERBOSE = True
 
-def parse_settings_from_file(input):
-    fexist = os.path.isfile(os.getcwd() + "/presets/" + input)
+def parse_settings_from_file(inp):
+    fexist = os.path.isfile(os.getcwd() + "/presets/" + inp)
     if not fexist:
         var.NONEXISTANT_FILE = True
         return
     else:
-        file = open(os.getcwd() + "/presets/" + input)
+        file = open(os.getcwd() + "/presets/" + inp)
         file.seek(0) # make sure we're at the beginning of the file
         for parsable in var.USER_SETTINGS.keys():
             f.replace("\n", "")
@@ -92,35 +92,35 @@ def parse_settings_from_file(input):
             elif "#" in f or f == "":
                 continue # ignore this
             else:
-                logger("Invalid setting found in {0}: {1}".format(input, f), type="error")
+                logger("Invalid setting found in {0}: {1}".format(inp, f), type="error")
 
-def parse_settings_from_input(input):
-    if input[0] == con.USER_VAR or input[0] == con.SYS_VAR: # proper parsing
-        input = input[1:] # remove the forward slash
+def parse_settings_from_input(inp):
+    if inp[0] == con.USER_VAR or inp[0] == con.SYS_VAR: # proper parsing
+        inp = inp[1:] # remove the forward slash
     for parsable in var.USER_SETTINGS.keys():
         setting = getattr(par, parsable)
-        if input[0] == setting:
+        if inp[0] == setting:
             var.PARSING = parsable
-            parsed = input[1:]
+            parsed = inp[1:]
             if " " in parsed:
-                if input[1] == " ":
-                    parsed = input[2:]
+                if inp[1] == " ":
+                    parsed = inp[2:]
                     if " " in parsed:
                         space = parsed.index(" ")
-                        parsed = input[2:space] # surprisingly enough, that actually works
+                        parsed = inp[2:space] # surprisingly enough, that actually works
                 else:
                     space = parsed.index(" ")
-                    parsed = input[1:space]
+                    parsed = inp[1:space]
             if "=" in parsed:
-                if input[1] == "=":
-                    parsed = input[2:]
+                if inp[1] == "=":
+                    parsed = inp[2:]
                     if "=" in parsed:
                         equal = parsed.index("=")
                         equal = equal - 1 # equal equal equal? now that is redundant
-                        parsed = input[2:equal]
+                        parsed = inp[2:equal]
                 else:
                     equal = parsed.index("=")
-                    parsed = input[1:equal]
+                    parsed = inp[1:equal]
 
 def chk_empty_settings():
     var.EMPTY_SETTINGS = []
@@ -160,7 +160,7 @@ def settings_to_int():
             setattr(var, parsable, int(parsarg))
         except ValueError:
             if var.DEBUG_MODE:
-            logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="debug")
+                logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="debug")
                 continue
             else:
                 logger("{0} - system setting not integer ({1})".format(parsable, parsarg), type="error", display=False)
@@ -239,12 +239,16 @@ def get_settings():
         setattr(var, s, x)
     for t, y in var.SYS_VARIABLES.items():
         setattr(var, t, y)
+    for u, i in var.PATH_VARIABLES.items():
+        setattr(var, u, i)
 
 def get_config():
     for s, x in config.USER_SETTINGS.items():
         setattr(var, s, x)
     for t, y in config.SYS_VARIABLES.items():
         setattr(var, t, y)
+    for u, i in config.PATH_VARIABLES.items():
+        setattr(var, u, i)
 
 def get_parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
@@ -288,7 +292,7 @@ def get_registry():
             set_new_reg()
 
 def change_reg(): # converts 2012 registry keys to 1998
-    # todo
+    pass # todo
 
 def get_reg_key(value):
     try:
@@ -378,12 +382,12 @@ def write_reg(inp, dir=os.getcwd(), file=var.TEMP_REG):
                 exists = True
             except IOError:
                 f = open(os.getcwd() + "\\{0}", "w") # I hope to simplify that
-    if inp[0] == "["
-    inp = inp + "]"
+    if inp[0] == "[":
+        inp = inp + "]"
     f.seek(0, 2)
     if exists:
         f.write("\n")
-    f.write(input)
+    f.write(inp)
 
 def no_such_command(command):
     logger("'{0}' is not a valid command.".format(command), write=False)

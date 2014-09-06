@@ -70,6 +70,7 @@ def main():
         inp1 = inp.split()
         if not inp:
             fn.logger("No command was entered.", write=False)
+            return
         command = inp1[0].lower()
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:

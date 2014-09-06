@@ -4,8 +4,9 @@ from tools.functions import show_help
 
 def get_help(helping=""):
     helping = helping.lower()
-    show_help("        - Final Fantasy VII Bootleg Mod Configurator -")
-    show_help("                         * Help file *")
+    show_help("")
+    show_help("               - Final Fantasy VII Bootleg Mod Configurator -")
+    show_help("                                * Help file *")
     show_help("")
     if helping and helping not in con.POSSIBLE_HELP and helping not in con.HIDDEN_HELP:
         show_help("'{0}' is not a valid help topic.".format(helping))
@@ -30,11 +31,11 @@ def get_help(helping=""):
         if con.PROCESS_CODERS:
             show_help("Programming of the Bootleg process: {0}.".format(", ".join(con.PROCESS_CODERS)))
         if con.GAME_CONV:
-            show_help("Game Converter developping and support: {0}".format(", ".join(con.GAME_CONV)))
+            show_help("Game Converter developping and support: {0}.".format(", ".join(con.GAME_CONV)))
         if con.BETA_TESTERS:
-            show_help("{0} tester{1}: {2}.".format(con.BUILD_INFO, "s" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)))
+            show_help("Beta tester{0}: {1}.".format("s" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)))
         if con.SPECIAL_THANKS:
-            show_help("Special thanks to {0}.".format(", ".join(con.SPECIAL_THANKS)))
+            show_help("Special thanks to: {0}.".format(", ".join(con.SPECIAL_THANKS)))
         if con.EMAIL:
             show_help("Official Bootleg email for support and questions: {0}".format(con.EMAIL))
         if con.POSSIBLE_HELP:
@@ -69,7 +70,7 @@ def get_help(helping=""):
         msg = "There are no available commands."
         if con.COMMANDS:
             msg = "Available command{1}: {0}.".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else "")
-        if (con.HIDDEN_COMMANDS and DEBUG_MODE) or (con.HIDDEN_COMMANDS and var.SHOW_HIDDEN_COMMANDS):
+        if (con.HIDDEN_COMMANDS and var.DEBUG_MODE) or (con.HIDDEN_COMMANDS and var.SHOW_HIDDEN_COMMANDS):
             msg = msg + "\nHidden command{1}: {0}.".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else "")
         show_help(msg)
     else:
