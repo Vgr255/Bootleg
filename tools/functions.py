@@ -301,11 +301,11 @@ def get_registry():
     reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
     if var.ARCHITECTURE == "64bit":
         reg = winreg.OpenKey(reg, "Wow6432Node")
-    try:
+    try: # 1998 original
         reg = winreg.OpenKey(reg, "Square Soft, Inc.")
         var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
     except WindowsError: # does not exist
-        try:
+        try: # 2012 Square Enix store
             reg = winreg.OpenKey(reg, "Microsoft")
             reg = winreg.OpenKey(reg, "Windows")
             reg = winreg.OpenKey(reg, "CurrentVersion")
@@ -313,10 +313,14 @@ def get_registry():
             var.REGISTRY = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
             change_reg()
         except WindowsError:
+            try: # 2013 Steam
+                var.REGISTRY = winteg.OpenKey(reg, "Steam App 39140")
+                change_reg()
             set_new_reg()
 
-def change_reg(): # converts 2012 registry keys to 1998
+def change_reg(): # converts 2012/2013 registry keys to 1998
     pass # todo
+    # InstallLocation holds the install path for both the 2012 and 2013 version
 
 def get_reg_key(value):
     try:
