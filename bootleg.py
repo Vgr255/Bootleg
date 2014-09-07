@@ -19,6 +19,7 @@ from tools import process as pro
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
+from tools import logger as log
 from tools import parser
 from tools.help import get_help
 import shutil
@@ -31,7 +32,7 @@ try:
     import config
 except ImportError: # user did not rename the config file, let's silently copy it
     shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
-    fn.logger("Config file not found: Silently copied example config file.", type="debug", display=False)
+    log.logger("Config file not found: Silently copied example config file.", type="debug", display=False)
     import config
 
 for x in var.__dict__.keys():
@@ -46,49 +47,48 @@ for x in var.__dict__.keys():
 if var.ALLOW_INIT:
     fn.do_init()
 else:
-    fn.logger("WARNING: Initialization was disabled. System variables are not set.", type="debug")
+    log.logger("WARNING: Initialization was disabled. System variables are not set.", type="debug")
 
 def main():
     while var.ALLOW_RUN:
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
-            fn.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
+            log.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
         if var.FATAL_ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = None
             else:
                 fn.end_bootleg_early()
-        fn.logger("\n", write=False)
+        log.logger("\n", write=False)
         if var.FINDING:
-            fn.logger("Please select your setting:")
+            log.logger("Please select your setting:")
         else:
-            fn.logger("Please enter a command:", write=False)
-        fn.logger("\n", write=False)
+            log.logger("Please enter a command:", write=False)
+        log.logger("\n", write=False)
         inp = ""
         try:
             inp = input().strip()
         except EOFError:
             pass # probably Ctrl-C'd anyway
-        fn.logger(inp, type="input", display=False)
+        log.logger(inp, type="input", display=False)
         if var.FINDING:
             try:
                 inp2 = int(inp)
             except ValueError:
-                if inp.split()[0] in con.DISALLOWED_COMMANDS:
-                fn.logger("Please enter a number.")
+                log.logger("Please enter a number.")
                 return
             if inp2 in range(0, con.RANGE[var.FINDING] + 1):
                 setattr(var, var.FINDING, inp2)
                 var.FINDING = None
         inp1 = inp.split()
         if not inp:
-            fn.logger("No command was entered.", write=False)
+            log.logger("No command was entered.", write=False)
             return
         command = inp1[0].lower()
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:
-            fn.logger("You must type either 'exit' or 'restart'.", write=False)
+            log.logger("You must type either 'exit' or 'restart'.", write=False)
         elif command == "exit":
             var.ALLOW_RUN = False
         elif command == "restart":
@@ -115,10 +115,10 @@ def main():
                 elif inp[:9] == "do print(" and inp[-2:] == ");":
                     done = True
                     prnt = eval(inp[9:-2])
-                    fn.logger(prnt, type="debug", write=False)
+                    log.logger(prnt, type="debug", write=False)
                 elif inp == "do call help; get help;":
                     done = True
-                    fn.show_help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'")
+                    log.help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'")
             if not done:
                 fn.no_such_command(command)
         elif command == "clean":
@@ -142,7 +142,7 @@ def main():
             if params and " ".join(params) == "config":
                 shutil.copy(os.getcwd() + "/config.py", os.getcwd() + "/config.py.example")
         elif command in con.COMMANDS: # command is there but it's not there?
-            fn.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
+            log.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
         else:
             fn.no_such_command(command) # if a hidden command is not there, let's say it doesn't exist
 
@@ -153,20 +153,20 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             if var.ERROR:
                 var.ALLOW_RUN = False
-                fn.logger("Received SIGTERM.", type="debug", display=False)
+                log.logger("Received SIGTERM.", type="debug", display=False)
             else:
-                fn.logger("WARNING: SIGTERM Detected.", type="debug")
+                log.logger("WARNING: SIGTERM Detected.", type="debug")
                 var.ERROR = True
         except:
             if traceback.format_exc(): # if there's a traceback, let's have it
-                fn.logger("", type="traceback", write=False)
-                fn.logger(traceback.format_exc(), type="traceback", display=False)
+                log.logger("", type="traceback", write=False)
+                log.logger(traceback.format_exc(), type="traceback", display=False)
                 logname = con.LOGGERS["traceback"]
                 if var.DEV_LOG or var.LOG_EVERYTHING:
                     logname = con.LOGGERS["all"]
                 logfile = getattr(config, logname + "_FILE")
                 log_ext = getattr(config, logname + "_EXT")
-                fn.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
+                log.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
             if str(sys.exc_info()):
-                fn.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
+                log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
             var.ERROR = True
