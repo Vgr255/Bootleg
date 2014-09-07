@@ -44,16 +44,16 @@ ON_WINDOWS = False
 
 USER_SETTINGS = {
 
-"CLOUD_FIELD":       0,
-"TRISH_SAVE":        0,
-"TRISH_PHOENIX":     0,
+"CLOUD_FIELD":       2,
+"TRISH_SAVE":        1,
+"TRISH_PHOENIX":     1,
 "TRISH_MASAMUNE":    0,
 "AERITH_REVIVAL":    0,
 "REUNION":           0,
 "SPELL_PATCH":       0,
 "AVALANCHE":         0,
 "NEW_AERITH":        0,
-"CLOUD_BATTLE":      0,
+"CLOUD_BATTLE":      3,
 "LIMIT_BREAK":       0,
 "MENU_BACKGROUND":   0,
 "KERNEL_SELECT":     0,

@@ -3,7 +3,7 @@ from tools.logger import help
 # Finding each variable's parameter if unset
 
 def find_cloud_field():
-    help("Please choose Cloud's appearance in the field")
+    help("Pick Cloud's appearance in the field:")
     help("0 = No Change")
     help("1 = WITHOUT sword")
     help("2 = WITH Buster sword")
@@ -32,6 +32,7 @@ def find_cloud_field():
     help("25 = Bloodshot's Edited TA")
 
 def find_cloud_battle():
+    help("Pick Cloud's appearance in battle:")
     help("0 = No Change")
     help("1 = Classic")
     help("2 = The Remix APZ")
@@ -46,3 +47,20 @@ def find_cloud_battle():
     help("11 = Team Avalanche")
     help("12 = Bloodshot's Edited TA")
 
+def find_trish_save():
+    help("Pick the save point model:")
+    help("0 = No Change")
+    help("1 = FFX Save Point Model")
+    help("2 = Crisis Core Save Point Model")
+    help("3 = Cloud's Memories Memories Save Point Model")
+    help("4 = Team Avalanche Save Point Model")
+    help("5 = Save Point with Balls")
+
+def find_trish_phoenix():
+    help("Pick the style of Mike's summons:")
+    help("0 = No Change")
+    help("1 = New Style Flaming Phoenix")
+    help("2 = Old Style Shaded Phoenix")
+    help("3 = Old Style Phoenix with Custom Brighter Texture")
+
+def 

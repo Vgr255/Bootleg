@@ -147,6 +147,8 @@ RANGE = {
 
 "CLOUD_FIELD":       25,
 "CLOUD_BATTLE":      12,
+"TRISH_SAVE":        5,
+"TRISH_PHOENIX":     3,
 
 }
 
