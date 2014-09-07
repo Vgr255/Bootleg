@@ -78,7 +78,7 @@ def main():
                 if inp.split()[0] in con.DISALLOWED_COMMANDS:
                 fn.logger("Please enter a number.")
                 return
-            if inp2 in range(0, int(con.RANGE[var.FINDING]) + 1):
+            if inp2 in range(0, con.RANGE[var.FINDING] + 1):
                 setattr(var, var.FINDING, inp2)
                 var.FINDING = None
         inp1 = inp.split()

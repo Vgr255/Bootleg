@@ -274,7 +274,7 @@ def get_config():
         for s, u in y.items():
             setattr(var, s, u)
 
-def get_parser(setting, type): # get function type_xyz() in parser.py for variable XYZ
+def get_parser(setting, type, use=False): # get function type_xyz() in parser.py for variable XYZ
     parse = None
     for x in parser.__dict__.keys():
         y = type + "_" + setting # possible types: find, install
@@ -282,7 +282,10 @@ def get_parser(setting, type): # get function type_xyz() in parser.py for variab
             continue
         parse = getattr(parser, y)
         break # we got what we wanted
-    return parse
+    if use and parse:
+        parse()
+    else:
+        return parse
 
 def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]
