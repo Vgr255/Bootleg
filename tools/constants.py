@@ -17,6 +17,8 @@ HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these
 DEBUG_COMMANDS = ["remove", "copy"]
 ERROR_COMMANDS = ["exit", "restart"]
 
+DISALLOWED_COMMANDS = ["help", "run"] # commands to be disallowed during setting finding
+
 POSSIBLE_HELP = ["programming", "support", "code", "commands"]
 HIDDEN_HELP = ["vgr", "bootleg", "help"]
 
@@ -138,6 +140,12 @@ BOOT_PACK_SETTINGS = { # the numbers here are start and end of index
 "GUARD_SCORPION":    "50:51",
 "SWEEPER":           "51:52",
 "MATERIAS_MODELS":   "52:53",
+
+}
+
+RANGE = {
+
+"CLOUD_FIELD":       "25",
 
 }
 

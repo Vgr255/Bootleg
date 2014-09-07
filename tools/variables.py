@@ -15,6 +15,7 @@ ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
 REG_ENTRY = None
 SHORT_REG = None
+FINDING = None
 
 # defaults
 

@@ -274,12 +274,13 @@ def get_config():
         for s, u in y.items():
             setattr(var, s, u)
 
-def get_parser(setting): # get function xyz() in parser.py for variable XYZ
+def get_parser(setting, type): # get function type_xyz() in parser.py for variable XYZ
     parse = None
     for x in parser.__dict__.keys():
-        if not x == setting.lower():
+        y = type + "_" + setting # possible types: find, install
+        if not x == y.lower():
             continue
-        parse = getattr(parser, x)
+        parse = getattr(parser, y)
         break # we got what we wanted
     return parse
 

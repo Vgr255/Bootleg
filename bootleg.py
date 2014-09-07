@@ -60,7 +60,10 @@ def main():
             else:
                 fn.end_bootleg_early()
         fn.logger("\n", write=False)
-        fn.logger("Please enter a command:", write=False)
+        if var.FINDING:
+            fn.logger("Please select your setting:")
+        else:
+            fn.logger("Please enter a command:", write=False)
         fn.logger("\n", write=False)
         inp = ""
         try:
@@ -68,6 +71,16 @@ def main():
         except EOFError:
             pass # probably Ctrl-C'd anyway
         fn.logger(inp, type="input", display=False)
+        if var.FINDING:
+            try:
+                inp2 = int(inp)
+            except ValueError:
+                if inp.split()[0] in con.DISALLOWED_COMMANDS:
+                fn.logger("Please enter a number.")
+                return
+            if inp2 in range(0, int(con.RANGE[var.FINDING]) + 1):
+                setattr(var, var.FINDING, inp2)
+                var.FINDING = None
         inp1 = inp.split()
         if not inp:
             fn.logger("No command was entered.", write=False)
