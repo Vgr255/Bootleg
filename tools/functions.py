@@ -236,7 +236,7 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
                 f.write(timestamp + output + "\n")
         except TypeError:
             output = str(output)
-            logger(output, logtype=logtype, display=False, write=write) # display false because it already displayed anyway
+            logger(output, logtype=logtype, type=type, display=False, write=write) # display is false because it already displayed anyway
 
 def log_multiple(output, types=[], display=True, write=True):
     if "all" in types:
@@ -316,7 +316,8 @@ def get_registry():
             try: # 2013 Steam
                 var.REGISTRY = winteg.OpenKey(reg, "Steam App 39140")
                 change_reg()
-            set_new_reg()
+            except WindowsError:
+                set_new_reg()
 
 def change_reg(): # converts 2012/2013 registry keys to 1998
     pass # todo
@@ -351,7 +352,7 @@ def add_to_reg(drive, app, new_reg=False):
     write_reg(var.REG_ENTRY + '\\1.00\\Graphics]')
     write_reg('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
 
-def set_new_reg(): # make a new registry entry if it doesn't exist. need to call append_to_reg() after
+def set_new_reg(): # make a new registry entry if it doesn't exist. need to call add_to_reg() after
     write_reg("Windows Registry Editor Version 5.00")
     write_reg("")
     write_reg(var.SHORT_REG)
