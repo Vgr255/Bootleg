@@ -63,4 +63,4 @@ def find_trish_phoenix():
     help("2 = Old Style Shaded Phoenix")
     help("3 = Old Style Phoenix with Custom Brighter Texture")
 
-def 
+#def

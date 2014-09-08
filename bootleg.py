@@ -15,25 +15,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from tools import process as pro
-from tools import constants as con
-from tools import variables as var
-from tools import functions as fn
-from tools import logger as log
-from tools import parser
-from tools.help import get_help
-import shutil
 import argparse
-import sys
-import os
 import traceback
+import shutil
+import os
+import sys
 
 try:
     import config
 except ImportError: # user did not rename the config file, let's silently copy it
     shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
-    log.logger("Config file not found: Silently copied example config file.", type="debug", display=False)
     import config
+
+from tools import process as pro
+from tools import constants as con
+from tools import variables as var
+from tools import functions as fn
+from tools import logger as log
+from tools import commands as cmd
+from tools import parser
 
 for x in var.__dict__.keys():
     if not x.isupper():
@@ -89,62 +89,14 @@ def main():
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:
             log.logger("You must type either 'exit' or 'restart'.", write=False)
-        elif command == "exit":
-            var.ALLOW_RUN = False
-        elif command == "restart":
-            var.RETRY = True
-        elif command == "help":
-            get_help(helping=" ".join(params))
-        elif command == "run":
-            if params:
-                if params[0] == "silent":
-                    pro.run(params=" ".join(params[1:]), silent=True)
-                elif params[0] == "extract":
-                    pro.extract()
-                else:
-                    pro.run(params=" ".join(params))
-        elif command == "do":
-            done = False
-            if params:
-                if inp[:22] == "do call python3; exec(" and inp[-2:] == ");":
-                    done = True
-                    exec(inp[22:-2])
-                elif inp[:27] == "do call run function; eval(" and inp[-2:] == ");":
-                    done = True
-                    eval(inp[27:-2])
-                elif inp[:9] == "do print(" and inp[-2:] == ");":
-                    done = True
-                    prnt = eval(inp[9:-2])
-                    log.logger(prnt, type="debug", write=False)
-                elif inp == "do call help; get help;":
-                    done = True
-                    log.help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'")
-            if not done:
-                fn.no_such_command(command)
-        elif command == "clean":
-            for x, y in con.LOGGERS.items():
-                logfile = getattr(config, y + "_FILE")
-                log_ext = getattr(config, y + "_EXT")
-                try:
-                    os.remove("{0}.{1}".format(logfile, log_ext))
-                except WindowsError: # file doesn't exist
-                    continue
-            try:
-                os.remove(os.getcwd() + "/" + var.TEMP_REG + ".reg")
-            except WindowsError:
-                pass
-            shutil.rmtree(os.getcwd() + '/__pycache__')
-            shutil.rmtree(os.getcwd() + '/tools/__pycache__')
-            var.ALLOW_RUN = False
-        elif command == "git":
-            pass # still todo
-        elif command == "copy":
-            if params and " ".join(params) == "config":
-                shutil.copy(os.getcwd() + "/config.py", os.getcwd() + "/config.py.example")
-        elif command in con.COMMANDS: # command is there but it's not there?
-            log.logger("Error: '{0}' was not found but is in the database. Critical error.".format(command), type="error")
         else:
-            fn.no_such_command(command) # if a hidden command is not there, let's say it doesn't exist
+            iscmd = None
+            try:
+                iscmd = getattr(cmd, command)
+            except AttributeError: # no such command
+                fn.no_such_command(command)
+            if iscmd:
+                iscmd(inp, params)
 
 if __name__ == "__main__":
     while var.ALLOW_RUN:
