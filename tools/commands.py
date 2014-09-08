@@ -75,7 +75,7 @@ def do(inp, params=[]):
         fn.no_such_command(command)
 
 def git(inp, params=[]): # code re-used from lykos/Wolfbot
-    if params and params[0] == "pull":
+    if params:
         child = subprocess.Popen(inp, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (out, err) = child.communicate()
         ret = child.returncode
