@@ -76,17 +76,25 @@ def do(inp, params=[]):
 
 def git(inp, params=[]): # code re-used from lykos/Wolfbot
     if params:
-        child = subprocess.Popen(inp, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (out, err) = child.communicate()
-        ret = child.returncode
+        if params[0] == "pull":
+            args = ["git", "pull"]
+            if params[1:]:
+                args.extend(params[1:])
+            elif config.USE_GIT_ORIGIN:
+                args.extend("origin", config.GIT_BRANCH)
+            elif config.USE_GIT_LINK:
+                args.extend(con.PROCESS_CODE + ".git", config.GIT_BRANCH)
+            child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (out, err) = child.communicate()
+            ret = child.returncode
 
-        for line in (out + err).splitlines():
-            log.logger(line.decode('utf-8'), type="debug")
+            for line in (out + err).splitlines():
+                log.logger(line.decode('utf-8'), type="debug")
 
-        if ret != 0:
-            if ret < 0:
-                cause = 'signal'
-            else:
-                cause = 'status'
+            if ret != 0:
+                if ret < 0:
+                    cause = 'signal'
+                else:
+                    cause = 'status'
 
-            log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
+                log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
