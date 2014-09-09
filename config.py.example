@@ -144,6 +144,10 @@ TEMP_PRESET = False
 
 TEMP_REG = "bootleg"
 
+GIT_BRANCH = "master"
+USE_GIT_LINK = True # if set to False, only "git pull" will be sent
+USE_GIT_ORIGIN = False # determines whether or not to use origin in the git pull. overrides above
+
 ALLOW_INIT = True
 
 IGNORE_FATAL_ERROR = False
