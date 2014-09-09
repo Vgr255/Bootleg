@@ -30,11 +30,15 @@ def clean(*args):
         log_ext = getattr(config, y + "_EXT")
         try:
             os.remove("{0}.{1}".format(logfile, log_ext))
-        except WindowsError: # file doesn't exist
+        except OSError: # file doesn't exist
             continue
     try:
         os.remove(os.getcwd() + "/" + var.TEMP_REG + ".reg")
-    except WindowsError:
+    except OSError:
+        pass
+    try:
+        os.remove(os.getcwd() + "/cfg.py")
+    except OSError:
         pass
     shutil.rmtree(os.getcwd() + '/__pycache__')
     shutil.rmtree(os.getcwd() + '/tools/__pycache__')
@@ -69,7 +73,10 @@ def do(inp, params=[]):
             eval(inp[27:-2])
         elif inp[:9] == "do print(" and inp[-2:] == ");":
             done = True
-            prnt = eval(inp[9:-2])
+            try:
+                prnt = eval(inp[9:-2])
+            except NameError:
+                prnt = "Error: {0} is not defined.".format(inp[9:-2])
             log.logger(prnt, type="debug", write=False)
         elif inp == "do call help; get help;":
             done = True

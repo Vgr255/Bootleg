@@ -64,8 +64,8 @@ USER_SETTINGS = {
 "BUNNY_GIRLS":       0,
 "SOUNDTRACK":        2,
 "ANY_CD":            0,
-"OPENING_CREDITS":   0,
-"CLOUD_SWORDS":      0,
+"OPENING_CREDITS":   2,
+"CLOUD_SWORDS":      0000000000000000,
 "BOOT_PACK":         0, # this one doesn't actually get checked
 
 }

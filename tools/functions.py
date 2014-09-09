@@ -233,7 +233,10 @@ def get_setting(setting): # gets parsable setting
     if not parse:
         return
     var.FINDING = setting
-    log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
+    if con.RANGE[setting] < 0:
+        log.help("Please enter exactly {0} digits.".format(-con.RANGE[setting]))
+    else:
+        log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
     log.help("\n")
     if con.RANGE[setting] is not 1:
         log.help("0 = Do not install")
@@ -266,7 +269,7 @@ def get_registry():
     try: # 1998 original
         reg = winreg.OpenKey(reg, "Square Soft, Inc.")
         var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
-    except WindowsError: # does not exist
+    except OSError: # does not exist
         try: # 2012 Square Enix store
             reg = winreg.OpenKey(reg, "Microsoft")
             reg = winreg.OpenKey(reg, "Windows")
@@ -274,11 +277,11 @@ def get_registry():
             reg = winreg.OpenKey(reg, "Uninstall")
             var.REGISTRY = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
             change_reg()
-        except WindowsError:
+        except OSError:
             try: # 2013 Steam
                 var.REGISTRY = winteg.OpenKey(reg, "Steam App 39140")
                 change_reg()
-            except WindowsError:
+            except OSError:
                 set_new_reg()
 
 def change_reg(): # converts 2012/2013 registry keys to 1998
@@ -288,7 +291,7 @@ def change_reg(): # converts 2012/2013 registry keys to 1998
 def get_reg_key(value):
     try:
         reg = winreg.QueryValueEx(var.REGISTRY, value)
-    except WindowsError:
+    except OSError:
         reg = None
     return reg
 
@@ -359,7 +362,7 @@ def write_reg(inp, dir=os.getcwd(), file=var.TEMP_REG):
     if inp == "Windows Registry Editor Version 5.00":
         try:
             os.remove(dir + file)
-        except WindowsError:
+        except OSError:
             pass
     try:
         f = open("{1}{0}".format(file, dir), "r+")

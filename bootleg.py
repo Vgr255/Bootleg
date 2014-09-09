@@ -35,9 +35,18 @@ from tools import logger as log
 from tools import commands as cmd
 from tools import parser
 
+if os.path.isfile(os.getcwd() + "/cfg.py"):
+    import cfg
+
 for x in var.__dict__.keys():
     if not x.isupper():
         continue
+    try:
+        if x in cfg.__dict__.keys(): # any temporary setting in cfg.py overrides anything else
+            setting = getattr(cfg, x)
+            setattr(config, x, setting)
+    except NameError: # module cfg wasn't imported
+        pass
     if config.DISALLOW_CONFIG:
         break # let's not copy config if disallowed
     if x in config.__dict__.keys():
@@ -81,7 +90,13 @@ def main():
             except ValueError:
                 log.logger("Please enter only numbers.")
                 return
-            if inp2 in range(0, con.RANGE[var.FINDING] + 1):
+            if con.RANGE[var.FINDING] < 0:
+                if len(inp2) == -con.RANGE[var.FINDING]:
+                    setattr(var, var.FINDING, inp2)
+                    var.FINDING = None
+                else:
+                    log.logger("Please enter exactly {0} digits.".format(-con.RANGE[var.FINDING]))
+            elif inp2 in range(0, con.RANGE[var.FINDING] + 1):
                 setattr(var, var.FINDING, inp2)
                 log.logger("Setting used for {0}: {1}".format(var.FINDING, inp2), display=False)
                 var.FINDING = None

@@ -18,3 +18,7 @@ You can use the Bootleg Configurator UI to pick your settings without needing to
 ### Choosing your own default settings
 
 You may pick your own settings in the `config.py` file (You need to rename it from `config.py.example` before). Those settings will get overridden by any preset setting you're loading.
+
+### Adding temporary config (for debugging)
+
+You can make a temporary `cfg.py` file, with any setting present in `tools/variables.py` and/or `config.py`. The settings present in `cfg.py` will override any other.

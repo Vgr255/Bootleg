@@ -164,6 +164,7 @@ RANGE = {
 "AVATARS":           23,
 "BUNNY_GIRLS":       1,
 "SOUNDTRACK":        9,
+"CLOUD_SWORDS":      -16, # a - in front means number of parameters required
 
 }
 

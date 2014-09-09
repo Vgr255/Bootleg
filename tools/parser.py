@@ -200,3 +200,16 @@ def find_soundtrack():
     help("7 = Anxious Heart - DLPB Selection")
     help("8 = Anxious Heart - Fan Selection")
     help("9 = Anxious Heart - Professional Selection")
+
+def find_opening_credits():
+    help("Pick which opening credits to use:")
+    help("1 = Grimmy's Cloud and Sephiroth Prelude Credits")
+    help("2 = JordieBo's Prelude Credits")
+    help("3 = JordieBo's Dark Prelude Credits")
+    help("4 = JordieBo's Glowing Prelude Credits")
+    help("5 = Strayoff's Prelude Credits")
+    help("6 = Grimmy's Cloud and Tifa Prelude Credits")
+
+def find_cloud_weapons():
+    help("Choose Cloud's swords:")
+    help("Buster Sword replacement")
