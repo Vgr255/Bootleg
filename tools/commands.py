@@ -81,9 +81,9 @@ def git(inp, params=[]): # code re-used from lykos/Wolfbot
             if params[1:]:
                 args.extend(params[1:])
             elif config.USE_GIT_ORIGIN:
-                args.extend("origin", config.GIT_BRANCH)
+                args += "origin", config.GIT_BRANCH
             elif config.USE_GIT_LINK:
-                args.extend(con.PROCESS_CODE + ".git", config.GIT_BRANCH)
+                args += con.PROCESS_CODE + ".git", config.GIT_BRANCH
             child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (out, err) = child.communicate()
             ret = child.returncode
