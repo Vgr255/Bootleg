@@ -1,6 +1,9 @@
 from tools.logger import help
 
 # Finding each variable's parameter if unset
+# If a setting has only a yes/no choice, do NOT put it here
+# It will be automatically added
+# 0 is ALWAYS no change/no install
 
 def find_cloud_field():
     help("Pick Cloud's appearance in the field:")
@@ -63,4 +66,24 @@ def find_trish_phoenix():
     help("2 = Old Style Shaded Phoenix")
     help("3 = Old Style Phoenix with Custom Brighter Texture")
 
-#def
+def find_trish_masamune():
+    help("Use Mike's Masamune model?")
+
+def find_aerith_revival():
+    help("Use Aerith Revival")
+
+def find_reunion():
+    help("Install DLPB's Reunion?")
+
+def find_spell_patch():
+    help("Install the new spells patch?")
+
+def find_avalanche():
+    help("Install Team Avalanche's High-Res Graphics?")
+
+def find_new_aerith():
+    help("Choose the new Aerith model:")
+    help("0 = No Change")
+    help("1 = HQ Aerith")
+    help("2 = Sailor Jupiter Aerith")
+    help("3 = Whiteraven HQ Aerith")

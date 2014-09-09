@@ -12,5 +12,5 @@
 
 * Main function
 * Some functions and the parser for each parameter
-* Need to finish the registry parser
+* Make 'git pull' work properly and add auto-updates once finished
 * Much more that I can't remember right now

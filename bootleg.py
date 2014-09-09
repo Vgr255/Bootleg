@@ -76,10 +76,11 @@ def main():
             try:
                 inp2 = int(inp)
             except ValueError:
-                log.logger("Please enter a number.")
+                log.logger("Please enter only numbers.")
                 return
             if inp2 in range(0, con.RANGE[var.FINDING] + 1):
                 setattr(var, var.FINDING, inp2)
+                log.logger("Setting used for {0}: {1}".format(var.FINDING, inp2), display=False)
                 var.FINDING = None
         inp1 = inp.split()
         if not inp:

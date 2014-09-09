@@ -216,18 +216,31 @@ def get_config():
         for s, u in y.items():
             setattr(var, s, u)
 
-def get_parser(setting, type="find", use=False): # get function type_xyz() in parser.py for variable XYZ
+def get_parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
     for x in parser.__dict__.keys():
-        y = type + "_" + setting # possible types: find, install
+        y = setting
         if not x == y.lower():
             continue
         parse = getattr(parser, y)
         break # we got what we wanted
-    if use and parse:
-        parse()
-    else:
-        return parse
+    return parse
+
+def get_setting(setting): # gets parsable setting
+    if not hasattr(var, setting):
+        return
+    parse = get_parser("find_" + setting.lower())
+    if not parse:
+        return
+    var.FINDING = setting
+    log.help("Please enter a value between 0 and {0}.".format(con.RANGE[setting]))
+    log.help("\n")
+    parse()
+    if con.RANGE[setting] == 1:
+        log.help("0 = NO")
+        log.help("1 = YES")
+    log.help("\n")
+    log.help("If no value is given, {0} will be used.".format(getattr(var, setting)))
 
 def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]

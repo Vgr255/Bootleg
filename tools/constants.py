@@ -149,6 +149,12 @@ RANGE = {
 "CLOUD_BATTLE":      12,
 "TRISH_SAVE":        5,
 "TRISH_PHOENIX":     3,
+"TRISH_MASAMUNE":    1,
+"AERITH_REVIVAL":    1,
+"REUNION":           1,
+"SPELL_PATCH":       1,
+"AVALANCHE":         1,
+"NEW_AERITH":        3,
 
 }
 
