@@ -234,19 +234,20 @@ def get_setting(setting): # gets parsable setting
         return
     var.FINDING = setting
     if con.RANGE[setting] < 0:
-        log.help("Please enter exactly {0} digits.".format(-con.RANGE[setting]))
+        log.help("Please enter exactly {0} digits.".format(len(str(con.RANGE[setting])[1:]))
+        log.help("Entering '0' as any digit will not install the specific option.")
     else:
         log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
     log.help("\n")
-    if con.RANGE[setting] is not 1:
-        log.help("0 = Do not install")
+    if con.RANGE[setting] > 1:
+        log.help("Entering '0' will not install the selected option.")
         log.help("\n")
     parse()
     if con.RANGE[setting] == 1:
         log.help("0 = NO")
         log.help("1 = YES")
     log.help("\n")
-    log.help("Default is {0}. It will be used if no value is given.".format(getattr(var, setting)))
+    log.help("Default is '{0}'. It will be used if no value is given.".format(getattr(var, setting)))
 
 def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]

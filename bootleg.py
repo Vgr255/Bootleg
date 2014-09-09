@@ -91,11 +91,18 @@ def main():
                 log.logger("Please enter only numbers.")
                 return
             if con.RANGE[var.FINDING] < 0:
-                if len(inp2) == -con.RANGE[var.FINDING]:
+                rng = str(con.RANGE[setting])[1:]
+                if len(str(inp2)) == len(rng):
+                    for x in range(0, int(len(rng))):
+                        if str(inp2)[x] in range(0, int(rng[x]) + 1):
+                            continue
+                        else:
+                            log.logger("Error: Value out of bounds at position {0}: {1} (Max: {2}).".format(x + 1, str(inp2)[x], rng[x]))
+                            return
                     setattr(var, var.FINDING, inp2)
                     var.FINDING = None
                 else:
-                    log.logger("Please enter exactly {0} digits.".format(-con.RANGE[var.FINDING]))
+                    log.logger("Please enter exactly {0} digits.".format(len(rng)))
             elif inp2 in range(0, con.RANGE[var.FINDING] + 1):
                 setattr(var, var.FINDING, inp2)
                 log.logger("Setting used for {0}: {1}".format(var.FINDING, inp2), display=False)
