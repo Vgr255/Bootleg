@@ -219,8 +219,8 @@ def get_config():
 def get_parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
     for x in parser.__dict__.keys():
-        y = setting
-        if not x == y.lower():
+        y = setting.lower()
+        if not x == y:
             continue
         parse = getattr(parser, y)
         break # we got what we wanted
@@ -233,14 +233,17 @@ def get_setting(setting): # gets parsable setting
     if not parse:
         return
     var.FINDING = setting
-    log.help("Please enter a value between 0 and {0}.".format(con.RANGE[setting]))
+    log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
     log.help("\n")
+    if con.RANGE[setting] is not 1:
+        log.help("0 = Do not install")
+        log.help("\n")
     parse()
     if con.RANGE[setting] == 1:
         log.help("0 = NO")
         log.help("1 = YES")
     log.help("\n")
-    log.help("If no value is given, {0} will be used.".format(getattr(var, setting)))
+    log.help("Default is {0}. It will be used if no value is given.".format(getattr(var, setting)))
 
 def get_architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]

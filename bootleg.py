@@ -62,7 +62,7 @@ def main():
                 fn.end_bootleg_early()
         log.logger("\n", write=False)
         if var.FINDING:
-            log.logger("Please select your setting:")
+            log.logger("Please enter a value:", write=False)
         else:
             log.logger("Please enter a command:", write=False)
         log.logger("\n", write=False)
@@ -70,7 +70,10 @@ def main():
         try:
             inp = input().strip()
         except EOFError:
-            pass # probably Ctrl-C'd anyway
+            if var.FINDING:
+                parsed = var.FINDING
+                log.logger("No user input was detected. Using {0} for {1}.".format(getattr(var, parsed), parsed), display=False)
+                var.FINDING = None
         log.logger(inp, type="input", display=False)
         if var.FINDING:
             try:
@@ -106,7 +109,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             if var.ERROR:
                 var.ALLOW_RUN = False
-                log.logger("Received SIGTERM.", type="debug", display=False)
+                log.logger("Received SIGTERM. Closing process.", type="debug", display=False)
             else:
                 log.logger("WARNING: SIGTERM Detected.", type="debug")
                 var.ERROR = True

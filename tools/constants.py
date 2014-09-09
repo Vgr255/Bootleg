@@ -155,6 +155,15 @@ RANGE = {
 "SPELL_PATCH":       1,
 "AVALANCHE":         1,
 "NEW_AERITH":        3,
+"VINCENT_BATTLE":    2,
+"LIMIT_BREAK":       10,
+"MENU_BACKGROUND":   12,
+"KERNEL_SELECT":     15,
+"MOVIES":            12,
+"FIELD_TEXTURES":    4,
+"AVATARS":           23,
+"BUNNY_GIRLS":       1,
+"SOUNDTRACK":        9,
 
 }
 

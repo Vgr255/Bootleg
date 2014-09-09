@@ -40,7 +40,7 @@ ON_WINDOWS = False
 
 # user settings
 # those are dicts for simplicity, gets converted to each variable on runtime
-# those are defaults
+# those are defaults, do not change
 
 USER_SETTINGS = {
 
@@ -54,19 +54,19 @@ USER_SETTINGS = {
 "AVALANCHE":         1,
 "NEW_AERITH":        0,
 "CLOUD_BATTLE":      3,
-"LIMIT_BREAK":       0,
+"LIMIT_BREAK":       5,
 "MENU_BACKGROUND":   0,
 "KERNEL_SELECT":     0,
-"MOVIES":            0,
-"FIELD_TEXTURES":    0,
-"AVATARS":           0,
-"IND_AVATARS":       0,
+"MOVIES":            1,
+"FIELD_TEXTURES":    1,
+"AVATARS":           1,
+"IND_AVATARS":       0, # no default for this
 "BUNNY_GIRLS":       0,
-"SOUNDTRACK":        0,
+"SOUNDTRACK":        2,
 "ANY_CD":            0,
 "OPENING_CREDITS":   0,
 "CLOUD_SWORDS":      0,
-"BOOT_PACK":         0,
+"BOOT_PACK":         0, # this one doesn't actually get checked
 
 }
 
@@ -97,7 +97,7 @@ BOOT_PACK_SETTINGS = {
 "BATTLE_SCENES_LGP": 0,
 "BATTLE_SCENES_PNG": 0,
 "LAPTOP_KEYPATCH":   0,
-"VINCENT_BATTLE":    0,
+"VINCENT_BATTLE":    1,
 "FMV_NO_CAIT":       0,
 "RETRANSLATED_FMV":  0,
 "ASSAULT_BIGGS":     0,

@@ -13,6 +13,9 @@ import os
 # Must have (inp, params=[]) in the def all the time, even if not used
 # Or (*stuff) if parameters don't matter
 
+# To add a new command, simply make a new def block
+# The name of the definition is the command
+
 # The following commands don't require any parameter
 
 def exit(*args):
