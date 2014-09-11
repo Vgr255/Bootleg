@@ -50,7 +50,11 @@ for x in var.__dict__.keys():
         pass
     if config.DISALLOW_CONFIG:
         break # let's not copy config if disallowed
-    if x in config.__dict__.keys():
+    for y, z in config.__dict__.items():
+        if x is not y:
+            break
+        if not z:
+            continue
         setting = getattr(config, x)
         setattr(var, x, setting)
 
