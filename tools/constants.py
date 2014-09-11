@@ -35,6 +35,7 @@ SETTINGS_PREFIXES = {
 "SYS_VAR":           "-",
 "PATH_VAR":          "/", # for simplicity, keep it the same
 "BOOT_PACK_VAR":     "@", # unusued for now
+"KERNEL_VAR":        "%", # also unused, but there for completeness' sake
 
 }
 
@@ -140,6 +141,10 @@ BOOT_PACK_SETTINGS = { # the numbers here are start and end of index
 "GUARD_SCORPION":    "50:51",
 "SWEEPER":           "51:52",
 "MATERIAS_MODELS":   "52:53",
+
+}
+
+KERNEL_SETTINGS = {
 
 }
 

@@ -65,7 +65,7 @@ USER_SETTINGS = {
 "SOUNDTRACK":        2,
 "ANY_CD":            0,
 "OPENING_CREDITS":   2,
-"CLOUD_SWORDS":      0000000000000000,
+"CLOUD_SWORDS":      4111111111111133,
 "BOOT_PACK":         0, # this one doesn't actually get checked
 
 }
@@ -140,5 +140,9 @@ BOOT_PACK_SETTINGS = {
 "GUARD_SCORPION":    0,
 "SWEEPER":           0,
 "MATERIAS_MODELS":   0,
+
+}
+
+KERNEL_SETTINGS = {
 
 }

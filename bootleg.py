@@ -34,6 +34,7 @@ from tools import functions as fn
 from tools import logger as log
 from tools import commands as cmd
 from tools import parser
+from tools import get
 
 if os.path.isfile(os.getcwd() + "/cfg.py"):
     import cfg
@@ -85,28 +86,8 @@ def main():
                 var.FINDING = None
         log.logger(inp, type="input", display=False)
         if var.FINDING:
-            try:
-                inp2 = int(inp)
-            except ValueError:
-                log.logger("Please enter only numbers.")
-                return
-            if con.RANGE[var.FINDING] < 0:
-                rng = str(con.RANGE[setting])[1:]
-                if len(str(inp2)) == len(rng):
-                    for x in range(0, int(len(rng))):
-                        if str(inp2)[x] in range(0, int(rng[x]) + 1):
-                            continue
-                        else:
-                            log.logger("Error: Value out of bounds at position {0}: {1} (Max: {2}).".format(x + 1, str(inp2)[x], rng[x]))
-                            return
-                    setattr(var, var.FINDING, inp2)
-                    var.FINDING = None
-                else:
-                    log.logger("Please enter exactly {0} digits.".format(len(rng)))
-            elif inp2 in range(0, con.RANGE[var.FINDING] + 1):
-                setattr(var, var.FINDING, inp2)
-                log.logger("Setting used for {0}: {1}".format(var.FINDING, inp2), display=False)
-                var.FINDING = None
+            get.setting(inp)
+            return
         inp1 = inp.split()
         if not inp:
             log.logger("No command was entered.", write=False)

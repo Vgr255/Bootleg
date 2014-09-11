@@ -107,6 +107,10 @@ BOOT_PACK_SETTINGS = {
 
 }
 
+KERNEL_SETTINGS = {
+
+}
+
 # Developper/debugger options. enable only if a dev asks you to
 
 DEV_LOG = False
