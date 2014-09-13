@@ -3,7 +3,7 @@ from tools import variables as var
 from tools import functions as fn
 from tools import process as pro
 from tools import logger as log
-from tools.help import get_help
+from tools import help as helper
 import subprocess
 import shutil
 import config
@@ -47,7 +47,12 @@ def clean(*args):
 # The following commands may or may not require additional parameters
 
 def help(inp, params=[]):
-    get_help(" ".join(params))
+    if helper.get_help(" ".join(params)) == True:
+        try:
+            to_help = getattr(helper, params[0])
+            to_help()
+        except AttributeError:
+            log.help("Error: '{0}' was not found but is in the database. Critical error.".format(" ".join(params)), type="error")
 
 def copy(inp, params=[]):
     if params and " ".join(params) == "config":
