@@ -285,3 +285,46 @@ def find_cloud_weapons():
     help("2 = Slayernext's Ultima Weapon")
     help("3 = Mike's Ultima Weapon")
     help("4 = Oblivion External Mod Ultima Weapon")
+
+def find_kernel_select(): # preset kernel settings for general use
+    help("Pick your Kernel settings:")
+    help("1 = Remastered - Kernel AI, stats and equipment from The Remix")
+    help("2 = Scene Redux - Better items to steal")
+    help("3 = Harder Items Easy - Items are less powerful")
+    help("4 = Harder Items Normal - Items are significantly less powerful")
+    help("5 = Harder Items Difficult - Items are much less powerful")
+    help("6 = Harder Items Easy + Scene Redux")
+    help("7 = Harder Items Normal + Scene Redux")
+    help("8 = Harder Items Difficult + Scene Redux")
+    help("9 = Lost Wing - Complete overhaul with extensive modifications") 
+    help("10 = Gjoerulv's Hardcore Mod - The prominent difficulty mod")
+    help("11 = Mode Switching - All mods")
+    help("12 = Mode Switching - Without hardcore")
+    help("13 = Reasonable Difficulty - Not as challenging as hardcore")
+    help("14 = Reasonable Difficulty + Harder Items Easy")
+    help("15 = Reasonable Difficulty + Harder Items Normal")
+    help("16 = Reasonable Difficulty + Harder Items Difficult")
+
+def find_reasonable_diff(): # individual parsers for each kernel selection. might or might not get used
+    help("Install Reasonable Difficulty mod?")
+
+def find_remastered_ai():
+    help("Install the Remastered AI from the Remix?")
+
+def find_scene_redux():
+    help("Install Scene Redux?")
+
+def find_items_easy():
+    help("Install Harder Items Easy?")
+
+def find_items_normal():
+    help("Install Harder Items Normal?")
+
+def find_items_difficult():
+    help("Install Harder Items Difficult?")
+
+def find_lost_wings():
+    help("Install the Lost Wings complete overhaul?")
+
+def find_mode_switching():
+    help("Install Bootleg's Mode Switching?")

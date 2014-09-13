@@ -32,8 +32,8 @@ RELEASE_INFO = "August 29th, 2014"
 SETTINGS_PREFIXES = {
 
 "USER_VAR":          "/",
-"SYS_VAR":           "-",
 "PATH_VAR":          "/", # for simplicity, keep it the same
+"SYS_VAR":           "-",
 "BOOT_PACK_VAR":     "@", # unusued for now
 "KERNEL_VAR":        "%", # also unused, but there for completeness' sake
 
@@ -144,7 +144,16 @@ BOOT_PACK_SETTINGS = { # the numbers here are start and end of index
 
 }
 
-KERNEL_SETTINGS = {
+KERNEL_SETTINGS = { # I don't know yet if that will be used, but it's there
+
+"REASONABLE_DIFF":   "RD",
+"REMASTERED_AI":     "RM",
+"SCENE_REDUX":       "SR",
+"ITEMS_EASY":        "IE",
+"ITEMS_NORMAL":      "IN",
+"ITEMS_DIFFICULT":   "ID",
+"LOST_WINGS":        "LW",
+"MODE_SWITCHING":    "MS",
 
 }
 
@@ -169,12 +178,20 @@ RANGE = {
 "AVATARS":           23,
 "BUNNY_GIRLS":       1,
 "SOUNDTRACK":        9,
-"CLOUD_SWORDS":      -6222222224222234, # a - means it needs as many params as there are digits
+"CLOUD_SWORDS":      -6222222224222234, # a - means it needs as many params as there are digits, each digit is the maximum
+"REASONABLE_DIFF":   1,
+"REMASTERED_AI":     1,
+"SCENE_REDUX":       1,
+"ITEMS_EASY":        1,
+"ITEMS_NORMAL":      1,
+"ITEMS_DIFFICULT":   1,
+"LOST_WINGS":        1,
+"MODE_SWITCHING":    1,
 
 }
 
 NON_INT_SETTINGS = ["PATH"]
-ALLOWED_DEFAULTS = ["USER", "SYS", "BOOT_PACK"]
+ALLOWED_DEFAULTS = ["USER", "SYS", "BOOT_PACK", "KERNEL"]
 USE_INDEX = ["BOOT_PACK"]
 
 # Random stuff

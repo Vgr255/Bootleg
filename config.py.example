@@ -1,3 +1,7 @@
+# Developper/debugger options. enable only if a developper asks you to
+
+DEV_LOG = False
+
 # User-defined settings
 # Please read SETTINGS.md for an information on each variable
 
@@ -109,11 +113,16 @@ BOOT_PACK_SETTINGS = {
 
 KERNEL_SETTINGS = {
 
+"REASONABLE_DIFF":   "",
+"REMASTERED_AI":     "",
+"SCENE_REDUX":       "",
+"ITEMS_EASY":        "",
+"ITEMS_NORMAL":      "",
+"ITEMS_DIFFICULT":   "",
+"LOST_WINGS":        "",
+"MODE_SWITCHING":    "",
+
 }
-
-# Developper/debugger options. enable only if a dev asks you to
-
-DEV_LOG = False
 
 # Do not edit past here if you don't know what you're doing
 
