@@ -40,6 +40,9 @@ def begin_anew():
     log.help("Available commands: {0}.".format(", ".join(commands)))
 
 def format_variables(): # formats a few variables to make sure they're correct
+    for x, y in var.PATH_SETTINGS.items(): # convert NoneType into strings
+        z = getattr(var, x)
+        setattr(var, x, str(y))
     if not var.FFVII_PATH[-1:] == "/":
         var.FFVII_PATH = var.FFVII_PATH + "/"
     var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
