@@ -38,6 +38,8 @@ IGNORE_FATAL_ERROR = False
 
 ON_WINDOWS = False
 
+FORCE_CONFIG = False # overrides config.DISALLOW_CONFIG. gets set to True is a temp config file is found (for safety)
+
 # user settings
 # those are dicts for simplicity, gets converted to each variable on runtime
 # those are defaults, do not change
@@ -153,5 +155,8 @@ KERNEL_SETTINGS = {
 "ITEMS_DIFFICULT":   0,
 "LOST_WINGS":        0,
 "MODE_SWITCHING":    0,
+"AERITH_INSTALLED":  0,
+"AERITH_HARDCORE":   0,
+"HARDMOD_INSTALLED": 0,
 
 }

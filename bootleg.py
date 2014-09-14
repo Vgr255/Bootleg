@@ -39,18 +39,20 @@ from tools import get
 
 if os.path.isfile(os.getcwd() + "/cfg.py"):
     import cfg
+    for x in cfg.__dict__.keys():
+        y = getattr(cfg, x)
+        setattr(config, x, y)
+        var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
 for x in var.__dict__.keys():
     if not x.isupper():
         continue
-    try:
-        if x in cfg.__dict__.keys(): # any temporary setting in cfg.py overrides anything else
-            setting = getattr(cfg, x)
-            setattr(config, x, setting)
-    except NameError: # module cfg wasn't imported
-        pass
-    if config.DISALLOW_CONFIG:
+    if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
         break # let's not copy config if disallowed
+    elif config.DISALLOW_CONFIG and var.FORCE_CONFIG:
+        log.logger("Config was disallowed. Overriding.", type="debug", display=False)
+    elif var.FORCE_CONFIG:
+        log.logger("Forcing config into var.", display=False)
     for y, z in config.__dict__.items():
         if x is not y:
             break

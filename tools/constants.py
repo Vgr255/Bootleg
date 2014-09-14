@@ -154,6 +154,9 @@ KERNEL_SETTINGS = { # I don't know yet if that will be used, but it's there
 "ITEMS_DIFFICULT":   "ID",
 "LOST_WINGS":        "LW",
 "MODE_SWITCHING":    "MS",
+"AERITH_INSTALLED":  "AE",
+"AERITH_HARDCORE":   "AH",
+"HARDMOD_INSTALLED": "HC",
 
 }
 
