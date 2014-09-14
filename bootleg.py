@@ -83,7 +83,7 @@ def main():
         log.logger("\n", write=False)
         inp = ""
         try:
-            inp = input().strip()
+            inp = input().lower().strip()
         except EOFError:
             if var.FINDING:
                 parsed = var.FINDING
@@ -97,7 +97,7 @@ def main():
         if not inp:
             log.logger("No command was entered.", write=False)
             return
-        command = inp1[0].lower()
+        command = inp1[0]
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:
             log.logger("You must type either 'exit' or 'restart'.", write=False)
@@ -105,10 +105,9 @@ def main():
             iscmd = None
             try:
                 iscmd = getattr(cmd, command)
+                iscmd(inp, params)
             except AttributeError: # no such command
                 fn.no_such_command(command)
-            if iscmd:
-                iscmd(inp, params)
 
 if __name__ == "__main__":
     while var.ALLOW_RUN:
