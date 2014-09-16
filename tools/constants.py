@@ -6,6 +6,7 @@ PROCESS_CODERS = ["Vgr"]
 GAME_CONV = ["Kompass63"]
 BETA_TESTERS = ["Iceboundphoenix", "Vgr", "EQ2Alyza", "Kompass63"]
 SPECIAL_THANKS = ["DLPB", "Kranmer", "UGerstl", "Aali", "ficedula", "Covarr", "Qhimm"]
+EXT_HELP = ["nasonfish"]
 
 EMAIL = "Bootleg@DadaData.net"
 

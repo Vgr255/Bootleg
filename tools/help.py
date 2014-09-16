@@ -37,6 +37,8 @@ def get_help(helping=""):
             help("Beta tester{0}: {1}.".format("s" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)))
         if con.SPECIAL_THANKS:
             help("Special thanks to: {0}.".format(", ".join(con.SPECIAL_THANKS)))
+        if con.EXT_HELP:
+            help("Helper{0} external to the project: {1}.".format("s" if len(con.EXT_HELP) > 1 else "", ", ".join(con.EXT_HELP)))
         if con.EMAIL:
             help("Official Bootleg email for support and questions: {0}".format(con.EMAIL))
         if con.POSSIBLE_HELP:
