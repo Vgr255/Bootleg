@@ -10,12 +10,14 @@ NEWFILE = False
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False
 ERROR = False
-FATAL_ERROR = None
+FATAL_ERROR = []
+SYS_ERROR = []
 ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
 REG_ENTRY = None
 SHORT_REG = None
 FINDING = None
+SYS_FOLDER = None
 
 # defaults
 
@@ -35,6 +37,7 @@ TEMP_REG = "bootleg"
 ALLOW_INIT = True
 
 IGNORE_FATAL_ERROR = False
+IGNORE_SYSTEM_ERROR = False
 
 ON_WINDOWS = False
 

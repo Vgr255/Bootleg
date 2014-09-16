@@ -1,6 +1,7 @@
-from tools import logger as log
 from tools import constants as con
 from tools import variables as var
+from tools import filenames as fl
+from tools import logger as log
 from tools import parser
 import platform
 
@@ -63,3 +64,21 @@ def architecture(): # find processor architecture
         rgent = rgent + "Wow6432Node\\"
     var.SHORT_REG = rgent + "Square Soft, Inc."
     var.REG_ENTRY = var.SHORT_REG + "\\Final Fantasy VII"
+
+def error(): # use this to get the reasons for various errors
+    def fatal():
+        def sprinkles():
+            return "'{0}' is missing from {1}.".format(fl.SPRINKLES, var.SYS_FOLDER)
+
+        def _7za():
+            return "'7za.exe' is missing from {0}.".format(var.SYS_FOLDER)
+
+    def system():
+        def int():
+            return "Please make sure your settings contain only numbers (No letters allowed)"
+
+        def readme():
+            return "The Readme file could not be found."
+
+        def documentation():
+            return "The Documentation file could not be found."

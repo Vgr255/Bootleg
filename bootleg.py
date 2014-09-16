@@ -37,7 +37,7 @@ from tools import filenames as fl
 from tools import parser
 from tools import get
 
-if os.path.isfile(os.getcwd() + "/cfg.py"):
+if fn._isfile.cur("cfg.py"):
     import cfg
     for x in cfg.__dict__.keys():
         y = getattr(cfg, x)
@@ -49,17 +49,18 @@ for x in var.__dict__.keys():
         continue
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
         break # let's not copy config if disallowed
-    elif config.DISALLOW_CONFIG and var.FORCE_CONFIG:
-        log.logger("Config was disallowed. Overriding.", type="debug", display=False)
-    elif var.FORCE_CONFIG:
-        log.logger("Forcing config into var.", display=False)
     for y, z in config.__dict__.items():
         if x is not y:
-            break
+            continue
         if not z:
             continue
         setting = getattr(config, x)
         setattr(var, x, setting)
+
+if config.DISALLOW_CONFIG and var.FORCE_CONFIG:
+    log.logger("Config was disallowed. Overriding.", type="debug", display=False)
+elif var.FORCE_CONFIG:
+    log.logger("Forcing config into var.", display=False)
 
 if var.ALLOW_INIT:
     fn.do_init()
@@ -74,7 +75,12 @@ def main():
             log.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
         if var.FATAL_ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
-                var.FATAL_ERROR = None
+                var.FATAL_ERROR = []
+            else:
+                fn.end_bootleg_early()
+        if var.SYS_ERROR:
+            if var.IGNORE_SYSTEM_ERROR or var.DEBUG_MODE:
+                var.SYS_ERROR = []
             else:
                 fn.end_bootleg_early()
         log.logger("\n", write=False)

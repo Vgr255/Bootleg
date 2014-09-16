@@ -1,5 +1,6 @@
 from tools import constants as con
 from tools import variables as var
+from tools import filenames as fl
 from tools import logger as log
 from tools import get
 from tools import reg
@@ -24,6 +25,13 @@ def do_init(): # initialize on startup only
     reg.get()
     format_variables()
     initialize() # needs to be called after get.architecture()
+
+def _isfile(inp):
+    def cur(inp):
+        return os.path.isfile(os.getcwd() + "/" + inp)
+    def sys(inp):
+        return os.path.isfile(var.SYS_FOLDER + "/" + inp)
+    return os.path.isfile(inp)
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -55,6 +63,8 @@ def format_variables(): # formats a few variables to make sure they're correct
             bttmp.append(semicolon)
         if bttmp:
             var.BOOTLEG_TEMP = bttmp
+    if var.SYS_FOLDER is None:
+        var.SYS_FOLDER = os.getcwd()
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -77,7 +87,7 @@ def parse_settings_from_file(inp):
     x = len(config.PRESET_EXT) + 1
     if not inp[-x:] == "." + config.PRESET_EXT:
         inp = inp + "." + config.PRESET_EXT
-    fexist = os.path.isfile(os.getcwd() + "/presets/" + inp)
+    fexist = _isfile.cur("presets/" + inp)
     if not fexist:
         var.NONEXISTANT_FILE = True
         return
@@ -153,13 +163,22 @@ def use_index(inp):
     # need to convert to integers. index(":") and before and after or something
 
 def chk_empty_settings():
-    var.EMPTY_SETTINGS = []
     for x in con.SETTINGS_PREFIXES.keys():
         x = x.replace("VAR", "SETTINGS")
         y = getattr(var, x)
         for parsable in y.keys():
             if not hasattr(var, parsable):
                 var.EMPTY_SETTINGS.append(parsable)
+
+def chk_missing_run_files():
+    if not _isfile.sys(fl.SPRINKLES):
+        var.FATAL_ERROR.append("sprinkles")
+    if not _isfile.cur(fl.README):
+        var.SYS_ERROR.append("readme")
+    if not _isfile.cur(fl.DOCUMENTATION):
+        var.SYS_ERROR.append("documentation")
+    if not _isfile.sys("7za.exe")
+        var.FATAL_ERROR.append("_7za")
 
 def use_defaults(empty):
     for x in con.SETTINGS_PREFIXES.keys():
@@ -191,16 +210,23 @@ def settings_to_int():
                 continue # debug mode, let's assume the person knows what's going on
             else:
                 log.logger("{0} - {2} setting not integer ({1})".format(parsable, parsarg, u.lower()), type="error", display=False)
-                var.FATAL_ERROR = "int"
+                var.SYS_ERROR.append("int")
                 break
 
 def end_bootleg_early():
     if var.FATAL_ERROR:
         log.logger(" - FATAL ERROR -", type="error")
-        if var.FATAL_ERROR == True:
-            log.logger("An unhandled error occured. Please report this.", type="error")
-        elif var.FATAL_ERROR == "int":
-            log.logger("Make sure your settings are numbers only (No letters allowed).", type="error")
+        log.logger("An unhandled error occured. Please report this.", type="error")
+        for reason in var.FATAL_ERROR:
+            why = getattr(get.error.fatal, reason)
+            log.logger(why(), type="error")
+    if var.SYS_ERROR:
+        log.logger("An error has been encountered.", type="error")
+        log.logger("Bootleg may still run if you wish to.", type="error")
+        var.ERROR = True
+        for reason in var.SYS_ERROR:
+            why = getattr(get.error.system, reason)
+            log.logger(why(), type="error")
 
 def find_setting(setting): # gets parsable setting
     if not hasattr(var, setting):
