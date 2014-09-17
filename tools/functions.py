@@ -26,12 +26,13 @@ def do_init(): # initialize on startup only
     format_variables()
     initialize() # needs to be called after get.architecture()
 
-def _isfile(inp):
+class IsFile:
     def cur(inp):
         return os.path.isfile(os.getcwd() + "/" + inp)
     def sys(inp):
         return os.path.isfile(var.SYS_FOLDER + "/" + inp)
-    return os.path.isfile(inp)
+    def get(inp):
+        return os.path.isfile(inp)
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -87,7 +88,7 @@ def parse_settings_from_file(inp):
     x = len(config.PRESET_EXT) + 1
     if not inp[-x:] == "." + config.PRESET_EXT:
         inp = inp + "." + config.PRESET_EXT
-    fexist = _isfile.cur("presets/" + inp)
+    fexist = IsFile.cur("presets/" + inp)
     if not fexist:
         var.NONEXISTANT_FILE = True
         return
@@ -171,13 +172,13 @@ def chk_empty_settings():
                 var.EMPTY_SETTINGS.append(parsable)
 
 def chk_missing_run_files():
-    if not _isfile.sys(fl.SPRINKLES):
+    if not IsFile.sys(fl.SPRINKLES):
         var.FATAL_ERROR.append("sprinkles")
-    if not _isfile.cur(fl.README):
+    if not IsFile.cur(fl.README):
         var.SYS_ERROR.append("readme")
-    if not _isfile.cur(fl.DOCUMENTATION):
+    if not IsFile.cur(fl.DOCUMENTATION):
         var.SYS_ERROR.append("documentation")
-    if not _isfile.sys("7za.exe")
+    if not IsFile.sys("7za.exe"):
         var.FATAL_ERROR.append("_7za")
 
 def use_defaults(empty):
@@ -214,19 +215,32 @@ def settings_to_int():
                 break
 
 def end_bootleg_early():
+    log.logger("\n")
     if var.FATAL_ERROR:
-        log.logger(" - FATAL ERROR -", type="error")
-        log.logger("An unhandled error occured. Please report this.", type="error")
+        log.multiple(" - FATAL ERROR -", types=["error", "normal"])
+        log.multiple("An unhandled error occured. Please report this.", types=["error", "normal"])
+        var.ERROR = True
         for reason in var.FATAL_ERROR:
-            why = getattr(get.error.fatal, reason)
-            log.logger(why(), type="error")
+            try:
+                why = getattr(get.Error.Fatal, reason)
+            except AttributeError:
+                why = get.Error.__unhandled__
+            finally:
+                log.multiple("Error found: {0}".format(reason), types=["error", "normal"], display=False)
+                log.multiple(why(), types=["error", "normal"])
     if var.SYS_ERROR:
-        log.logger("An error has been encountered.", type="error")
-        log.logger("Bootleg may still run if you wish to.", type="error")
+        log.multiple("An error has been encountered.", types=["error", "normal"])
+        log.multiple("Bootleg may still run if you wish to.", types=["error", "normal"])
         var.ERROR = True
         for reason in var.SYS_ERROR:
-            why = getattr(get.error.system, reason)
-            log.logger(why(), type="error")
+            try:
+                why = getattr(get.Error.System, reason)
+            except AttributeError:
+                why = get.Error.__unhandled__
+            finally:
+                log.multiple("Error found: {0}".format(reason), types=["error", "normal"], display=False)
+                log.multiple(why(), types=["error", "normal"])
+    log.logger("\n")
 
 def find_setting(setting): # gets parsable setting
     if not hasattr(var, setting):

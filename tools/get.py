@@ -65,20 +65,20 @@ def architecture(): # find processor architecture
     var.SHORT_REG = rgent + "Square Soft, Inc."
     var.REG_ENTRY = var.SHORT_REG + "\\Final Fantasy VII"
 
-def error(): # use this to get the reasons for various errors
-    def fatal():
+class Error: # use this to get the reasons for various errors
+    class Fatal:
         def sprinkles():
             return "'{0}' is missing from {1}.".format(fl.SPRINKLES, var.SYS_FOLDER)
-
         def _7za():
             return "'7za.exe' is missing from {0}.".format(var.SYS_FOLDER)
 
-    def system():
+    class System:
         def int():
             return "Please make sure your settings contain only numbers (No letters allowed)"
-
         def readme():
             return "The Readme file could not be found."
-
         def documentation():
             return "The Documentation file could not be found."
+
+    def __unhandled__():
+        return "An unhandled error has occured. Please report this."

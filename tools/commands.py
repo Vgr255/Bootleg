@@ -83,11 +83,14 @@ def do(inp, params=[]):
             except NameError:
                 prnt = "Error: {0} is not defined.".format(inp[9:-2])
             log.logger(prnt, type="debug", write=False)
+        elif inp[:18] == "do ask print; get(" and inp[-2:] == ");":
+            done = True
+            var.PRINT = inp[18:-2]
         elif inp == "do call help; get help;":
             done = True
-            log.help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'")
+            log.help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'\n'do ask print; get(\"string\");")
     if not done:
-        fn.no_such_command(command)
+        fn.no_such_command("do")
 
 def git(inp, params=[]): # code re-used from lykos/Wolfbot
     if params:

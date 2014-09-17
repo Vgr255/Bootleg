@@ -37,7 +37,7 @@ from tools import filenames as fl
 from tools import parser
 from tools import get
 
-if fn._isfile.cur("cfg.py"):
+if fn.IsFile.cur("cfg.py"):
     import cfg
     for x in cfg.__dict__.keys():
         y = getattr(cfg, x)
@@ -69,20 +69,24 @@ else:
 
 def main():
     while var.ALLOW_RUN:
+        if var.PRINT:
+            log.logger(var.PRINT)
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
             log.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
-        if var.FATAL_ERROR:
+        if var.FATAL_ERROR and not var.ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []
             else:
                 fn.end_bootleg_early()
-        if var.SYS_ERROR:
+                return
+        if var.SYS_ERROR and not var.ERROR:
             if var.IGNORE_SYSTEM_ERROR or var.DEBUG_MODE:
                 var.SYS_ERROR = []
             else:
                 fn.end_bootleg_early()
+                return
         log.logger("\n", write=False)
         if var.FINDING:
             log.logger("Please enter a value:", write=False)
@@ -91,7 +95,7 @@ def main():
         log.logger("\n", write=False)
         inp = ""
         try:
-            inp = input().lower().strip()
+            inp = input().strip()
         except EOFError:
             if var.FINDING:
                 parsed = var.FINDING
@@ -101,7 +105,7 @@ def main():
         if var.FINDING:
             get.setting(inp)
             return
-        inp1 = inp.split()
+        inp1 = inp.lower().split()
         if not inp:
             log.logger("No command was entered.", write=False)
             return

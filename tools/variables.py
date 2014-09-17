@@ -18,6 +18,7 @@ REG_ENTRY = None
 SHORT_REG = None
 FINDING = None
 SYS_FOLDER = None
+PRINT = None # print everytime, can be anything
 
 # defaults
 

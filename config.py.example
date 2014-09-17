@@ -167,12 +167,17 @@ USE_GIT_ORIGIN = False # determines whether or not to use origin in the git pull
 ALLOW_INIT = True
 
 IGNORE_FATAL_ERROR = False
+IGNORE_SYSTEM_ERROR = False
 
 ON_WINDOWS = False # will set it to True if used on Windows. set it here to bypass that
 
 CFG_OVER_SETTINGS = False # use config settings over presets if True
 
 DISALLOW_CONFIG = False # ignores current config file
+
+SYS_FOLDER = None # will default to the current directory if unspecified
+
+PRINT = None # will print this to screen
 
 # Debug mode options. edit at your own risk
 
