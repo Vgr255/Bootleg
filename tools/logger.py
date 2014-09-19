@@ -1,7 +1,6 @@
 from tools import variables as var
 from tools import constants as con
 from datetime import datetime
-import config
 import os
 
 def logger(output, logtype="", type="normal", display=True, write=True): # logs everything to file and/or screen. always use this
@@ -21,8 +20,8 @@ def logger(output, logtype="", type="normal", display=True, write=True): # logs 
     if display:
         print(output)
     if write:
-        logfile = getattr(config, logtype + "_FILE")
-        log_ext = getattr(config, logtype + "_EXT")
+        logfile = getattr(var, logtype + "_FILE")
+        log_ext = getattr(var, logtype + "_EXT")
         file = logfile + "." + log_ext
         try:
             f = open(os.getcwd() + "/" + file, "r+")

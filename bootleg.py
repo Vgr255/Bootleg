@@ -27,14 +27,11 @@ except ImportError: # user did not rename the config file, let's silently copy i
     shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
     import config
 
-from tools import process as pro
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
-from tools import logger as log
 from tools import commands as cmd
-from tools import filenames as fl
-from tools import parser
+from tools import logger as log
 from tools import get
 
 if fn.IsFile.cur("cfg.py"):
@@ -44,20 +41,17 @@ if fn.IsFile.cur("cfg.py"):
         setattr(config, x, y)
         var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
-for x in var.__dict__.keys():
+for x, y in config.__dict__.items():
     if not x.isupper():
         continue
+    if not y:
+        continue
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
-        break # let's not copy config if disallowed
-    for y, z in config.__dict__.items():
-        if x is not y:
-            continue
-        if not z:
-            continue
-        setting = getattr(config, x)
-        setattr(var, x, setting)
+        if hasattr(var, x):
+            continue # we carry everything over to var, but only what's not in there if disallowed
+    setattr(var, x, y)
 
-if config.DISALLOW_CONFIG and var.FORCE_CONFIG:
+if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("Config was disallowed. Overriding.", type="debug", display=False)
 elif var.FORCE_CONFIG:
     log.logger("Forcing config into var.", display=False)
@@ -139,8 +133,8 @@ if __name__ == "__main__":
                 logname = con.LOGGERS["traceback"]
                 if var.DEV_LOG or var.LOG_EVERYTHING:
                     logname = con.LOGGERS["all"]
-                logfile = getattr(config, logname + "_FILE")
-                log_ext = getattr(config, logname + "_EXT")
+                logfile = getattr(var, logname + "_FILE")
+                log_ext = getattr(var, logname + "_EXT")
                 log.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
             if str(sys.exc_info()):
                 log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured

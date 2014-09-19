@@ -4,7 +4,6 @@ from tools import filenames as fl
 from tools import logger as log
 from tools import get
 from tools import reg
-import config
 import os
 
 def initialize(): # initialize variables on startup and/or retry
@@ -85,9 +84,9 @@ def parse_settings_from_params(inp): # parse settings from launch parameters
                         setattr(var, parsable, param[2:])
 
 def parse_settings_from_file(inp):
-    x = len(config.PRESET_EXT) + 1
-    if not inp[-x:] == "." + config.PRESET_EXT:
-        inp = inp + "." + config.PRESET_EXT
+    x = len(var.PRESET_EXT) + 1
+    if not inp[-x:] == "." + var.PRESET_EXT:
+        inp = inp + "." + var.PRESET_EXT
     fexist = IsFile.cur("presets/" + inp)
     if not fexist:
         var.NONEXISTANT_FILE = True

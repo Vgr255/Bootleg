@@ -6,7 +6,6 @@ from tools import logger as log
 from tools import help as helper
 import subprocess
 import shutil
-import config
 import os
 
 # This holds all the commands
@@ -26,8 +25,8 @@ def restart(*args):
 
 def clean(*args):
     for x, y in con.LOGGERS.items():
-        logfile = getattr(config, y + "_FILE")
-        log_ext = getattr(config, y + "_EXT")
+        logfile = getattr(var, y + "_FILE")
+        log_ext = getattr(var, y + "_EXT")
         try:
             os.remove("{0}.{1}".format(logfile, log_ext))
         except OSError: # file doesn't exist
@@ -98,10 +97,10 @@ def git(inp, params=[]): # code re-used from lykos/Wolfbot
             args = ["git", "pull"]
             if params[1:]:
                 args.extend(params[1:])
-            elif config.USE_GIT_ORIGIN:
-                args += "origin", config.GIT_BRANCH
-            elif config.USE_GIT_LINK:
-                args += con.PROCESS_CODE + ".git", config.GIT_BRANCH
+            elif var.USE_GIT_ORIGIN:
+                args += "origin", var.GIT_BRANCH
+            elif var.USE_GIT_LINK:
+                args += con.PROCESS_CODE + ".git", var.GIT_BRANCH
             child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (out, err) = child.communicate()
             ret = child.returncode
