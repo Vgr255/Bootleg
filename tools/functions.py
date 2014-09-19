@@ -189,6 +189,10 @@ def chk_missing_run_files():
     if not IsFile.sys("7za.exe"):
         var.FATAL_ERROR.append("_7za")
 
+def chk_existing_install():
+    if IsFile.game("ff7.exe"):
+        log.logger("Found existing FF7 installation. Copying save files.")
+
 def use_defaults(empty):
     for x in con.SETTINGS_PREFIXES.keys():
         u = x.replace("_VAR", "")
@@ -256,17 +260,19 @@ def find_setting(setting): # gets parsable setting
     parse = get.parser("find_" + setting.lower())
     if not parse:
         return
+    msg = parse()
     var.FINDING = setting
     if con.RANGE[setting] < 0:
         log.help("Please enter exactly {0} digits.".format(len(str(con.RANGE[setting])[1:])))
         log.help("Entering '0' as any digit will not install the specific option.")
+        log.help("\n")
     else:
         log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
     log.help("\n")
     if con.RANGE[setting] > 1:
-        log.help("Entering '0' will not install the selected option.")
-        log.help("\n")
-    parse()
+        log.help(msg[0])
+        log.help("0 = No Change")
+        log.help("\n".join(msg[1:]))
     if con.RANGE[setting] == 1:
         log.help("0 = NO")
         log.help("1 = YES")

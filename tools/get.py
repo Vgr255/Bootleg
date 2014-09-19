@@ -4,6 +4,7 @@ from tools import filenames as fl
 from tools import logger as log
 from tools import parser
 import platform
+import config
 
 def settings():
     for x in con.SETTINGS_PREFIXES.keys():
