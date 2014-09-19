@@ -65,6 +65,22 @@ def architecture(): # find processor architecture
     var.SHORT_REG = rgent + "Square Soft, Inc."
     var.REG_ENTRY = var.SHORT_REG + "\\Final Fantasy VII"
 
+def users():
+    var.USERS = []
+    usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.GUI_CODERS + con.PROCESS_CODERS + con.GAME_CONV + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP
+    for user in usr:
+        if user in var.USERS:
+            continue
+        var.USERS.append(user.lower())
+
+def commands():
+    var.COMMANDS = []
+    cmd = con.COMMANDS + con.ERROR_COMMANDS + con.DEBUG_COMMANDS + con.HIDDEN_COMMANDS
+    for comm in cmd:
+        if comm in var.COMMANDS:
+            continue
+        var.COMMANDS.append(comm)
+
 class Error: # use this to get the reasons for various errors
     class Fatal:
         def sprinkles():

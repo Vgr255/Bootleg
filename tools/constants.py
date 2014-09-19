@@ -21,7 +21,7 @@ ERROR_COMMANDS = ["exit", "restart"]
 DISALLOWED_COMMANDS = ["help", "run"] # commands to be disallowed during setting finding
 
 POSSIBLE_HELP = ["programming", "support", "code", "commands"]
-HIDDEN_HELP = ["vgr", "bootleg", "help"]
+HIDDEN_HELP = ["bootleg"]
 
 POSSIBLE_RUN = ["help", "silent"]
 HIDDEN_RUN = []

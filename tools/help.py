@@ -2,13 +2,16 @@ from tools import variables as var
 from tools import constants as con
 from tools.logger import help
 
+def __unhandled__():
+    return '__unhandled__'
+
 def get_help(helping=""):
     helping = helping.lower()
     help("")
     help("               - Final Fantasy VII Bootleg Mod Configurator -")
     help("                                * Help file *")
     help("")
-    if helping and helping not in con.POSSIBLE_HELP and helping not in con.HIDDEN_HELP:
+    if helping and helping not in (con.POSSIBLE_HELP + con.HIDDEN_HELP + var.USERS + var.COMMANDS):
         help("'{0}' is not a valid help topic.".format(helping))
         if con.POSSIBLE_HELP:
             help("Possible help topic{1}: {0}.".format(", ".join(con.POSSIBLE_HELP), "s" if len(con.POSSIBLE_HELP) > 1 else ""))
@@ -45,11 +48,16 @@ def get_help(helping=""):
             help("")
             help("Possible help topic{1}: {0}.".format(", ".join(con.POSSIBLE_HELP), "s" if len(con.POSSIBLE_HELP) > 1 else ""))
             if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and var.SHOW_HIDDEN_HELP):
-                help("Hidden help command{1}: {0}.".format(", ".join(con.HIDDEN_HELP), "s" if len(con.HIDDEN_HELP) > 1 else ""))
+                help("Hidden help topic{1}: {0}.".format(", ".join(con.HIDDEN_HELP), "s" if len(con.HIDDEN_HELP) > 1 else ""))
             help("Use 'help <item>' to view a specific help topic.")
             help("Type 'help <user>' to view information on a specific person.")
+            help("You can do 'help <command>' to get help on a specific command.")
+        return False
     else:
         return True
+
+# these are arguments that people can type
+# return the message to make it display
 
 def programming():
     msg = "The current version of Bootleg is coded in Python 3.2"
@@ -58,14 +66,14 @@ def programming():
     msg = msg + ".\nThe Graphical User Interface is coded in C#"
     if con.GUI_CODERS:
         msg = msg + " by {0}".format(", ".join(con.GUI_CODERS))
-    help(msg + ".")
+    return msg + "."
 
 def code():
     msg = "The {0}{1}Bootleg code is completely open-source".format(con.CURRENT_RELEASE, " " if con.CURRENT_RELEASE else "")
     if con.PROCESS_CODE:
         msg = msg + ", and can be viewed at \n{0}".format(con.PROCESS_CODE)
     msg = msg + "."
-    help(msg)
+    return msg
 
 def support():
     msg = "You can request help by going on the forums"
@@ -74,7 +82,7 @@ def support():
     if con.USER_HELP:
         msg = msg + "; {0} {1} the official helper{2}".format(", ".join(con.USER_HELP), "are" if len(con.USER_HELP) > 1 else "is", "s" if len(con.USER_HELP) > 1 else "")
     msg = msg + "."
-    help(msg)
+    return msg
 
 def commands():
     msg = "There are no available commands."
@@ -82,4 +90,33 @@ def commands():
         msg = "Available command{1}: {0}.".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else "")
     if (con.HIDDEN_COMMANDS and var.DEBUG_MODE) or (con.HIDDEN_COMMANDS and var.SHOW_HIDDEN_COMMANDS):
         msg = msg + "\nHidden command{1}: {0}.".format(", ".join(con.HIDDEN_COMMANDS), "s" if len(con.HIDDEN_COMMANDS) > 1 else "")
-    help(msg)
+    return msg
+
+# All users go in this class
+# return a list, each parameter is one line
+
+# if a topic is both a user and a command, putting it in either works
+# if it's put in both, the Users one takes priority
+
+class Users:
+
+    def pitbrat():
+        return ["PitBrat started Bootleg as a personal project.",
+                "After a while, he decided to release it for the public to use.",
+                "After 040's release, life took over and he couldn't work on Bootleg anymore."]
+
+    def eq2alyza():
+        return ["EQ2Alyza made Tifa's Bootleg Tutorial, which significantly helped users.",
+                "She helped many users to troubleshoot various issues."]
+
+# All commands go in this class
+# same as above, return a list
+
+class Commands:
+
+    def help():
+        return ["The help command is used to display various information.",
+                "This is what you're currently viewing."]
+
+    def run():
+        return ["Use this command to run the Bootleg process."]

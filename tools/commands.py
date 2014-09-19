@@ -47,11 +47,39 @@ def clean(*args):
 
 def help(inp, params=[]):
     if helper.get_help(" ".join(params)) == True:
-        try:
-            to_help = getattr(helper, params[0])
-            to_help()
-        except AttributeError:
-            log.help("Error: '{0}' was not found but is in the database. Critical error.".format(" ".join(params)), type="error")
+        to_help = helper.__unhandled__
+        type = "help"
+        if params[0] in var.USERS:
+            try:
+                to_help = getattr(helper.Users, params[0])
+            except AttributeError:
+                pass
+        elif params[0] in var.COMMANDS:
+            try:
+                to_help = getattr(helper.Commands, params[0])
+            except AttributeError:
+                pass
+        else:
+            try:
+                to_help = getattr(helper, params[0])
+            except AttributeError:
+                pass
+        if params[0] in var.USERS and params[0] in var.COMMANDS:
+            try:
+                to_help = getattr(helper.Users, params[0])
+            except AttributeError:
+                try:
+                    to_help = getattr(helper.Commands, params[0])
+                except AttributeError:
+                    pass
+        helping = to_help()
+        if helping == '__unhandled__':
+            helping = "Error: '{0}' was not found but is in the database. Critical error.".format(params[0])
+            type = "error"
+            var.ERROR = True
+        elif params[0] in (var.USERS + var.COMMANDS):
+            helping = "\n".join(helping)
+        log.help(helping, type=type)
 
 def copy(inp, params=[]):
     if params and " ".join(params) == "config":
