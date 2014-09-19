@@ -95,12 +95,12 @@ def git(inp, params=[]): # code re-used from lykos/Wolfbot
     if params:
         if params[0] == "pull":
             args = ["git", "pull"]
-            if params[1:]:
-                args.extend(params[1:])
-            elif var.USE_GIT_ORIGIN:
+            if var.USE_GIT_ORIGIN:
                 args += "origin", var.GIT_BRANCH
             elif var.USE_GIT_LINK:
                 args += con.PROCESS_CODE + ".git", var.GIT_BRANCH
+            elif params[1:]:
+                args.extend(params[1:])
             child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (out, err) = child.communicate()
             ret = child.returncode
