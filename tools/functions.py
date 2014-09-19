@@ -4,6 +4,7 @@ from tools import filenames as fl
 from tools import logger as log
 from tools import get
 from tools import reg
+import tempfile
 import os
 
 def initialize(): # initialize variables on startup and/or retry
@@ -21,6 +22,8 @@ def initialize(): # initialize variables on startup and/or retry
 def do_init(): # initialize on startup only
     get.settings()
     get.architecture()
+    get.users()
+    get.commands()
     reg.get()
     format_variables()
     initialize() # needs to be called after get.architecture()
@@ -29,7 +32,9 @@ class IsFile:
     def cur(inp):
         return os.path.isfile(os.getcwd() + "/" + inp)
     def sys(inp):
-        return os.path.isfile(var.SYS_FOLDER + "/" + inp)
+        return os.path.isfile(var.SYS_FOLDER + inp)
+    def game(inp):
+        return os.path.isfile(var.FFVII_PATH  + inp)
     def get(inp):
         return os.path.isfile(inp)
 
@@ -48,23 +53,27 @@ def begin_anew():
     log.help("Available commands: {0}.".format(", ".join(commands)))
 
 def format_variables(): # formats a few variables to make sure they're correct
-    for x, y in var.PATH_SETTINGS.items(): # convert NoneType into strings
-        z = getattr(var, x)
-        setattr(var, x, str(y))
-    if not var.FFVII_PATH[-1:] == "/":
-        var.FFVII_PATH = var.FFVII_PATH + "/"
-    var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
     if var.BOOTLEG_TEMP:
         boot_temp = var.BOOTLEG_TEMP.split(";")
         bttmp = []
         for semicolon in boot_temp:
             if semicolon == "":
                 continue
+            semicolon = semicolon.replace("/", "\\")
+            if not semicolon[-1:] == "\\":
+                semicolon = semicolon + "\\"
             bttmp.append(semicolon)
         if bttmp:
             var.BOOTLEG_TEMP = bttmp
+    else:
+        var.BOOTLEG_TEMP = ['{0}\\'.format(tempfile.gettempdir())]
     if var.SYS_FOLDER is None:
         var.SYS_FOLDER = os.getcwd()
+    if var.FFVII_PATH is None:
+        var.FFVII_PATH = os.getcwd() + "/Final Fantasy VII"
+    var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
+    if not var.FFVII_PATH[-1:] == "\\":
+        var.FFVII_PATH = var.FFVII_PATH + "\\"
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -270,7 +279,7 @@ def no_such_command(command):
     if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
         hidc = con.HIDDEN_COMMANDS
         hidc.extend(con.ERROR_COMMANDS)
-        log.logger("Hidden command{1}: {0}".format(", ".join(hidc), "s" if len(con.HIDDEN_COMMANDS) > 1 else ""), write=False)
+        log.logger("Hidden command{1}: {0}".format(", ".join(hidc), "s" if len(hidc) > 1 else ""), write=False)
         log.logger("Keep in mind that hidden commands will appear as non-existant if not used properly or if the proper conditions aren't met.", write=False)
     if var.DEBUG_MODE:
-        log.logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""))
+        log.logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""), write=False)

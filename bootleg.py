@@ -44,7 +44,7 @@ if fn.IsFile.cur("cfg.py"):
 for x, y in config.__dict__.items():
     if not x.isupper():
         continue
-    if not y:
+    if y is "":
         continue
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
         if hasattr(var, x):
