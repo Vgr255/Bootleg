@@ -60,7 +60,7 @@ def architecture(): # find processor architecture
     log.logger("Running Bootleg on {0}.".format(var.ARCHITECTURE), display=False)
     if str(platform.architecture()[1]) == "WindowsPE":
         var.ON_WINDOWS = True
-    rgent = "HKEY_LOCAL_MACHINE\\SOFTWARE\\"
+    rgent = "[HKEY_LOCAL_MACHINE\\SOFTWARE\\"
     if var.ARCHITECTURE == "64bit":
         rgent = rgent + "Wow6432Node\\"
     var.SHORT_REG = rgent + "Square Soft, Inc."

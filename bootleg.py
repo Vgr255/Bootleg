@@ -68,7 +68,7 @@ def main():
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
-            log.logger("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.", write=False)
+            log.help("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.")
         if var.FATAL_ERROR and not var.ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []
@@ -81,12 +81,12 @@ def main():
             else:
                 fn.end_bootleg_early()
                 return
-        log.logger("\n", write=False)
+        log.help("\n")
         if var.FINDING:
-            log.logger("Please enter a value:", write=False)
+            log.help("Please enter a value:")
         else:
-            log.logger("Please enter a command:", write=False)
-        log.logger("\n", write=False)
+            log.help("Please enter a command:")
+        log.help("\n")
         inp = ""
         try:
             inp = input().strip()
@@ -101,12 +101,12 @@ def main():
             return
         inp1 = inp.lower().split()
         if not inp:
-            log.logger("No command was entered.", write=False)
+            log.help("No command was entered.")
             return
         command = inp1[0]
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:
-            log.logger("You must type either 'exit' or 'restart'.", write=False)
+            log.help("You must type either 'exit' or 'restart'.")
         else:
             iscmd = None
             try:
