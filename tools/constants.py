@@ -40,7 +40,7 @@ SETTINGS_PREFIXES = {
 
 }
 
-LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "DEBUG", "all": "MIXED"}
+LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED"}
 
 # parsables
 

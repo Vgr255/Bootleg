@@ -4,7 +4,9 @@ from tools import filenames as fl
 from tools import logger as log
 from tools import get
 from tools import reg
+import subprocess
 import tempfile
+import win32com
 import os
 
 def initialize(): # initialize variables on startup and/or retry
@@ -45,7 +47,7 @@ def begin_anew():
     log.help("")
     log.help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
     commands = []
-    commands = con.COMMANDS
+    commands.extend(con.COMMANDS)
     if var.SHOW_HIDDEN_COMMANDS:
         commands.extend(con.HIDDEN_COMMANDS)
         commands.extend(con.ERROR_COMMANDS)
@@ -77,6 +79,9 @@ def format_variables(): # formats a few variables to make sure they're correct
         var.FFVII_PATH = var.FFVII_PATH + "\\"
     if var.BOOTLEG_TEMP is None:
         var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
+    if var.FFVII_IMAGE is not None:
+        if var.FFVII_IMAGE[-4:].lower() is not ".zip":
+            var.FFVII_IMAGE = None
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -189,10 +194,24 @@ def chk_missing_run_files():
         var.SYS_ERROR.append("readme")
     if not IsFile.cur(fl.DOCUMENTATION):
         var.SYS_ERROR.append("documentation")
-    if not IsFile.sys("7za.exe"):
-        var.FATAL_ERROR.append("_7za")
+
+def make_shortcut(): # this is a placeholder, it's currently awful
+    if reg.git() is None:
+        return
+    shell = win32com.client.Dispatch('WScript.shell')
+    shortcut = shell.CreateShortcut(os.path.join(os.getcwd(), "git.lnk"))
+    shortcut.TargetPath = '{0}\utils\CMD.exe /c ""{1}\bin\sh.exe" --login -i"'.format(os.getcwd(), reg.git())
+    shortcut.WindowsStyle = 1
+    #shortcut.HotKey = None # .. uh
+    #shortcut.IconLocation = None # welp
+    shortcut.Description = "Git shell"
+    shortcut.WorkingDirectory = os.getcwd()
+    
+    shortcut.Save()
 
 def extract_image():
+    if var.FFVII_IMAGE is None:
+        return 1
     if IsFile.game("ff7.exe"):
         log.logger("Found existing FF7 installation.")
         try:
@@ -211,6 +230,7 @@ def extract_image():
     except OSError:
         log.logger("No current installation found.")
 
+    log.logger("Extracting Final Fantasy VII Image . . .")
     
 
 def use_defaults(empty):
