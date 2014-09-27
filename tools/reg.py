@@ -8,6 +8,20 @@ except ImportError:
     log.logger("Bootleg will not work properly on a different operating system than Windows.", type="error")
     var.ON_WINDOWS = False
 
+def git(): # get the registry key for the git install location
+    reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
+    if var.ARCHITECTURE == "64bit":
+        reg = winreg.OpenKey(reg, "Wow6432Node")
+    reg = winreg.OpenKey(reg, "Microsoft")
+    reg = winreg.OpenKey(reg, "Windows")
+    reg = winreg.OpenKey(reg, "CurrentVersion")
+    reg = winreg.OpenKey(reg, "Uninstall")
+    try:
+        var.GIT_REG = winreg.OpenKey(reg, "Git_is1")
+        return winreg.QueryValueEx(var.GIT_REG, "InstallLocation")
+    except OSError:
+        return None
+
 def get():
     if not var.ON_WINDOWS:
         return # not on Windows
