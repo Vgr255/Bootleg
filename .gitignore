@@ -16,7 +16,3 @@ config.py
 
 # Registry files
 *.reg
-
-# Files to be used for libraries
-*.h
-*.cpp
