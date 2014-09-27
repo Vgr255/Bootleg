@@ -51,14 +51,14 @@ def add(drive, app, new_reg=False):
     write('"MoviePath"="{0}movies\\\\"'.format(app))
     write('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
     write('')
-    write(var.REG_ENTRY + '\\1.00\\Graphics]')
+    write(var.REG_ENTRY + '\\1.00\\Graphics')
     write('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
 
 def write(inp, dir=os.getcwd(), file=var.TEMP_REG):
     exists = False
-    if not dir[-1:] == "/":
-        dir = dir + "/"
     dir = dir.replace("/", "\\")
+    if not dir[-1:] == "\\":
+        dir = dir + "\\"
     if not file[-4:] == ".reg":
         file = file + ".reg"
     if inp == "Windows Registry Editor Version 5.00":
@@ -120,13 +120,13 @@ def set_new(): # make a new registry entry if it doesn't exist. need to call add
     write('"Mode"=dword:00000002')
     write('"Options"=dword:00000000')
     write('')
-    write(var.REG_ENTRY + '\\1.00\\MIDI]')
+    write(var.REG_ENTRY + '\\1.00\\MIDI')
     write('"MIDI_DeviceID"=dword:00000000')
     write('"MIDI_data"="GENERAL_MIDI"')
     write('"MusicVolume"=dword:00000064')
     write('"Options"=dword:00000001')
     write('')
-    write(var.REG_ENTRY + '\\1.00\\Sound]')
+    write(var.REG_ENTRY + '\\1.00\\Sound')
     write('"Sound_GUID"=hex:dd,39,42,c5,d1,6b,e0,4f,83,42,5f,7b,7d,11,a0,f5')
     write('"Options"=dword:00000000')
     write('"SFXVolume"=dword:00000064')
