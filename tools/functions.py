@@ -44,29 +44,30 @@ def begin_anew():
     log.help("       Running Bootleg on {0}                      |___/".format(var.ARCHITECTURE))
     log.help("")
     log.help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
+    commands = []
     commands = con.COMMANDS
     if var.SHOW_HIDDEN_COMMANDS:
         commands.extend(con.HIDDEN_COMMANDS)
         commands.extend(con.ERROR_COMMANDS)
     if var.DEBUG_MODE:
         commands.extend(con.DEBUG_COMMANDS)
-    log.help("Available commands: {0}.".format(", ".join(commands)))
+    log.help("Available command{1}: {0}.".format(", ".join(commands), "" if len(commands) == 1 else "s"))
 
 def format_variables(): # formats a few variables to make sure they're correct
-    if var.BOOTLEG_TEMP:
-        boot_temp = var.BOOTLEG_TEMP.split(";")
-        bttmp = []
-        for semicolon in boot_temp:
+    if var.MOD_LOCATION:
+        mod_loc = var.MOD_LOCATION.split(";")
+        moloc = []
+        for semicolon in mod_loc:
             if semicolon == "":
                 continue
             semicolon = semicolon.replace("/", "\\")
             if not semicolon[-1:] == "\\":
                 semicolon = semicolon + "\\"
-            bttmp.append(semicolon)
-        if bttmp:
-            var.BOOTLEG_TEMP = bttmp
+            moloc.append(semicolon)
+        if moloc:
+            var.MOD_LOCATION = moloc
     else:
-        var.BOOTLEG_TEMP = ['{0}\\'.format(tempfile.gettempdir())]
+        var.MOD_LOCATION = [os.getcwd()]
     if var.SYS_FOLDER is None:
         var.SYS_FOLDER = os.getcwd()
     if var.FFVII_PATH is None:
@@ -74,6 +75,8 @@ def format_variables(): # formats a few variables to make sure they're correct
     var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
     if not var.FFVII_PATH[-1:] == "\\":
         var.FFVII_PATH = var.FFVII_PATH + "\\"
+    if var.BOOTLEG_TEMP is None:
+        var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -189,9 +192,26 @@ def chk_missing_run_files():
     if not IsFile.sys("7za.exe"):
         var.FATAL_ERROR.append("_7za")
 
-def chk_existing_install():
+def extract_image():
     if IsFile.game("ff7.exe"):
-        log.logger("Found existing FF7 installation. Copying save files.")
+        log.logger("Found existing FF7 installation.")
+        try:
+            shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "save")
+            log.logger("Copying save files.")
+        except OSError:
+            log.logger("No save files found.")
+        try:
+            shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "ff7input.cfg")
+            log.logger("Copying Input settings.")
+        except OSError:
+            log.logger("No input settings found.")
+    try:
+        os.remove(var.FFVII_PATH)
+        log.logger("Removing current installation.")
+    except OSError:
+        log.logger("No current installation found.")
+
+    
 
 def use_defaults(empty):
     for x in con.SETTINGS_PREFIXES.keys():
