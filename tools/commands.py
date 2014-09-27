@@ -93,6 +93,8 @@ def run(inp, params=[]):
             pro.extract()
         else:
             pro.run(params=" ".join(params))
+    else:
+        pro.run()
 
 def do(inp, params=[]):
     done = False
