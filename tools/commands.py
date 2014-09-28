@@ -117,7 +117,15 @@ def do(inp, params=[]):
             var.PRINT = inp[18:-2]
         elif inp == "do call help; get help;":
             done = True
-            log.help("\nDevelopper commands:\n\n'do call python3; exec(\"command\");'\n'do call run function; eval(\"module.function\");'\n'do print(\"string\");'\n'do ask print; get(\"string\");")
+            log.help("",
+                     "Developper commands:",
+                     "",
+                     "",
+                     "'do call python3; exec(\"command\");'",
+                     "'do call run function; eval(\"module.function\");'",
+                     "'do print(\"string\");'",
+                     "'do ask print; get(\"string\");",
+                     splitter="\n")
     if not done:
         fn.no_such_command("do")
 
