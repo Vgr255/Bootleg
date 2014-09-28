@@ -39,6 +39,36 @@ class IsFile:
     def get(inp):
         return os.path.isfile(inp)
 
+class ManipFile:
+    class Z7:
+        def extract(file, dir=""):
+            if dir:
+                args = ['7za.exe', 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
+            else:
+                args = ['7za.exe', 'x', '-o"{0}"'.format(os.getcwd()), '"{0}"'.format(file)]
+            __handler__(args)
+
+    class Zip:
+        pass
+
+    class Rar:
+        pass
+
+    def __handler__(args):
+        child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (out, err) = child.communicate()
+        ret = child.returncode
+        for line in (out + err).splitlines():
+            log.logger(line.decode('utf-8'), type="debug")
+
+        if ret != 0:
+            if ret < 0:
+                cause = 'signal'
+            else:
+                cause = 'status'
+
+            log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
+
 def begin_anew():
     os.system("cls") # clear the screen off everything.
     log.help("\n".join(con.BOOT_ASCII))
