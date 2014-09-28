@@ -3,9 +3,9 @@ from tools import constants as con
 from datetime import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True): # logs everything to file and/or screen. always use this
+def logger(*output, logtype="", type="normal", display=True, write=True, splitter=" "): # logs everything to file and/or screen. always use this
     output = list(output)
-    output = " ".join(output)
+    output = splitter.join(output)
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if var.LOG_EVERYTHING or var.DEV_LOG:
@@ -42,10 +42,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True): # logs
             output = str(output)
             logger(output, logtype=logtype, type=type, display=False, write=write) # display is false because it already displayed anyway
 
-def multiple(output, types=[], display=True, write=True):
+def multiple(*output, types=[], display=True, write=True, splitter=" "):
     if "all" in types:
         if var.LOG_EVERYTHING or var.DEV_LOG:
-            logger(output, type="all", display=display, write=write)
+            logger(output, type="all", display=display, write=write, splitter=splitter)
             return
         log_it = []
         for logged in con.LOGGERS.keys():
@@ -54,12 +54,12 @@ def multiple(output, types=[], display=True, write=True):
             if con.LOGGERS[logged] not in log_it:
                 log_it.append(con.LOGGERS[logged])
         for l in log_it:
-            logger(output, logtype=l, display=display, write=write)
+            logger(output, logtype=l, display=display, write=write, splitter=splitter)
     elif types:
         for t in types:
-            logger(output, type=t, display=display, write=write)
+            logger(output, type=t, display=display, write=write, splitter=splitter)
     else: # no type
-        logger(output, display=display, write=write)
+        logger(output, display=display, write=write, splitter=splitter)
 
-def help(output, type="help", write=False, display=True):
-    logger(output, type=type, write=write, display=display)
+def help(*output, type="help", write=False, display=True, splitter=" "):
+    logger(output, type=type, write=write, display=display, splitter=splitter)
