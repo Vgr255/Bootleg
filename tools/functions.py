@@ -6,7 +6,6 @@ from tools import get
 from tools import reg
 import subprocess
 import tempfile
-import win32com
 import os
 
 def initialize(): # initialize variables on startup and/or retry
@@ -194,20 +193,6 @@ def chk_missing_run_files():
         var.SYS_ERROR.append("readme")
     if not IsFile.cur(fl.DOCUMENTATION):
         var.SYS_ERROR.append("documentation")
-
-def make_shortcut(): # this is a placeholder, it's currently awful
-    if reg.git() is None:
-        return
-    shell = win32com.client.Dispatch('WScript.shell')
-    shortcut = shell.CreateShortcut(os.path.join(os.getcwd(), "git.lnk"))
-    shortcut.TargetPath = '{0}\utils\CMD.exe /c ""{1}\bin\sh.exe" --login -i"'.format(os.getcwd(), reg.git())
-    shortcut.WindowsStyle = 1
-    #shortcut.HotKey = None # .. uh
-    #shortcut.IconLocation = None # welp
-    shortcut.Description = "Git shell"
-    shortcut.WorkingDirectory = os.getcwd()
-    
-    shortcut.Save()
 
 def extract_image():
     if var.FFVII_IMAGE is None:
