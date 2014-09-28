@@ -3,7 +3,9 @@ from tools import constants as con
 from datetime import datetime
 import os
 
-def logger(output, logtype="", type="normal", display=True, write=True): # logs everything to file and/or screen. always use this
+def logger(*output, logtype="", type="normal", display=True, write=True): # logs everything to file and/or screen. always use this
+    output = list(output)
+    output = " ".join(output)
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if var.LOG_EVERYTHING or var.DEV_LOG:
