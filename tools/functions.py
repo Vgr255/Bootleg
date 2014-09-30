@@ -68,6 +68,7 @@ class ManipFile:
                 cause = 'status'
 
             log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
+        return ret
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.

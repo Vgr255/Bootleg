@@ -43,18 +43,20 @@ if fn.IsFile.cur("cfg.py"):
 for x, y in config.__dict__.items():
     if not x.isupper():
         continue
-    if y is "":
+    if y == "":
         continue
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
         if hasattr(var, x):
             continue # we carry everything over to var, but only what's not in there if disallowed
-    if x is "FORCE_CONFIG":
+    if x == "FORCE_CONFIG":
         continue # that won't be allowed
     try:
-        for a, b in x.keys():
-            if b is "":
+        cfgdict = getattr(config, x)
+        vardict = getattr(var, x)
+        for a, b in cfgdict.items():
+            if not b:
                 continue
-            setattr(var.x, a, b)
+            vardict[a] = b
     except AttributeError: # not a dict
         setattr(var, x, y)
 
@@ -64,9 +66,8 @@ elif var.FORCE_CONFIG:
     log.logger("Forcing config into var.", display=False)
 
 if var.ALLOW_INIT:
-    fn.do_init()
-elif var.FORCE_CONFIG:
-    log.logger("WARNING: Initialization was disabled. Forcing initialization.")
+    if var.FORCE_CONFIG:
+        log.logger("WARNING: Forcing initialization.")
     fn.do_init()
 else:
     log.logger("WARNING: Initialization was disabled. System variables are not set.")
