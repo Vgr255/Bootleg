@@ -44,7 +44,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
 
 def multiple(*output, types=[], display=True, write=True, splitter=" "):
     output = list(output)
-    output = splitter.join(output)
     if "all" in types:
         if var.LOG_EVERYTHING or var.DEV_LOG:
             logger(output, type="all", display=display, write=write, splitter=splitter)
@@ -65,5 +64,4 @@ def multiple(*output, types=[], display=True, write=True, splitter=" "):
 
 def help(*output, type="help", write=False, display=True, splitter=" "):
     output = list(output)
-    output = splitter.join(output)
     logger(output, type=type, write=write, display=display, splitter=splitter)
