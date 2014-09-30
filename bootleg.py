@@ -39,7 +39,7 @@ if fn.IsFile.cur("cfg.py"):
     for x in cfg.__dict__.keys():
         y = getattr(cfg, x)
         setattr(config, x, y)
-        var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
+    var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
 for x, y in config.__dict__.items():
     if not x.isupper():
@@ -49,17 +49,28 @@ for x, y in config.__dict__.items():
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
         if hasattr(var, x):
             continue # we carry everything over to var, but only what's not in there if disallowed
-    setattr(var, x, y)
+    if x is "FORCE_CONFIG":
+        continue # that won't be allowed
+    try:
+        for a, b in x.keys():
+            if b is "":
+                continue
+            setattr(var.x, a, b)
+    except AttributeError: # not a dict
+        setattr(var, x, y)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
-    log.logger("Config was disallowed. Overriding.", type="debug", display=False)
+    log.logger("Config was disallowed. Overriding.", display=False)
 elif var.FORCE_CONFIG:
     log.logger("Forcing config into var.", display=False)
 
 if var.ALLOW_INIT:
     fn.do_init()
+elif var.FORCE_CONFIG:
+    log.logger("WARNING: Initialization was disabled. Forcing initialization.")
+    fn.do_init()
 else:
-    log.logger("WARNING: Initialization was disabled. System variables are not set.", type="debug")
+    log.logger("WARNING: Initialization was disabled. System variables are not set.")
 
 def main():
     while var.ALLOW_RUN:

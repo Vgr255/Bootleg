@@ -13,7 +13,7 @@ def settings():
         for s, u in y.items():
             setattr(var, s, u)
 
-def config():
+def conf():
     for x in con.SETTINGS_PREFIXES.keys():
         x = x.replace("VAR", "SETTINGS")
         y = getattr(config, x)
