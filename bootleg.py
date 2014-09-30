@@ -21,18 +21,17 @@ import shutil
 import os
 import sys
 
-try:
-    import config
-except ImportError: # user did not rename the config file, let's silently copy it
-    shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
-    import config
-
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
 from tools import commands as cmd
 from tools import logger as log
 from tools import get
+
+if not fn.IsFile.cur("config.py"): # user did not rename their config file, let's silently copy it
+    shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+
+import config
 
 if fn.IsFile.cur("cfg.py"):
     import cfg

@@ -4,19 +4,11 @@ from tools import filenames as fl
 from tools import logger as log
 from tools import parser
 import platform
-import config
 
 def settings():
     for x in con.SETTINGS_PREFIXES.keys():
         x = x.replace("VAR", "SETTINGS")
         y = getattr(var, x)
-        for s, u in y.items():
-            setattr(var, s, u)
-
-def conf():
-    for x in con.SETTINGS_PREFIXES.keys():
-        x = x.replace("VAR", "SETTINGS")
-        y = getattr(config, x)
         for s, u in y.items():
             setattr(var, s, u)
 
