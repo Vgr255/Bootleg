@@ -5,7 +5,10 @@ import os
 
 def logger(*output, logtype="", type="normal", display=True, write=True, splitter=" "): # logs everything to file and/or screen. always use this
     output = list(output)
-    output = splitter.join(output)
+    msg = ""
+    for line in output:
+        msg = "{0}{1}{2}".format(msg, splitter if msg else "", line)
+    output = str(msg)
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if var.LOG_EVERYTHING or var.DEV_LOG:
@@ -33,17 +36,14 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         if logtype == con.LOGGERS["all"]:
             output = "type.{0} - {1}".format(type, output)
         f.seek(0, 2)
-        try:
-            if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
-                f.write("\n\n" + timestamp + output + "\n")
-            else:
-                f.write(timestamp + output + "\n")
-        except TypeError:
-            output = str(output)
-            logger(output, logtype=logtype, type=type, display=False, write=write) # display is false because it already displayed anyway
+        if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
+            f.write("\n\n" + timestamp + output + "\n")
+        else:
+            f.write(timestamp + output + "\n")
 
 def multiple(*output, types=[], display=True, write=True, splitter=" "):
     output = list(output)
+    output = splitter.join(output)
     if "all" in types:
         if var.LOG_EVERYTHING or var.DEV_LOG:
             logger(output, type="all", display=display, write=write, splitter=splitter)
@@ -64,4 +64,5 @@ def multiple(*output, types=[], display=True, write=True, splitter=" "):
 
 def help(*output, type="help", write=False, display=True, splitter=" "):
     output = list(output)
+    output = splitter.join(output)
     logger(output, type=type, write=write, display=display, splitter=splitter)
