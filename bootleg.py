@@ -49,7 +49,7 @@ for x, y in config.__dict__.items():
         if hasattr(var, x):
             continue # we carry everything over to var, but only what's not in there if disallowed
     if x == "FORCE_CONFIG":
-        continue # that won't be allowed
+        continue # forcing config cannot be manually set
     try:
         cfgdict = getattr(config, x)
         vardict = getattr(var, x)
@@ -66,8 +66,9 @@ elif var.FORCE_CONFIG:
     log.logger("Forcing config into var.", display=False)
 
 if var.ALLOW_INIT:
-    if var.FORCE_CONFIG:
-        log.logger("WARNING: Forcing initialization.")
+    fn.do_init()
+elif var.FORCE_CONFIG:
+    log.logger("WARNING: Forcing initialization.")
     fn.do_init()
 else:
     log.logger("WARNING: Initialization was disabled. System variables are not set.")
