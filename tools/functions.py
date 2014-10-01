@@ -18,7 +18,6 @@ def initialize(): # initialize variables on startup and/or retry
     var.ERROR = False
     var.INITIALIZED = True
     var.RETRY = False
-    begin_anew()
 
 def do_init(): # initialize on startup only
     get.settings()
@@ -27,7 +26,8 @@ def do_init(): # initialize on startup only
     get.commands()
     reg.get()
     format_variables()
-    initialize() # needs to be called after get.architecture()
+    initialize()
+    begin_anew() # needs to be called after get.architecture()
 
 class IsFile:
     def cur(inp):
@@ -39,7 +39,7 @@ class IsFile:
     def get(inp):
         return os.path.isfile(inp)
 
-class ManipFile:
+class ManipFile: # currently a placeholder, will change in the future
     class Z7:
         def extract(file, dir=""):
             if dir:
@@ -48,7 +48,7 @@ class ManipFile:
                 args = ['7za.exe', 'x', '-o"{0}"'.format(os.getcwd()), '"{0}"'.format(file)]
             __handler__(args)
 
-    class Zip:
+    class Lgp:
         pass
 
     class Rar:
@@ -68,7 +68,6 @@ class ManipFile:
                 cause = 'status'
 
             log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
-        return ret
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
@@ -110,7 +109,7 @@ def format_variables(): # formats a few variables to make sure they're correct
     if var.BOOTLEG_TEMP is None:
         var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
     if var.FFVII_IMAGE is not None:
-        if var.FFVII_IMAGE[-4:].lower() is not ".zip":
+        if not var.FFVII_IMAGE[-4:].lower() == ".zip":
             var.FFVII_IMAGE = None
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
@@ -321,7 +320,6 @@ def find_setting(setting): # gets parsable setting
     if con.RANGE[setting] < 0:
         log.help("Please enter exactly {0} digits.".format(len(str(con.RANGE[setting])[1:])))
         log.help("Entering '0' as any digit will not install the specific option.")
-        log.help("\n")
     else:
         log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
     log.help("\n")
@@ -330,6 +328,7 @@ def find_setting(setting): # gets parsable setting
         log.help("0 = No Change")
         log.help("\n".join(msg[1:]))
     if con.RANGE[setting] == 1:
+        log.help(msg[0])
         log.help("0 = NO")
         log.help("1 = YES")
     log.help("\n")
