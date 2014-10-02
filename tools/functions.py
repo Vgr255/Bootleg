@@ -111,6 +111,9 @@ def format_variables(): # formats a few variables to make sure they're correct
     if var.FFVII_IMAGE is not None:
         if not var.FFVII_IMAGE[-4:].lower() == ".zip":
             var.FFVII_IMAGE = None
+    if var.LANGUAGE is not None:
+        if var.LANGUAGE.lower() == "english" or var.LANGUAGE.lower() == "none":
+            var.LANGUAGE = None
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -208,14 +211,6 @@ def use_index(inp):
     pass # still todo
     # need to convert to integers. index(":") and before and after or something
 
-def chk_empty_settings():
-    for x in con.SETTINGS_PREFIXES.keys():
-        x = x.replace("VAR", "SETTINGS")
-        y = getattr(var, x)
-        for parsable in y.keys():
-            if not hasattr(var, parsable):
-                var.EMPTY_SETTINGS.append(parsable)
-
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):
         var.FATAL_ERROR.append("sprinkles")
@@ -230,36 +225,28 @@ def extract_image():
     if IsFile.game("ff7.exe"):
         log.logger("Found existing FF7 installation.")
         try:
-            shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "save")
+            shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "IMAGE\save")
             log.logger("Copying save files.")
         except OSError:
             log.logger("No save files found.")
         try:
-            shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "ff7input.cfg")
+            shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "IMAGE\ff7input.cfg")
             log.logger("Copying Input settings.")
         except OSError:
             log.logger("No input settings found.")
     try:
-        os.remove(var.FFVII_PATH)
+        shutil.rmtree(var.FFVII_PATH)
         log.logger("Removing current installation.")
     except OSError:
         log.logger("No current installation found.")
 
     log.logger("Extracting Final Fantasy VII Image . . .")
-    
-
-def use_defaults(empty):
-    for x in con.SETTINGS_PREFIXES.keys():
-        u = x.replace("_VAR", "")
-        x = x.replace("VAR", "SETTINGS")
-        y = getattr(var, x)
-        if u not in con.ALLOWED_DEFAULTS:
-            continue
-        for parsable in y.keys():
-            if parsable not in empty:
-                continue
-            if parsable in y.keys():
-                setattr(var, parsable, "0")
+    ManipFile.Z7.extract(dir=var.FFVII_PATH, file=var.FFVII_IMAGE)
+    if os.path.isdir(var.BOOTLEG_TEMP + "IMAGE"):
+        shutil.copy(var.BOOTLEG_TEMP + "IMAGE", var.FFVII_PATH)
+        shutil.rmtree(var.BOOTLEG_TEMP + "IMAGE")
+    log.logger("Final Fantasy VII Image Restoration Completed.")
+    return 0
 
 def settings_to_int():
     for x in con.SETTINGS_PREFIXES:

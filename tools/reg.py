@@ -41,7 +41,7 @@ def get():
             change()
         except OSError:
             try: # 2013 Steam
-                var.REGISTRY = winteg.OpenKey(reg, "Steam App 39140")
+                var.REGISTRY = winreg.OpenKey(reg, "Steam App 39140")
                 change()
             except OSError:
                 set_new()

@@ -1,3 +1,7 @@
+# Your settings. Change at will
+
+LANGUAGE = "English" # possible choices: English, French (for now). This does NOT affect your in-game language
+
 # Developper/debugger options. enable only if a developper asks you to
 
 DEV_LOG = False

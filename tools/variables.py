@@ -22,6 +22,7 @@ SYS_FOLDER = None
 PRINT = None # print everytime, can be anything
 USERS = None
 COMMANDS = None
+LANGUAGE = None
 
 # defaults
 
@@ -121,7 +122,7 @@ BOOT_PACK_SETTINGS = {
 "SEPHIROTH_BATTLE":  0,
 "GRIMMY_MAGIC":      0,
 "GRIMMY_HUGE_MAT":   0,
-"LANGUAGE":          0,
+"BOOT_LANGUAGE":     0,
 "ALWAYS_RUN_TOGGLE": 0,
 "BUGGY_COSTA":       0,
 "SUBMARINE_COSTA":   0,

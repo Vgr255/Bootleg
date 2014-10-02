@@ -19,7 +19,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
         display = True
     if display:
-        print(output)
+        if var.LANGUAGE:
+            print(translate(output))
+        else:
+            print(output)
     if write:
         logfile = getattr(var, logtype + "_FILE")
         log_ext = getattr(var, logtype + "_EXT")
@@ -67,3 +70,20 @@ def get(output):
     for line in output:
         msg = "{0}{1}{2}".format(msg, splitter if msg else "", line)
     return msg
+
+def translate(inp):
+    file = os.path.join(os.getcwd(), "lang", var.LANGUAGE.lower() + ".lng")
+    try:
+        f = open(file, "r")
+    except IOError: # no such language
+        log.logger("Warning: {0} is not a valid language.".format(var.LANGUAGE))
+        var.LANGUAGE = None
+        return inp
+    for line in f.readlines():
+        spl = line.index(' == ')
+        if line[:spl] == inp:
+            spl = spl + 4
+            if not line[spl:].replace(" ", ""):
+                return inp
+            return line[spl:]
+    return inp # let's not raise an error if a translation is missing...
