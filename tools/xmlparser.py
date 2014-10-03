@@ -43,7 +43,8 @@ def init(filename, lang, origin):
 def get_line(inp):
     for line in file.readlines():
         line = line.replace("\n", "")
-        if line == "":
+        line1 = line.replace(" ", "")
+        if line1 == "":
             continue
         if "//" in line: # C++ like line comments, let's ignore them
             com = line.index("//")
@@ -54,10 +55,10 @@ def get_line(inp):
             if line[com1:com2] == " //":
                 com = com1
             line = line[:com]
-        if line == "<Line>":
+        if line1 == "<Line>":
             checking = True
             continue
-        if line == "</Line>":
+        if line1 == "</Line>":
             checking = False # we got what we want, now let's move on
         if checking:
             if line[:2] == "  ":
@@ -78,5 +79,9 @@ def get_line(inp):
                     getting = toget
                     continue
             if getting and "<{0]>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
-                getting = None
-                return word[setlen:-_setlen]
+                if type == "Full":
+                    return word[setlen:-_setlen]
+                if type == "Partial":
+                    inp = inp.replace(getting, word[setlen:-_setlen])
+                    getting = None
+                    break # need to parse over for multiple words
