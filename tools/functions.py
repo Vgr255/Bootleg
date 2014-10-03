@@ -1,5 +1,6 @@
 from tools import constants as con
 from tools import variables as var
+from tools import xmlparser as xml
 from tools import filenames as fl
 from tools import logger as log
 from tools import get
@@ -114,6 +115,8 @@ def format_variables(): # formats a few variables to make sure they're correct
     if var.LANGUAGE is not None:
         if var.LANGUAGE.lower() == "english" or var.LANGUAGE.lower() == "none":
             var.LANGUAGE = None
+    if var.TRANSLATIONS_FILE and var.LANGUAGE:
+        xml.init(os.getcwd() + "/" + var.TRANSLATIONS_FILE, var.LANGUAGE, "English")
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():

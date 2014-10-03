@@ -38,6 +38,8 @@ def get_help(helping=""):
             help("Game Converter developping and support: {0}.".format(", ".join(con.GAME_CONV)))
         if con.BETA_TESTERS:
             help("Beta tester{0}: {1}.".format("s" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)))
+        if con.TRANSLATORS:
+            help("Translator{0}: {1}.".format("s" if len(con.TRANSLATORS) > 1 else "", ", ".join(con.TRANSLATORS)))
         if con.SPECIAL_THANKS:
             help("Special thanks to: {0}.".format(", ".join(con.SPECIAL_THANKS)))
         if con.EXT_HELP:

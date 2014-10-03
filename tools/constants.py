@@ -5,6 +5,7 @@ GUI_CODERS = ["Insight"]
 PROCESS_CODERS = ["Vgr"]
 GAME_CONV = ["Kompass63"]
 BETA_TESTERS = ["Iceboundphoenix", "Vgr", "EQ2Alyza", "Kompass63"]
+TRANSLATORS = ["Vgr"]
 SPECIAL_THANKS = ["DLPB", "Kranmer", "UGerstl", "Aali", "ficedula", "Covarr", "Qhimm"]
 EXT_HELP = ["nasonfish"]
 
