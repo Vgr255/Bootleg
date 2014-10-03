@@ -10,8 +10,74 @@
   <French>La configuration était désactivée. Réactivation.</French>
 </Line>
 
-Forcing config into var. == 
-WARNING: Forcing initialization. == 
-WARNING: Initialization was disabled. System variables are not set. == 
-Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit. == 
-Please enter a value: == 
+<Line>
+  <Type>Full</Type>
+  <English>Forcing config into var.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>WARNING: Forcing initialization.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>WARNING: Initialization was disabled. System variables are not set.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Please enter a value:</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Please enter a command:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>No user input was detected. Using </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English> for </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>No command was entered.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>You must type either 'exit' or 'restart'.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Received SIGTERM. Closing process.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>WARNING: SIGTERM Detected.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>An error occured. Please report this.\nProvide your </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English> file.</English>
+</Line
+
+// End of the 'bootleg.py' lines
