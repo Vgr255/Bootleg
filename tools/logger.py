@@ -1,5 +1,6 @@
 from tools import variables as var
 from tools import constants as con
+from tools import xmlparser as xml
 from datetime import datetime
 import os
 
@@ -20,7 +21,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         display = True
     if display:
         if var.LANGUAGE:
-            print(translate(output))
+            print(xml.get_line(output))
         else:
             print(output)
     if write:
@@ -70,20 +71,3 @@ def get(output):
     for line in output:
         msg = "{0}{1}{2}".format(msg, splitter if msg else "", line)
     return msg
-
-def translate(inp):
-    file = os.path.join(os.getcwd(), "lang", var.LANGUAGE.lower() + ".lng")
-    try:
-        f = open(file, "r")
-    except IOError: # no such language
-        log.logger("Warning: {0} is not a valid language.".format(var.LANGUAGE))
-        var.LANGUAGE = None
-        return inp
-    for line in f.readlines():
-        spl = line.index(' == ')
-        if line[:spl] == inp:
-            spl = spl + 4
-            if not line[spl:].replace(" ", ""):
-                return inp
-            return line[spl:]
-    return inp # let's not raise an error if a translation is missing...

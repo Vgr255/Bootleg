@@ -24,6 +24,8 @@ USERS = None
 COMMANDS = None
 LANGUAGE = None
 
+TRANSLATIONS_FILE = "translations.xml" # needs to be an XML file
+
 # defaults
 
 DEV_LOG = False

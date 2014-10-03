@@ -1,0 +1,17 @@
+// It is possible to make comments using this syntax
+// For now, multi-line comments are not supported
+// Type is Full or Partial
+
+// Those lines are contained within 'bootleg.py'
+
+<Line>
+  <Type>Full</Type>
+  <English>Config was disallowed. Overriding.</English>
+  <French>La configuration était désactivée. Réactivation.</French>
+</Line>
+
+Forcing config into var. == 
+WARNING: Forcing initialization. == 
+WARNING: Initialization was disabled. System variables are not set. == 
+Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit. == 
+Please enter a value: == 
