@@ -85,3 +85,4 @@ def get_line(inp):
                     inp = inp.replace(getting, word[setlen:-_setlen])
                     getting = None
                     break # need to parse over for multiple words
+    return inp # it was probably partial, and inp was replaced over. if it wasn't, it needs to return something anyway
