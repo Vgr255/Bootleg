@@ -80,7 +80,7 @@ def main():
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
-            log.help("Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.")
+            log.help("Type 'exit' or 'restart' to exit or restart {0}, or Ctrl+C to quit.".format(con.PROGRAM_NAME))
         if var.FATAL_ERROR and not var.ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []

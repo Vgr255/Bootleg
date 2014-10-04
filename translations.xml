@@ -26,8 +26,13 @@
 </Line>
 
 <Line>
-  <Type>Full</Type>
-  <English>Type 'exit' or 'restart' to exit or restart Bootleg, or Ctrl+C to quit.</English>
+  <Type>Partial</Type>
+  <English>Type 'exit' or 'restart' to exit or restart </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>, or Ctrl+C to quit.</English>
 </Line>
 
 <Line>
@@ -72,12 +77,12 @@
 
 <Line>
   <Type>Partial</Type>
-  <English>An error occured. Please report this.\nProvide your </English>
+  <English>An error occured. Please report this.\nProvide your '</English>
 </Line>
 
 <Line>
   <Type>Partial</Type>
-  <English> file.</English>
+  <English>' file.</English>
 </Line>
 
 // End of the 'bootleg.py' lines

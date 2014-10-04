@@ -10,7 +10,7 @@ import tempfile
 import os
 
 def initialize(): # initialize variables on startup and/or retry
-    log.multiple("{0} Bootleg operation.".format("Beginning" if not var.INITIALIZED else "Restarting"), types=["all"], display=False)
+    log.multiple("{0} {1} operation.".format("Beginning" if not var.INITIALIZED else "Restarting", con.PROGRAM_NAME), types=["all"], display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
@@ -73,9 +73,9 @@ class ManipFile: # currently a placeholder, will change in the future
 def begin_anew():
     os.system("cls") # clear the screen off everything.
     log.help("\n".join(con.BOOT_ASCII))
-    log.help("       Running Bootleg on {0}                      |___/".format(var.ARCHITECTURE))
+    log.help("       Running {1} on {0} {2} |___/".format(var.ARCHITECTURE, con.PROGRAM_NAME, " " * (27 - len(con.PROGRAM_NAME))))
     log.help("")
-    log.help("Welcome to the Bootleg configurator {0}".format(con.CURRENT_RELEASE))
+    log.help("Welcome to the {1} configurator {0}".format(con.CURRENT_RELEASE, con.PROGRAM_NAME))
     commands = []
     commands.extend(con.COMMANDS)
     if var.SHOW_HIDDEN_COMMANDS:

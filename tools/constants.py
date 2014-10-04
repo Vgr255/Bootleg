@@ -13,6 +13,8 @@ EMAIL = "Bootleg@DadaData.net"
 
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
+PROGRAM_NAME = "Bootleg"
+
 COMMANDS = ["help", "run"]
 HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these don't work
 
