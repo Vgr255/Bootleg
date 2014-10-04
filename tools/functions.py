@@ -116,7 +116,12 @@ def format_variables(): # formats a few variables to make sure they're correct
         if var.LANGUAGE.lower() == "english" or var.LANGUAGE.lower() == "none":
             var.LANGUAGE = None
     if var.TRANSLATIONS_FILE and var.LANGUAGE:
-        xml.init(os.getcwd() + "/" + var.TRANSLATIONS_FILE, var.LANGUAGE, "English")
+        if os.path.isdir(os.getcwd() + "/" + var.TRANSLATIONS_FILE):
+            xml.init(os.getcwd() + "/" + var.TRANSLATIONS_FILE, var.LANGUAGE, "English")
+        else:
+            var.LANGUAGE = None
+    if not var.TRANSLATIONS_FILE:
+        var.LANGUAGE = None
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -250,6 +255,9 @@ def extract_image():
         shutil.rmtree(var.BOOTLEG_TEMP + "IMAGE")
     log.logger("Final Fantasy VII Image Restoration Completed.")
     return 0
+
+def chk_existing_install():
+    pass # todo
 
 def settings_to_int():
     for x in con.SETTINGS_PREFIXES:

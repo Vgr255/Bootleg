@@ -134,9 +134,9 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             if var.ERROR:
                 var.ALLOW_RUN = False
-                log.logger("Received SIGTERM. Closing process.", type="debug", display=False)
+                log.logger("Received SIGTERM. Closing process.", display=False)
             else:
-                log.logger("WARNING: SIGTERM Detected.", type="debug")
+                log.logger("WARNING: SIGTERM Detected.")
                 var.ERROR = True
         except:
             if traceback.format_exc(): # if there's a traceback, let's have it
