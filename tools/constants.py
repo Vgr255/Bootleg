@@ -36,14 +36,15 @@ RELEASE_INFO = "August 29th, 2014"
 SETTINGS_PREFIXES = {
 
 "USER_VAR":          "/",
-"PATH_VAR":          "/", # for simplicity, keep it the same
+"PATH_VAR":          "/", # keep it the same as above
 "SYS_VAR":           "-",
-"BOOT_PACK_VAR":     "@", # unusued for now
-"KERNEL_VAR":        "%", # also unused, but there for completeness' sake
+"BOOT_PACK_VAR":     "@",
+"KERNEL_VAR":        "%", # unused, but there for completeness' sake
 
 }
 
-LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED"}
+LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS"}
+IGNORE_ALL = ["all", "settings"] # will not write to these files when calling log-to-all
 
 # parsables
 
@@ -197,7 +198,7 @@ RANGE = {
 
 }
 
-NON_INT_SETTINGS = ["PATH"]
+NON_INT_SETTINGS = ["PATH", "KERNEL"]
 ALLOWED_DEFAULTS = ["USER", "SYS", "BOOT_PACK", "KERNEL"]
 USE_INDEX = ["BOOT_PACK"]
 

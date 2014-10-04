@@ -151,6 +151,9 @@ INPUT_EXT = "log"
 MIXED_FILE = "bootleg"
 MIXED_EXT = "dmp"
 
+SETTINGS_FILE = "bootleg"
+SETTINGS_EXT = "ini"
+
 LOG_EVERYTHING = False
 DISPLAY_EVERYTHING = False
 

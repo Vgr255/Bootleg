@@ -49,7 +49,7 @@ def multiple(*output, types=[], display=True, write=True, splitter=" "):
             return
         log_it = []
         for logged in con.LOGGERS.keys():
-            if logged == "all":
+            if logged in con.IGNORE_ALL:
                 continue
             if con.LOGGERS[logged] not in log_it:
                 log_it.append(con.LOGGERS[logged])
@@ -71,3 +71,32 @@ def get(output, splitter):
     for line in output:
         msg = "{0}{1}{2}".format(msg, splitter if msg else "", line)
     return msg
+
+def preset(): # makes a preset file with current settings
+    userset = []
+    _usrset = []
+    bootset = []
+    for setting in var.USER_SETTINGS.keys():
+        value = getattr(var, setting)
+        for set, prefix in con.USER_SETTINGS.items():
+            if set == setting:
+                userset.append("{2}{0}{1}".format(prefix, value, con.USER_VAR))
+                _usrset.append("{0}={1}".format(prefix, value))
+                break
+    for setting in var.PATH_SETTINGS.keys():
+        value = getattr(var, setting)
+        for set, prefix in con.PATH_SETTINGS.items():
+            if set == setting:
+                userset.append("{2}{0}{1}".format(prefix, value, con.PATH_VAR))
+                _usrset.append("{0}={1}".format(prefix, value))
+                break
+    for setting in var.BRAT_SETTINGS.keys():
+        value = getattr(var, setting)
+        for set in con.BOOT_PACK_SETTINGS.keys():
+            if set == setting:
+                bootset.append(value)
+                break
+    logger("SETTINGS: {0}".format(" ".join(userset)))
+    logger("")
+    logger("BOOTLEG PACK: {0}{1}".format(con.BOOT_PACK_VAR, "".join(bootset)))
+    logger("\n".join(_usrset), con.BOOT_PACK_VAR + "=" + "".join(bootset), type="settings", display=False, splitter="\n")
