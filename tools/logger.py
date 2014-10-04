@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 def logger(*output, logtype="", type="normal", display=True, write=True, splitter=" "): # logs everything to file and/or screen. always use this
-    output = get(output)
+    output = get(output, splitter)
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     if var.LOG_EVERYTHING or var.DEV_LOG:
@@ -42,7 +42,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             f.write(timestamp + output + "\n")
 
 def multiple(*output, types=[], display=True, write=True, splitter=" "):
-    output = get(output)
+    output = get(output, splitter)
     if "all" in types:
         if var.LOG_EVERYTHING or var.DEV_LOG:
             logger(output, type="all", display=display, write=write, splitter=splitter)
@@ -62,10 +62,10 @@ def multiple(*output, types=[], display=True, write=True, splitter=" "):
         logger(output, display=display, write=write, splitter=splitter)
 
 def help(*output, type="help", write=False, display=True, splitter=" "):
-    output = get(output)
+    output = get(output, splitter)
     logger(output, type=type, write=write, display=display, splitter=splitter)
 
-def get(output):
+def get(output, splitter):
     output = list(output)
     msg = ""
     for line in output:
