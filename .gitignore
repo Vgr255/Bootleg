@@ -16,3 +16,6 @@ config.py
 
 # Registry files
 *.reg
+
+# Binary files
+*.exe
