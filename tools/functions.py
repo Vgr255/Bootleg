@@ -116,7 +116,7 @@ def format_variables(): # formats a few variables to make sure they're correct
         if var.LANGUAGE.lower() == "english" or var.LANGUAGE.lower() == "none":
             var.LANGUAGE = None
     if var.TRANSLATIONS_FILE and var.LANGUAGE:
-        if os.path.isdir(os.getcwd() + "/" + var.TRANSLATIONS_FILE):
+        if os.path.isfile(os.getcwd() + "/" + var.TRANSLATIONS_FILE):
             xml.init(os.getcwd() + "/" + var.TRANSLATIONS_FILE, var.LANGUAGE, "English")
         else:
             var.LANGUAGE = None

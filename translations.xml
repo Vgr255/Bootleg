@@ -1,6 +1,9 @@
 // It is possible to make comments using this syntax
 // For now, multi-line comments are not supported
 // Type is Full or Partial
+// Partial is only needed when the Type is Partial
+// It determines how many times it must loop through
+// a string containing this line. It is optional.
 
 // Those lines are contained within 'bootleg.py'
 
@@ -13,76 +16,242 @@
 <Line>
   <Type>Full</Type>
   <English>Forcing config into var.</English>
+  <French>La configuration a été copiée de force.</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>WARNING: Forcing initialization.</English>
+  <French>ATTENTION: Initialisation forcée.</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>WARNING: Initialization was disabled. System variables are not set.</English>
+  <French>ATTENTION: L'initialisation a été désactivée. Les variables systèmes ne sont pas identifiées.</French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
+  <Partial>2</Partial>
   <English>Type 'exit' or 'restart' to exit or restart </English>
+  <French>Entre 'exit' ou 'restart' pour quitter ou recommencer </French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
+  <Partial>2</Partial>
   <English>, or Ctrl+C to quit.</English>
+  <French>, ou Ctrl+C pour quitter.</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>Please enter a value:</English>
+  <French>Veuillez entrer une valeur :</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>Please enter a command:</English>
+  <French>Veuillez entrer une commande :</French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
+  <Partial>2</Partial>
   <English>No user input was detected. Using </English>
+  <French>Aucun paramètre de l'utilisateur n'a été détecté. Utilisation de </French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
+  <Partial>2</Partial>
   <English> for </English>
+  <French> pour </French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>No command was entered.</English>
+  <French>Aucune commande n'a été entrée.</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>You must type either 'exit' or 'restart'.</English>
+  <French>Vous devez entrer soit 'exit' ou 'restart'.</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>Received SIGTERM. Closing process.</English>
+  <French>SIGTERM reçu. Fermeture du processus.</French>
 </Line>
 
 <Line>
   <Type>Full</Type>
   <English>WARNING: SIGTERM Detected.</English>
+  <French>ATTENTION: SIGTERM Détecté.</French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
+  <Partial>2</Partial>
   <English>An error occured. Please report this.\nProvide your '</English>
+  <French>Une erreur est survenue. Veuillez le rapporter.\nSuppliez votre fichier '</French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
+  <Partial>2</Partial>
   <English>' file.</English>
+  <French>'.</French>
 </Line>
 
 // End of the 'bootleg.py' lines
+
+// All the following entries are part of files within the 'tools' folder
+// Those lines are contained within 'commands.py'
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Error: </English>
+  <French>Erreur : </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> was not found but is in the database. Critical error.</English>
+  <French> se trouve dans la base de données mais n'a pas pu être trouvé. Erreur critique.</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> is not defined</English>
+  <French> n'est pas défini</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English>Process </English>
+  <French>Le processus </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English> exited with </English>
+  <French> s'est terminé de </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English> cause </English>
+  <French> cause </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English> signal </English>
+  <French> signal </French>
+</Line>
+
+// End of the 'commands.py' lines
+
+// Those lines are contained within 'functions.py'
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Beginning </English>
+  <French>Début du processus </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Restarting </English>
+  <French>Recommencement du processus </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> operation.</English>
+  <French>.</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>       Running </English>
+  <French>             </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> on </English>
+  <French> sous </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Welcome to the </English>
+  <French>Bienvenue au configurateur </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> configurator </English>
+  <French> </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Available command:</English>
+  <French>Commande disponible :</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Available commands:</English> // Redundant, but there's no other way (yet)
+  <French>Commandes disponibles :</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Invalid setting found in </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Found existing FF7 installation.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Copying save files.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>No save files found.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Copying Input settings.</English>
+</Line>

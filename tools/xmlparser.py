@@ -19,6 +19,8 @@
 # What it does is it takes word from the 'origin' specified and then
 # finds the relevant matching entry in 'lang'; useful for translations
 # Type determines if the whole line is to be matched, or only part of it.
+# Partial, used when the Type is Partial, indicates how many times it must
+# loop through the string for all matches (0 means no limit - same as not specified)
 
 def init(filename, lang, origin):
     global file
@@ -28,20 +30,27 @@ def init(filename, lang, origin):
     global original
     global type
     global getting
-    global result
-    global partial
-    file = open(filename, "r")
+    global iteration
+    global max_amt
+    file = filename
     checking = False
     lines = []
     setting = lang[0].upper() + lang[1:].lower() # english, ENGliSH and enGLIsH all become English
     original = origin[0].upper() + origin[1:].lower()
     type = None
     getting = None
-    result = None
-    partial = []
+    iteration = 0
+    max_amt = 0
 
 def get_line(inp):
-    for line in file.readlines():
+    f = open(file, "r")
+    checking = False
+    lines = []
+    type = None
+    getting = None
+    iteration = 0
+    max_amt = 0
+    for line in f.readlines():
         line = line.replace("\n", "")
         line1 = line.replace(" ", "")
         if line1 == "":
@@ -65,6 +74,7 @@ def get_line(inp):
                 line = line[2:]
             lines.append(line)
             continue
+        getting = None
 
         for word in lines:
             origlen = len(original) + 2
@@ -73,16 +83,22 @@ def get_line(inp):
             _setlen = len(setting) + 3
             if word[:6] == "<Type>" and word[-7:] == "</Type>":
                 type = word[6:-7]
+            if word[:9] == "<Partial>" and word[-10:] == "</Partial>":
+                max_amt = int(word[9:-10]) # needs to be an integer
             if "<{0}>".format(original) == word[:origlen] and "</{0}>".format(original) == word[-_origlen:]: # original one to look for
                 toget = word[origlen:-_origlen]
                 if (toget == inp and type == "Full") or (toget in inp and type == "Partial"):
                     getting = toget
                     continue
-            if getting and "<{0]>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
+            if getting and "<{0}>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
                 if type == "Full":
+                    getting = None
                     return word[setlen:-_setlen]
                 if type == "Partial":
                     inp = inp.replace(getting, word[setlen:-_setlen])
+                    iteration += 1
                     getting = None
                     break # need to parse over for multiple words
+        if iteration == max_amt and type == "Partial" and max_amt > 0:
+            break
     return inp # it was probably partial, and inp was replaced over. if it wasn't, it needs to return something anyway
