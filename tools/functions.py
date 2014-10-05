@@ -116,6 +116,11 @@ def format_variables(): # formats a few variables to make sure they're correct
         var.LANGUAGE = var.LANGUAGE[0].upper() + var.LANGUAGE[1:].lower()
         if var.LANGUAGE in ["English", "None"]:
             var.LANGUAGE = None
+        if var.LANGUAGE.lower() in con.LANGUAGES.items():
+            for lang, short in con.LANGUAGES.items():
+                if con.LANGUAGES[lang] == var.LANGUAGE.lower():
+                    var.LANGUAGE = lang
+                    break
         if var.LANGUAGE not in con.LANGUAGES.keys():
             var.LANGUAGE = None
         if var.TRANSLATIONS_FILE and var.LANGUAGE:

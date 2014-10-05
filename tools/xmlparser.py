@@ -42,7 +42,7 @@ def init(filename, lang, origin):
     iteration = 0
     max_amt = 0
 
-def get_line(inp, loop=False):
+def get_line(inp):
     f = open(file, "r")
     checking = False
     done = False
@@ -51,64 +51,69 @@ def get_line(inp, loop=False):
     getting = None
     iteration = 0
     max_amt = 0
-    for line in f.readlines():
-        line = line.replace("\n", "")
-        line1 = line.replace(" ", "")
-        if line1 == "":
-            continue
-        if "//" in line: # C++ like line comments, let's ignore them
-            com = line.index("//")
-            com1 = com - 1
-            com2 = com + 2
-            if line[com1:] == line:
-                continue # full-line comment
-            if line[com1:com2] == " //":
-                com = com1
-            line = line[:com]
-        if line1 == "<Line>":
-            checking = True
-            continue
-        if line1 == "</Line>":
-            checking = False # we got what we want, now let's move on
-        if checking:
-            if line[:2] == "  ":
-                line = line[2:]
-            lines.append(line)
-            continue
-        getting = None
+    for loop in False, True:
+        for line in f.readlines():
+            line = line.replace("\n", "")
+            line1 = line.replace(" ", "")
+            if line1 == "":
+                continue
+            if "//" in line: # C++ like line comments, let's ignore them
+                com = line.index("//")
+                com1 = com - 1
+                com2 = com + 2
+                if line[com1:] == line:
+                    continue # full-line comment
+                if line[com1:com2] == " //":
+                    com = com1
+                line = line[:com]
+            if line1 == "<Line>":
+                checking = True
+                continue
+            if line1 == "</Line>":
+                checking = False # we got what we want, now let's move on
+            if checking:
+                if line[:2] == "  ":
+                    line = line[2:]
+                lines.append(line)
+                continue
+            getting = None
 
-        for word in lines:
-            origlen = len(original) + 2
-            _origlen = len(original) + 3
-            setlen = len(setting) + 2
-            _setlen = len(setting) + 3
-            if word[:6] == "<Type>" and word[-7:] == "</Type>":
-                type = word[6:-7]
-            if word[:9] == "<Partial>" and word[-10:] == "</Partial>":
-                max_amt = int(word[9:-10]) # needs to be an integer
-            if "<{0}>".format(original) == word[:origlen] and "</{0}>".format(original) == word[-_origlen:]: # original one to look for
-                toget = word[origlen:-_origlen]
-                if (toget == inp and type == "Full") or (toget in inp and type == "Partial"):
-                    getting = toget
-                    continue
-            if getting and "<{0}>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
-                if type == "Full":
-                    getting = None
-                    inp = word[setlen:-_setlen]
-                    done = True
-                    break
-                if type == "Partial":
-                    if not loop:
+            for word in lines:
+                origlen = len(original) + 2
+                _origlen = len(original) + 3
+                setlen = len(setting) + 2
+                _setlen = len(setting) + 3
+                if word[:6] == "<Type>" and word[-7:] == "</Type>":
+                    type = word[6:-7]
+                if word[:9] == "<Partial>" and word[-10:] == "</Partial>":
+                    max_amt = int(word[9:-10]) # needs to be an integer
+                if "<{0}>".format(original) == word[:origlen] and "</{0}>".format(original) == word[-_origlen:]: # original one to look for
+                    toget = word[origlen:-_origlen]
+                    if (toget == inp and type == "Full") or (toget in inp and type == "Partial"):
+                        getting = toget
+                        continue
+                if getting and "<{0}>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
+                    if type == "Full":
                         getting = None
+                        inp = word[setlen:-_setlen]
+                        done = True
                         break
-                    inp = inp.replace(getting, word[setlen:-_setlen])
-                    iteration += 1
-                    getting = None
-                    break # need to parse over for multiple words
-        if iteration == max_amt and type == "Partial" and max_amt > 0:
-            break
+                    if type == "Partial":
+                        if not loop:
+                            getting = None
+                            break
+                        inp = inp.replace(getting, word[setlen:-_setlen])
+                        iteration += 1
+                        getting = None
+                        break # need to parse over for multiple words
+            if iteration == max_amt and type == "Partial" and max_amt > 0:
+                done = True
+            if done:
+                break
+            if not done:
+                continue
+        if not loop and not done:
+            continue
         if done:
             break
-    if not loop and not done:
-        get_line(inp, loop=True)
     return inp # need to return something, and inp was replaced accordingly
