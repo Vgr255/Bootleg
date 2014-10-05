@@ -19,9 +19,13 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
         display = True
+    if var.LANGUAGE:
+        outputl = xml.get_line(output)
+        if outputl == output:
+            outputl = xml.get_line(output, loop=True)
     if display:
         if var.LANGUAGE:
-            print(xml.get_line(output))
+            print(outputl)
         else:
             print(output)
     if write:
@@ -52,9 +56,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             f.write(timestamp + output + "\n")
         if var.LANGUAGE:
             if (not var.INITIALIZED or var.RETRY) and not newfilel:
-                fl.write("\n\n" + timestamp + xml.get_line(output) + "\n")
+                fl.write("\n\n" + timestamp + outputl + "\n")
             else:
-                fl.write(timestamp + xml.get_line(output) + "\n")
+                fl.write(timestamp + outputl + "\n")
 
 def multiple(*output, types=[], display=True, write=True, splitter=" "):
     output = get(output, splitter)
