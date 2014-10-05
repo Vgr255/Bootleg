@@ -25,21 +25,36 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         else:
             print(output)
     if write:
+        newfile = False
         logfile = getattr(var, logtype + "_FILE")
         log_ext = getattr(var, logtype + "_EXT")
         file = logfile + "." + log_ext
+        if var.LANGUAGE:
+            newfilel = False
+            filel = con.LANGUAGES[var.LANGUAGE] + "_" + logfile + "." + log_ext
+            try:
+                fl = open(os.getcwd() + "/" + filel, "r+")
+            except IOError:
+                fl = open(os.getcwd() + "/" + filel, "w")
+                newfilel = True
+            fl.seek(0, 2)
         try:
             f = open(os.getcwd() + "/" + file, "r+")
         except IOError:
             f = open(os.getcwd() + "/" + file, "w") # file doesn't exist, let's create it
-            var.NEWFILE = True
+            newfile = True
         if logtype == con.LOGGERS["all"]:
             output = "type.{0} - {1}".format(type, output)
         f.seek(0, 2)
-        if (not var.INITIALIZED or var.RETRY) and not var.NEWFILE:
+        if (not var.INITIALIZED or var.RETRY) and not newfile:
             f.write("\n\n" + timestamp + output + "\n")
         else:
             f.write(timestamp + output + "\n")
+        if var.LANGUAGE:
+            if (not var.INITIALIZED or var.RETRY) and not newfilel:
+                fl.write("\n\n" + timestamp + xml.get_line(output) + "\n")
+            else:
+                fl.write(timestamp + xml.get_line(output) + "\n")
 
 def multiple(*output, types=[], display=True, write=True, splitter=" "):
     output = get(output, splitter)

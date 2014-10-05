@@ -5,6 +5,14 @@
 // It determines how many times it must loop through
 // a string containing this line. It is optional.
 
+// Please note, there is context to each line.
+// That is why the translation may not match
+// Please ask me (Vgr) if not sure about context
+
+// All Full Types will be checked, in order, before
+// checking the Partial types (so some words in
+// larger sentences don't get weirdly overwritten).
+
 // Those lines are contained within 'bootleg.py'
 
 <Line>
@@ -35,7 +43,7 @@
   <Type>Partial</Type>
   <Partial>2</Partial>
   <English>Type 'exit' or 'restart' to exit or restart </English>
-  <French>Entre 'exit' ou 'restart' pour quitter ou recommencer </French>
+  <French>Entrez 'exit' ou 'restart' pour quitter ou recommencer </French>
 </Line>
 
 <Line>
@@ -61,7 +69,7 @@
   <Type>Partial</Type>
   <Partial>2</Partial>
   <English>No user input was detected. Using </English>
-  <French>Aucun paramètre de l'utilisateur n'a été détecté. Utilisation de </French>
+  <French>Aucun choix n'a été détecté. Utilisation de </French>
 </Line>
 
 <Line>

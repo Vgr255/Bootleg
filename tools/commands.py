@@ -30,7 +30,12 @@ def clean(*args):
         try:
             os.remove("{0}.{1}".format(logfile, log_ext))
         except OSError: # file doesn't exist
-            continue
+            pass
+        for t, s in con.LANGUAGES.items():
+            try:
+                os.remove("{0}_{1}.{2}".format(s, logfile, log_ext))
+            except OSError:
+                continue
     try:
         os.remove(os.getcwd() + "/" + var.TEMP_REG + ".reg")
     except OSError:

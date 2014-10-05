@@ -42,9 +42,10 @@ def init(filename, lang, origin):
     iteration = 0
     max_amt = 0
 
-def get_line(inp):
+def get_line(inp, loop=False):
     f = open(file, "r")
     checking = False
+    done = False
     lines = []
     type = None
     getting = None
@@ -93,12 +94,21 @@ def get_line(inp):
             if getting and "<{0}>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
                 if type == "Full":
                     getting = None
-                    return word[setlen:-_setlen]
+                    inp = word[setlen:-_setlen]
+                    done = True
+                    break
                 if type == "Partial":
+                    if not loop:
+                        getting = None
+                        break
                     inp = inp.replace(getting, word[setlen:-_setlen])
                     iteration += 1
                     getting = None
                     break # need to parse over for multiple words
         if iteration == max_amt and type == "Partial" and max_amt > 0:
             break
-    return inp # it was probably partial, and inp was replaced over. if it wasn't, it needs to return something anyway
+        if done:
+            break
+    if not loop and not done:
+        get_line(inp, loop=True)
+    return inp # need to return something, and inp was replaced accordingly

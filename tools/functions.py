@@ -19,16 +19,16 @@ def initialize(): # initialize variables on startup and/or retry
     var.ERROR = False
     var.INITIALIZED = True
     var.RETRY = False
+    begin_anew()
 
 def do_init(): # initialize on startup only
     get.settings()
+    format_variables()
     get.architecture()
     get.users()
     get.commands()
     reg.get()
-    format_variables()
-    initialize()
-    begin_anew() # needs to be called after get.architecture()
+    initialize() # needs to be called after get.architecture()
 
 class IsFile:
     def cur(inp):
@@ -113,15 +113,18 @@ def format_variables(): # formats a few variables to make sure they're correct
         if not var.FFVII_IMAGE[-4:].lower() == ".zip":
             var.FFVII_IMAGE = None
     if var.LANGUAGE is not None:
-        if var.LANGUAGE.lower() == "english" or var.LANGUAGE.lower() == "none":
+        var.LANGUAGE = var.LANGUAGE[0].upper() + var.LANGUAGE[1:].lower()
+        if var.LANGUAGE in ["English", "None"]:
             var.LANGUAGE = None
-    if var.TRANSLATIONS_FILE and var.LANGUAGE:
-        if os.path.isfile(os.getcwd() + "/" + var.TRANSLATIONS_FILE):
-            xml.init(os.getcwd() + "/" + var.TRANSLATIONS_FILE, var.LANGUAGE, "English")
-        else:
+        if var.LANGUAGE not in con.LANGUAGES.keys():
             var.LANGUAGE = None
-    if not var.TRANSLATIONS_FILE:
-        var.LANGUAGE = None
+        if var.TRANSLATIONS_FILE and var.LANGUAGE:
+            if os.path.isfile(os.getcwd() + "/" + var.TRANSLATIONS_FILE):
+                xml.init(os.getcwd() + "/" + var.TRANSLATIONS_FILE, var.LANGUAGE, "English")
+            else:
+                var.LANGUAGE = None
+        if not var.TRANSLATIONS_FILE:
+            var.LANGUAGE = None
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
