@@ -11,6 +11,7 @@ import os
 
 def initialize(): # initialize variables on startup and/or retry
     log.multiple("{0} {1} operation.".format("Beginning" if not var.INITIALIZED else "Restarting", con.PROGRAM_NAME), types=["all"], display=False)
+    log.logger("Running {1} in {0}.".format("English" if var.LANGUAGE is None else var.LANGUAGE, con.PROGRAM_NAME))
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
@@ -114,11 +115,10 @@ def format_variables(): # formats a few variables to make sure they're correct
             var.FFVII_IMAGE = None
     if var.LANGUAGE is not None:
         var.LANGUAGE = var.LANGUAGE[0].upper() + var.LANGUAGE[1:].lower()
-        if var.LANGUAGE.lower() in con.LANGUAGES.items():
-            for lang, short in con.LANGUAGES.items():
-                if con.LANGUAGES[lang] == var.LANGUAGE.lower():
-                    var.LANGUAGE = lang
-                    break
+        for lang in con.LANGUAGES.keys():
+            if con.LANGUAGES[lang] == var.LANGUAGE.lower():
+                var.LANGUAGE = lang
+                break
         if var.LANGUAGE in ["English", "None"]:
             var.LANGUAGE = None
         if var.LANGUAGE not in con.LANGUAGES.keys():
@@ -142,7 +142,7 @@ def parse_settings_from_params(inp): # parse settings from launch parameters
                 for l in con.USE_INDEX:
                     for s in y.keys():
                         if s == l and param[1] == y[s]: # so many letters
-                            use_index(param[2:])
+                            use_index(param[2:], x)
                             return
                 for parsable in z.keys():
                     if param[1] == y[parsable]:
@@ -152,8 +152,7 @@ def parse_settings_from_file(inp):
     x = len(var.PRESET_EXT) + 1
     if not inp[-x:] == "." + var.PRESET_EXT:
         inp = inp + "." + var.PRESET_EXT
-    fexist = IsFile.cur("presets/" + inp)
-    if not fexist:
+    if not IsFile.cur("presets/" + inp):
         var.NONEXISTANT_FILE = True
         return
     else:
@@ -169,7 +168,7 @@ def parse_settings_from_file(inp):
                 for p in f:
                     p = p.replace("\n", "")
                     fp.append(p)
-                use_index(fp)
+                use_index(fp, y)
                 return
             for e, i in u.items():
                 f = file.readline()
@@ -191,11 +190,11 @@ def parse_settings_from_input(inp):
         if inp[0] == y:
             inp = inp[1:] # remove the prefix
         p = x.replace("_VAR", "")
-        x = x.replace("VAR", "SETTING")
+        x = x.replace("VAR", "SETTINGS")
         q = getattr(con, x)
         s = getattr(var, x)
         for parsable in s.keys():
-            setting = getattr(con, parsable)
+            setting = getattr(q, parsable)
             for t, u in setting.items():
                 if inp[0] == u:
                     var.PARSING = parsable
@@ -220,11 +219,16 @@ def parse_settings_from_input(inp):
                             equal = parsed.index("=")
                             parsed = inp[1:equal]
                     if p in con.USE_INDEX and u == q[p]:
-                        use_index(parsed)
+                        use_index(parsed, x)
                     setattr(var, parsable, parsed)
 
-def use_index(inp):
-    pass # still todo
+def use_index(inp, setting):
+    pass # todo. ugh o-o
+    return # temporary
+    colon = inp.index(":")
+    begin = inp[:colon]
+    end = inp[colon+1:]
+    toget = getattr(con, setting)
     # need to convert to integers. index(":") and before and after or something
 
 def chk_missing_run_files():

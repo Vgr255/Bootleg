@@ -24,28 +24,15 @@
 
 def init(filename, lang, origin):
     global file
-    global checking
-    global lines
     global setting
     global original
-    global type
-    global getting
-    global iteration
-    global max_amt
     file = filename
-    checking = False
-    lines = []
     setting = lang[0].upper() + lang[1:].lower() # english, ENGliSH and enGLIsH all become English
     original = origin[0].upper() + origin[1:].lower()
-    type = None
-    getting = None
-    iteration = 0
-    max_amt = 0
 
 def get_line(inp, loop=False):
     f = open(file, "r")
     checking = False
-    done = False
     lines = []
     type = None
     getting = None
@@ -107,4 +94,6 @@ def get_line(inp, loop=False):
                     if iteration == max_amt and max_amt > 0:
                         return inp
                     break # need to parse over for multiple words
+    if not loop:
+        inp = get_line(inp, loop=True)
     return inp # need to return something, if all else fails
