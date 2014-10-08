@@ -13,6 +13,14 @@
 // checking the Partial types (so some words in
 // larger sentences don't get weirdly overwritten).
 
+// Languages
+
+<Line>
+  <Type>Partial></Type>
+  <English>French</English>
+  <French>Français</French>
+</Line>
+
 // Those lines are contained within 'bootleg.py'
 
 <Line>
@@ -205,6 +213,20 @@
 
 <Line>
   <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English>Running </English>
+  <French></French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English> in </English>
+  <French> en </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
   <Partial>2</Partial>
   <English> on </English>
   <French> sous </French>
@@ -263,3 +285,148 @@
   <Type>Full</Type>
   <English>Copying Input settings.</English>
 </Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>No input settings found.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Removing current installation.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>No current installation found.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Extracting Final Fantasy VII Image . . .</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Final Fantasy VII Image Restoration Completed.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English> setting not integer </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English> - FATAL ERROR -</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>An error occured. Please report this.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Error found: </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>An error has been encountered.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English> may still run if you wish to.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Please enter exactly </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> digits.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Entering '0' as any digit will not install the specific option.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Please choose a value between 0 and </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>0 = No Change</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>0 = NO</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>1 = YES</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Default is '</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>'. It will be used if no value is given.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>' is not a valid command.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Hidden command:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Hidden commands:</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Keep in mind that hidden commands will appear as non-existant if not used properly or if the proper conditions aren't met.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Debug command:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Debug commands:</English>
+</Line>
+
+// End of the 'functions.py' lines
