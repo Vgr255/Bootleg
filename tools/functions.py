@@ -130,6 +130,12 @@ def format_variables(): # formats a few variables to make sure they're correct
                 var.LANGUAGE = None
         if not var.TRANSLATIONS_FILE:
             var.LANGUAGE = None
+    for lang in con.LANGUAGES.keys():
+        if hasattr(con, lang.upper() + "_TRANSLATORS"):
+            lng = getattr(con, lang.upper() + "_TRANSLATORS")
+            for trnl in lng:
+                if trnl not in con.TRANSLATORS:
+                    con.TRANSLATORS.append(trnl)
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -295,7 +301,7 @@ def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
         log.multiple(" - FATAL ERROR -", types=["error", "normal"])
-        log.multiple("An unhandled error occured. Please report this.", types=["error", "normal"])
+        log.multiple("An error occured. Please report this.", types=["error", "normal"])
         var.ERROR = True
         for reason in var.FATAL_ERROR:
             try:
@@ -307,7 +313,7 @@ def end_bootleg_early():
                 log.multiple(why(), types=["error", "normal"])
     if var.SYS_ERROR:
         log.multiple("An error has been encountered.", types=["error", "normal"])
-        log.multiple("Bootleg may still run if you wish to.", types=["error", "normal"])
+        log.multiple("{0} may still run if you wish to.".format(con.PROGRAM_NAME), types=["error", "normal"])
         var.ERROR = True
         for reason in var.SYS_ERROR:
             try:
