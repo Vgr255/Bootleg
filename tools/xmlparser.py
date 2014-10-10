@@ -72,7 +72,8 @@ def get_line(inp, loop=False):
             if word[:6] == "<Type>" and word[-7:] == "</Type>":
                 type = word[6:-7]
             if word[:9] == "<Partial>" and word[-10:] == "</Partial>":
-                max_amt = int(word[9:-10]) # needs to be an integer
+                if type == "Partial" and not max_amt:
+                    max_amt = int(word[9:-10]) # needs to be an integer
             if "<{0}>".format(original) == word[:origlen] and "</{0}>".format(original) == word[-_origlen:]: # original one to look for
                 toget = word[origlen:-_origlen]
                 if (toget == inp and type == "Full") or (toget in inp and type == "Partial"):

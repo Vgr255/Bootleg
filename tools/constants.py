@@ -208,7 +208,7 @@ USE_INDEX = ["BOOT_PACK"]
 
 # Random stuff
 
-BOOT_ASCII = [
+BOOT_ASCII1 = [
 "          ____     ____     ____    _______   _        ______    _____",
 "         |  _ \   / __ \   / __ \  |__   __| | |      |  ____|  / ____|",
 "         | |_) | | |  | | | |  | |    | |    | |      | |__    | |  __",
@@ -221,6 +221,15 @@ BOOT_ASCII = [
 "|  __| | | '_ \ / _` | |  __/ _` | '_ \| __/ _` / __| | | \ \/ /   | |   | |",
 "| |    | | | | | (_| | | | | (_| | | | | || (_| \__ \ |_| |\  /   _| |_ _| |_",
 "|_|    |_|_| |_|\__,_|_|_|  \__,_|_| |_|\__\__,_|___/\__, | \/   |_____|_____|",
-"                                                      __/ |",
-# the last line is hardcoded in the functions
+"          __      _______ _____                       __/ |",
+]
+
+BOOT_ARCH32 = "    by    \ \    / / ____|  __ \   Running on 32bit  |___/" # I don't know of any other way to do this...
+BOOT_ARCH64 = "    by    \ \    / / ____|  __ \   Running on 64bit  |___/"
+
+BOOT_ASCII2 = [
+"           \ \  / / |  __| |__) |",
+"            \ \/ /| | |_ |  _  /   Welcome to the {1} configurator {0}".format(CURRENT_RELEASE, PROGRAM_NAME),
+"             \  / | |__| | | \ \\",
+"              \/   \_____|_|  \_\\",
 ]

@@ -131,8 +131,7 @@
 // Those lines are contained within 'commands.py'
 
 <Line>
-  <Type>Partial</Type>
-  <Partial>2</Partial>
+  <Type>Partial</Type> // No iteration, since it can be multiple
   <English>Error: </English>
   <French>Erreur : </French>
 </Line>
@@ -205,17 +204,23 @@
 </Line>
 
 <Line>
+  <Type>Partial</Type> // All the lines need to be the exact same length (for now at least)
+  <Partial>2</Partial>
+  <English>Running on </English>
+  <French>Exécution: </French>
+</Line>
+
+<Line>
   <Type>Partial</Type>
   <Partial>2</Partial>
-  <English>       Running </English>
-  <French>             </French>
-</Line>
+  <English>    by    </English>
+  <French>    par   </French>
 
 <Line>
   <Type>Partial</Type>
   <Partial>3</Partial>
   <English>Running </English>
-  <French></French>
+  <French>Exécution </French>
 </Line>
 
 <Line>
@@ -223,13 +228,6 @@
   <Partial>3</Partial>
   <English> in </English>
   <French> en </French>
-</Line>
-
-<Line>
-  <Type>Partial</Type>
-  <Partial>2</Partial>
-  <English> on </English>
-  <French> sous </French>
 </Line>
 
 <Line>
@@ -430,3 +428,122 @@
 </Line>
 
 // End of the 'functions.py' lines
+
+// The following lines are contained within 'get.py'
+
+<Line>
+  <Type>Full</Type>
+  <English>Please enter only numbers.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English>Value out of bounds at position </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English> (Max: </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Setting used for </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>Operating System: </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> on </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English> is missing from </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Please make sure your settings contain only numbers (No letters allowed).</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>The Readme file could not be found.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>The Documentation file could not be found.</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>An unhandled error has occured. Please report this.</English>
+</Line>
+
+// End of the 'get.py' lines
+
+// The following lines are contained within 'help.py'
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>               - Final Fantasy VII </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English> Mod Configurator -</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>                                * Help file *</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>' is not a valid help topic.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Possible help topic:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Possible help topics:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Hidden help command:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Hidden help commands:</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Use 'help <item>' to view a specific help topic.</English>
+</Line>
+

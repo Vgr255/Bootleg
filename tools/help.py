@@ -8,7 +8,7 @@ def __unhandled__():
 def get_help(helping=""):
     helping = helping.lower()
     help("")
-    help("               - Final Fantasy VII Bootleg Mod Configurator -")
+    help("               - Final Fantasy VII {0} Mod Configurator -".format(con.PROGRAM_NAME))
     help("                                * Help file *")
     help("")
     if helping and helping not in (con.POSSIBLE_HELP + con.HIDDEN_HELP + var.USERS + var.COMMANDS):
@@ -21,7 +21,7 @@ def get_help(helping=""):
             return False
     elif not helping:
         if con.CURRENT_RELEASE:
-            help("Bootleg - Final Fantasy VII Configurator - Version {0}".format(con.CURRENT_RELEASE))
+            help("{1} - Final Fantasy VII Configurator - Version {0}".format(con.CURRENT_RELEASE, con.PROGRAM_NAME))
         if con.RELEASE_INFO and con.BUILD_INFO:
             help(con.BUILD_INFO + " build " + con.RELEASE_INFO)
         if con.FIRST_DEV:
@@ -33,7 +33,7 @@ def get_help(helping=""):
         if con.GUI_CODERS:
             help("Programming of the Graphical User Interface (GUI): {0}.".format(", ".join(con.GUI_CODERS)))
         if con.PROCESS_CODERS:
-            help("Programming of the Bootleg process: {0}.".format(", ".join(con.PROCESS_CODERS)))
+            help("Programming of the {1} process: {0}.".format(", ".join(con.PROCESS_CODERS), con.PROGRAM_NAME))
         if con.GAME_CONV:
             help("Game Converter developping and support: {0}.".format(", ".join(con.GAME_CONV)))
         if con.BETA_TESTERS:
@@ -47,7 +47,7 @@ def get_help(helping=""):
         if con.EXT_HELP:
             help("Helper{0} external to the project: {1}.".format("s" if len(con.EXT_HELP) > 1 else "", ", ".join(con.EXT_HELP)))
         if con.EMAIL:
-            help("Official Bootleg email for support and questions: {0}".format(con.EMAIL))
+            help("Official {1} email for support and questions: {0}".format(con.EMAIL, con.PROGRAM_NAME))
         if con.POSSIBLE_HELP:
             help("")
             help("Possible help topic{1}: {0}.".format(", ".join(con.POSSIBLE_HELP), "s" if len(con.POSSIBLE_HELP) > 1 else ""))
@@ -64,7 +64,7 @@ def get_help(helping=""):
 # return the message to make it display
 
 def programming():
-    msg = "The current version of Bootleg is coded in Python 3.2"
+    msg = "The current version of {0} is coded in Python 3".format(con.PROGRAM_NAME)
     if con.PROCESS_CODERS:
         msg = msg + " by {0}".format(", ".join(con.PROCESS_CODERS))
     msg = msg + ".\nThe Graphical User Interface is coded in C#"
@@ -73,7 +73,7 @@ def programming():
     return msg + "."
 
 def code():
-    msg = "The {0}{1}Bootleg code is completely open-source".format(con.CURRENT_RELEASE, " " if con.CURRENT_RELEASE else "")
+    msg = "The {0}{1} code is completely open-source".format(con.CURRENT_RELEASE + " ", con.PROGRAM_NAME)
     if con.PROCESS_CODE:
         msg = msg + ", and can be viewed at \n{0}".format(con.PROCESS_CODE)
     msg = msg + "."

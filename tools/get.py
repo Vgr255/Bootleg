@@ -83,7 +83,7 @@ class Error: # use this to get the reasons for various errors
 
     class System:
         def int():
-            return "Please make sure your settings contain only numbers (No letters allowed)"
+            return "Please make sure your settings contain only numbers (No letters allowed)."
         def readme():
             return "The Readme file could not be found."
         def documentation():
