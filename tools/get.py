@@ -57,6 +57,7 @@ def architecture(): # find processor architecture
         rgent = rgent + "Wow6432Node\\"
     var.SHORT_REG = rgent + "Square Soft, Inc."
     var.REG_ENTRY = var.SHORT_REG + "\\Final Fantasy VII"
+    var.PROGRAM_FILES = "C:\\Program Files{0}\\Square Soft, Inc\\Final Fantasy VII\\".format(" (x86)" if var.ARCHITECTURE == "64bit" else "")
 
 def users():
     var.USERS = []

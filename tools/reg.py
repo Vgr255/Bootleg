@@ -31,6 +31,7 @@ def get():
     try: # 1998 original
         reg = winreg.OpenKey(reg, "Square Soft, Inc.")
         var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
+        var.GAME_VERSION = 1998
     except OSError: # does not exist
         try: # 2012 Square Enix store
             reg = winreg.OpenKey(reg, "Microsoft")
@@ -38,12 +39,15 @@ def get():
             reg = winreg.OpenKey(reg, "CurrentVersion")
             reg = winreg.OpenKey(reg, "Uninstall")
             var.REGISTRY = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
+            var.GAME_VERSION = 2012
             change()
         except OSError:
             try: # 2013 Steam
                 var.REGISTRY = winreg.OpenKey(reg, "Steam App 39140")
+                var.GAME_VERSION = 2013
                 change()
             except OSError:
+                var.GAME_VERSION = 1999
                 set_new()
 
 def add(drive, app, new_reg=False):

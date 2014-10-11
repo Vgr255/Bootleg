@@ -38,6 +38,8 @@ class IsFile:
         return os.path.isfile(var.SYS_FOLDER + inp)
     def game(inp):
         return os.path.isfile(var.FFVII_PATH  + inp)
+    def pro(inp):
+        return os.path.isfile(var.PROGRAM_FILES + inp)
     def get(inp):
         return os.path.isfile(inp)
 
@@ -278,7 +280,43 @@ def extract_image():
     return 0
 
 def chk_existing_install():
-    pass # todo
+    # return codes:
+    # 0  = 1998 original port found by path
+    # 1  = no installation found, failure
+    # 2  = found 1998 installation in default 32-bit program files
+    # 3  = found 1998 installation in default 64-bit program files
+    # 4  = 2012 re-release found by path
+    # 5  = 2013 steam release found by path
+    # 6  = found 2013 steam install in default 32-bit install
+    # 7  = found 2013 steam install in default 64-bit install
+    # 8  = found 1998 by registry
+    # 9  = found 2012 by registry
+    # 10 = found 2013 by registry
+    # might add more if the need arises
+    # even if some go away, keep the current ones the same
+    # so it doesn't mess up other stuff
+    if IsFile.game("ff7.exe"): # 1998
+        log.logger("Final Fantasy VII Installation Found:", var.FFVII_PATH)
+        retcode = 0
+    elif IsFile.game("FF7_Launcher.exe"): # 2012
+        log.logger("Final Fantasy VII 2012 Re-Release Installation Found:", var.FFVII_PATH)
+        retcode = 4
+    elif IsFile.pro("ff7.exe"): # default install
+        log.logger("Final Fantasy VII Default Installation Found:", var.FFVII_PATH)
+        retcode = 3 if var.ARCHITECTURE == "64bit" else 2
+    # rest to check for Steam when I know how it is
+    elif var.GAME_VERSION == 1998:
+        game = reg.get_key("AppPath")
+        if IsFile.get(game + "ff7.exe"):
+            retcode = 8
+    elif var.GAME_VERSION in (2012, 2013):
+        game = reg.get_key("InstallLocation")
+        if IsFile.get(game + "FF7_Launcher.exe"):
+            retcode = 10 if var.GAME_VERSION == 2013 else 9
+    else: # nothing found
+        log.logger("Could not find a Final Fantasy VII Installation.", "Aborting {0}...".format(con.PROGRAM_NAME))
+        retcode = 1
+    return retcode
 
 def settings_to_int():
     for x in con.SETTINGS_PREFIXES:

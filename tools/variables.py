@@ -22,6 +22,8 @@ PRINT = None # print everytime, can be anything
 USERS = None
 COMMANDS = None
 LANGUAGE = None
+PROGRAM_FILES = None
+GAME_VERSION = None
 
 TRANSLATIONS_FILE = "translations.xml" # needs to be an XML file
 
