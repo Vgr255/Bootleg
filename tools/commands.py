@@ -129,8 +129,7 @@ def do(inp, params=[]):
                      "'do call python3; exec(\"command\");'",
                      "'do call run function; eval(\"module.function\");'",
                      "'do print(\"string\");'",
-                     "'do ask print; get(\"string\");",
-                     splitter="\n")
+                     "'do ask print; get(\"string\");")
     if not done:
         fn.no_such_command("do")
 

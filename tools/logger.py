@@ -4,10 +4,15 @@ from tools import xmlparser as xml
 from datetime import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, splitter=" "): # logs everything to file and/or screen. always use this
+def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n"): # logs everything to file and/or screen. always use this
     output = get(output, splitter)
     timestamp = str(datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    toget = ""
+    if "\n" in output:
+        indx = output.index("\n")
+        toget = output[indx+1:]
+        output = output[:indx]
     if var.LOG_EVERYTHING or var.DEV_LOG:
         logtype = con.LOGGERS["all"]
     if not logtype:
@@ -55,8 +60,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
                 fl.write("\n\n" + timestamp + xml.get_line(output) + "\n")
             else:
                 fl.write(timestamp + xml.get_line(output) + "\n")
+    if toget:
+        logger(toget, logtype=logtype, display=display, write=write)
 
-def multiple(*output, types=[], display=True, write=True, splitter=" "):
+def multiple(*output, types=[], display=True, write=True, splitter="\n"):
     output = get(output, splitter)
     if "all" in types:
         if var.LOG_EVERYTHING or var.DEV_LOG:
@@ -76,7 +83,7 @@ def multiple(*output, types=[], display=True, write=True, splitter=" "):
     else: # no type
         logger(output, display=display, write=write, splitter=splitter)
 
-def help(*output, type="help", write=False, display=True, splitter=" "):
+def help(*output, type="help", write=False, display=True, splitter="\n"):
     output = get(output, splitter)
     logger(output, type=type, write=write, display=display, splitter=splitter)
 

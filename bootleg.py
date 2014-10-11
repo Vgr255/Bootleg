@@ -147,7 +147,7 @@ if __name__ == "__main__":
                     logname = con.LOGGERS["all"]
                 logfile = getattr(var, logname + "_FILE")
                 log_ext = getattr(var, logname + "_EXT")
-                log.logger("An error occured. Please report this.\nProvide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
+                log.logger("An error occured. Please report this.", "Provide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
             if str(sys.exc_info()):
                 log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
             var.ERROR = True
