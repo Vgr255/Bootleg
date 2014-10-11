@@ -19,3 +19,6 @@ config.py
 
 # Binary files
 *.exe
+
+# Image files
+*.ico
