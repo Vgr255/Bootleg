@@ -24,6 +24,13 @@
 // Those lines are contained within 'bootleg.py'
 
 <Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English> Final Fantasy VII Mod Configurator </English>
+  <French> Configurateur pour Final Fantasy VII </French>
+</Line>
+
+<Line>
   <Type>Full</Type>
   <English>Config was disallowed. Overriding.</English>
   <French>La configuration était désactivée. Réactivation.</French>

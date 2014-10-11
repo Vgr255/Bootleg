@@ -81,7 +81,6 @@ def begin_anew():
     else:
         log.help(con.BOOT_ARCH32)
     log.help("\n".join(con.BOOT_ASCII2))
-    log.help("")
     commands = []
     commands.extend(con.COMMANDS)
     if var.SHOW_HIDDEN_COMMANDS:
@@ -89,7 +88,8 @@ def begin_anew():
         commands.extend(con.ERROR_COMMANDS)
     if var.DEBUG_MODE:
         commands.extend(con.DEBUG_COMMANDS)
-    log.help("Available command{1}: {0}.".format(", ".join(commands), "" if len(commands) == 1 else "s"))
+    if not var.RUNNING:
+        log.help("", "Available command{1}: {0}.".format(", ".join(commands), "" if len(commands) == 1 else "s"))
 
 def format_variables(): # formats a few variables to make sure they're correct
     if var.MOD_LOCATION:

@@ -25,6 +25,13 @@ LANGUAGE = None
 PROGRAM_FILES = None
 GAME_VERSION = None
 
+# launcher arguments. only here for consistency
+
+LADMIN = False # checks if it was launched as admin
+SILENT = False # checks if it needs to run in silent mode
+RUNNING = False # checks if it should run without prompting the user
+ARGUMENTS = None
+
 TRANSLATIONS_FILE = "translations.xml" # needs to be an XML file
 
 # defaults

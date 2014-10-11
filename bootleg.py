@@ -60,6 +60,18 @@ for x, y in config.__dict__.items():
     except AttributeError: # not a dict
         setattr(var, x, y)
 
+launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
+launcher.add_argument("--admin", action="store_true")
+launcher.add_argument("--silent", action="store_true")
+launcher.add_argument("--run", action="store_true")
+launcher.add_argument("--settings", action=")
+var.LADMIN = launcher.parse_args().admin
+var.SILENT = launcher.parse_args().silent
+var.RUNNING = launcher.parse_args().run
+var.ARGUMENTS = launcher.parse_args().settings
+
+log.logger("Launch parameters: {0}".format(launcher.parse_args()), type="debug", display=False)
+
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("Config was disallowed. Overriding.", display=False)
 elif var.FORCE_CONFIG:
@@ -120,7 +132,6 @@ def main():
         if var.ERROR and command not in con.ERROR_COMMANDS:
             log.help("You must type either 'exit' or 'restart'.")
         else:
-            iscmd = None
             try:
                 iscmd = getattr(cmd, command)
                 iscmd(inp, params)
