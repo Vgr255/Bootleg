@@ -206,8 +206,15 @@
 <Line>
   <Type>Partial</Type> // All the lines need to be the exact same length (for now at least)
   <Partial>2</Partial>
-  <English>Running on </English>
-  <French>Exécution: </French>
+  <English>   Running on 32bit  </English>
+  <French>   Exécution: 32bit  </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>2</Partial>
+  <English>   Running on 64bit  </English>
+  <French>   Exécution: 64bit  </French>
 </Line>
 
 <Line>
@@ -515,6 +522,7 @@
 
 <Line>
   <Type>Partial</Type>
+  <Partial>1</Partial>
   <English>' is not a valid help topic.</English>
 </Line>
 

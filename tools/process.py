@@ -4,8 +4,6 @@ from tools import functions as fn
 from tools import filenames as fl
 from tools import logger as log
 from tools import parser
-import config
-import os
 
 def run(params="", silent=False):
     pass # last thing to do, see below
@@ -32,3 +30,9 @@ def run(params="", silent=False):
 # Estimated time to code this: End of October
 # Estimated release time: Aiming towards Dec 31st
 # -Vgr
+# ***
+# Edit October 10th: lol nope
+# This isn't getting coded anywhere near the end of October
+# 2014 release is maybe possible, but doubtful
+# Also L&M-1Y yesterday. If I'm not drunk I'll know
+# what this means. Secret stuff. -Vgr

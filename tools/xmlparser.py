@@ -5,6 +5,7 @@
 # - Proper credit is given to the original author
 # - Modification of the code is accompagnied with comments stating as such
 # - Modification of the code for personal use only
+# - Modification of the code for another project while keeping this notice
 # Reuse and redistribution is NOT ALLOWED under the following circumstances:
 # - Profit is made off this code
 # - The original code is modified and not indicated as such
@@ -16,11 +17,18 @@
 # with any other project. Some rewriting might need to be done, but it
 # is also possible to get it working without any further modification.
 # ***
+# If you change and improve this code, feel free to send it to me,
+# I may use it, and I'll give you full credit for the changes if I do
+# ***
 # What it does is it takes word from the 'origin' specified and then
 # finds the relevant matching entry in 'lang'; useful for translations
 # Type determines if the whole line is to be matched, or only part of it.
 # Partial, used when the Type is Partial, indicates how many times it must
 # loop through the string for all matches (0 means no limit - same as not specified)
+# Need to call init() first, with a filename, a language to translate to, and the
+# original language for the lines to look for when given. More in-depth documentation
+# is not available, you'll need to test to fully understand how it works, or use
+# it with the project to see how it works. -Vgr
 
 def init(filename, lang, origin):
     global file
