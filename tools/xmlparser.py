@@ -66,8 +66,6 @@ def get_line(inp, loop=False):
         if line1 == "</Line>":
             checking = False # we got what we want, now let's move on
         if checking:
-            if line[:2] == "  ":
-                line = line[2:]
             lines.append(line)
             continue
         getting = None
@@ -77,6 +75,13 @@ def get_line(inp, loop=False):
             _origlen = len(original) + 3
             setlen = len(setting) + 2
             _setlen = len(setting) + 3
+            while parsing:
+                if word[0] == " ":
+                    word = word[1:]
+                if word[-1:] == " ":
+                    word = word[:-1]
+                if word[0] == "<" and word[-1:] == ">": # proper brackets and all
+                    break
             if word[:6] == "<Type>" and word[-7:] == "</Type>":
                 type = word[6:-7]
             if word[:9] == "<Partial>" and word[-10:] == "</Partial>":
