@@ -49,8 +49,6 @@ SHOW_HIDDEN_HELP = False
 
 TEMP_REG = "bootleg"
 
-ALLOW_INIT = True
-
 IGNORE_FATAL_ERROR = False
 IGNORE_SYSTEM_ERROR = False
 

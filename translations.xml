@@ -31,6 +31,13 @@
 </Line>
 
 <Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Launch parameters: </English>
+  <French>Paramètres de lancement : </French>
+</Line>
+
+<Line>
   <Type>Full</Type>
   <English>Config was disallowed. Overriding.</English>
   <French>La configuration était désactivée. Réactivation.</French>
@@ -40,18 +47,6 @@
   <Type>Full</Type>
   <English>Forcing config into var.</English>
   <French>La configuration a été copiée de force.</French>
-</Line>
-
-<Line>
-  <Type>Full</Type>
-  <English>WARNING: Forcing initialization.</English>
-  <French>ATTENTION: Initialisation forcée.</French>
-</Line>
-
-<Line>
-  <Type>Full</Type>
-  <English>WARNING: Initialization was disabled. System variables are not set.</English>
-  <French>ATTENTION: L'initialisation a été désactivée. Les variables systèmes ne sont pas identifiées.</French>
 </Line>
 
 <Line>
