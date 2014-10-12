@@ -89,9 +89,12 @@ def help(*output, type="help", write=False, display=True, splitter="\n"):
 
 def get(output, splitter):
     output = list(output)
-    msg = ""
+    msg = None
     for line in output:
-        msg = "{0}{1}{2}".format(msg, splitter if msg else "", line)
+        if msg is None:
+            msg = line
+        else:
+            msg += splitter + line
     return msg
 
 def preset(): # makes a preset file with current settings
