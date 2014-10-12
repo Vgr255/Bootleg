@@ -48,8 +48,6 @@ def setting(inp): # sets variables
 
 def architecture(): # find processor architecture
     var.ARCHITECTURE = platform.architecture()[0]
-    log.logger("Operating System: {0} on {1}.".format(str(platform.architecture()[1]), var.ARCHITECTURE), display=False, type="debug")
-    log.logger("Running {1} on {0}.".format(var.ARCHITECTURE, con.PROGRAM_NAME), display=False)
     if str(platform.architecture()[1]) == "WindowsPE":
         var.ON_WINDOWS = True
     rgent = "[HKEY_LOCAL_MACHINE\\SOFTWARE\\"

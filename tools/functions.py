@@ -11,14 +11,15 @@ import os
 
 def initialize(): # initialize variables on startup and/or retry
     log.multiple("{0} {1} operation.".format("Beginning" if not var.INITIALIZED else "Restarting", con.PROGRAM_NAME), types=["all"], display=False)
+    var.INITIALIZED = True
     log.logger("Running {1} in {0}.".format("English" if var.LANGUAGE is None else var.LANGUAGE, con.PROGRAM_NAME), display=False)
+    log.logger("Running {1} on {0} ({2}Windows).".format(var.ARCHITECTURE, con.PROGRAM_NAME, "" if var.ON_WINDOWS else "Not on "), display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
     var.ERROR = False
-    var.INITIALIZED = True
     var.RETRY = False
     begin_anew()
 
@@ -174,8 +175,7 @@ def parse_settings_from_file(inp):
     if not inp[-x:] == "." + var.PRESET_EXT:
         inp = inp + "." + var.PRESET_EXT
     if not IsFile.cur("presets/" + inp):
-        var.NONEXISTANT_FILE = True
-        return
+        return 1
     else:
         file = open(os.getcwd() + "/presets/" + inp)
         file.seek(0) # make sure we're at the beginning of the file
@@ -190,7 +190,7 @@ def parse_settings_from_file(inp):
                     p = p.replace("\n", "")
                     fp.append(p)
                 use_index(fp, y)
-                return
+                return 0
             for e, i in u.items():
                 f = file.readline()
                 f.replace("\n", "")
