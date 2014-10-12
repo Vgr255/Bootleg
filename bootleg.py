@@ -75,7 +75,7 @@ var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
 
-log.logger("Launch parameters: {0}".format(launcher.parse_args()), type="debug", display=False)
+log.logger("Launch parameters: {0}".format(str(launcher.parse_args())[10:-1]), type="debug", display=False)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("Config was disallowed. Overriding.", display=False)
