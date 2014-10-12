@@ -63,7 +63,7 @@ for x, y in config.__dict__.items():
 for x, y in con.SETTINGS_PREFIXES.items():
     setattr(con, x, y)
 
-fn.do_init()
+fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
 
 launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--admin", action="store_true")

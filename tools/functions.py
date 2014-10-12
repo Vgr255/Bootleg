@@ -142,6 +142,16 @@ def format_variables(): # formats a few variables to make sure they're correct
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
 
+def make_new_bootleg(): # to call after every setting is set
+    usr_set = ["INFO: {0} options:".format(con.PROGRAM_NAME)]
+    for setting, prefix in con.USER_SETTINGS.items():
+        usr_set.append(con.USER_VAR + prefix + getattr(var, setting))
+    log.logger(usr_set, display=False, splitter=" ")
+    bootset = "INFO: {0} pack settings: {1}".format(con.PROGRAM_NAME, con.BOOT_PACK_VAR)
+    for x, value in var.BOOT_PACK_SETTINGS.items():
+        bootset += str(value)
+    log.logger(bootset, display=False)
+
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
         for param in inp:
