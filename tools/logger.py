@@ -48,8 +48,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
         f.seek(0, 2)
         if (not var.INITIALIZED or var.RETRY) and not newfile:
-            timestamp = "\n\n" + timestamp
-        f.write(timestamp + output + "\n")
+            f.write("\n\n" + timestamp + output + "\n")
+        else:
+            f.write(timestamp + output + "\n")
         if var.LANGUAGE:
             if (not var.INITIALIZED or var.RETRY) and not newfilel:
                 fl.write("\n\n" + timestamp + trout + "\n")
@@ -118,5 +119,5 @@ def preset(): # makes a preset file with current settings
                 break
     logger("SETTINGS: {0}".format(" ".join(userset)))
     logger("")
-    logger("BOOTLEG PACK: {0}{1}".format(con.BOOT_PACK_VAR, "".join(bootset)))
+    logger("{2} PACK: {0}{1}".format(con.BOOT_PACK_VAR, "".join(bootset), con.PROGRAM_NAME.upper()))
     logger("\n".join(_usrset), con.BOOT_PACK_VAR + "=" + "".join(bootset), type="settings", display=False, splitter="\n")
