@@ -13,7 +13,7 @@ def initialize(): # initialize variables on startup and/or retry
     log.multiple("{0} {1} operation.".format("Beginning" if not var.INITIALIZED else "Restarting", con.PROGRAM_NAME), types=["all"], display=False)
     var.INITIALIZED = True
     log.logger("Running {1} in {0}.".format("English" if var.LANGUAGE is None else var.LANGUAGE, con.PROGRAM_NAME), display=False)
-    log.logger("Running {1} on {0} ({2}Windows).".format(var.ARCHITECTURE, con.PROGRAM_NAME, "" if var.ON_WINDOWS else "Not on "), display=False)
+    log.logger("Running {1} on {0} ({Windows: {2}).".format(var.ARCHITECTURE, con.PROGRAM_NAME, var.ON_WINDOWS), display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
@@ -143,7 +143,7 @@ def format_variables(): # formats a few variables to make sure they're correct
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
 
-def make_new_bootleg(): # to call after every setting is set
+def make_new_bootleg(): # to call after every setting is set, before starting to install
     usr_set = ["INFO: {0} options:".format(con.PROGRAM_NAME)]
     for setting, prefix in con.USER_SETTINGS.items():
         usr_set.append(con.USER_VAR + prefix + getattr(var, setting))
@@ -152,6 +152,13 @@ def make_new_bootleg(): # to call after every setting is set
     for x, value in var.BOOT_PACK_SETTINGS.items():
         bootset += str(value)
     log.logger(bootset, display=False)
+    log.logger("- System paths -", display=False)
+    log.logger('INFO: Destination location: "{0}"'.format(var.FFVII_PATH), display=False)
+    if var.FFVII_IMAGE:
+        log.logger('INFO: Install image: "{0}"'.format(var.FFVII_IMAGE), display=False)
+    log.logger('INFO: Mods Location: "{0}"'.format(var.MOD_LOCATION))
+    log.logger('INFO: Temporary files: "{0}"'.format(var.BOOTLEG_TEMP))
+    log.logger("", "Initializing {0} . . .".format(con.PROGRAM_NAME))
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
