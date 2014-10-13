@@ -1,10 +1,5 @@
 ## Bootleg Developper Documentation
 
-* This file is to be used for developpers to make notes and comments for other programmers to see
+* Temporary Files
 
-Return codes:
-
-`0` Task finished successfully
-`1` Task did not execute, wanted behavior
-
-And more things to come. Feel free to edit this file and PR as you want.
+The temporary folder can be set by the user in the config file. If it is not set, Bootleg will attempt to use another folder. Regardless of whether the temporary folder was set by the user or not, Bootleg will create a folder inside, consisting of 30 (pseudo) randomly-generated digits.
