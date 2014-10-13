@@ -192,4 +192,4 @@ PRINT = None # will print this to screen
 # Debug mode options. edit at your own risk
 
 DEBUG_MODE = False
-VERBOSE = False
+DELETE_TEMP = True # determines whether to remove or not the temp folder

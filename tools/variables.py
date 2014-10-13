@@ -30,7 +30,7 @@ GAME_VERSION = None
 LADMIN = False # checks if it was launched as admin
 SILENT = False # checks if it needs to run in silent mode
 RUNNING = False # checks if it should run without prompting the user
-ARGUMENTS = None
+ARGUMENTS = None # holds what arguments it was used to be launched
 
 TRANSLATIONS_FILE = "translations.xml" # needs to be an XML file
 
@@ -39,7 +39,7 @@ TRANSLATIONS_FILE = "translations.xml" # needs to be an XML file
 DEV_LOG = False
 
 DEBUG_MODE = False
-VERBOSE = False
+DELETE_TEMP = True
 
 LOG_EVERYTHING = False
 DISPLAY_EVERYTHING = False
@@ -54,7 +54,7 @@ IGNORE_SYSTEM_ERROR = False
 
 ON_WINDOWS = False
 
-FORCE_CONFIG = False # overrides config.DISALLOW_CONFIG. gets set to True is a temp config file is found (for safety)
+FORCE_CONFIG = False # forces config to be carried over no matter what. do NOT manually set.
 
 # user settings
 # those are dicts for simplicity, gets converted to each variable on runtime
