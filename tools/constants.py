@@ -15,7 +15,7 @@ EMAIL = "Bootleg@DadaData.net"
 
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
-PROGRAM_NAME = "Bootleg"
+PROGRAM_NAME = "Bootleg" # this is what appears everywhere
 
 COMMANDS = ["help", "run"]
 HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these don't work
@@ -49,6 +49,25 @@ LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TR
 IGNORE_ALL = ["all", "settings"] # will not write to these files when calling log-to-all
 
 LANGUAGES = {"English": "en", "French": "fr"}
+
+# filenames to set variables
+
+FFVII_PATH = ["MODS_AVALANCHE", "MODS_OVERHAUL", "MODS_FINAL"]
+LGP_TEMP = ["CHAR_PATCH", "MINI_PATCH", "FLEVEL_PATCH", "FLEVEL_HC_PATCH", "BATTLE_PATCH", "MAGIC_PATCH", "WORLD_PATCH", "CHOCOBO_PATCH", "FINAL_PATCH"]
+ADD_PROG_NAME = ["MODS_FINAL"]
+
+TEMP_FOLDERS = ["KERNEL_VANILLA", "KERNEL_REMIX", "KERNEL_HREMIX", "BATTLE", "WORLD_VANILLA", "WORLD", "SCENE_VANILLA", "SCENE_REMIX", "SCENE_HREMIX", "SUB",
+                "MAGIC", "FLEVEL", "HFLEVEL", "CHAR", "MINI", "KERNEL_HARDCORE", "KERNEL_REVIVAL", "SCENE_HARDCORE", "SCENE_REVIVAL", "CONDOR", "SNOWBOARD"]
+
+FINAL_PATCH = ["BATTLE", "FIELD", "MINIGAME", "WM", "KERNEL", "SOUND"]
+
+MODS_FINAL = ["BATTLE", "WORLD", "FIELD"]
+MODS_AVALANCHE = ["FIELD"]
+
+DATA_WORKING = ["BATTLE", "FIELD", "MINIGAME", "WM"]
+FILES_UNDO = ["BATTLE", "MAGIC", "CHAR", "HIGH", "CHOCOBO", "WORLD"]
+
+MAKE_PATH = ["MOVIES"]
 
 # parsables
 

@@ -5,15 +5,18 @@ from tools import filenames as fl
 from tools import logger as log
 from tools import get
 from tools import reg
+
 import subprocess
+import datetime
 import tempfile
+import random
 import os
 
 def initialize(): # initialize variables on startup and/or retry
     log.multiple("{0} {1} operation.".format("Beginning" if not var.INITIALIZED else "Restarting", con.PROGRAM_NAME), types=["all"], display=False)
     var.INITIALIZED = True
     log.logger("Running {1} in {0}.".format("English" if var.LANGUAGE is None else var.LANGUAGE, con.PROGRAM_NAME), display=False)
-    log.logger("Running {1} on {0} ({Windows: {2}).".format(var.ARCHITECTURE, con.PROGRAM_NAME, var.ON_WINDOWS), display=False)
+    log.logger("Running {1} on {0} (Windows: {2}).".format(var.ARCHITECTURE, con.PROGRAM_NAME, var.ON_WINDOWS), display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
@@ -41,6 +44,8 @@ class IsFile:
         return os.path.isfile(var.FFVII_PATH  + inp)
     def pro(inp):
         return os.path.isfile(var.PROGRAM_FILES + inp)
+    def tmp(inp):
+        return os.path.isfile(var.BOOTLEG_TEMP + inp)
     def get(inp):
         return os.path.isfile(inp)
 
@@ -116,6 +121,11 @@ def format_variables(): # formats a few variables to make sure they're correct
         var.FFVII_PATH = var.FFVII_PATH + "\\"
     if var.BOOTLEG_TEMP is None:
         var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
+    if not var.BOOTLEG_TEMP[-1:] == "\\":
+        var.BOOTLEG_TEMP += "\\"
+    _mkdir(var.BOOTLEG_TEMP)
+    var.BOOTLEG_TEMP += make_random_() + "\\"
+    os.mkdir(var.BOOTLEG_TEMP) # no integrity check, there's too small a chance that the folder already exists. and if it does, I want an error to occur
     if var.FFVII_IMAGE is not None:
         if not var.FFVII_IMAGE[-4:].lower() == ".zip":
             var.FFVII_IMAGE = None
@@ -143,22 +153,69 @@ def format_variables(): # formats a few variables to make sure they're correct
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
 
+def make_random_(): # generates a random string of numbers for temporary folders
+    tmpnum = str(datetime.datetime.now())
+    tmpnum = tmpnum.replace("-", "")
+    tmpnum = tmpnum.replace(" ", "")
+    tmpnum = tmpnum.replace(":", "")
+    tmpnum = tmpnum.replace(".", "")
+    tmpnum = int(tmpnum) * random.randrange(1, 9)
+    tmpnum = str(random.randrange(100, 999)) + str(tmpnum)
+    tmpnum = tmpnum + str(random.randrange(100, 999))
+    tmpnum = tmpnum[:13] + str(random.randrange(1000, 9999)) + tmpnum[13:26]
+    tmpnum = "[" + tmpnum + "]"
+    return tmpnum
+
 def make_new_bootleg(): # to call after every setting is set, before starting to install
-    usr_set = ["INFO: {0} options:".format(con.PROGRAM_NAME)]
+    usr_set = ["BootOptions:".format(con.PROGRAM_NAME)]
     for setting, prefix in con.USER_SETTINGS.items():
         usr_set.append(con.USER_VAR + prefix + getattr(var, setting))
     log.logger(usr_set, display=False, splitter=" ")
-    bootset = "INFO: {0} pack settings: {1}".format(con.PROGRAM_NAME, con.BOOT_PACK_VAR)
-    for x, value in var.BOOT_PACK_SETTINGS.items():
+    bootset = "BootPack: {1}".format(con.PROGRAM_NAME, con.BOOT_PACK_VAR)
+    for value in var.BOOT_PACK_SETTINGS.values():
         bootset += str(value)
     log.logger(bootset, display=False)
     log.logger("- System paths -", display=False)
-    log.logger('INFO: Destination location: "{0}"'.format(var.FFVII_PATH), display=False)
+    log.logger('Destination location: "{0}"'.format(var.FFVII_PATH), display=False)
     if var.FFVII_IMAGE:
-        log.logger('INFO: Install image: "{0}"'.format(var.FFVII_IMAGE), display=False)
-    log.logger('INFO: Mods Location: "{0}"'.format(var.MOD_LOCATION))
-    log.logger('INFO: Temporary files: "{0}"'.format(var.BOOTLEG_TEMP))
+        log.logger('Install image: "{0}"'.format(var.FFVII_IMAGE), display=False)
+    log.logger('Mods Location: "{0}"'.format(var.MOD_LOCATION))
+    log.logger('Temporary files: "{0}"'.format(var.BOOTLEG_TEMP))
     log.logger("", "Initializing {0} . . .".format(con.PROGRAM_NAME))
+    for p in con.ADD_PROG_NAME:
+        if hasattr(fl, p):
+            setattr(fl, p, getattr(fl, p) + con.PROGRAM_NAME)
+    for v in con.FFVII_PATH:
+        if hasattr(fl, v):
+            setattr(fl, v, var.FFVII_PATH + getattr(fl, v))
+            _mkdir(getattr(fl, v))
+    for l in con.LGP_TEMP:
+        if hasattr(fl, l):
+            setattr(fl, l, var.BOOTLEG_TEMP + getattr(fl, l))
+            _mkdir(getattr(fl, l))
+    for t in con.TEMP_FOLDERS:
+        _mkdir(var.BOOTLEG_TEMP + t.lower().replace("_", "\\"))
+    for f in con.FINAL_PATCH:
+        _mkdir(fl.FINAL_PATCH + "\\data\\" + f.lower())
+    for m in con.MODS_FINAL:
+        _mkdir(fl.MODS_FINAL + "\\" + m.lower())
+    for a in con.MODS_AVALANCHE:
+        _mkdir(fl.MODS_AVALANCHE + "\\" + a.lower())
+    for k in con.MAKE_PATH:
+        _mkdir(var.FFVII_PATH + k.lower())
+    _mkdir(var.BOOTLEG_TEMP + "Data_Working\\")
+    for d in con.DATA_WORKING:
+        _mkdir(var.BOOTLEG_TEMP + "Data_Working\\" + d.lower())
+    for u in con.FILES_UNDO:
+        _mkdir(var.BOOTLEG_TEMP + u.lower() + "_undo")
+    log.logger("Initialization completed.", "", "Now extracting Sprinkles . . .")
+    _mkdir(var.BOOTLEG_TEMP + "Sprinkles")
+    ManipFile.Z7.extract(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
+    log.logger("Sprinkles are ready.")
+
+def _mkdir(inp):
+    if not os.path.isdir(inp):
+        os.mkdir(inp)
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
@@ -298,26 +355,28 @@ def extract_image():
 
 def chk_existing_install():
     # return codes:
-    # 0  = 1998 original port found by path
-    # 1  = no installation found, failure
-    # 2  = found 1998 installation in default 32-bit program files
-    # 3  = found 1998 installation in default 64-bit program files
-    # 4  = 2012 re-release found by path
-    # 5  = 2013 steam release found by path
-    # 6  = found 2013 steam install in default 32-bit install
-    # 7  = found 2013 steam install in default 64-bit install
-    # 8  = found 1998 by registry
-    # 9  = found 2012 by registry
-    # 10 = found 2013 by registry
+    # 0 = 1998 original port found by path
+    # 1 = no installation found, failure
+    # 2 = found 1998 installation in default 32-bit program files
+    # 3 = found 1998 installation in default 64-bit program files
+    # 4 = 2012 re-release found by path
+    # 5 = 2013 steam release found by path
+    # 6 = found 1998 by registry
+    # 7 = found 2012 by registry
+    # 8 = found 2013 by registry
     # might add more if the need arises
     # even if some go away, keep the current ones the same
     # so it doesn't mess up other stuff
     if IsFile.game("ff7.exe"): # 1998
         log.logger("Final Fantasy VII Installation Found:", var.FFVII_PATH)
         retcode = 0
-    elif IsFile.game("FF7_Launcher.exe"): # 2012
-        log.logger("Final Fantasy VII 2012 Re-Release Installation Found:", var.FFVII_PATH)
-        retcode = 4
+    elif IsFile.game("FF7_Launcher.exe"): # 2012/2013
+        if "\\SteamApps\\common\\FINAL FANTASY VII\\" in var.FFVII_PATH:
+            log.logger("Final Fantasy VII 2013 Steam Installation Found:", var.FFVII_PATH)
+            retcode = 5
+        else:
+            log.logger("Final Fantasy VII 2012 Square Enix Store Installation Found:", var.FFVII_PATH)
+            retcode = 4
     elif IsFile.pro("ff7.exe"): # default install
         log.logger("Final Fantasy VII Default Installation Found:", var.FFVII_PATH)
         retcode = 3 if var.ARCHITECTURE == "64bit" else 2
@@ -325,11 +384,11 @@ def chk_existing_install():
     elif var.GAME_VERSION == 1998:
         game = reg.get_key("AppPath")
         if IsFile.get(game + "ff7.exe"):
-            retcode = 8
+            retcode = 6
     elif var.GAME_VERSION in (2012, 2013):
         game = reg.get_key("InstallLocation")
         if IsFile.get(game + "FF7_Launcher.exe"):
-            retcode = 10 if var.GAME_VERSION == 2013 else 9
+            retcode = 8 if var.GAME_VERSION == 2013 else 7
     else: # nothing found
         log.logger("Could not find a Final Fantasy VII Installation.", "Aborting {0}...".format(con.PROGRAM_NAME))
         retcode = 1
@@ -393,7 +452,6 @@ def find_setting(setting): # gets parsable setting
     var.FINDING = setting
     if con.RANGE[setting] < 0:
         log.help("Please enter exactly {0} digits.".format(len(str(con.RANGE[setting])[1:])))
-        log.help("Entering '0' as any digit will not install the specific option.")
     else:
         log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
     log.help("\n")
@@ -405,8 +463,16 @@ def find_setting(setting): # gets parsable setting
         log.help(msg[0])
         log.help("0 = NO")
         log.help("1 = YES")
+    if con.RANGE[setting] < 0:
+        for line in msg:
+            if line[0] == "1":
+                log.help("0 = No Change")
+            log.help(line)
     log.help("\n")
-    log.help("Default is '{0}'. It will be used if no value is given.".format(getattr(var, setting)))
+    tosay = "Default is '{0}'. It will be used if no value is given".format(getattr(var, setting))
+    if con.RANGE[setting] < 0:
+        tosay += ", or if there are too few digits"
+    log.help(tosay + ".")
 
 def no_such_command(command):
     log.logger("'{0}' is not a valid command.".format(command), write=False)

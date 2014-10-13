@@ -1,3 +1,5 @@
+# Mods filenames
+
 REBUILDED="0.MY REBUILDED MODELS.rar"
 AERISREVIVAL="Aeris_Patch_23_March_2011.rar"
 SLAYERSAERIS="AerisWeaponModv0.5-slayersnext.rar"
@@ -96,7 +98,6 @@ RUMBAHSHARP640="640sharp.part1.rar"
 APZCLOUD="newapzcloud.zip"
 SAILOR1="sailor jupiter.rar"
 SAILOR2="sailor mars.rar"
-SPRINKLES="Sprinkles.7z"
 PIRATETANK="tank_and_pirate_ship.zip"
 TRISH="Trish(aka Mike)'s custom model pack.7z"
 TRISHB="Trish(aka Mike)s custom model pack.7z"
@@ -149,5 +150,36 @@ AVALANCHEMATERIA="materia.rar"
 BATTLESCENEENHANCEMENTSPNG="FFVII Scene Enhancements PNG.7z"
 BATTLESCENEENHANCEMENTSLGP="FFVII Scene Enhancements LGP.7z"
 BATTLESCENEBLOODSHOT="Battle Scene PNGs.rar"
+
+# Installation constants
+
+WORLD_LGP = "world_us.lgp"
+HIGH_LGP = "high_us.lgp"
+CONDOR_LGP = "condor.lgp"
+CR_LGP = "cr_us.lgp"
+CHOCOBO_LGP = "chocobo.lgp"
+
+# Variables (set during runtime)
+# These will be in the game folder
+
+MODS_AVALANCHE = "mods\\avalanche"
+MODS_OVERHAUL = "mods\\DK"
+MODS_FINAL = "mods\\" # add con.PROGRAM_NAME on runtime
+
+# These will be in the temp folder
+
+CHAR_PATCH = "char_lgp.patch"
+MINI_PATCH = "high-us_lgp.patch"
+FLEVEL_PATCH = "flevel_lgp.patch"
+FLEVEL_HC_PATCH = "flevelHC_lgp.patch"
+BATTLE_PATCH = "battle_lgp.patch"
+MAGIC_PATCH = "magic_lgp.patch"
+WORLD_PATCH = "world_us_lgp.patch"
+CHOCOBO_PATCH = "chocobo_lgp.patch"
+FINAL_PATCH = "Final Fantasy VII"
+
+# System files
+
+SPRINKLES="Sprinkles.7z"
 README="README.md"
 DOCUMENTATION="DOCUMENTATION.md"
