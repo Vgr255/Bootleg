@@ -224,19 +224,36 @@
   <Partial>2</Partial>
   <English>    by    </English>
   <French>    par   </French>
+</Line>
 
 <Line>
   <Type>Partial</Type>
-  <Partial>3</Partial>
   <English>Running </English>
   <French>Exécution </French>
 </Line>
 
 <Line>
   <Type>Partial</Type>
-  <Partial>3</Partial>
   <English> in </English>
   <French> en </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English> on </English>
+  <French> sous </French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>True</English>
+  <French>Oui</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>False</English>
+  <French>Non</French>
 </Line>
 
 <Line>
