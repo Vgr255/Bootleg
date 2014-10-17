@@ -32,7 +32,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     newfile = False
     if not os.path.isfile(os.getcwd() + "/" + file):
         newfile = True
-    if var.LANGUAGE:
+    if var.LANGUAGE and type not in con.IGNORE_TRANSLATE:
         newfilel = False
         filel = con.LANGUAGES[var.LANGUAGE] + "_" + file
         if not os.path.isfile(os.getcwd() + "/" + filel):
@@ -51,13 +51,13 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             f.write("\n\n" + timestamp + output + "\n")
         else:
             f.write(timestamp + output + "\n")
-        if var.LANGUAGE:
+        if var.LANGUAGE and type not in con.IGNORE_TRANSLATE:
             if (not var.INITIALIZED or var.RETRY) and not newfilel:
                 fl.write("\n\n" + timestamp + trout + "\n")
             else:
                 fl.write(timestamp + trout + "\n")
     if toget:
-        logger(toget, logtype=logtype, display=display, write=write)
+        logger(toget, type=type, display=display, write=write)
 
 def multiple(*output, types=[], display=True, write=True, splitter="\n"):
     output = get(output, splitter)
