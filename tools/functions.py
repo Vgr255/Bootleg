@@ -445,7 +445,7 @@ def end_bootleg_early():
 def find_setting(setting): # gets parsable setting
     if not hasattr(var, setting):
         return
-    parse = get.parser("find_" + setting.lower())
+    parse = get._parser("find_" + setting.lower())
     if not parse:
         return
     msg = parse()

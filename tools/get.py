@@ -12,7 +12,7 @@ def settings():
         for s, u in y.items():
             setattr(var, s, u)
 
-def parser(setting): # get function xyz() in parser.py for variable XYZ
+def _parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
     for x in parser.__dict__.keys():
         y = setting.lower()
@@ -29,15 +29,16 @@ def setting(inp): # sets variables
         log.logger("Please enter only numbers.")
         return
     if con.RANGE[var.FINDING] < 0:
-        rng = str(con.RANGE[setting])[1:]
+        rng = str(con.RANGE[var.FINDING])[1:]
         if len(str(inp2)) == len(rng):
             for x in range(0, int(len(rng))):
-                if str(inp2)[x] in range(0, int(rng[x]) + 1):
+                if int(str(inp2)[x]) in range(0, int(rng[x]) + 1):
                     continue
                 else:
                     log.logger("Error: Value out of bounds at position {0}: {1} (Max: {2}).".format(x + 1, str(inp2)[x], rng[x]))
                     return
             setattr(var, var.FINDING, inp2)
+            log.logger("Using '{0}' for {1}".format(inp2, var.FINDING), display=False)
             var.FINDING = None
         else:
             log.logger("Please enter exactly {0} digits.".format(len(rng)))

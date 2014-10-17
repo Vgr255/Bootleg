@@ -228,7 +228,7 @@ def find_opening_credits():
     "5 = Strayoff's Prelude Credits",
     "6 = Grimmy's Cloud and Tifa Prelude Credits",    ]
 
-def find_cloud_weapons():
+def find_cloud_swords():
     return [
     "Choose Cloud's swords:",
     "\n",
