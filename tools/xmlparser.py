@@ -3,7 +3,7 @@
 # Reuse and redistribution of this source file is ALLOWED in the following cases:
 # - No profit is made
 # - Proper credit is given to the original author
-# - Modification of the code is accompagnied with comments stating as such
+# - Modification of the code is accompanied with comments stating as such
 # - Modification of the code for personal use only
 # - Modification of the code for another project while keeping this notice
 # Reuse and redistribution is NOT ALLOWED under the following circumstances:
@@ -11,9 +11,9 @@
 # - The original code is modified and not indicated as such
 # - No credit to the original author is given
 # ***
-# This XML parser was developped by Vgr "E. Barry" as part of the
+# This XML parser was developed by Vgr "E. Barry" as part of the
 # Bootleg Final Fantasy VII Mod Configurator project. It is however
-# entirely independant of the aforementioned project, and can be used
+# entirely independent of the aforementioned project, and can be used
 # with any other project. Some rewriting might need to be done, but it
 # is also possible to get it working without any further modification.
 # ***
@@ -46,6 +46,8 @@ def get_line(inp, loop=False):
     getting = None
     iteration = 0
     max_amt = 0
+    if inp.lower() == inp.upper():
+        return inp
     for line in f.readlines():
         line = line.replace("\n", "")
         line1 = line.replace(" ", "")
@@ -75,7 +77,7 @@ def get_line(inp, loop=False):
             _origlen = len(original) + 3
             setlen = len(setting) + 2
             _setlen = len(setting) + 3
-            while parsing:
+            while True:
                 if word[0] == " ":
                     word = word[1:]
                 if word[-1:] == " ":
@@ -95,7 +97,7 @@ def get_line(inp, loop=False):
             if getting and "<{0}>".format(setting) == word[:setlen] and "</{0}>".format(setting) == word[-_setlen:]: # setting
                 if type == "Full":
                     getting = None
-                    if iteration > 0:
+                    if loop:
                         break # prevent a full line from triggering on a partial one
                     return word[setlen:-_setlen]
                 if type == "Partial":

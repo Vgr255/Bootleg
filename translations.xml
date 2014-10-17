@@ -114,10 +114,16 @@
 </Line>
 
 <Line>
+  <Type>Full</Type>
+  <English>An error occured. Please report this.</English>
+  <French>Une erreur est survenue. Veuillez le rapporter.</French>
+</Line>
+
+<Line>
   <Type>Partial</Type>
   <Partial>2</Partial>
-  <English>An error occured. Please report this.\nProvide your '</English>
-  <French>Une erreur est survenue. Veuillez le rapporter.\nSuppliez votre fichier '</French>
+  <English>Provide your '</English>
+  <French>Suppliez votre fichier '</French>
 </Line>
 
 <Line>
