@@ -102,12 +102,7 @@ def main():
             else:
                 fn.end_bootleg_early()
                 return
-        log.help("\n")
-        if var.FINDING:
-            log.help("Please enter a value:")
-        else:
-            log.help("Please enter a command:")
-        log.help("\n")
+        log.help("\n", "Please enter a {0}:".format("value" if var.FINDING else "command"), "\n")
         inp = ""
         try:
             inp = input().strip()
