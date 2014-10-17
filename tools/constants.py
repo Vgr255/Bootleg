@@ -34,6 +34,7 @@ HIDDEN_RUN = []
 CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"
 RELEASE_INFO = "August 29th, 2014"
+VERSION_INFO = "build" # Build, Release, Version, etc
 
 SETTINGS_PREFIXES = {
 
@@ -251,5 +252,5 @@ BOOT_ASCII2 = [
 "           \ \  / / |  __| |__) |",
 "            \ \/ /| | |_ |  _  /   Welcome to the {1} configurator {0}".format(CURRENT_RELEASE, PROGRAM_NAME),
 "             \  / | |__| | | \ \\",
-"              \/   \_____|_|  \_\\",
+"              \/   \_____|_|  \_\\  {0} {2}{3}{1}".format(BUILD_INFO, RELEASE_INFO, VERSION_INFO, " - " if RELEASE_INFO else ""),
 ]
