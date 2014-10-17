@@ -13,6 +13,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         indx = output.index("\n")
         toget = output[indx+1:]
         output = output[:indx]
+    if logtype:
+        for typed in con.LOGGERS.keys():
+            if con.LOGGERS[typed] == logtype:
+                type = typed
     if var.LOG_EVERYTHING or var.DEV_LOG:
         logtype = con.LOGGERS["all"]
     if not logtype:
@@ -56,8 +60,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
                 fl.write("\n\n" + timestamp + trout + "\n")
             else:
                 fl.write(timestamp + trout + "\n")
+            fl.close()
+        f.close()
     if toget:
-        logger(toget, type=type, display=display, write=write)
+        logger(toget, logtype=logtype, display=display, write=write)
 
 def multiple(*output, types=[], display=True, write=True, splitter="\n"):
     output = get(output, splitter)
