@@ -113,7 +113,7 @@ def do(inp, params=[]):
         elif inp[:9] == "do print(" and inp[-2:] == ");":
             done = True
             try:
-                prnt = eval(inp[9:-2])
+                prnt = str(eval(inp[9:-2]))
             except NameError:
                 prnt = "Error: {0} is not defined.".format(inp[9:-2])
             log.logger(prnt, type="debug", write=False)
