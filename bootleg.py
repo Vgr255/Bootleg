@@ -102,7 +102,12 @@ def main():
             else:
                 fn.end_bootleg_early()
                 return
-        log.help("\n", "Please enter a {0}:".format("value" if var.FINDING else "command"), "\n")
+        totype = "command"
+        if var.FINDING:
+            totype = "value"
+        if var.PARSING:
+            totype = "choice"
+        log.help("\n", "Please enter a {0}:".format(totype), "\n")
         inp = ""
         try:
             inp = input().strip()
@@ -111,10 +116,15 @@ def main():
                 parsed = var.FINDING
                 log.logger("No user input was detected. Using {0} for {1}.".format(getattr(var, parsed), parsed), display=False)
                 var.FINDING = None
+                return
         log.logger(inp, type="input", display=False)
         if var.FINDING:
             get.setting(inp)
             return
+        elif var.PARSING:
+            if var.PARSING == "Language":
+                fn.chk_game_language(inp)
+                return
         inp1 = inp.lower().split()
         if not inp:
             log.help("No command was entered.")

@@ -33,7 +33,7 @@ HIDDEN_RUN = []
 
 CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"
-RELEASE_INFO = "August 29th, 2014"
+RELEASE_INFO = "August 26th, 2014"
 VERSION_INFO = "build" # Build, Release, Version, etc
 
 SETTINGS_PREFIXES = {
@@ -51,6 +51,10 @@ IGNORE_ALL = ["all", "settings", "temp"] # will not write to these files when ca
 IGNORE_TRANSLATE = ["traceback", "input", "temp"]
 
 LANGUAGES = {"English": "en", "French": "fr"}
+LANG_INDEX = {"en": 0, "fr": 1}
+
+YES = {"French": "oui"}
+NO = {"French": "non"}
 
 # filenames to set variables
 
@@ -143,7 +147,7 @@ BOOT_PACK_SETTINGS = { # the numbers here are start and end of index
 "SEPHIROTH_BATTLE":  "21:22",
 "GRIMMY_MAGIC":      "22:23",
 "GRIMMY_HUGE_MAT":   "23:24",
-"LANGUAGE":          "24:25",
+"GAME_LANGUAGE":     "24:25",
 "ALWAYS_RUN_TOGGLE": "25:26",
 "BUGGY_COSTA":       "26:27",
 "SUBMARINE_COSTA":   "27:28",

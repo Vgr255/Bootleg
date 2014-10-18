@@ -24,6 +24,7 @@ COMMANDS = None
 LANGUAGE = None
 PROGRAM_FILES = None
 GAME_VERSION = None
+PARSING = None
 
 # launcher arguments. only here for consistency
 
@@ -130,7 +131,7 @@ BOOT_PACK_SETTINGS = {
 "SEPHIROTH_BATTLE":  0,
 "GRIMMY_MAGIC":      0,
 "GRIMMY_HUGE_MAT":   0,
-"BOOT_LANGUAGE":     0,
+"GAME_LANGUAGE":     0,
 "ALWAYS_RUN_TOGGLE": 0,
 "BUGGY_COSTA":       0,
 "SUBMARINE_COSTA":   0,
