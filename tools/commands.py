@@ -34,6 +34,8 @@ def clean(*args):
             for line in f.readlines():
                 line = line[24:] # remove timestamp
                 line = line.replace("\n", "")
+                if not line:
+                    continue
                 try:
                     shutil.rmtree(line)
                 except OSError:
