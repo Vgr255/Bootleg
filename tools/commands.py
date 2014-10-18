@@ -27,11 +27,27 @@ def clean(*args):
     for x, y in con.LOGGERS.items():
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
+        if x == "temp":
+            notdone = []
+            file = "{0}\\{1}.{2}".format(os.getcwd(), logfile, log_ext)
+            f = open(file, "r")
+            for line in f.readlines():
+                line = line[24:] # remove timestamp
+                l = line.replace("\n", "")
+                try:
+                    shutil.rmtree(l)
+                except OSError:
+                    notdone.append(line)
+            if notdone:
+                f = open(file, "w")
+                f.write("\n".join(notdone))
+                continue # prevent temp file from being deleted if it fails
+            f.close() # make sure it CAN be deleted if it succeeds
         try:
             os.remove("{0}.{1}".format(logfile, log_ext))
         except OSError: # file doesn't exist
             pass
-        for t, s in con.LANGUAGES.items():
+        for s in con.LANGUAGES.values():
             try:
                 os.remove("{0}_{1}.{2}".format(s, logfile, log_ext))
             except OSError:
@@ -124,8 +140,7 @@ def do(inp, params=[]):
             done = True
             log.help("",
                      "Developper commands:",
-                     "",
-                     "",
+                     "\n",
                      "'do call python3; exec(\"command\");'",
                      "'do call run function; eval(\"module.function\");'",
                      "'do print(\"string\");'",

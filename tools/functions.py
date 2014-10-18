@@ -125,6 +125,7 @@ def format_variables(): # formats a few variables to make sure they're correct
         var.BOOTLEG_TEMP += "\\"
     _mkdir(var.BOOTLEG_TEMP)
     var.BOOTLEG_TEMP += make_random_() + "\\"
+    log.logger(var.BOOTLEG_TEMP, display=False, type="temp")
     os.mkdir(var.BOOTLEG_TEMP) # no integrity check, there's too small a chance that the folder already exists. and if it does, I want an error to occur
     if var.FFVII_IMAGE is not None:
         if not var.FFVII_IMAGE[-4:].lower() == ".zip":
