@@ -23,7 +23,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         try:
             logtype = con.LOGGERS[type]
         except KeyError: # empty type
-            logtype = "LOG" # use default instead
+            logtype = con.LOGGERS["normal"] # use default instead
     if var.DEBUG_MODE or var.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
