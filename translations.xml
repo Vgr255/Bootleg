@@ -76,6 +76,12 @@
 </Line>
 
 <Line>
+  <Type>Full</Type>
+  <English>Please enter a choice:</English>
+  <French>Veuillez faire un choix :</French>
+</Line>
+
+<Line>
   <Type>Partial</Type>
   <Partial>2</Partial>
   <English>No user input was detected. Using </English>
@@ -288,6 +294,98 @@
   <Partial>1</Partial>
   <English>Available commands:</English> // Redundant, but there's no other way (yet)
   <French>Commandes disponibles :</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>BootOptions:</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>BootPack: </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>- System paths -</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Destination location: </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Install image: </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Mods Location: </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Temporary files: </English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>1</Partial>
+  <English>Initializing </English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Initialization completed.</English>
+</Line>
+
+<Line>
+  <Type>Full</Full>
+  <English>Now extracting Sprinkles . . .</English>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>Sprinkles are ready.</English>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English>firstlng </English> // These lines never get printed in English
+  <French>Voulez-vous installer le jeu en </French> // English equivalence: "Do you want to install the game in [language]?"
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <Partial>3</Partial>
+  <English> secondlng?</English> // The language is put between those two lines. Translate accordingly
+  <French>?</French>
+</Line>
+
+<Line>
+  <Type>Partial</Type>
+  <English>(Yes/No)</English>
+  <French>(Oui/Non)</French>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>langno</English> // Roughly "Select a language."
+  <French>Veuillez choisir une langue.</French>
+</Line>
+
+<Line>
+  <Type>Full</Type>
+  <English>int_outbounds</English> // "Error: Value out of bounds."
+  <French>Erreur: Valeur hors limites.</French>
 </Line>
 
 <Line>

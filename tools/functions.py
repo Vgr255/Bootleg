@@ -168,11 +168,11 @@ def make_random_(): # generates a random string of numbers for temporary folders
     return tmpnum
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install
-    usr_set = ["BootOptions:".format(con.PROGRAM_NAME)]
+    usr_set = ["BootOptions:"]
     for setting, prefix in con.USER_SETTINGS.items():
         usr_set.append(con.USER_VAR + prefix + getattr(var, setting))
     log.logger(usr_set, display=False, splitter=" ")
-    bootset = "BootPack: {1}".format(con.PROGRAM_NAME, con.BOOT_PACK_VAR)
+    bootset = "BootPack: {0}".format(con.BOOT_PACK_VAR)
     for value in var.BOOT_PACK_SETTINGS.values():
         bootset += str(value)
     log.logger(bootset, display=False)
@@ -214,6 +214,46 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
     ManipFile.Z7.extract(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
     log.logger("Sprinkles are ready.")
 
+def chk_game_language(inp=None):
+    if LANGUAGE and not inp:
+        log.help("firstlng {0} secondlng? (Yes/No)") # "Do you wish to install the game in English?" or similar
+        var.PARSING = "Language"
+    elif inp:
+        if var.LANGUAGE:
+            for lngy, replyy in con.YES.items():
+                if lngy == var.LANGUAGE:
+                    if replyy == inp.lower() or replyy[0] == inp.lower()[0]:
+                        var.GAME_LANGUAGE = con.LANG_INDEX[lngy]
+                        var.PARSING = None
+                        return
+            for lngn, replyn in con.NO.items():
+                if lngn == var.LANGUAGE:
+                    if replyn == inp.lower() or replyn[0] == inp.lower()[0]:
+                        log.help("langno") # "Please type in a language."
+                        return
+        for lang, short in con.LANGUAGES.items():
+            if lang.lower() == inp.lower():
+                var.GAME_LANGUAGE = con.LANG_INDEX[con.LANGUAGES[lang]]
+                var.PARSING = None
+            elif inp.lower() == short:
+                var.GAME_LANGUAGE = con.LANG_INDEX[short]
+                var.PARSING = None
+            else:
+                try:
+                    inp = int(inp)
+                    if inp in con.LANG_INDEX.values():
+                        var.GAME_LANGUAGE = inp
+                        var.PARSING = None
+                    else:
+                        log.help("int_outbounds")
+                except ValueError:
+                    pass
+    elif inp is None: # first check
+        var.PARSING = "Language"
+        log.help("langno")
+    else: # empty input
+        pass # for now, maybe we'll add another check sometime
+
 def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)
@@ -229,8 +269,7 @@ def parse_settings_from_params(inp): # parse settings from launch parameters
                 for l in con.USE_INDEX:
                     for s in y.keys():
                         if s == l and param[1] == y[s]: # so many letters
-                            use_index(param[2:], x)
-                            return
+                            setattr(y, s, use_index(param[2:], x))
                 for parsable in z.keys():
                     if param[1] == y[parsable]:
                         setattr(var, parsable, param[2:])
@@ -305,17 +344,14 @@ def parse_settings_from_input(inp):
                             equal = parsed.index("=")
                             parsed = inp[1:equal]
                     if p in con.USE_INDEX and u == q[p]:
-                        use_index(parsed, x)
+                        parsed = use_index(parsed, x)
                     setattr(var, parsable, parsed)
 
-def use_index(inp, setting):
-    pass # todo. ugh o-o
-    return # temporary
+def use_index(inp, setting): # still not sure if that'll work. mainly a placeholder
     colon = inp.index(":")
-    begin = inp[:colon]
-    end = inp[colon+1:]
-    toget = getattr(con, setting)
-    # need to convert to integers. index(":") and before and after or something
+    begin = int(inp[:colon])
+    end = int(inp[colon+1:])
+    return setting[begin:end]
 
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):
