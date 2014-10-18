@@ -22,3 +22,6 @@ config.py
 
 # Image files
 *.ico
+
+# Temporary files
+*.tmp
