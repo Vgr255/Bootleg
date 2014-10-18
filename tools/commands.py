@@ -32,7 +32,6 @@ def clean(*args):
             file = "{0}\\{1}.{2}".format(os.getcwd(), logfile, log_ext)
             f = open(file, "r")
             for line in f.readlines():
-                line = line[24:] # remove timestamp
                 line = line.replace("\n", "")
                 if not line:
                     continue
@@ -45,23 +44,17 @@ def clean(*args):
                 f.write("\n".join(notdone))
                 continue # prevent temp file from being deleted if it fails
             f.close() # make sure it CAN be deleted if it succeeds
-        try:
-            os.remove("{0}.{1}".format(logfile, log_ext))
-        except OSError: # file doesn't exist
-            pass
+        file = logfile + "." + log_ext
+        if fn.IsFile.cur(file):
+            os.remove(file)
         for s in con.LANGUAGES.values():
-            try:
-                os.remove("{0}_{1}.{2}".format(s, logfile, log_ext))
-            except OSError:
-                continue
-    try:
-        os.remove(os.getcwd() + "/" + var.TEMP_REG + ".reg")
-    except OSError:
-        pass
-    try:
+            file = s + "_" + file
+            if fn.IsFile.cur(file):
+                os.remove(file)
+    if fn.IsFile.cur(var.TEMP_REG + ".reg"):
+        os.remove(var.TEMP_REG + ".reg")
+    if fn.IsFile.cur("cfg.py"):
         os.remove(os.getcwd() + "/cfg.py")
-    except OSError:
-        pass
     shutil.rmtree(os.getcwd() + '/__pycache__')
     shutil.rmtree(os.getcwd() + '/tools/__pycache__')
     var.ALLOW_RUN = False
@@ -69,7 +62,7 @@ def clean(*args):
 # The following commands may or may not require additional parameters
 
 def help(inp, params=[]):
-    if helper.get_help(" ".join(params)) == True:
+    if helper.get_help(" ".join(params)):
         to_help = helper.__unhandled__
         type = "help"
         if params[0] in var.USERS:

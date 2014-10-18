@@ -1,12 +1,12 @@
 from tools import variables as var
 from tools import constants as con
 from tools import xmlparser as xml
-from datetime import datetime
+import datetime
 import os
 
 def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n"): # logs everything to file and/or screen. always use this
     output = get(output, splitter)
-    timestamp = str(datetime.now())
+    timestamp = str(datetime.datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     toget = ""
     if "\n" in output:
@@ -17,13 +17,14 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         for typed in con.LOGGERS.keys():
             if con.LOGGERS[typed] == logtype:
                 type = typed
+    if type in con.IGNORE_TIMESTAMP:
+        timestamp = ""
     if var.LOG_EVERYTHING or var.DEV_LOG:
         logtype = con.LOGGERS["all"]
     if not logtype:
-        try:
-            logtype = con.LOGGERS[type]
-        except KeyError: # empty type
-            logtype = con.LOGGERS["normal"] # use default instead
+        if type not in con.LOGGERS.keys():
+            type = "normal"
+        logtype = con.LOGGERS[type]
     if var.DEBUG_MODE or var.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:

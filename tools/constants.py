@@ -49,6 +49,7 @@ SETTINGS_PREFIXES = {
 LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP"}
 IGNORE_ALL = ["all", "settings", "temp"] # will not write to these files when calling log-to-all
 IGNORE_TRANSLATE = ["traceback", "input", "temp"]
+IGNORE_TIMESTAMP = ["temp"]
 
 LANGUAGES = {"English": "en", "French": "fr"}
 LANG_INDEX = {"en": 0, "fr": 1}
