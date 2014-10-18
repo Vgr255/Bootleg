@@ -33,9 +33,9 @@ def clean(*args):
             f = open(file, "r")
             for line in f.readlines():
                 line = line[24:] # remove timestamp
-                l = line.replace("\n", "")
+                line = line.replace("\n", "")
                 try:
-                    shutil.rmtree(l)
+                    shutil.rmtree(line)
                 except OSError:
                     notdone.append(line)
             if notdone:
