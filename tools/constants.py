@@ -50,6 +50,7 @@ LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TR
 IGNORE_ALL = ["all", "settings", "temp"] # will not write to these files when calling log-to-all
 IGNORE_TRANSLATE = ["traceback", "input", "temp"]
 IGNORE_TIMESTAMP = ["temp"]
+IGNORE_NEWLINE = ["temp"]
 
 LANGUAGES = {"English": "en", "French": "fr"}
 LANG_INDEX = {"en": 0, "fr": 1}

@@ -9,6 +9,7 @@ from tools import reg
 import subprocess
 import datetime
 import tempfile
+import hashlib
 import random
 import os
 
@@ -155,6 +156,7 @@ def format_variables(): # formats a few variables to make sure they're correct
                     con.TRANSLATORS.append(trnl)
 
 def make_random_(): # generates a random string of numbers for temporary folders
+    iter = random.randrange(1, 10)
     tmpnum = str(datetime.datetime.now())
     tmpnum = tmpnum.replace("-", "")
     tmpnum = tmpnum.replace(" ", "")
@@ -165,6 +167,13 @@ def make_random_(): # generates a random string of numbers for temporary folders
     tmpnum = tmpnum + str(random.randrange(100, 999))
     tmpnum = tmpnum[:13] + str(random.randrange(1000, 9999)) + tmpnum[13:26]
     tmpnum = "[" + tmpnum + "]"
+    if iter % 2:
+        return tmpnum
+    tmpnum = hashlib.md5(bytes(tmpnum, "utf-8"))
+    tmpnum = tmpnum.hexdigest().upper()
+    tmpnum = "{" + tmpnum[:18] + "-"
+    tmpnum = tmpnum + hashlib.md5(bytes(tmpnum, "utf-8")).hexdigest().upper()
+    tmpnum = tmpnum[:31] + "}"
     return tmpnum
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install

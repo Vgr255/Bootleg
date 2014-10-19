@@ -53,6 +53,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         if logtype == con.LOGGERS["all"]:
             output = "type.{0} - {1}".format(type, output)
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
+        if type in con.IGNORE_NEWLINE:
+            newfile = True
+            newfilel = True
         f.seek(0, 2)
         if (not var.INITIALIZED or var.RETRY) and not newfile:
             f.write("\n\n" + timestamp + output + "\n")
