@@ -11,6 +11,7 @@ import datetime
 import tempfile
 import hashlib
 import random
+import locale
 import os
 
 def initialize(): # initialize variables on startup and/or retry
@@ -133,6 +134,11 @@ def format_variables(): # formats a few variables to make sure they're correct
             var.FFVII_IMAGE = None
     if var.LANGUAGE is not None:
         var.LANGUAGE = var.LANGUAGE[0].upper() + var.LANGUAGE[1:].lower()
+        if var.LANGUAGE in ("Default", "Current", "System"):
+            syslng = locale.getdefaultlocale()[0]
+            if locale.getlocale()[0]:
+                syslng = locale.getlocale()[0]
+            var.LANGUAGE = syslng[:2]
         for lang in con.LANGUAGES.keys():
             if con.LANGUAGES[lang] == var.LANGUAGE.lower():
                 var.LANGUAGE = lang

@@ -57,6 +57,50 @@ ON_WINDOWS = False
 
 FORCE_CONFIG = False # forces config to be carried over no matter what. do NOT manually set.
 
+LOG_FILE = "bootleg"
+LOG_EXT = "log"
+
+ERROR_FILE = "errors"
+ERROR_EXT = "log"
+
+DEBUG_FILE = "debug"
+DEBUG_EXT = "log"
+
+TRACE_FILE = "traceback"
+TRACE_EXT = "log"
+
+INPUT_FILE = "input"
+INPUT_EXT = "log"
+
+MIXED_FILE = "bootleg"
+MIXED_EXT = "dmp"
+
+SETTINGS_FILE = "bootleg"
+SETTINGS_EXT = "ini"
+
+TEMP_FILE = "bootleg"
+TEMP_EXT = "tmp"
+
+LOG_EVERYTHING = False
+DISPLAY_EVERYTHING = False
+
+SHOW_HIDDEN_COMMANDS = False
+SHOW_HIDDEN_HELP = False
+
+PRESET_FILE = ""
+PREVIOUS_PRESET = ""
+PRESET_EXT = "bp"
+TEMP_PRESET = False
+
+TEMP_REG = "bootleg"
+
+GIT_BRANCH = "master"
+USE_GIT_LINK = True # if set to False, only "git pull" will be sent
+USE_GIT_ORIGIN = False # determines whether or not to use origin in the git pull. overrides above
+
+IGNORE_FATAL_ERROR = False
+IGNORE_SYSTEM_ERROR = False
+
 # user settings
 # those are dicts for simplicity, gets converted to each variable on runtime
 # those are defaults, do not change

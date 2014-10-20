@@ -46,8 +46,7 @@ for x, y in config.__dict__.items():
     if y == "":
         continue
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
-        if hasattr(var, x):
-            continue # we carry everything over to var, but only what's not in there if disallowed
+        continue # don't carry config over if disallowed
     if x == "FORCE_CONFIG":
         continue # forcing config cannot be manually set
     try:

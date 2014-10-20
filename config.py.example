@@ -2,8 +2,10 @@
 
 # Possible language choices: English (en), French (fr) for now
 # This does NOT affect your in-game language
+# Default means to use the system's current language
+# None means to use Bootleg's default, English
 
-LANGUAGE = "English"
+LANGUAGE = "Default"
 
 # Developper/debugger options. enable only if a developper asks you to
 
@@ -87,7 +89,7 @@ BOOT_PACK_SETTINGS = {
 "SEPHIROTH_BATTLE":  "",
 "GRIMMY_MAGIC":      "",
 "GRIMMY_HUGE_MAT":   "",
-"LANGUAGE":          "",
+"GAME_LANGUAGE":     "",
 "ALWAYS_RUN_TOGGLE": "",
 "BUGGY_COSTA":       "",
 "SUBMARINE_COSTA":   "",
@@ -136,60 +138,11 @@ KERNEL_SETTINGS = {
 
 # Do not edit past here if you don't know what you're doing
 
-LOG_FILE = "bootleg"
-LOG_EXT = "log"
-
-ERROR_FILE = "errors"
-ERROR_EXT = "log"
-
-DEBUG_FILE = "debug"
-DEBUG_EXT = "log"
-
-TRACE_FILE = "traceback"
-TRACE_EXT = "log"
-
-INPUT_FILE = "input"
-INPUT_EXT = "log"
-
-MIXED_FILE = "bootleg"
-MIXED_EXT = "dmp"
-
-SETTINGS_FILE = "bootleg"
-SETTINGS_EXT = "ini"
-
-LOG_EVERYTHING = False
-DISPLAY_EVERYTHING = False
-
-SHOW_HIDDEN_COMMANDS = False
-SHOW_HIDDEN_HELP = False
-
-PRESET_FILE = ""
-PREVIOUS_PRESET = ""
-PRESET_EXT = "bp"
-TEMP_PRESET = False
-
-TEMP_REG = "bootleg"
-
-GIT_BRANCH = "master"
-USE_GIT_LINK = True # if set to False, only "git pull" will be sent
-USE_GIT_ORIGIN = False # determines whether or not to use origin in the git pull. overrides above
-
-ALLOW_INIT = True
-
-IGNORE_FATAL_ERROR = False
-IGNORE_SYSTEM_ERROR = False
-
-ON_WINDOWS = False # will set it to True if used on Windows. set it here to bypass that
-
-CFG_OVER_SETTINGS = False # use config settings over presets if True
-
 DISALLOW_CONFIG = False # ignores current config file
 
 SYS_FOLDER = None # will default to the current directory if unspecified
 
-PRINT = None # will print this to screen
-
 # Debug mode options. edit at your own risk
 
 DEBUG_MODE = False
-DELETE_TEMP = True # determines whether to remove or not the temp folder
+DELETE_TEMP = True # determines whether to remove or not the temp folder after install
