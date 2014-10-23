@@ -24,6 +24,7 @@ import sys
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
+from tools import translate as tr
 from tools import commands as cmd
 from tools import logger as log
 from tools import get
@@ -62,7 +63,7 @@ for x, y in con.SETTINGS_PREFIXES.items():
 
 fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
 
-launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
+launcher = argparse.ArgumentParser(description=tr.BOOT_DESC.format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--admin", action="store_true")
 launcher.add_argument("--silent", action="store_true")
 launcher.add_argument("--run", action="store_true")
@@ -72,12 +73,12 @@ var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
 
-log.logger("Launch parameters: {0}".format(str(launcher.parse_args())[10:-1]), type="debug", display=False)
+log.logger(tr.LNCH_PAR.format(str(launcher.parse_args())[10:-1]), type="debug", display=False)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
-    log.logger("Config was disallowed. Overriding.", display=False)
+    log.logger(tr.CFG_DIS_OVR, display=False)
 elif var.FORCE_CONFIG:
-    log.logger("Forcing config into var.", display=False)
+    log.logger(tr.CFG_FORCED, display=False)
 
 def main():
     while var.ALLOW_RUN:
@@ -86,7 +87,7 @@ def main():
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
-            log.help("Type 'exit' or 'restart' to exit or restart {0}, or Ctrl+C to quit.".format(con.PROGRAM_NAME))
+            log.help(tr.REST.format(con.PROGRAM_NAME))
         if var.FATAL_ERROR and not var.ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []

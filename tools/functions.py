@@ -2,6 +2,7 @@ from tools import constants as con
 from tools import variables as var
 from tools import xmlparser as xml
 from tools import filenames as fl
+from tools import translate as tr
 from tools import logger as log
 from tools import get
 from tools import reg
@@ -139,8 +140,8 @@ def format_variables(): # formats a few variables to make sure they're correct
             if locale.getlocale()[0]:
                 syslng = locale.getlocale()[0]
             var.LANGUAGE = syslng[:2]
-        for lang in con.LANGUAGES.keys():
-            if con.LANGUAGES[lang] == var.LANGUAGE.lower():
+        for lang, lng in con.LANGUAGES.items():
+            if var.LANGUAGE.lower() == lng:
                 var.LANGUAGE = lang
                 break
         if var.LANGUAGE in ["English", "None"]:
@@ -154,12 +155,17 @@ def format_variables(): # formats a few variables to make sure they're correct
                 var.LANGUAGE = None
         if not var.TRANSLATIONS_FILE:
             var.LANGUAGE = None
+    if var.LANGUAGE is None:
+        var.LANGUAGE = "English"
     for lang in con.LANGUAGES.keys():
         if hasattr(con, lang.upper() + "_TRANSLATORS"):
             lng = getattr(con, lang.upper() + "_TRANSLATORS")
             for trnl in lng:
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
+    for x, y in tr.__dict__.items():
+        if x.isupper():
+            setattr(tr, x, y[var.LANGUAGE])
 
 def make_random_(): # generates a random string of numbers for temporary folders
     iter = random.randrange(1, 10)
