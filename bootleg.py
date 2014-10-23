@@ -41,12 +41,10 @@ if fn.IsFile.cur("cfg.py"):
     var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
 for x, y in config.__dict__.items():
-    if not x.isupper():
-        continue
-    if y == "":
-        continue
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
-        continue # don't carry config over if disallowed
+        break # don't carry config over if disallowed
+    if not x.isupper() or y == "":
+        continue
     if x == "FORCE_CONFIG":
         continue # forcing config cannot be manually set
     try:
