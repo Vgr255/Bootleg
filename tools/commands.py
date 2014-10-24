@@ -1,6 +1,7 @@
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
+from tools import translate as tr
 from tools import process as pro
 from tools import logger as log
 from tools import help as helper
@@ -90,7 +91,7 @@ def help(inp, params=[]):
                     pass
         helping = to_help()
         if helping == '__unhandled__':
-            helping = "Error: '{0}' was not found but is in the database. Critical error.".format(params[0])
+            helping = tr.HELP_NOT_FOUND.format(params[0])
             type = "error"
             var.ERROR = True
         elif params[0] in (var.USERS + var.COMMANDS):
@@ -126,7 +127,7 @@ def do(inp, params=[]):
             try:
                 prnt = str(eval(inp[9:-2]))
             except NameError:
-                prnt = "Error: {0} is not defined.".format(inp[9:-2])
+                prnt = tr.NOT_DEFINED.format(inp[9:-2])
             log.logger(prnt, type="debug", write=False)
         elif inp[:18] == "do ask print; get(" and inp[-2:] == ");":
             done = True
@@ -166,4 +167,4 @@ def git(inp, params=[]): # code re-used from lykos/Wolfbot
                 else:
                     cause = 'status'
 
-                log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
+                log.logger(tr.PROCESS_EXITED.format(args, cause, abs(ret)))

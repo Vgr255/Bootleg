@@ -235,6 +235,8 @@ USE_INDEX = ["BOOT_PACK"]
 
 # Random stuff
 
+import tools.translate
+
 BOOT_ASCII1 = [
 "          ____     ____     ____    _______   _        ______    _____",
 "         |  _ \   / __ \   / __ \  |__   __| | |      |  ____|  / ____|",
@@ -251,12 +253,10 @@ BOOT_ASCII1 = [
 "          __      _______ _____                       __/ |",
 ]
 
-BOOT_ARCH32 = "    by    \ \    / / ____|  __ \   Running on 32bit  |___/" # I don't know of any other way to do this...
-BOOT_ARCH64 = "    by    \ \    / / ____|  __ \   Running on 64bit  |___/"
 
 BOOT_ASCII2 = [
 "           \ \  / / |  __| |__) |",
-"            \ \/ /| | |_ |  _  /   Welcome to the {1} configurator {0}".format(CURRENT_RELEASE, PROGRAM_NAME),
+tools.translate.BOOT_STARTUP.format(CURRENT_RELEASE, PROGRAM_NAME),
 "             \  / | |__| | | \ \\",
 "              \/   \_____|_|  \_\\  {0} {2}{3}{1}".format(BUILD_INFO, RELEASE_INFO, VERSION_INFO, " - " if RELEASE_INFO else ""),
 ]

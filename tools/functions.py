@@ -15,7 +15,10 @@ import locale
 import os
 
 def initialize(): # initialize variables on startup and/or retry
-    log.multiple("{0} {1} operation.".format("Beginning" if not var.INITIALIZED else "Restarting", con.PROGRAM_NAME), types=["all"], display=False)
+    begin = tr.BEGIN_BOOT
+    if var.RETRY:
+        begin = tr.RESTART_BOOT
+    log.multiple(begin.format(con.PROGRAM_NAME), types=["all"], display=False)
     var.INITIALIZED = True
     log.logger("Running {1} in {0}.".format("English" if var.LANGUAGE is None else var.LANGUAGE, con.PROGRAM_NAME), display=False)
     log.logger("Running {1} on {0} (Windows: {2}).".format(var.ARCHITECTURE, con.PROGRAM_NAME, var.ON_WINDOWS), display=False)
@@ -84,10 +87,7 @@ class ManipFile: # currently a placeholder, will change in the future
 def begin_anew():
     os.system("cls") # clear the screen off everything.
     log.help("\n".join(con.BOOT_ASCII1))
-    if var.ARCHITECTURE == "64bit":
-        log.help(con.BOOT_ARCH64)
-    else:
-        log.help(con.BOOT_ARCH32)
+    log.help(tr.BOOT_ARCH.format(var.ARCHITECTURE))
     log.help("\n".join(con.BOOT_ASCII2))
     commands = []
     commands.extend(con.COMMANDS)
