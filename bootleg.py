@@ -87,7 +87,7 @@ def main():
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
-            log.help(tr.REST.format(con.PROGRAM_NAME))
+            log.help(tr.RES_RET.format(con.PROGRAM_NAME))
         if var.FATAL_ERROR and not var.ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []
@@ -100,19 +100,19 @@ def main():
             else:
                 fn.end_bootleg_early()
                 return
-        totype = "command"
+        totype = tr.ENT_CMD
         if var.FINDING:
-            totype = "value"
+            totype = tr.ENT_VAL
         if var.PARSING:
-            totype = "choice"
-        log.help("\n", "Please enter a {0}:".format(totype), "\n")
+            totype = tr.ENT_CHC
+        log.help("\n", totype, "\n")
         inp = ""
         try:
             inp = input().strip()
         except EOFError:
             if var.FINDING:
                 parsed = var.FINDING
-                log.logger("No user input was detected. Using {0} for {1}.".format(getattr(var, parsed), parsed), display=False)
+                log.logger(tr.NO_USR_INP.format(getattr(var, parsed), parsed), display=False)
                 var.FINDING = None
                 return
         log.logger(inp, type="input", display=False)
@@ -125,12 +125,12 @@ def main():
                 return
         inp1 = inp.lower().split()
         if not inp:
-            log.help("No command was entered.")
+            log.help(tr.NO_CMD_ENT)
             return
         command = inp1[0]
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:
-            log.help("You must type either 'exit' or 'restart'.")
+            log.help(tr.NEED_RR)
         else:
             try:
                 iscmd = getattr(cmd, command)
@@ -145,9 +145,9 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             if var.ERROR:
                 var.ALLOW_RUN = False
-                log.logger("Received SIGTERM. Closing process.", display=False)
+                log.logger(tr.SIGTERM_END, display=False)
             else:
-                log.logger("WARNING: SIGTERM Detected.")
+                log.logger(tr.SIGTERM_WARN)
                 var.ERROR = True
         except:
             if traceback.format_exc(): # if there's a traceback, let's have it
@@ -158,7 +158,7 @@ if __name__ == "__main__":
                     logname = con.LOGGERS["all"]
                 logfile = getattr(var, logname + "_FILE")
                 log_ext = getattr(var, logname + "_EXT")
-                log.logger("An error occured. Please report this.", "Provide your '{0}.{1}' file.".format(logfile, log_ext), type="error", write=False)
+                log.logger(tr.PROVIDE_TRACE.format(logfile, log_ext), type="error", write=False)
             if str(sys.exc_info()):
                 log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
             var.ERROR = True

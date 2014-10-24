@@ -15,10 +15,10 @@ EMAIL = "Bootleg@DadaData.net"
 
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
 
-PROGRAM_NAME = "Bootleg" # this is what appears everywhere
+PROGRAM_NAME = "Bootleg" # this is what appears everywhere (e.g. "Welcome to the Bootleg configurator")
 
 COMMANDS = ["help", "run"]
-HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these don't work
+HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these don't work. that's why they're hidden
 
 DEBUG_COMMANDS = ["remove", "copy"]
 ERROR_COMMANDS = ["exit", "restart"]

@@ -1,6 +1,6 @@
 from tools import variables as var
 from tools import constants as con
-from tools import xmlparser as xml
+from tools import translate as tr
 import datetime
 import os
 
@@ -32,6 +32,11 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
         display = True
     trout = output # not a fish
+    if not var.LANGUAGE == "English":
+        for _var, line in tr.__dict__.items():
+            if _var.isupper() and "_ORIGINAL" not in _var:
+                if line == output:
+                    output = getattr(var, "ORIGINAL_" + _var) # setting output back to the English version (trout is still translated)
     logfile = getattr(var, logtype + "_FILE")
     log_ext = getattr(var, logtype + "_EXT")
     file = logfile + "." + log_ext
@@ -46,7 +51,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             newfilel = True
         fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+")
         fl.seek(0, 2)
-        trout = xml.get_line(trout)
     if display:
         print(trout)
     if write:

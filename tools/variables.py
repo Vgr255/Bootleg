@@ -33,8 +33,6 @@ SILENT = False # checks if it needs to run in silent mode
 RUNNING = False # checks if it should run without prompting the user
 ARGUMENTS = None # holds what arguments it was used to be launched
 
-TRANSLATIONS_FILE = "translations.xml" # needs to be an XML file
-
 # defaults
 
 DEV_LOG = False
@@ -81,25 +79,14 @@ SETTINGS_EXT = "ini"
 TEMP_FILE = "bootleg"
 TEMP_EXT = "tmp"
 
-LOG_EVERYTHING = False
-DISPLAY_EVERYTHING = False
-
-SHOW_HIDDEN_COMMANDS = False
-SHOW_HIDDEN_HELP = False
-
 PRESET_FILE = ""
 PREVIOUS_PRESET = ""
 PRESET_EXT = "bp"
 TEMP_PRESET = False
 
-TEMP_REG = "bootleg"
-
 GIT_BRANCH = "master"
 USE_GIT_LINK = True # if set to False, only "git pull" will be sent
 USE_GIT_ORIGIN = False # determines whether or not to use origin in the git pull. overrides above
-
-IGNORE_FATAL_ERROR = False
-IGNORE_SYSTEM_ERROR = False
 
 # user settings
 # those are dicts for simplicity, gets converted to each variable on runtime
