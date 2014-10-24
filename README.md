@@ -31,11 +31,11 @@ You can make a temporary `cfg.py` file, with any setting present in `tools/varia
 
 ### Adding new translations
 
-Bootleg is designed to be used completely in English. However, there is a built-in translation feature to translate any full or partial line. Due to the extremely large amount of text involved in Bootleg, translating every single line is a long and tedious work.
+Bootleg is designed to be used completely in English. However, there is a built-in translation feature. Due to the extremely large amount of text involved in Bootleg, translating every single line is a long and tedious work.
 
 If you are fluent in English as well as another language (preferably native), you can help translating Bootleg. You will need to fork the repository and then clone it.
 
-You can edit the [translations.xml][1] file to add your own language, following the same syntax as what's already in there. Since I natively speak French, I translated a few lines, however I do not have the time to translate every single line, or I would not have time left to do actual code. I will however make sure every English line is present.
+You need to edit the [translate.py][1] file to add your own language, following the same syntax as what's already in there. Add a constant at the top (such as German: "German") and use that constant at all times. Since I natively speak French, I translated a few lines, however I do not have the time to translate every single line, or I would not have time left to do actual code. I will however make sure every English line is present.
 
 [0]: https://github.com/Vgr255/Bootleg/blob/master/CONTRIBUTING.md
-[1]: https://github.com/Vgr255/Bootleg/blob/master/translations.xml
+[1]: https://github.com/Vgr255/Bootleg/blob/master/tools/translate.py
