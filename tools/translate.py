@@ -218,3 +218,43 @@ INT_OUTBOUNDS = {
 English: "Error: Value out of bounds.",
 French: "Error: Valeur hors limites.",
 }
+
+INV_PAR_FILE = {
+English: "Invalid setting found in {0}: {1}",
+}
+
+FND_EXIST_INST = {
+English: "Found existing FF7 installation.",
+}
+
+COPY_SAVE_FILES = {
+English: "Copying save files.",
+}
+
+NO_SAVE_FND = {
+English: "No save files found.",
+}
+
+COPY_INP_SET = {
+English: "Copying Input settings.",
+}
+
+NO_INP_SET_FND = {
+English: "No input settings found.",
+}
+
+REM_CUR_INST = {
+English: "Removing current installation.",
+}
+
+NO_INST_FND = {
+English: "No current installation found.",
+}
+
+EXTR_IMG = {
+English: "Extracting Final Fantasy VII Image . . .",
+}
+
+IMG_REST_CMPL = {
+English: "Final Fantasy VII Image Restoration Completed.",
+}

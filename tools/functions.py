@@ -314,7 +314,7 @@ def parse_settings_from_file(inp):
                 elif "#" in f or f == "":
                     continue # ignore this
                 else:
-                    log.logger("Invalid setting found in {0}: {1}".format(inp, f), type="error")
+                    log.logger("INV_PAR_FILE", form=[inp, f], type="error")
 
 def parse_settings_from_input(inp):
     for x, y in con.SETTINGS_PREFIXES.items(): # proper parsing
@@ -371,29 +371,29 @@ def extract_image():
     if var.FFVII_IMAGE is None:
         return 1
     if IsFile.game("ff7.exe"):
-        log.logger("Found existing FF7 installation.")
+        log.logger("FND_EXIST_INST")
         try:
             shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "IMAGE\save")
-            log.logger("Copying save files.")
+            log.logger("COPY_SAVE_FILES")
         except OSError:
-            log.logger("No save files found.")
+            log.logger("NO_SAVE_FND")
         try:
             shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "IMAGE\ff7input.cfg")
-            log.logger("Copying Input settings.")
+            log.logger("COPY_INP_SET")
         except OSError:
-            log.logger("No input settings found.")
+            log.logger("NO_INP_SET_FND")
     try:
         shutil.rmtree(var.FFVII_PATH)
-        log.logger("Removing current installation.")
+        log.logger("REM_CUR_INST")
     except OSError:
-        log.logger("No current installation found.")
+        log.logger("NO_INST_FND")
 
-    log.logger("Extracting Final Fantasy VII Image . . .")
+    log.logger("EXTR_IMG")
     ManipFile.Z7.extract(dir=var.FFVII_PATH, file=var.FFVII_IMAGE)
     if os.path.isdir(var.BOOTLEG_TEMP + "IMAGE"):
         shutil.copy(var.BOOTLEG_TEMP + "IMAGE", var.FFVII_PATH)
         shutil.rmtree(var.BOOTLEG_TEMP + "IMAGE")
-    log.logger("Final Fantasy VII Image Restoration Completed.")
+    log.logger("IMG_REST_CMPL")
     return 0
 
 def chk_existing_install():
