@@ -4,15 +4,38 @@ from tools import translate as tr
 import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n"): # logs everything to file and/or screen. always use this
+def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[]): # logs everything to file and/or screen. always use this
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
-    timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    timestamp = "\n[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    if not form == list(form):
+        form = [form]
     toget = ""
     if "\n" in output:
         indx = output.index("\n")
         toget = output[indx+1:]
         output = output[:indx]
+    trout = output # not a fish
+    if output and output.isupper() and not output.islower(): # to fetch in translate, make sure it's not "" or non-words
+        newout = getattr(tr, output)
+        trout = newout[var.LANGUAGE]
+        output = newout["English"]
+        iter = 0
+        foring = 0
+        forml = list(form)
+        if "{{0}}".format(iter) in output: # output and trout should have the same amount of formats
+            for writer in form:
+                if writer.isupper(): # to translate as well
+                    forml[foring] = getattr(tr, writer)[var.LANGUAGE]
+                    form[foring] = getattr(tr, writer)["English"]
+                foring += 1
+            foring = 0
+            trout = trout.format(*forml)
+            output = output.format(*form)
+            forml = forml[1:]
+            form = form[1:]
+            iter += 1
+
     if logtype:
         for typed in con.LOGGERS.keys():
             if con.LOGGERS[typed] == logtype:
@@ -20,7 +43,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         if not type:
             type = "normal"
     if type in con.IGNORE_TIMESTAMP:
-        timestamp = ""
+        timestamp = "\n"
     if var.LOG_EVERYTHING or var.DEV_LOG:
         logtype = con.LOGGERS["all"]
     if not logtype:
@@ -31,11 +54,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
         display = True
-    trout = output # not a fish
-    if not var.LANGUAGE == "English":
-        for _var, _line in tr.__dict__.items():
-            if _line == output: # it won't work. need to roll through each word for the format thingy, or make it more efficient (i.e. 'BOOT_DESC.format("stuff", "something")') and make this function here handle it
-                output = getattr(var, "ORIGINAL_" + _var) # setting output back to the English version (trout is still translated)
     logfile = getattr(var, logtype + "_FILE")
     log_ext = getattr(var, logtype + "_EXT")
     file = logfile + "." + log_ext
@@ -43,42 +61,42 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     newfile = False
     if not os.path.isfile(os.getcwd() + "/" + file):
         newfile = True
-    if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
-        newfilel = False
-        filel = con.LANGUAGES[var.LANGUAGE] + "_" + file
-        if not os.path.isfile(os.getcwd() + "/" + filel):
-            newfilel = True
-        fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+")
-        fl.seek(0, 2)
     if display:
         print(trout)
     if write:
         if logtype == con.LOGGERS["all"]:
             output = "type.{0} - {1}".format(type, output)
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
+        f.seek(0, 2)
+        if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
+            newfilel = False
+            filel = con.LANGUAGES[var.LANGUAGE] + "_" + file
+            if not os.path.isfile(os.getcwd() + "/" + filel):
+                newfilel = True
+            fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+")
+            fl.seek(0, 2)
         if type in con.IGNORE_NEWLINE:
             newfile = True
             newfilel = True
-        f.seek(0, 2)
         if (not var.INITIALIZED or var.RETRY) and not newfile:
-            f.write("\n\n" + timestamp + output + "\n")
+            f.write("\n\n" + timestamp + output)
         else:
-            f.write(timestamp + output + "\n")
+            f.write(timestamp + output)
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
             if (not var.INITIALIZED or var.RETRY) and not newfilel:
-                fl.write("\n\n" + timestamp + trout + "\n")
+                fl.write("\n\n" + timestamp + trout)
             else:
-                fl.write(timestamp + trout + "\n")
+                fl.write(timestamp + trout)
             fl.close()
         f.close()
     if toget:
-        logger(toget, logtype=logtype, display=display, write=write)
+        logger(toget, logtype=logtype, display=display, write=write, form=form)
 
-def multiple(*output, types=[], display=True, write=True, splitter="\n"):
+def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
     output = get(output, splitter)
     if "all" in types:
         if var.LOG_EVERYTHING or var.DEV_LOG:
-            logger(output, type="all", display=display, write=write, splitter=splitter)
+            logger(output, type="all", display=display, write=write, splitter=splitter, form=form)
             return
         log_it = []
         for logged in con.LOGGERS.keys():
@@ -87,16 +105,16 @@ def multiple(*output, types=[], display=True, write=True, splitter="\n"):
             if con.LOGGERS[logged] not in log_it:
                 log_it.append(con.LOGGERS[logged])
         for l in log_it:
-            logger(output, logtype=l, display=display, write=write, splitter=splitter)
+            logger(output, logtype=l, display=display, write=write, splitter=splitter, form=form)
     elif types:
         for t in types:
-            logger(output, type=t, display=display, write=write, splitter=splitter)
+            logger(output, type=t, display=display, write=write, splitter=splitter, form=form)
     else: # no type
-        logger(output, display=display, write=write, splitter=splitter)
+        logger(output, display=display, write=write, splitter=splitter, form=form)
 
-def help(*output, type="help", write=False, display=True, splitter="\n"):
+def help(*output, type="help", write=False, display=True, splitter="\n", form=[]):
     output = get(output, splitter)
-    logger(output, type=type, write=write, display=display, splitter=splitter)
+    logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
 
 def get(output, splitter):
     output = list(output)

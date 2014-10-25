@@ -7,8 +7,15 @@ French = "French"
 
 # Various constants
 
-ENGLISH = "English"
-FRENCH = "Français"
+ENGLISH = {
+English: "English",
+French: "Anglais",
+}
+
+FRENCH = {
+English: "French",
+French: "Français",
+}
 
 TRUE = {
 English: "True",
@@ -117,6 +124,8 @@ French: "Le processus {0} s'est terminé de {1} {2}",
 
 # The following lines are contained in 'constants.py'
 
+# Note: Those lines are part of the ASCII, and need to stay the same length
+
 BOOT_ARCH = {
 English: "    by    \ \    / / ____|  __ \   Running on {0}  |___/",
 French: "    par   \ \    / / ____|  __ \   Exécution: {0}  |___/",
@@ -200,3 +209,12 @@ English: "Do you want to install the game in {0}? (Yes/No)",
 French: "Voulez-vous installer le jeu en {0}? (Oui/Non)",
 }
 
+TYPE_LANG = {
+English: "Please enter a language.",
+French: "Veuillez entrer une langue.",
+}
+
+INT_OUTBOUNDS = {
+English: "Error: Value out of bounds.",
+French: "Error: Valeur hors limites.",
+}
