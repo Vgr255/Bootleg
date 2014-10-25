@@ -1,7 +1,6 @@
 from tools import constants as con
 from tools import variables as var
 from tools import filenames as fl
-from tools import translate as tr
 from tools import logger as log
 from tools import get
 from tools import reg
@@ -15,13 +14,13 @@ import locale
 import os
 
 def initialize(): # initialize variables on startup and/or retry
-    begin = tr.BEGIN_BOOT
+    begin = "BEGIN_BOOT"
     if var.RETRY:
-        begin = tr.RESTART_BOOT
-    log.multiple(begin.format(con.PROGRAM_NAME), types=["all"], display=False)
+        begin = "RESTART_BOOT"
+    log.multiple(begin, form=[con.PROGRAM_NAME], types=["all"], display=False)
     var.INITIALIZED = True
-    log.logger(tr.RUN_LANG.format(getattr(tr, var.LANGUAGE.upper()), con.PROGRAM_NAME), display=False)
-    log.logger(tr.RUN_OS.format(var.ARCHITECTURE, con.PROGRAM_NAME, getattr(tr, str(var.ON_WINDOWS).upper())), display=False)
+    log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
+    log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
@@ -82,14 +81,14 @@ class ManipFile: # currently a placeholder, will change in the future
             else:
                 cause = 'status'
 
-            log.logger(tr.PROCESS_EXITED.format(args, cause, abs(ret)))
+            log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
     log.help("\n".join(con.BOOT_ASCII1))
-    log.help(tr.BOOT_ARCH.format(var.ARCHITECTURE))
+    log.help("BOOT_ARCH", form=[var.ARCHITECTURE])
     log.help(con.BOOT_ASCII2)
-    log.help(tr.BOOT_STARTUP.format(con.CURRENT_RELEASE, con.PROGRAM_NAME))
+    log.help("BOOT_STARTUP", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
     log.help("\n".join(con.BOOT_ASCII3))
     commands = []
     commands.extend(con.COMMANDS)
@@ -99,7 +98,7 @@ def begin_anew():
     if var.DEBUG_MODE:
         commands.extend(con.DEBUG_COMMANDS)
     if not var.RUNNING:
-        log.help("", tr.AVAIL_CMD.format(", ".join(commands), "" if len(commands) == 1 else "s"))
+        log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
 
 def format_variables(): # formats a few variables to make sure they're correct
     if var.MOD_LOCATION:
@@ -157,31 +156,18 @@ def format_variables(): # formats a few variables to make sure they're correct
             for trnl in lng:
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
-    for x, y in tr.__dict__.items():
-        if x.isupper() and not y == str(y):
-            if not var.LANGUAGE == "English":
-                setattr(var, "ORIGINAL_" + x, y["English"])
-            try:
-                setattr(tr, x, y[var.LANGUAGE])
-            except KeyError:
-                setattr(tr, x, y["English"]) # use English if a line was not translated
 
 def make_random_(): # generates a random string of numbers for temporary folders
     iter = random.randrange(1, 10)
     tmpnum = str(datetime.datetime.now())
-    tmpnum = tmpnum.replace("-", "")
-    tmpnum = tmpnum.replace(" ", "")
-    tmpnum = tmpnum.replace(":", "")
-    tmpnum = tmpnum.replace(".", "")
+    tmpnum = tmpnum.replace("-", "").replace(" ", "").replace(":", "").replace(".", "") # make the whole thing only numbers
     tmpnum = int(tmpnum) * random.randrange(1, 9)
-    tmpnum = str(random.randrange(100, 999)) + str(tmpnum)
-    tmpnum = tmpnum + str(random.randrange(100, 999))
+    tmpnum = str(random.randrange(100, 999)) + str(tmpnum) + str(random.randrange(100, 999))
     tmpnum = tmpnum[:13] + str(random.randrange(1000, 9999)) + tmpnum[13:26]
     tmpnum = "[" + tmpnum + "]"
     if iter % 2:
         return tmpnum
-    tmpnum = hashlib.md5(bytes(tmpnum, "utf-8"))
-    tmpnum = tmpnum.hexdigest().upper()
+    tmpnum = hashlib.md5(bytes(tmpnum, "utf-8")).hexdigest().upper()
     tmpnum = "{" + tmpnum[:18] + "-"
     tmpnum = tmpnum + hashlib.md5(bytes(tmpnum, "utf-8")).hexdigest().upper()
     tmpnum = tmpnum[:31] + "}"
@@ -196,13 +182,13 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
     for value in var.BOOT_PACK_SETTINGS.values():
         bootset += str(value)
     log.logger(bootset, display=False)
-    log.logger(tr.SYST_PATHS, display=False)
-    log.logger(tr.DEST_LOCT.format(var.FFVII_PATH), display=False)
+    log.logger("SYST_PATHS", display=False)
+    log.logger("DEST_LOCT", form=[var.FFVII_PATH], display=False)
     if var.FFVII_IMAGE:
-        log.logger(tr.INST_IMG.format(var.FFVII_IMAGE), display=False)
-    log.logger(tr.MOD_LOCT.format(var.MOD_LOCATION))
-    log.logger(tr.TMP_FILES.format(var.BOOTLEG_TEMP))
-    log.logger("", tr.BOOT_INIT.format(con.PROGRAM_NAME))
+        log.logger("INST_IMG", form=[var.FFVII_IMAGE], display=False)
+    log.logger("MOD_LOCT", form=[var.MOD_LOCATION])
+    log.logger("TMP_FILES", form=[var.BOOTLEG_TEMP])
+    log.logger("", "BOOT_INIT", form=[con.PROGRAM_NAME])
     for p in con.ADD_PROG_NAME:
         if hasattr(fl, p):
             setattr(fl, p, getattr(fl, p) + con.PROGRAM_NAME)
@@ -229,14 +215,14 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
         _mkdir(var.BOOTLEG_TEMP + "Data_Working\\" + d.lower())
     for u in con.FILES_UNDO:
         _mkdir(var.BOOTLEG_TEMP + u.lower() + "_undo")
-    log.logger(tr.INIT_CMPLT, "", tr.EXTR_SPRKL)
+    log.logger("INIT_CMPLT", "", "EXTR_SPRKL")
     _mkdir(var.BOOTLEG_TEMP + "Sprinkles")
     ManipFile.Z7.extract(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
-    log.logger(tr.SPRINKLES_READY)
+    log.logger("SPRINKLES_READY")
 
 def chk_game_language(inp=None):
     if LANGUAGE and not inp:
-        log.help(tr.INST_LANG.format(getattr(tr, var.LANGUAGE.upper())))
+        log.help("INST_LANG", form=[getattr(tr, var.LANGUAGE.upper())])
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:
@@ -249,7 +235,7 @@ def chk_game_language(inp=None):
             for lngn, replyn in con.NO.items():
                 if lngn == var.LANGUAGE:
                     if replyn == inp.lower() or replyn[0] == inp.lower()[0]:
-                        log.help("langno") # "Please type in a language."
+                        log.help("TYPE_LANG")
                         return
         for lang, short in con.LANGUAGES.items():
             if lang.lower() == inp.lower():
@@ -265,12 +251,12 @@ def chk_game_language(inp=None):
                         var.GAME_LANGUAGE = inp
                         var.PARSING = None
                     else:
-                        log.help("int_outbounds")
+                        log.help("INT_OUTBOUNDS")
                 except ValueError:
                     pass
     elif inp is None: # first check
         var.PARSING = "Language"
-        log.help("langno")
+        log.help("TYPE_LANG")
     else: # empty input
         pass # for now, maybe we'll add another check sometime
 

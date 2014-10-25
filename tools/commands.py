@@ -1,7 +1,6 @@
 from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
-from tools import translate as tr
 from tools import process as pro
 from tools import logger as log
 from tools import help as helper
@@ -41,17 +40,18 @@ def clean(*args):
                 except OSError:
                     notdone.append(line)
             if notdone:
-                f = open(file, "w")
-                f.write("\n".join(notdone))
+                ft = open(file, "w")
+                ft.write("\n".join(notdone))
+                ft.close()
                 continue # prevent temp file from being deleted if it fails
-            f.close() # make sure it CAN be deleted if it succeeds
+            f.close()
         file = logfile + "." + log_ext
         if fn.IsFile.cur(file):
-            os.remove(file)
+            os.remove(os.getcwd() + "\\" + file)
         for s in con.LANGUAGES.values():
-            file = s + "_" + file
-            if fn.IsFile.cur(file):
-                os.remove(file)
+            filel = s + "_" + file
+            if fn.IsFile.cur(filel):
+                os.remove(os.getcwd() + "\\" + filel)
     if fn.IsFile.cur(var.TEMP_REG + ".reg"):
         os.remove(var.TEMP_REG + ".reg")
     if fn.IsFile.cur("cfg.py"):
@@ -91,12 +91,12 @@ def help(inp, params=[]):
                     pass
         helping = to_help()
         if helping == '__unhandled__':
-            helping = tr.HELP_NOT_FOUND.format(params[0])
+            helping = "HELP_NOT_FOUND"
             type = "error"
             var.ERROR = True
         elif params[0] in (var.USERS + var.COMMANDS):
             helping = "\n".join(helping)
-        log.help(helping, type=type)
+        log.help(helping, type=type, form=params[0])
 
 def copy(inp, params=[]):
     if params and " ".join(params) == "config":
@@ -127,8 +127,8 @@ def do(inp, params=[]):
             try:
                 prnt = str(eval(inp[9:-2]))
             except NameError:
-                prnt = tr.NOT_DEFINED.format(inp[9:-2])
-            log.logger(prnt, type="debug", write=False)
+                prnt = "NOT_DEFINED"
+            log.logger(prnt, type="debug", write=False, form=inp[9:-2])
         elif inp[:18] == "do ask print; get(" and inp[-2:] == ");":
             done = True
             var.PRINT = inp[18:-2]
@@ -167,4 +167,4 @@ def git(inp, params=[]): # code re-used from lykos/Wolfbot
                 else:
                     cause = 'status'
 
-                log.logger(tr.PROCESS_EXITED.format(args, cause, abs(ret)))
+                log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])

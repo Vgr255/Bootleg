@@ -63,7 +63,7 @@ for x, y in con.SETTINGS_PREFIXES.items():
 
 fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
 
-launcher = argparse.ArgumentParser(description=tr.BOOT_DESC.format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
+launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--admin", action="store_true")
 launcher.add_argument("--silent", action="store_true")
 launcher.add_argument("--run", action="store_true")
@@ -73,12 +73,12 @@ var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
 
-log.logger(tr.LNCH_PAR.format(str(launcher.parse_args())[10:-1]), type="debug", display=False)
+log.logger(tr.LNCH_PAR[var.LANGUAGE].format(str(launcher.parse_args())[10:-1]), type="debug", display=False)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
-    log.logger(tr.CFG_DIS_OVR, display=False)
+    log.logger("CFG_DIS_OVR", display=False)
 elif var.FORCE_CONFIG:
-    log.logger(tr.CFG_FORCED, display=False)
+    log.logger("CFG_FORCED", display=False)
 
 def main():
     while var.ALLOW_RUN:
@@ -87,7 +87,7 @@ def main():
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
-            log.help(tr.RES_RET.format(con.PROGRAM_NAME))
+            log.help("RES_RET", form=con.PROGRAM_NAME)
         if var.FATAL_ERROR and not var.ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []
@@ -100,11 +100,11 @@ def main():
             else:
                 fn.end_bootleg_early()
                 return
-        totype = tr.ENT_CMD
+        totype = "ENT_CMD"
         if var.FINDING:
-            totype = tr.ENT_VAL
+            totype = "ENT_VAL"
         if var.PARSING:
-            totype = tr.ENT_CHC
+            totype = "ENT_CHC"
         log.help("\n", totype, "\n")
         inp = ""
         try:
@@ -112,7 +112,7 @@ def main():
         except EOFError:
             if var.FINDING:
                 parsed = var.FINDING
-                log.logger(tr.NO_USR_INP.format(getattr(var, parsed), parsed), display=False)
+                log.logger("NO_USR_INP", form=[getattr(var, parsed), parsed], display=False)
                 var.FINDING = None
                 return
         log.logger(inp, type="input", display=False)
@@ -125,12 +125,12 @@ def main():
                 return
         inp1 = inp.lower().split()
         if not inp:
-            log.help(tr.NO_CMD_ENT)
+            log.help("NO_CMD_ENT")
             return
         command = inp1[0]
         params = inp1[1:]
         if var.ERROR and command not in con.ERROR_COMMANDS:
-            log.help(tr.NEED_RR)
+            log.help("NEED_RR")
         else:
             try:
                 iscmd = getattr(cmd, command)
@@ -145,9 +145,9 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             if var.ERROR:
                 var.ALLOW_RUN = False
-                log.logger(tr.SIGTERM_END, display=False)
+                log.logger("SIGTERM_END", display=False)
             else:
-                log.logger(tr.SIGTERM_WARN)
+                log.logger("SIGTERM_WARN")
                 var.ERROR = True
         except:
             if traceback.format_exc(): # if there's a traceback, let's have it
@@ -158,7 +158,7 @@ if __name__ == "__main__":
                     logname = con.LOGGERS["all"]
                 logfile = getattr(var, logname + "_FILE")
                 log_ext = getattr(var, logname + "_EXT")
-                log.logger(tr.PROVIDE_TRACE.format(logfile, log_ext), type="error", write=False)
+                log.logger("PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
             if str(sys.exc_info()):
                 log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
             var.ERROR = True
