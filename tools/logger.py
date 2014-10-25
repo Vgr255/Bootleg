@@ -4,13 +4,16 @@ from tools import translate as tr
 import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[]): # logs everything to file and/or screen. always use this
+def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[], formo=[], formt=[]): # logs everything to file and/or screen. always use this
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
     timestamp = "\n[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
-    if not form == list(form):
+    if form and not form == list(form):
         form = [form]
     toget = ""
+    toform = []
+    toforml = []
+    forml = list(form)
     if "\n" in output:
         indx = output.index("\n")
         toget = output[indx+1:]
@@ -22,19 +25,26 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         output = newout["English"]
         iter = 0
         foring = 0
-        forml = list(form)
-        if "{{0}}".format(iter) in output: # output and trout should have the same amount of formats
-            for writer in form:
-                if writer.isupper(): # to translate as well
-                    forml[foring] = getattr(tr, writer)[var.LANGUAGE]
-                    form[foring] = getattr(tr, writer)["English"]
-                foring += 1
-            foring = 0
-            trout = trout.format(*forml)
-            output = output.format(*form)
-            forml = forml[1:]
-            form = form[1:]
-            iter += 1
+        while True:
+            if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
+                for writer in form:
+                    if writer.isupper(): # to translate as well
+                        forml[foring] = getattr(tr, writer)[var.LANGUAGE]
+                        form[foring] = getattr(tr, writer)["English"]
+                    foring += 1
+                foring = 0
+                iter += 1
+            else:
+                if formo and formt:
+                    form = list(formo)
+                    forml = list(formt)
+                trout = trout.format(*forml)
+                output = output.format(*form)
+                forml = forml[iter+1:]
+                form = form[iter+1:]
+                break
+    toform.extend(form)
+    toforml.extend(forml)
 
     if logtype:
         for typed in con.LOGGERS.keys():
@@ -90,7 +100,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             fl.close()
         f.close()
     if toget:
-        logger(toget, logtype=logtype, display=display, write=write, form=form)
+        logger(toget, logtype=logtype, display=display, write=write, formo=toform, formt=toforml) # don't iterate again if already translated
 
 def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
     output = get(output, splitter)
