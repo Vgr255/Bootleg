@@ -5,6 +5,21 @@ French = "French"
 
 # Use the constants to define languages, that makes it easier to change later on
 
+# Various constants
+
+ENGLISH = "English"
+FRENCH = "Français"
+
+TRUE = {
+English: "True",
+French: "Vrai",
+}
+
+FALSE = {
+English: "False",
+French: "Faux",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 BOOT_DESC = {
@@ -95,7 +110,7 @@ French: "Erreur: {0} n'est pas défini.",
 
 PROCESS_EXITED = {
 English: "Process {0} exited with {1} {2}",
-French "Le processus {0} s'est terminé de {1} {2}",
+French: "Le processus {0} s'est terminé de {1} {2}",
 }
 
 # End of the 'commands.py' lines
@@ -124,5 +139,64 @@ French: "Commencement du processus {0}.",
 RESTART_BOOT = {
 English: "Restarting {0} operation.",
 French: "Recommencement du processus {0}.",
+}
+
+RUN_LANG = {
+English: "Running {1} in {0}.",
+French: "Exécution de {1} en {0}.",
+}
+
+RUN_OS = {
+English: "Running {1} on {0} (Windows: {2}).",
+French: "Exécution de {1} sous {0} (Windows: {2}).",
+}
+
+AVAIL_CMD = {
+English: "Available command{1}: {0}.",
+French: "Commande{1} disponible{1}: {0}.",
+}
+
+SYST_PATHS = {
+English: "- System paths -",
+French: "- Chemins système -",
+}
+
+DEST_LOCT = {
+English: 'Destination location: "{0}"',
+French: 'Emplacement de l\'installation: "{0}"',
+}
+
+INST_IMG = {
+English: 'Install image: "{0}"',
+French: 'Installation de l\'image: "{0}"',
+}
+
+MOD_LOCT = {
+English: 'Mods Location: "{0}"',
+}
+
+TMP_FILES = {
+English: 'Temporary files: "{0}"',
+}
+
+BOOT_INIT = {
+English: "Initializing {0} . . .",
+}
+
+INIT_CMPLT = {
+English: "Initialization completed.",
+}
+
+EXTR_SPRKL = {
+English: "Now extracting Sprinkles . . .",
+}
+
+SPRINKLES_READY = {
+English: "Sprinkles are ready.",
+}
+
+INST_LANG = {
+English: "Do you want to install the game in {0}? (Yes/No)",
+French: "Voulez-vous installer le jeu en {0}? (Oui/Non)",
 }
 

@@ -20,8 +20,8 @@ def initialize(): # initialize variables on startup and/or retry
         begin = tr.RESTART_BOOT
     log.multiple(begin.format(con.PROGRAM_NAME), types=["all"], display=False)
     var.INITIALIZED = True
-    log.logger("Running {1} in {0}.".format("English" if var.LANGUAGE is None else var.LANGUAGE, con.PROGRAM_NAME), display=False)
-    log.logger("Running {1} on {0} (Windows: {2}).".format(var.ARCHITECTURE, con.PROGRAM_NAME, var.ON_WINDOWS), display=False)
+    log.logger(tr.RUN_LANG.format(getattr(tr, var.LANGUAGE.upper()), con.PROGRAM_NAME), display=False)
+    log.logger(tr.RUN_OS.format(var.ARCHITECTURE, con.PROGRAM_NAME, getattr(tr, str(var.ON_WINDOWS).upper())), display=False)
     var.USED_HELP = False
     var.FATAL_ERROR = None
     var.EMPTY_SETTINGS = []
@@ -82,13 +82,15 @@ class ManipFile: # currently a placeholder, will change in the future
             else:
                 cause = 'status'
 
-            log.logger('Process {0} exited with {1} {2}'.format(args, cause, abs(ret)))
+            log.logger(tr.PROCESS_EXITED.format(args, cause, abs(ret)))
 
 def begin_anew():
     os.system("cls") # clear the screen off everything.
     log.help("\n".join(con.BOOT_ASCII1))
     log.help(tr.BOOT_ARCH.format(var.ARCHITECTURE))
-    log.help("\n".join(con.BOOT_ASCII2))
+    log.help(con.BOOT_ASCII2)
+    log.help(tr.BOOT_STARTUP.format(con.CURRENT_RELEASE, con.PROGRAM_NAME))
+    log.help("\n".join(con.BOOT_ASCII3))
     commands = []
     commands.extend(con.COMMANDS)
     if var.SHOW_HIDDEN_COMMANDS:
@@ -97,7 +99,7 @@ def begin_anew():
     if var.DEBUG_MODE:
         commands.extend(con.DEBUG_COMMANDS)
     if not var.RUNNING:
-        log.help("", "Available command{1}: {0}.".format(", ".join(commands), "" if len(commands) == 1 else "s"))
+        log.help("", tr.AVAIL_CMD.format(", ".join(commands), "" if len(commands) == 1 else "s"))
 
 def format_variables(): # formats a few variables to make sure they're correct
     if var.MOD_LOCATION:
@@ -156,10 +158,13 @@ def format_variables(): # formats a few variables to make sure they're correct
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
     for x, y in tr.__dict__.items():
-        if x.isupper():
+        if x.isupper() and not y == str(y):
             if not var.LANGUAGE == "English":
                 setattr(var, "ORIGINAL_" + x, y["English"])
-            setattr(tr, x, y[var.LANGUAGE])
+            try:
+                setattr(tr, x, y[var.LANGUAGE])
+            except KeyError:
+                setattr(tr, x, y["English"]) # use English if a line was not translated
 
 def make_random_(): # generates a random string of numbers for temporary folders
     iter = random.randrange(1, 10)
@@ -191,13 +196,13 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
     for value in var.BOOT_PACK_SETTINGS.values():
         bootset += str(value)
     log.logger(bootset, display=False)
-    log.logger("- System paths -", display=False)
-    log.logger('Destination location: "{0}"'.format(var.FFVII_PATH), display=False)
+    log.logger(tr.SYST_PATHS, display=False)
+    log.logger(tr.DEST_LOCT.format(var.FFVII_PATH), display=False)
     if var.FFVII_IMAGE:
-        log.logger('Install image: "{0}"'.format(var.FFVII_IMAGE), display=False)
-    log.logger('Mods Location: "{0}"'.format(var.MOD_LOCATION))
-    log.logger('Temporary files: "{0}"'.format(var.BOOTLEG_TEMP))
-    log.logger("", "Initializing {0} . . .".format(con.PROGRAM_NAME))
+        log.logger(tr.INST_IMG.format(var.FFVII_IMAGE), display=False)
+    log.logger(tr.MOD_LOCT.format(var.MOD_LOCATION))
+    log.logger(tr.TMP_FILES.format(var.BOOTLEG_TEMP))
+    log.logger("", tr.BOOT_INIT.format(con.PROGRAM_NAME))
     for p in con.ADD_PROG_NAME:
         if hasattr(fl, p):
             setattr(fl, p, getattr(fl, p) + con.PROGRAM_NAME)
@@ -224,14 +229,14 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
         _mkdir(var.BOOTLEG_TEMP + "Data_Working\\" + d.lower())
     for u in con.FILES_UNDO:
         _mkdir(var.BOOTLEG_TEMP + u.lower() + "_undo")
-    log.logger("Initialization completed.", "", "Now extracting Sprinkles . . .")
+    log.logger(tr.INIT_CMPLT, "", tr.EXTR_SPRKL)
     _mkdir(var.BOOTLEG_TEMP + "Sprinkles")
     ManipFile.Z7.extract(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
-    log.logger("Sprinkles are ready.")
+    log.logger(tr.SPRINKLES_READY)
 
 def chk_game_language(inp=None):
     if LANGUAGE and not inp:
-        log.help("firstlng {0} secondlng? (Yes/No)") # "Do you wish to install the game in English?" or similar
+        log.help(tr.INST_LANG.format(getattr(tr, var.LANGUAGE.upper())))
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:

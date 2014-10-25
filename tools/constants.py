@@ -235,8 +235,6 @@ USE_INDEX = ["BOOT_PACK"]
 
 # Random stuff
 
-import tools.translate
-
 BOOT_ASCII1 = [
 "          ____     ____     ____    _______   _        ______    _____",
 "         |  _ \   / __ \   / __ \  |__   __| | |      |  ____|  / ____|",
@@ -254,9 +252,9 @@ BOOT_ASCII1 = [
 ]
 
 
-BOOT_ASCII2 = [
-"           \ \  / / |  __| |__) |",
-tools.translate.BOOT_STARTUP.format(CURRENT_RELEASE, PROGRAM_NAME),
+BOOT_ASCII2 = "           \ \  / / |  __| |__) |"
+
+BOOT_ASCII3 = [
 "             \  / | |__| | | \ \\",
 "              \/   \_____|_|  \_\\  {0} {2}{3}{1}".format(BUILD_INFO, RELEASE_INFO, VERSION_INFO, " - " if RELEASE_INFO else ""),
 ]

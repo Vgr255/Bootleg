@@ -33,10 +33,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         display = True
     trout = output # not a fish
     if not var.LANGUAGE == "English":
-        for _var, line in tr.__dict__.items():
-            if _var.isupper() and "_ORIGINAL" not in _var:
-                if line == output:
-                    output = getattr(var, "ORIGINAL_" + _var) # setting output back to the English version (trout is still translated)
+        for _var, _line in tr.__dict__.items():
+            if _line == output: # it won't work. need to roll through each word for the format thingy, or make it more efficient (i.e. 'BOOT_DESC.format("stuff", "something")') and make this function here handle it
+                output = getattr(var, "ORIGINAL_" + _var) # setting output back to the English version (trout is still translated)
     logfile = getattr(var, logtype + "_FILE")
     log_ext = getattr(var, logtype + "_EXT")
     file = logfile + "." + log_ext
