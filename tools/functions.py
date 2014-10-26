@@ -191,15 +191,15 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
     log.logger("", "BOOT_INIT", form=[con.PROGRAM_NAME])
     for p in con.ADD_PROG_NAME:
         if hasattr(fl, p):
-            setattr(fl, p, getattr(fl, p) + con.PROGRAM_NAME)
+            setattr(fl, p, getattr(fl, p).format(con.PROGRAM_NAME))
     for v in con.FFVII_PATH:
         if hasattr(fl, v):
             setattr(fl, v, var.FFVII_PATH + getattr(fl, v))
             _mkdir(getattr(fl, v))
     for l in con.LGP_TEMP:
-        if hasattr(fl, l):
-            setattr(fl, l, var.BOOTLEG_TEMP + getattr(fl, l))
-            _mkdir(getattr(fl, l))
+        if hasattr(fl, l + "_PATCH"):
+            setattr(fl, l + "_PATCH", var.BOOTLEG_TEMP + getattr(fl, l + "_PATCH"))
+            _mkdir(getattr(fl, l + "_PATCH"))
     for t in con.TEMP_FOLDERS:
         _mkdir(var.BOOTLEG_TEMP + t.lower().replace("_", "\\"))
     for f in con.FINAL_PATCH:
@@ -221,7 +221,7 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
     log.logger("SPRINKLES_READY")
 
 def chk_game_language(inp=None):
-    if LANGUAGE and not inp:
+    if var.LANGUAGE and not inp:
         log.help("INST_LANG", form=[getattr(tr, var.LANGUAGE.upper())])
         var.PARSING = "Language"
     elif inp:
@@ -259,6 +259,10 @@ def chk_game_language(inp=None):
         log.help("TYPE_LANG")
     else: # empty input
         pass # for now, maybe we'll add another check sometime
+
+def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game version=2012, Install code in (1, 4, 7))
+    if not IsFile.game("FF7_Launcher.exe"):
+        return 1
 
 def _mkdir(inp):
     if not os.path.isdir(inp):

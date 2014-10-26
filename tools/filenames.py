@@ -164,7 +164,7 @@ CHOCOBO_LGP = "chocobo.lgp"
 
 MODS_AVALANCHE = "mods\\avalanche"
 MODS_OVERHAUL = "mods\\DK"
-MODS_FINAL = "mods\\" # add con.PROGRAM_NAME on runtime
+MODS_FINAL = "mods\\{0}" # add con.PROGRAM_NAME on runtime
 
 # These will be in the temp folder
 
