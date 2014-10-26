@@ -73,7 +73,7 @@ var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
 
-log.logger(tr.LNCH_PAR[var.LANGUAGE].format(str(launcher.parse_args())[10:-1]), type="debug", display=False)
+log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("CFG_DIS_OVR", display=False)

@@ -216,7 +216,7 @@ French: "Veuillez entrer une langue.",
 
 INT_OUTBOUNDS = {
 English: "Error: Value out of bounds.",
-French: "Error: Valeur hors limites.",
+French: "Erreur: Valeur hors limites.",
 }
 
 INV_PAR_FILE = {

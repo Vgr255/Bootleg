@@ -19,7 +19,15 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         toget = output[indx+1:]
         output = output[:indx]
     trout = output # not a fish
-    if output and output.isupper() and not output.islower(): # to fetch in translate, make sure it's not "" or non-words
+
+    if logtype:
+        for typed in con.LOGGERS.keys():
+            if con.LOGGERS[typed] == logtype:
+                type = typed
+        if not type:
+            type = "normal"
+
+    if output and output.isupper() and not output.islower() and type not in con.IGNORE_TRANSLATE: # to fetch in translate, make sure it's not "" or non-words
         newout = getattr(tr, output)
         trout = newout[var.LANGUAGE]
         output = newout["English"]
@@ -43,15 +51,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
                 forml = forml[iter+1:]
                 form = form[iter+1:]
                 break
-    toform.extend(form)
-    toforml.extend(forml)
+        toform = list(form)
+        toforml = list(forml)
 
-    if logtype:
-        for typed in con.LOGGERS.keys():
-            if con.LOGGERS[typed] == logtype:
-                type = typed
-        if not type:
-            type = "normal"
     if type in con.IGNORE_TIMESTAMP:
         timestamp = "\n"
     if var.LOG_EVERYTHING or var.DEV_LOG:
