@@ -25,6 +25,7 @@ LANGUAGE = None
 PROGRAM_FILES = None
 GAME_VERSION = None
 PARSING = None
+NEWFILE = True
 
 # launcher arguments. only here for consistency
 

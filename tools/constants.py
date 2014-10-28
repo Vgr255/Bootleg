@@ -51,6 +51,7 @@ IGNORE_ALL = ["all", "settings", "temp"] # will not write to these files when ca
 IGNORE_TRANSLATE = ["traceback", "input", "temp"]
 IGNORE_TIMESTAMP = ["temp"]
 IGNORE_NEWLINE = ["temp"]
+IGNORE_MIXED = ["temp"]
 
 LANGUAGES = {"English": "en", "French": "fr"}
 LANG_INDEX = {"en": 0, "fr": 1}

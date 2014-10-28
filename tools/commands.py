@@ -42,6 +42,7 @@ def clean(*args):
             if notdone:
                 ft = open(file, "w")
                 ft.write("\n".join(notdone))
+                ft.write("\n")
                 ft.close()
                 continue # prevent temp file from being deleted if it fails
             f.close()

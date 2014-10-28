@@ -7,7 +7,8 @@ import os
 def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[], formo=[], formt=[]): # logs everything to file and/or screen. always use this
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
-    timestamp = "\n[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    logall = None
     if form and not form == list(form):
         form = [form]
     toget = ""
@@ -24,12 +25,13 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         for typed in con.LOGGERS.keys():
             if con.LOGGERS[typed] == logtype:
                 type = typed
-        if not type:
-            type = "normal"
+    if not type:
+        type = "normal"
 
-    if output and output.isupper() and not output.islower() and type not in con.IGNORE_TRANSLATE: # to fetch in translate, make sure it's not "" or non-words
+    if output and output.isupper() and not output.islower(): # to fetch in translate, make sure it's not "" or non-words
         newout = getattr(tr, output)
-        trout = newout[var.LANGUAGE]
+        outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
+        trout = newout[outlang]
         output = newout["English"]
         iter = 0
         foring = 0
@@ -51,13 +53,13 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
                 forml = forml[iter+1:]
                 form = form[iter+1:]
                 break
-        toform = list(form)
-        toforml = list(forml)
+    toform = list(form)
+    toforml = list(forml)
 
     if type in con.IGNORE_TIMESTAMP:
-        timestamp = "\n"
+        timestamp = ""
     if var.LOG_EVERYTHING or var.DEV_LOG:
-        logtype = con.LOGGERS["all"]
+        logall = con.LOGGERS["all"]
     if not logtype:
         if type not in con.LOGGERS.keys():
             type = "normal"
@@ -70,35 +72,46 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     log_ext = getattr(var, logtype + "_EXT")
     file = logfile + "." + log_ext
 
-    newfile = False
-    if not os.path.isfile(os.getcwd() + "/" + file):
-        newfile = True
+    newfile = not os.path.isfile(os.getcwd() + "/" + file)
     if display:
         print(trout)
     if write:
-        if logtype == con.LOGGERS["all"]:
-            output = "type.{0} - {1}".format(type, output)
+        if logall:
+            outputa = "type.{0} - {1}".format(type, output)
+            filea = getattr(var, logall + "_FILE") + "." + getattr(var, logall + "_EXT")
+            fa = open(os.getcwd() + "/" + filea, "w" if var.NEWFILE else "r+")
+            var.NEWFILE = False
+            fa.seek(0, 2)
+            alines = list(con.LOGGERS)
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
         f.seek(0, 2)
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
-            newfilel = False
             filel = con.LANGUAGES[var.LANGUAGE] + "_" + file
-            if not os.path.isfile(os.getcwd() + "/" + filel):
-                newfilel = True
+            newfilel = not os.path.isfile(os.getcwd() + "/" + filel)
             fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+")
             fl.seek(0, 2)
         if type in con.IGNORE_NEWLINE:
             newfile = True
             newfilel = True
         if (not var.INITIALIZED or var.RETRY) and not newfile:
-            f.write("\n\n" + timestamp + output)
+            f.write("\n\n" + timestamp + output + "\n")
         else:
-            f.write(timestamp + output)
+            f.write(timestamp + output + "\n")
+        if logall:
+            for lang in alines:
+                if lang in con.IGNORE_MIXED:
+                    alines.remove(lang)
+            if type in alines:
+                if var.RETRY:
+                    fa.write("\n\n" + timestamp + outputa + "\n")
+                else:
+                    fa.write(timestamp + outputa + "\n")
+                fa.close()
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
             if (not var.INITIALIZED or var.RETRY) and not newfilel:
-                fl.write("\n\n" + timestamp + trout)
+                fl.write("\n\n" + timestamp + trout + "\n")
             else:
-                fl.write(timestamp + trout)
+                fl.write(timestamp + trout + "\n")
             fl.close()
         f.close()
     if toget:
@@ -107,9 +120,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
 def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
     output = get(output, splitter)
     if "all" in types:
-        if var.LOG_EVERYTHING or var.DEV_LOG:
-            logger(output, type="all", display=display, write=write, splitter=splitter, form=form)
-            return
         log_it = []
         for logged in con.LOGGERS.keys():
             if logged in con.IGNORE_ALL:
