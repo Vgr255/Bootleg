@@ -76,13 +76,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if display:
         print(trout)
     if write:
-        if logall:
-            outputa = "type.{0} - {1}".format(type, output)
-            filea = getattr(var, logall + "_FILE") + "." + getattr(var, logall + "_EXT")
-            fa = open(os.getcwd() + "/" + filea, "w" if var.NEWFILE else "r+")
-            var.NEWFILE = False
-            fa.seek(0, 2)
-            alines = list(con.LOGGERS)
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
         f.seek(0, 2)
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
@@ -98,6 +91,13 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         else:
             f.write(timestamp + output + "\n")
         if logall:
+            outputa = "type.{0} - {1}".format(type, output)
+            filea = getattr(var, logall + "_FILE") + "." + getattr(var, logall + "_EXT")
+            fa = open(os.getcwd() + "/" + filea, "w" if var.NEWFILE_ALL else "r+")
+            var.NEWFILE_ALL = False
+            fa.seek(0, 2)
+            alines = list(con.LOGGERS)
+
             for lang in alines:
                 if lang in con.IGNORE_MIXED:
                     alines.remove(lang)
@@ -106,7 +106,18 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
                     fa.write("\n\n" + timestamp + outputa + "\n")
                 else:
                     fa.write(timestamp + outputa + "\n")
-                fa.close()
+            fa.close()
+            if not var.LANGUAGE == "English" and type not in con.IGNORE_MIXED:
+                trouta = "type.{0} - {1}".format(type, trout)
+                filet = con.LANGUAGES[var.LANGUAGE] + "_" + filea
+                ft = open(os.getcwd() + "/" + filet, "w" if var.NEWFILE_TRA else "r+")
+                var.NEWFILE_TRA = False
+                ft.seek(0, 2)
+                if var.RETRY:
+                    ft.write("\n\n" + timestamp + trouta + "\n")
+                else:
+                    ft.write(timestamp + trouta + "\n")
+                ft.close()
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
             if (not var.INITIALIZED or var.RETRY) and not newfilel:
                 fl.write("\n\n" + timestamp + trout + "\n")
