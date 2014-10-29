@@ -158,7 +158,7 @@ if __name__ == "__main__":
                     logname = con.LOGGERS["all"]
                 logfile = getattr(var, logname + "_FILE")
                 log_ext = getattr(var, logname + "_EXT")
-                log.logger("PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
+                log.logger("PROVIDE_TRACE1", "PROVIDE_TRACE2", form=[logfile, log_ext], type="error", write=False)
             if str(sys.exc_info()):
                 log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
             var.ERROR = True

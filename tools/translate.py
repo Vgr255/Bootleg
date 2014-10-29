@@ -94,9 +94,14 @@ English: "WARNING: SIGTERM Detected.",
 French: "ATTENTION: SIGTERM Détecté.",
 }
 
-PROVIDE_TRACE = {
-English: "An error occured. Please report this.\nProvide your '{0}.{1}' file.",
-French: "Une erreur est survenue. Veuillez le rapporter.\nSuppliez votre fichier '{0}.{1}'.",
+PROVIDE_TRACE1 = {
+English: "An error occured. Please report this.",
+French: "Une erreur est survenue. Veuillez le rapporter.",
+}
+
+PROVIDE_TRACE2 = {
+English: "Provide your '{0}.{1}' file.",
+French: "Suppliez votre fichier '{0}.{1}'.",
 }
 
 # End of the 'bootleg.py' lines
