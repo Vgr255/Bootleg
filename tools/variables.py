@@ -41,8 +41,9 @@ DEV_LOG = False
 DEBUG_MODE = False
 DELETE_TEMP = True
 
-LOG_EVERYTHING = False
-DISPLAY_EVERYTHING = False
+LOG_EVERYTHING = False # puts everything in a single file as well
+DISPLAY_EVERYTHING = False # displays everything to screen
+WRITE_EVERYTHING = False # writes every occurence to file
 
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False

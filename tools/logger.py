@@ -64,7 +64,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         if type not in con.LOGGERS.keys():
             type = "normal"
         logtype = con.LOGGERS[type]
-    if var.DEBUG_MODE or var.DEV_LOG: # if there's an error I'll want every possible information. that's the way to go
+    if var.DEBUG_MODE or var.DEV_LOG or var.WRITE_EVERYTHING: # if there's an error I'll want every possible information. that's the way to go
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
         display = True
