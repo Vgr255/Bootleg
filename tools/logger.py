@@ -46,12 +46,12 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
                 iter += 1
             else:
                 if formo and formt:
-                    form = list(formo)
-                    forml = list(formt)
+                    form = formo
+                    forml = formt
                 trout = trout.format(*forml)
                 output = output.format(*form)
-                forml = forml[iter+1:]
-                form = form[iter+1:]
+                forml = forml[iter:]
+                form = form[iter:]
                 break
     toform = list(form)
     toforml = list(forml)
