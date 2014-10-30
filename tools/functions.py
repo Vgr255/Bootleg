@@ -515,11 +515,3 @@ def find_setting(setting): # gets parsable setting
 
 def no_such_command(command):
     log.logger("'{0}' is not a valid command.".format(command), write=False)
-    log.logger("Available command{1}: {0}".format(", ".join(con.COMMANDS), "s" if len(con.COMMANDS) > 1 else ""), write=False)
-    if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
-        hidc = con.HIDDEN_COMMANDS
-        hidc.extend(con.ERROR_COMMANDS)
-        log.logger("Hidden command{1}: {0}".format(", ".join(hidc), "s" if len(hidc) > 1 else ""), write=False)
-        log.logger("Keep in mind that hidden commands will appear as non-existant if not used properly or if the proper conditions aren't met.", write=False)
-    if var.DEBUG_MODE:
-        log.logger("Debug command{1}: {0}".format(", ".join(con.DEBUG_COMMANDS), "s" if len(con.DEBUG_COMMANDS) > 1 else ""), write=False)

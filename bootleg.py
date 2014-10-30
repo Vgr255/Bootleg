@@ -65,9 +65,16 @@ for x, y in con.SETTINGS_PREFIXES.items():
 fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
 
 if var.GIT_LOCATION and var.AUTO_UPDATE:
-    if git.diff(var.GIT_LOCATION, silent=True):
-        log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
-        var.UPDATE_READY = True
+    if git.check(var.GIT_LOCATION, silent=True) and not git.diff(var.GIT_LOCATION, silent=True):
+        if not var.SILENT_UPDATE:
+            log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
+            var.UPDATE_READY = True
+        else:
+            log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
+            git.pull(var.GIT_LOCATION, silent=True)
+            var.ALLOW_RUN = False
+    if git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
+        log.logger("", "UNCOMMITTED_FILES")
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--admin", action="store_true")

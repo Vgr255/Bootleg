@@ -44,6 +44,21 @@ English: "A {0} update is available!",
 French: "Une mise à jour de {0} est disponible!",
 }
 
+SILENT_UPD = {
+English: "An update is available. Downloading . . .",
+French: "Une mise à jour est disponible. Téléchargement . . .",
+}
+
+REST_AFT_UPD = {
+English: "Launch {0} again once it finishes.",
+French: "Relancez {0} une fois terminé.",
+}
+
+UNCOMMITTED_FILES = {
+English: "Warning: You have uncommitted changes.",
+French: "Attention: Vous avez des modifications non synchronisées.",
+}
+
 BOOT_DESC = {
 English: "{0} Final Fantasy VII Mod Configurator {1}",
 French: "Configurateur {0} pour Final Fantasy VII {1}",

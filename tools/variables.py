@@ -31,6 +31,8 @@ NEWFILE_TRA = True
 UPDATE_READY = False
 AUTO_UPDATE = False
 NEED_RESTART = False
+IGNORE_LOCAL_CHANGES = False
+SILENT_UPDATE = False
 
 # launcher arguments. only here for consistency
 

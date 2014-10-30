@@ -11,6 +11,7 @@ LANGUAGE = "Default"
 # It's recommended to keep this on to check easily
 
 AUTO_UPDATE = True
+SILENT_UPDATE = True
 
 # Developper/debugger options. enable only if a developper asks you to
 
@@ -144,6 +145,8 @@ KERNEL_SETTINGS = {
 # Do not edit past here if you don't know what you're doing
 
 DISALLOW_CONFIG = False # ignores current config file
+
+IGNORE_LOCAL_CHANGES = False # enable only if you need to do changes
 
 SYS_FOLDER = None # will default to the current directory if unspecified
 

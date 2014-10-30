@@ -33,7 +33,14 @@ def diff(args, silent=False):
         return do(args, silent)
     do(args)
 
-def do(args, silent=False):
+def check(args, silent=False):
+    args = __parse__(args, "status")
+    checker = do(args, silent, needout=True)
+    if len(checker) > 1:
+        return True
+    return False
+
+def do(args, silent=False, needout=False):
     child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (out, err) = child.communicate()
     ret = child.returncode
@@ -42,6 +49,8 @@ def do(args, silent=False):
         log.logger(line.decode('utf-8'), type="git", display=not silent)
     if not out:
         return False
+    if needout:
+        return out
 
     if ret != 0:
         if ret < 0:
