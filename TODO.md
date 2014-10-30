@@ -13,4 +13,5 @@
 
 * Main function
 * Some functions and the parser for each parameter
+* Make Git be able to update local instances that were not cloned
 * Much more that I can't remember right now
