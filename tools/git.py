@@ -36,7 +36,7 @@ def diff(args, silent=False):
 def check(args, silent=False):
     args = __parse__(args, "status")
     checker = do(args, silent, needout=True)
-    if len(checker) > 1:
+    if len(checker) > 2:
         return True
     return False
 
