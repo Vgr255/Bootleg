@@ -45,12 +45,14 @@ def do(args, silent=False, needout=False):
     (out, err) = child.communicate()
     ret = child.returncode
 
+    lines = []
     for line in (out + err).splitlines():
         log.logger(line.decode('utf-8'), type="git", display=not silent)
+        lines.append(line)
     if not out:
         return False
     if needout:
-        return out
+        return lines
 
     if ret != 0:
         if ret < 0:
