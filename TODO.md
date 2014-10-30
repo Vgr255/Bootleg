@@ -7,10 +7,10 @@
 * Parsable settings easy modification
 * Most functions are done
 * Preset file parsing
+* Git integration, automatic updates
 
 ### What is left to do
 
 * Main function
 * Some functions and the parser for each parameter
-* Make 'git pull' work properly and add auto-updates once finished
 * Much more that I can't remember right now
