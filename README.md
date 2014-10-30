@@ -29,6 +29,10 @@ You may pick your own settings in the `config.py` file (You need to rename it fr
 
 You can make a temporary `cfg.py` file, with any setting present in `tools/variables.py` and/or `config.py`. The settings present in `cfg.py` will override any other.
 
+### Automatic updating
+
+If Auto-Update is enabled in the config, Bootleg will attempt, everytime it's ran, to check for updates and prompt the user to download it. Right now it only works if the project was cloned directly from the repository, but I intend to make it work under any circumstances.
+
 ### Adding new translations
 
 Bootleg is designed to be used completely in English. However, there is a built-in translation feature. Due to the extremely large amount of text involved in Bootleg, translating every single line is a long and tedious work.
