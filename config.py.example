@@ -7,6 +7,11 @@
 
 LANGUAGE = "Default"
 
+# This option will automatically check for updates on startup
+# It's recommended to keep this on to check easily
+
+AUTO_UPDATE = True
+
 # Developper/debugger options. enable only if a developper asks you to
 
 DEV_LOG = False

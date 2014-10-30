@@ -91,15 +91,6 @@ def begin_anew():
     log.help(con.BOOT_ASCII2)
     log.help("BOOT_STARTUP", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
     log.help("\n".join(con.BOOT_ASCII3))
-    commands = []
-    commands.extend(con.COMMANDS)
-    if var.SHOW_HIDDEN_COMMANDS:
-        commands.extend(con.HIDDEN_COMMANDS)
-        commands.extend(con.ERROR_COMMANDS)
-    if var.DEBUG_MODE:
-        commands.extend(con.DEBUG_COMMANDS)
-    if not var.RUNNING:
-        log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
 
 def format_variables(): # formats a few variables to make sure they're correct
     if var.MOD_LOCATION:

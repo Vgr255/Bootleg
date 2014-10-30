@@ -5,7 +5,6 @@ from tools import process as pro
 from tools import logger as log
 from tools import help as helper
 from tools import git as _git
-import subprocess
 import shutil
 import os
 

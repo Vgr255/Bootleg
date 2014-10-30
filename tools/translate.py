@@ -27,7 +27,22 @@ English: "False",
 French: "Faux",
 }
 
+YES = {
+English: "Yes",
+French: "Oui",
+}
+
+NO = {
+English: "No",
+French: "Non",
+}
+
 # The following lines are contained in 'bootleg.py'
+
+UPDATE_AVAIL = {
+English: "A {0} update is available!",
+French: "Une mise à jour de {0} est disponible!",
+}
 
 BOOT_DESC = {
 English: "{0} Final Fantasy VII Mod Configurator {1}",
@@ -69,9 +84,49 @@ English: "Please enter a value:",
 French: "Veuillez entrer une valeur :",
 }
 
+ENT_UPD = {
+English: "Update now? (Yes/No)",
+French: "Mettre à jour maintenant? (Oui/Non)",
+}
+
 NO_USR_INP = {
 English: "No user input was detected. Using {0} for {1}.",
 French: "Aucun choix n'a été détecté. {0} est utilisé pour {1}.",
+}
+
+ERR_INVALID_BOOL_YN = {
+English: "Error: Invalid boolean value (Enter either 'Yes' or 'No').",
+French: "Erreur: Valeur binaire invalide (Entrez soit 'Oui' ou 'Non').",
+}
+
+ERR_INVALID_BOOL_TF = {
+English: "Error: Invalid boolean value (Enter either 'True' or 'False').",
+French: "Erreur: Valeur binaire invalide (Entrez soit 'Vrai' ou 'Faux').",
+}
+
+WAIT_UPD = {
+English: "Updating files . . .",
+French: "Mise à jour des fichiers . . .",
+}
+
+SUCCESS_UPD = {
+English: "Files successfully updated.",
+French: "Fichiers mis à jour avec succès.",
+}
+
+REST_FOR_CHG = {
+English: "Please restart {0} for the changes to take effect.",
+French: "Veuillez relancer {0} pour que les changements prennent effet.",
+}
+
+FAILED_UPD = {
+English: "Update failed. Please try again later.",
+French: "Mise à jour ratée. Essayez à nouveau plus tard.",
+}
+
+DIS_AUTO_UPD = {
+English: "Disable Auto-Update in the configuration if it fails too often.",
+French: "Désactivez à mise à jour automatique (Auto-Update) dans la configuration si cela rate trop souvent.",
 }
 
 NO_CMD_ENT = {

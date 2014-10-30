@@ -28,7 +28,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if not type:
         type = "normal"
 
-    if output and output.isupper() and not output.islower(): # to fetch in translate, make sure it's not "" or non-words
+    if output and output.isupper() and not output.islower() and not type in con.IGNORE_CHECK: # to fetch in translate, make sure it's not "" or non-words
         newout = getattr(tr, output)
         outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
         trout = newout[outlang]

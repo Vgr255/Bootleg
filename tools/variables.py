@@ -28,6 +28,8 @@ PARSING = None
 GIT_LOCATION = None
 NEWFILE_ALL = True
 NEWFILE_TRA = True
+UPDATE_READY = False
+AUTO_UPDATE = False
 
 # launcher arguments. only here for consistency
 

@@ -28,6 +28,7 @@ from tools import translate as tr
 from tools import commands as cmd
 from tools import logger as log
 from tools import get
+from tools import git
 
 if not fn.IsFile.cur("config.py"): # user did not rename their config file, let's silently copy it
     shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
@@ -62,6 +63,11 @@ for x, y in con.SETTINGS_PREFIXES.items():
     setattr(con, x, y)
 
 fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
+
+if var.GIT_LOCATION and var.AUTO_UPDATE:
+    if git.diff(var.GIT_LOCATION, silent=True):
+        log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
+        var.UPDATE_READY = True
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--admin", action="store_true")
@@ -100,11 +106,22 @@ def main():
             else:
                 fn.end_bootleg_early()
                 return
+        commands = []
+        commands.extend(con.COMMANDS)
+        if var.SHOW_HIDDEN_COMMANDS:
+            commands.extend(con.HIDDEN_COMMANDS)
+            commands.extend(con.ERROR_COMMANDS)
+        if var.DEBUG_MODE:
+            commands.extend(con.DEBUG_COMMANDS)
         totype = "ENT_CMD"
         if var.FINDING:
             totype = "ENT_VAL"
         if var.PARSING:
             totype = "ENT_CHC"
+        if var.UPDATE_READY:
+            totype = "ENT_UPD"
+        if totype == "ENT_CMD":
+            log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
         log.help("\n", totype, "\n")
         inp = ""
         try:
@@ -123,6 +140,18 @@ def main():
             if var.PARSING == "Language":
                 fn.chk_game_language(inp)
                 return
+        elif var.UPDATE_READY:
+            if get.bool(inp) is None:
+                log.logger("ERR_INVALID_BOOL_YN")
+                return
+            if get.bool(inp):
+                log.logger("", "WAIT_UPD", "\n")
+                if git.pull(var.GIT_LOCATION, silent=True):
+                    log.logger("SUCCESS_UPD", "REST_FOR_CHG", form=con.PROGRAM_NAME)
+                else:
+                    log.logger("FAILED_UPD", "DIS_AUTO_UPD", form=con.PROGRAM_NAME)
+            var.UPDATE_READY = False
+            return
         inp1 = inp.lower().split()
         if not inp:
             log.help("NO_CMD_ENT")

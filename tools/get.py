@@ -1,6 +1,7 @@
 from tools import constants as con
 from tools import variables as var
 from tools import filenames as fl
+from tools import translate as tr
 from tools import logger as log
 from tools import parser
 import platform
@@ -21,6 +22,25 @@ def _parser(setting): # get function xyz() in parser.py for variable XYZ
         parse = getattr(parser, y)
         break # we got what we wanted
     return parse
+
+def bool(inp):
+    if tr.YES[var.LANGUAGE].lower() == inp.lower():
+        return 1
+    if tr.YES[var.LANGUAGE].lower()[0] == inp.lower():
+        return 1
+    if tr.TRUE[var.LANGUAGE].lower() == inp.lower():
+        return 1
+    if tr.TRUE[var.LANGUAGE].lower()[0] == inp.lower():
+        return 1
+    if tr.NO[var.LANGUAGE].lower() == inp.lower():
+        return 0
+    if tr.NO[var.LANGUAGE].lower()[0] == inp.lower():
+        return 0
+    if tr.FALSE[var.LANGUAGE].lower() == inp.lower():
+        return 0
+    if tr.FALSE[var.LANGUAGE].lower()[0] == inp.lower():
+        return 0
+    return None
 
 def setting(inp): # sets variables
     try:

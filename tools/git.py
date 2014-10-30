@@ -6,23 +6,40 @@ from tools import variables as var
 from tools import logger as log
 import subprocess
 
-def pull(args):
+def __parse__(args, name):
+    if not args == list(args):
+        args = [args]
+    if len(args) < 2:
+        args.append(name)
+    if not args[1] == name:
+        argsp = [args[0], name]
+        argsp.extend(args[1:])
+        args = list(argsp)
+    return args
+
+def pull(args, silent=False):
+    args = __parse__(args, "pull")
     if var.USE_GIT_ORIGIN:
         args = [args[0], "pull", "origin", var.GIT_BRANCH]
     elif var.USE_GIT_LINK:
         args = [args[0], "pull", con.PROCESS_CODE + ".git", var.GIT_BRANCH]
+    if silent:
+        return not do(args, silent)
     do(args)
 
-def diff(args):
-    do(args) # mainly a placeholder for now
+def diff(args, silent=False):
+    args = __parse__(args, "diff")
+    if silent:
+        return not do(args, silent)
+    do(args)
 
-def do(args):
+def do(args, silent=False):
     child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (out, err) = child.communicate()
     ret = child.returncode
 
     for line in (out + err).splitlines():
-        log.logger(line.decode('utf-8'), type="debug")
+        log.logger(line.decode('utf-8'), type="git", display=not silent)
 
     if ret != 0:
         if ret < 0:
@@ -31,3 +48,4 @@ def do(args):
             cause = 'status'
 
         log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
+    return ret

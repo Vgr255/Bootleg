@@ -46,18 +46,16 @@ SETTINGS_PREFIXES = {
 
 }
 
-LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP"}
-IGNORE_ALL = ["all", "settings", "temp"] # will not write to these files when calling log-to-all
-IGNORE_TRANSLATE = ["traceback", "input", "temp"]
+LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "DEBUG"}
+IGNORE_ALL = ["all", "settings", "temp", "git"] # will not write to these files when calling log-to-all
+IGNORE_TRANSLATE = ["traceback", "input", "temp", "git"]
 IGNORE_TIMESTAMP = ["temp"]
 IGNORE_NEWLINE = ["temp"]
 IGNORE_MIXED = ["temp"]
+IGNORE_CHECK = ["temp", "git"]
 
 LANGUAGES = {"English": "en", "French": "fr"}
 LANG_INDEX = {"en": 0, "fr": 1}
-
-YES = {"French": "oui"}
-NO = {"French": "non"}
 
 # filenames to set variables
 
