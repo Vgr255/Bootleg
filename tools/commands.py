@@ -146,26 +146,29 @@ def do(inp, params=[]):
         fn.no_such_command("do")
 
 def git(inp, params=[]): # code re-used from lykos/Wolfbot
+    if not var.GIT_LOCATION:
+        log.logger("GIT_NOT_INST")
+    args = [var.GIT_LOCATION]
     if params:
         if params[0] == "pull":
-            args = ["git", "pull"]
+            args.append("pull")
             if var.USE_GIT_ORIGIN:
                 args += "origin", var.GIT_BRANCH
             elif var.USE_GIT_LINK:
                 args += con.PROCESS_CODE + ".git", var.GIT_BRANCH
             elif params[1:]:
                 args.extend(params[1:])
-            child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (out, err) = child.communicate()
-            ret = child.returncode
+        child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (out, err) = child.communicate()
+        ret = child.returncode
 
-            for line in (out + err).splitlines():
-                log.logger(line.decode('utf-8'), type="debug")
+        for line in (out + err).splitlines():
+            log.logger(line.decode('utf-8'), type="debug")
 
-            if ret != 0:
-                if ret < 0:
-                    cause = 'signal'
-                else:
-                    cause = 'status'
+        if ret != 0:
+            if ret < 0:
+                cause = 'signal'
+            else:
+                cause = 'status'
 
-                log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
+            log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])

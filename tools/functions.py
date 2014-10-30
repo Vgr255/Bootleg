@@ -37,6 +37,7 @@ def do_init(): # initialize on startup only
     get.users()
     get.commands()
     reg.get()
+    reg.git()
     initialize() # needs to be called after get.architecture()
 
 class IsFile:

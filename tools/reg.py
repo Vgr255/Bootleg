@@ -18,9 +18,9 @@ def git(): # get the registry key for the git install location
     reg = winreg.OpenKey(reg, "Uninstall")
     try:
         var.GIT_REG = winreg.OpenKey(reg, "Git_is1")
-        return winreg.QueryValueEx(var.GIT_REG, "InstallLocation")
+        var.GIT_LOCATION = winreg.QueryValueEx(var.GIT_REG, "InstallLocation")[0] + "bin\\git.exe"
     except OSError:
-        return None
+        pass
 
 def get():
     if not var.ON_WINDOWS:

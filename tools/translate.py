@@ -120,6 +120,11 @@ English: "Error: {0} is not defined.",
 French: "Erreur: {0} n'est pas défini.",
 }
 
+GIT_NOT_INST = {
+English: "Error: Git is not installed. The operation cannot continue.",
+French: "Erreur: Git n'est pas installé. L'opération ne peut pas continuer.",
+}
+
 PROCESS_EXITED = {
 English: "Process {0} exited with {1} {2}",
 French: "Le processus {0} s'est terminé de {1} {2}",
