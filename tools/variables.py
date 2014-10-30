@@ -30,6 +30,7 @@ NEWFILE_ALL = True
 NEWFILE_TRA = True
 UPDATE_READY = False
 AUTO_UPDATE = False
+NEED_RESTART = False
 
 # launcher arguments. only here for consistency
 

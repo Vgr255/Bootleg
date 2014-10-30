@@ -120,6 +120,8 @@ def main():
             totype = "ENT_CHC"
         if var.UPDATE_READY:
             totype = "ENT_UPD"
+        if var.NEED_RESTART:
+            totype = ""
         if totype == "ENT_CMD":
             log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
         log.help("\n", totype, "\n")
@@ -132,15 +134,18 @@ def main():
                 log.logger("NO_USR_INP", form=[getattr(var, parsed), parsed], display=False)
                 var.FINDING = None
                 return
+            if var.NEED_RESTART:
+                var.ALLOW_RUN = False
+                return
         log.logger(inp, type="input", display=False)
         if var.FINDING:
             get.setting(inp)
             return
-        elif var.PARSING:
+        if var.PARSING:
             if var.PARSING == "Language":
                 fn.chk_game_language(inp)
                 return
-        elif var.UPDATE_READY:
+        if var.UPDATE_READY:
             if get.bool(inp) is None:
                 log.logger("ERR_INVALID_BOOL_YN")
                 return
@@ -148,9 +153,13 @@ def main():
                 log.logger("", "WAIT_UPD", "\n")
                 if git.pull(var.GIT_LOCATION, silent=True):
                     log.logger("SUCCESS_UPD", "REST_FOR_CHG", form=con.PROGRAM_NAME)
+                    var.NEED_RESTART = True
                 else:
                     log.logger("FAILED_UPD", "DIS_AUTO_UPD", form=con.PROGRAM_NAME)
             var.UPDATE_READY = False
+            return
+        if var.NEED_RESTART:
+            var.ALLOW_RUN = False
             return
         inp1 = inp.lower().split()
         if not inp:

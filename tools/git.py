@@ -24,13 +24,13 @@ def pull(args, silent=False):
     elif var.USE_GIT_LINK:
         args = [args[0], "pull", con.PROCESS_CODE + ".git", var.GIT_BRANCH]
     if silent:
-        return not do(args, silent)
+        return do(args, silent)
     do(args)
 
 def diff(args, silent=False):
     args = __parse__(args, "diff")
     if silent:
-        return not do(args, silent)
+        return do(args, silent)
     do(args)
 
 def do(args, silent=False):
@@ -40,6 +40,8 @@ def do(args, silent=False):
 
     for line in (out + err).splitlines():
         log.logger(line.decode('utf-8'), type="git", display=not silent)
+    if not out:
+        return False
 
     if ret != 0:
         if ret < 0:
@@ -48,4 +50,6 @@ def do(args, silent=False):
             cause = 'status'
 
         log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
+    else:
+        return True
     return ret
