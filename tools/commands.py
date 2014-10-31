@@ -58,7 +58,8 @@ def clean(*args):
     if fn.IsFile.cur("cfg.py"):
         os.remove(os.getcwd() + "/cfg.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
-    shutil.rmtree(os.getcwd() + '/tools/__pycache__')
+    if args: # args will be empty if the command is called after cloning, and tools/__pycache__ will not exist
+        shutil.rmtree(os.getcwd() + '/tools/__pycache__')
     var.ALLOW_RUN = False
 
 # The following commands may or may not require additional parameters
