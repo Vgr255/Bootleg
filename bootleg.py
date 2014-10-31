@@ -19,10 +19,9 @@ import traceback
 import argparse
 import tempfile
 import shutil
-import os
+import ctypes
 import sys
-
-from distutils import dir_util as copier
+import os
 
 from tools import constants as con
 from tools import variables as var
@@ -77,7 +76,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
                 git.pull(var.GIT_LOCATION, silent=True)
                 var.ALLOW_RUN = False
-    if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo
+    if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo, make it so
         tmpfold = tempfile.gettempdir() + "\\" + fn.make_random_()
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
@@ -85,8 +84,10 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
         for file in con.GIT_COPY_FILES:
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
+        os.system("C:\\Windows\\System32\\attrib.exe +H " + os.getcwd() + "/.git /S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
-    if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
+        cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
+    if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES")
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
