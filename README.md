@@ -4,14 +4,11 @@ Hello and welcome to the Bootleg 041 code. Please note that, while the code curr
 
 See [CONTRIBUTING.md][0] if you want to contribute to this repository.
 
-Release date: None yet. Aiming towards a 2014 release.
+Release date: None. This being a one-man job, it takes a long time to do.
 
 ### Running the code yourself
 
-1. You need Python 3.2 or higher
-2. Copy or rename `config.py.example` to `config.py`
-3. If using the User Interface, that's all you need to do
-4. Else, edit `config.py` to fit your settings
+You need python 3.2 or higher. Bootleg will copy over the example config file if it doesn't exist. You can do so yourself and edit the settings to your liking. You can use Insight's User Interface to configure your settings, but Bootleg can run perfectly fine by itself.
 
 ### Presets
 
@@ -31,15 +28,17 @@ You can make a temporary `cfg.py` file, with any setting present in `tools/varia
 
 ### Automatic updating
 
-If Auto-Update is enabled in the config, Bootleg will attempt, everytime it's ran, to check for updates and prompt the user to download it. Right now it only works if the project was cloned directly from the repository, but I intend to make it work under any circumstances.
+If Auto-Update is enabled in the config, Bootleg will attempt, everytime it's ran, to check for updates and prompt the user to download it. On every run, it also checks if it's a clone of a repository or a fork. This is only useful the first time it's launched, as if it's not a clone, it will clone the repository in a temporary folder, copy over the .git folder and all files, overwriting everything already present in the folder by those files. This allows to keep one download, that will probably become obsolete soon enough, but still be able to give updates to everyone.
 
 ### Adding new translations
 
-Bootleg is designed to be used completely in English. However, there is a built-in translation feature. Due to the extremely large amount of text involved in Bootleg, translating every single line is a long and tedious work.
+Bootleg's programming is done with translating in mind. As such, no line is hardcoded in the code, and everything is in the [translate.py][1] file.
 
-If you are fluent in English as well as another language (preferably native), you can help translating Bootleg. You will need to fork the repository and then clone it.
+If you are fluent in English as well as another language (preferably native), you can help translating Bootleg.
 
-You need to edit the [translate.py][1] file to add your own language, following the same syntax as what's already in there. Add a constant at the top (such as German: "German") and use that constant at all times. Since I natively speak French, I translated a few lines, however I do not have the time to translate every single line, or I would not have time left to do actual code. I will however make sure every English line is present.
+You need to edit the [translate.py][1] file to add your own language, following the same syntax as what's already in there. Add a constant at the top (such as German: "German") and use that constant at all times.
+
+Since I natively speak French, I translated a few lines, however I do not have the time to translate every single line, or I would not have time left to do actual code. I will however make sure every English line is present, for future people to translate accordingly.
 
 [0]: https://github.com/Vgr255/Bootleg/blob/master/CONTRIBUTING.md
 [1]: https://github.com/Vgr255/Bootleg/blob/master/tools/translate.py
