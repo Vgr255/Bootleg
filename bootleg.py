@@ -15,11 +15,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import argparse
 import traceback
+import argparse
+import tempfile
 import shutil
 import os
 import sys
+
+from distutils import dir_util as copier
 
 from tools import constants as con
 from tools import variables as var
@@ -75,13 +78,13 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 git.pull(var.GIT_LOCATION, silent=True)
                 var.ALLOW_RUN = False
     if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo
-        tmpfold = os.getcwd() + "\\" + fn.make_random_()
+        tmpfold = tempfile.gettempdir() + "\\" + fn.make_random_()
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME])
-        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold])
-        shutil.move(tmpfold, os.getcwd()) # moving the .git folder in the current working directory
-        shutil.rmtree(tmpfold)
+        log.logger(tmpfold, type="temp", display=False)
+        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
+        shutil.move(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
         git.pull(var.GIT_LOCATION, silent=True)
-    if git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
+    if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
         log.logger("", "UNCOMMITTED_FILES")
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
