@@ -206,8 +206,8 @@ French: "Erreur: Git n'est pas installé. L'opération ne peut pas continuer.",
 }
 
 PROCESS_EXITED = {
-English: "Process {0} exited with {1} {2}",
-French: "Le processus {0} s'est terminé de {1} {2}",
+English: "Process '{0}' exited with {1} {2}",
+French: "Le processus '{0}' s'est terminé de {1} {2}",
 }
 
 # End of the 'commands.py' lines

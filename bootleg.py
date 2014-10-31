@@ -76,7 +76,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 var.ALLOW_RUN = False
     if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", form=os.getcwd())
-        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", os.getcwd()])
+        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", os.getcwd() + "/" + con.PROGRAM_NAME])
     if git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
         log.logger("", "UNCOMMITTED_FILES")
 

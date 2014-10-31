@@ -67,7 +67,7 @@ def do(args, silent=False, needout=False):
         else:
             cause = 'status'
 
-        log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
+        log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
     else:
         return True
     return ret
