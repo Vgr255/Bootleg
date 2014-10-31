@@ -78,13 +78,13 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 var.ALLOW_RUN = False
     if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo, make it so
         tmpfold = tempfile.gettempdir() + "\\" + fn.make_random_()
-        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME])
+        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
         shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
         for file in con.GIT_COPY_FILES:
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
-        os.system("C:\\Windows\\System32\\attrib.exe +H " + os.getcwd() + "/.git /S /D") # sets the git folder as hidden
+        os.system("C:\\Windows\\System32\\attrib.exe +H \"" + os.getcwd() + "/.git\" /S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
@@ -100,7 +100,8 @@ var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
 
-log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False)
+if var.ALLOW_RUN: # prevent it from being printed if it was a new, cloned repo
+    log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("CFG_DIS_OVR", display=False)

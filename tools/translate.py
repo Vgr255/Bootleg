@@ -55,8 +55,8 @@ French: "Relancez {0} une fois terminé.",
 }
 
 CREATING_REPO = {
-English: "Performing first-time setup in '{0}'.",
-French: "Installation dans '{0}'.",
+English: "Performing first-time setup for {1} in '{0}'.",
+French: "Installation de {1} dans '{0}'.",
 }
 
 FIRST_SETUP_WAIT = {
