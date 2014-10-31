@@ -85,8 +85,9 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         shutil.rmtree(os.getcwd() + "\\tools")
         shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
         os.remove("config.py")
-        os.remove("bootleg.py")
         for file in con.GIT_COPY_FILES:
+            if fn.IsFile.cur(file):
+                os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
         fn.attrib("+H", os.getcwd() + "/.git", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
