@@ -36,10 +36,11 @@ def diff(args, silent=False):
 def check(args, silent=False):
     args = __parse__(args, "status")
     checker = do(args, silent, needout=True)
-    if len(checker) > 2:
-        return True
-    if len(checker) == 1: # fatal: not a git repo
-        return None
+    if checker:
+        if len(checker) > 2:
+            return True
+        if len(checker) == 1: # fatal: not a git repo
+            return None
     return False
 
 def clone(args, silent=False): # use only if not a git repo
