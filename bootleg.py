@@ -81,6 +81,8 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
         shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
+        if os.path.isdir(os.getcwd() + "\\presets"):
+            shutil.rmtree(os.getcwd() + "\\presets") # making sure to overwrite everything
         shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
         shutil.rmtree(os.getcwd() + "\\tools")
         shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
