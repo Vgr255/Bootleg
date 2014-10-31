@@ -30,10 +30,10 @@ def get_help(helping=""):
             help("User helper{0} and support team: {1}.".format("s" if len(con.USER_HELP) > 1 else "", ", ".join(con.USER_HELP)))
         if con.CODERS:
             help("Current active programmer{0} and developper{0}: {1}.".format("s" if len(con.CODERS) > 1 else "", ", ".join(con.CODERS)))
-        if con.GUI_CODERS:
-            help("Programming of the Graphical User Interface (GUI): {0}.".format(", ".join(con.GUI_CODERS)))
-        if con.PROCESS_CODERS:
-            help("Programming of the {1} process: {0}.".format(", ".join(con.PROCESS_CODERS), con.PROGRAM_NAME))
+            if con.GUI_CODERS:
+                help("Programming of the Graphical User Interface (GUI): {0}.".format(", ".join(con.GUI_CODERS)))
+            if con.PROCESS_CODERS:
+                help("Programming of the {1} process: {0}.".format(", ".join(con.PROCESS_CODERS), con.PROGRAM_NAME))
         if con.GAME_CONV:
             help("Game Converter developping and support: {0}.".format(", ".join(con.GAME_CONV)))
         if con.BETA_TESTERS:

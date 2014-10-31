@@ -80,7 +80,7 @@ def architecture(): # find processor architecture
 
 def users():
     var.USERS = []
-    usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.GUI_CODERS + con.PROCESS_CODERS + con.GAME_CONV + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP
+    usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.GAME_CONV + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.TRANSLATORS
     for user in usr:
         if user in var.USERS:
             continue

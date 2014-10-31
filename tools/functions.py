@@ -148,6 +148,9 @@ def format_variables(): # formats a few variables to make sure they're correct
             for trnl in lng:
                 if trnl not in con.TRANSLATORS:
                     con.TRANSLATORS.append(trnl)
+    for coder in con.GUI_CODERS + con.PROCESS_CODERS:
+        if coder not in con.CODERS:
+            con.CODERS.append(coder)
 
 def make_random_(): # generates a random string of numbers for temporary folders
     iter = random.randrange(1, 10)
