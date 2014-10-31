@@ -263,6 +263,9 @@ def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)
 
+def attrib(attr, file, params=""): # sets Windows file and folders attributes
+    os.system("C:\\Windows\\System32\\attrib.exe " + attr + ' "' + file + '" ' + params)
+
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():
         for param in inp:

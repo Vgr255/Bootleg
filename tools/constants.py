@@ -54,7 +54,7 @@ IGNORE_NEWLINE = ["temp"]
 IGNORE_MIXED = ["temp"]
 IGNORE_CHECK = ["temp", "git"]
 
-GIT_COPY_FILES = ["README.md", "DOCUMENTATION.md", "CONTRIBUTING.md", "SETTINGS.md", "TODO.md", ".gitignore"]
+GIT_COPY_FILES = ["README.md", "DOCUMENTATION.md", "CONTRIBUTING.md", "SETTINGS.md", "TODO.md", ".gitignore", "config.py.example", "bootleg.py"]
 
 LANGUAGES = {"English": "en", "French": "fr"}
 LANG_INDEX = {"en": 0, "fr": 1}

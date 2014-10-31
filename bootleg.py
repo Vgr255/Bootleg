@@ -19,7 +19,6 @@ import traceback
 import argparse
 import tempfile
 import shutil
-import ctypes
 import sys
 import os
 
@@ -81,10 +80,16 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
-        shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
+        shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
+        shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
+        shutil.rmtree(os.getcwd() + "\\tools")
+        shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
+        os.remove("config.py.example")
+        os.remove("config.py")
+        os.remove("bootleg.py")
         for file in con.GIT_COPY_FILES:
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
-        os.system("C:\\Windows\\System32\\attrib.exe +H \"" + os.getcwd() + "/.git\" /S /D") # sets the git folder as hidden
+        fn.attrib("+H", os.getcwd() + "/.git", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
