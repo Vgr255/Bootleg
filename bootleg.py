@@ -75,8 +75,12 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 git.pull(var.GIT_LOCATION, silent=True)
                 var.ALLOW_RUN = False
     if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo
-        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", form=os.getcwd())
-        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", os.getcwd() + "/" + con.PROGRAM_NAME])
+        tmpfold = os.getcwd() + "/" + fn.make_random_()
+        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME])
+        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold])
+        shutil.move(tmpfold + "/.git", os.getcwd() + "/.git") # moving the .git folder in the current working directory
+        shutil.rmtree(tmpfold)
+        git.pull(var.GIT_LOCATION, silent=True)
     if git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
         log.logger("", "UNCOMMITTED_FILES")
 
