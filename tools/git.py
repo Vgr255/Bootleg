@@ -19,10 +19,11 @@ def __parse__(args, name):
 
 def pull(args, silent=False):
     args = __parse__(args, "pull")
-    if var.USE_GIT_ORIGIN:
-        args = [args[0], "pull", "origin", var.GIT_BRANCH]
-    elif var.USE_GIT_LINK:
-        args = [args[0], "pull", con.PROCESS_CODE + ".git", var.GIT_BRANCH]
+    if not len(args) == 4:
+        if var.USE_GIT_ORIGIN:
+            args = [args[0], "pull", "origin", var.GIT_BRANCH]
+        elif var.USE_GIT_LINK:
+            args = [args[0], "pull", con.PROCESS_CODE + ".git", var.GIT_BRANCH]
     if silent:
         return do(args, silent)
     do(args)
@@ -37,6 +38,8 @@ def check(args, silent=False):
     args = __parse__(args, "status")
     checker = do(args, silent, needout=True)
     if checker:
+        if checker[-1:] == "nothing to commit (working directory clean)":
+            return False
         if len(checker) > 2:
             return True
         if len(checker) == 1: # fatal: not a git repo
