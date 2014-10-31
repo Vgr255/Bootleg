@@ -83,6 +83,8 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
         shutil.move(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
+        for file in con.GIT_COPY_FILES:
+            shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
         git.pull(var.GIT_LOCATION, silent=True)
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
         log.logger("", "UNCOMMITTED_FILES")
