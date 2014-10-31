@@ -8,10 +8,10 @@
 * Most functions are done
 * Preset file parsing
 * Git integration, automatic updates
+* Creating of a clone instance if it wasn't (first-time setup)
 
 ### What is left to do
 
 * Main function
 * Some functions and the parser for each parameter
-* Make Git be able to update local instances that were not cloned
 * Much more that I can't remember right now
