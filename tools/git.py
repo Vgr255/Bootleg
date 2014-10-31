@@ -56,7 +56,7 @@ def do(args, silent=False, needout=False):
     for line in (out + err).splitlines():
         log.logger(line.decode('utf-8'), type="git", display=not silent)
         lines.append(line)
-    if not out:
+    if not (out + err):
         return False
     if needout:
         return lines
