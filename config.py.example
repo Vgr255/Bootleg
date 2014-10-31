@@ -11,6 +11,10 @@ LANGUAGE = "Default"
 # It's recommended to keep this on to check easily
 
 AUTO_UPDATE = True
+
+# If this is True, it will not prompt the user
+# and will automatically fetch the update
+
 SILENT_UPDATE = True
 
 # Developper/debugger options. enable only if a developper asks you to

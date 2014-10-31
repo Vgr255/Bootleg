@@ -84,7 +84,6 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
         shutil.rmtree(os.getcwd() + "\\tools")
         shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
-        os.remove("config.py.example")
         os.remove("config.py")
         os.remove("bootleg.py")
         for file in con.GIT_COPY_FILES:
