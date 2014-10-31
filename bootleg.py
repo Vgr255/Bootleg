@@ -82,7 +82,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
-        shutil.move(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
+        shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory, then pull
         for file in con.GIT_COPY_FILES:
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
         git.pull(var.GIT_LOCATION, silent=True)
