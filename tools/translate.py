@@ -54,6 +54,16 @@ English: "Launch {0} again once it finishes.",
 French: "Relancez {0} une fois terminé.",
 }
 
+CREATING_REPO = {
+English: "Performing first-time setup in '{0}'.",
+French: "Installation dans '{0}'.",
+}
+
+FIRST_SETUP_WAIT = {
+English: "Please wait while setup is installing the files. . .",
+French: "Veuillez patienter pendant que l'assistant installe les fichiers. . .",
+}
+
 UNCOMMITTED_FILES = {
 English: "Warning: You have uncommitted changes.",
 French: "Attention: Vous avez des modifications non synchronisées.",

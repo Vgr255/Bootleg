@@ -13,7 +13,7 @@ FRENCH_TRANSLATORS = ["Vgr"]
 
 EMAIL = "Bootleg@DadaData.net"
 
-PROCESS_CODE = "https://github.com/Vgr255/Bootleg"
+PROCESS_CODE = "https://github.com/Vgr255/Bootleg" # This is used in many places, including auto-update. Do not edit lightly.
 
 PROGRAM_NAME = "Bootleg" # this is what appears everywhere (e.g. "Welcome to the Bootleg configurator")
 

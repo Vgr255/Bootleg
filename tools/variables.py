@@ -33,6 +33,7 @@ AUTO_UPDATE = False
 NEED_RESTART = False
 IGNORE_LOCAL_CHANGES = False
 SILENT_UPDATE = False
+FETCH_GIT = True
 
 # launcher arguments. only here for consistency
 

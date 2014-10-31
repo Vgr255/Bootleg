@@ -65,14 +65,18 @@ for x, y in con.SETTINGS_PREFIXES.items():
 fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
 
 if var.GIT_LOCATION and var.AUTO_UPDATE:
-    if git.check(var.GIT_LOCATION, silent=True) and not git.diff(var.GIT_LOCATION, silent=True):
-        if not var.SILENT_UPDATE:
-            log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
-            var.UPDATE_READY = True
-        else:
-            log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
-            git.pull(var.GIT_LOCATION, silent=True)
-            var.ALLOW_RUN = False
+    if git.check(var.GIT_LOCATION, silent=True):
+        if not git.diff(var.GIT_LOCATION, silent=True):
+            if not var.SILENT_UPDATE:
+                log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
+                var.UPDATE_READY = True
+            else:
+                log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
+                git.pull(var.GIT_LOCATION, silent=True)
+                var.ALLOW_RUN = False
+    if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo
+        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", form=os.getcwd())
+        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", os.getcwd()]
     if git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES:
         log.logger("", "UNCOMMITTED_FILES")
 

@@ -38,7 +38,13 @@ def check(args, silent=False):
     checker = do(args, silent, needout=True)
     if len(checker) > 2:
         return True
+    if len(checker) == 1: # fatal: not a git repo
+        return None
     return False
+
+def clone(args, silent=False): # use only if not a git repo
+    args = __parse__(args, "clone")
+    do(args, silent)
 
 def do(args, silent=False, needout=False):
     child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

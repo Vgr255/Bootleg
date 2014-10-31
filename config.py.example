@@ -148,6 +148,8 @@ DISALLOW_CONFIG = False # ignores current config file
 
 IGNORE_LOCAL_CHANGES = False # enable only if you need to do changes
 
+FETCH_GIT = True # if the local instance is not a clone, it will make it so
+
 SYS_FOLDER = None # will default to the current directory if unspecified
 
 # Debug mode options. edit at your own risk
