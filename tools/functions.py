@@ -511,10 +511,10 @@ def find_setting(setting): # gets parsable setting
                 log.help("NO_CHG")
             log.help(line)
     log.help("\n")
-    tosay = "DEF_TO_USE", form=getattr(var, setting)
+    tosay = "DEF_TO_USE"
     if con.RANGE[setting] < 0:
         tosay += "TOO_FEW_DIG"
-    log.help(tosay + ".")
+    log.help(tosay + ".", form=getattr(var, setting))
 
 def no_such_command(command):
     log.logger("ERR_INVALID_COMMAND", form=command, write=False)
