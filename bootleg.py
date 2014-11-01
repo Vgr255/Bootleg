@@ -32,7 +32,12 @@ from tools import get
 from tools import git
 
 if not fn.IsFile.cur("config.py"): # user did not rename their config file, let's silently copy it
-    shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+    if fn.IsFile.cur("config.py.example"):
+        shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+    else: # if it can't use default, create a blank config
+        newconf = open(os.getcwd() + "/config.py", "w")
+        newconf.write("# New blank config created by {0}".format(con.PROGRAM_NAME))
+        newconf.close()
 
 import config
 
