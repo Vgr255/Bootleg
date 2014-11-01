@@ -97,9 +97,9 @@ def commands():
 class Error: # use this to get the reasons for various errors
     class Fatal:
         def sprinkles():
-            return "'{0}' is missing from {1}.".format(fl.SPRINKLES, var.SYS_FOLDER)
+            return "'{0}' is missing from {1}.", fl.SPRINKLES, var.SYS_FOLDER
         def _7za():
-            return "'7za.exe' is missing from {0}.".format(var.SYS_FOLDER)
+            return "'7za.exe' is missing from {0}.", var.SYS_FOLDER
 
     class System:
         def int():

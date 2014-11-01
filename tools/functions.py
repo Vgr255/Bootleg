@@ -55,18 +55,17 @@ class IsFile:
         return os.path.isfile(inp)
 
 class ManipFile: # currently a placeholder, will change in the future
-    class Z7:
-        def extract(file, dir=""):
-            if dir:
-                args = ['7za.exe', 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
-            else:
-                args = ['7za.exe', 'x', '-o"{0}"'.format(os.getcwd()), '"{0}"'.format(file)]
-            __handler__(args)
+    def _7zip(file, dir=""):
+        if dir:
+            args = ['7za.exe', 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
+        else:
+            args = ['7za.exe', 'x', '-o"{0}"'.format(os.getcwd()), '"{0}"'.format(file)]
+        __handler__(args)
 
-    class Lgp:
+    def lgp(file, dir=""):
         pass
 
-    class Rar:
+    def rar(file, dir=""):
         pass
 
     def __handler__(args):
@@ -413,17 +412,17 @@ def chk_existing_install():
     # even if some go away, keep the current ones the same
     # so it doesn't mess up other stuff
     if IsFile.game("ff7.exe"): # 1998
-        log.logger("Final Fantasy VII Installation Found:", var.FFVII_PATH)
+        log.logger("INST_FND_1998", var.FFVII_PATH)
         retcode = 0
     elif IsFile.game("FF7_Launcher.exe"): # 2012/2013
         if "\\SteamApps\\common\\FINAL FANTASY VII\\" in var.FFVII_PATH:
-            log.logger("Final Fantasy VII 2013 Steam Installation Found:", var.FFVII_PATH)
+            log.logger("INST_FND_2013", var.FFVII_PATH)
             retcode = 5
         else:
-            log.logger("Final Fantasy VII 2012 Square Enix Store Installation Found:", var.FFVII_PATH)
+            log.logger("INST_FND_2012", var.FFVII_PATH)
             retcode = 4
     elif IsFile.pro("ff7.exe"): # default install
-        log.logger("Final Fantasy VII Default Installation Found:", var.FFVII_PATH)
+        log.logger("INST_FND_DEF", var.FFVII_PATH)
         retcode = 3 if var.ARCHITECTURE == "64bit" else 2
     # rest to check for Steam when I know how it is
     elif var.GAME_VERSION == 1998:
@@ -435,7 +434,7 @@ def chk_existing_install():
         if IsFile.get(game + "FF7_Launcher.exe"):
             retcode = 8 if var.GAME_VERSION == 2013 else 7
     else: # nothing found
-        log.logger("Could not find a Final Fantasy VII Installation.", "Aborting {0}...".format(con.PROGRAM_NAME))
+        log.logger("COULD_NOT_FINST", "ABORT_BOOT", form=con.PROGRAM_NAME)
         retcode = 1
     return retcode
 
@@ -452,18 +451,17 @@ def settings_to_int():
             setattr(var, parsable, int(parsarg))
         except ValueError: # something went wrong and settings aren't integers
             if var.DEBUG_MODE:
-                log.logger("{0} - {2} setting not integer ({1})".format(parsable, parsarg, u.lower()), type="debug")
+                log.logger("ERR_SETT_NOT_INT", form=[parsable, parsarg, u.lower()], type="debug")
                 continue # debug mode, let's assume the person knows what's going on
             else:
-                log.logger("{0} - {2} setting not integer ({1})".format(parsable, parsarg, u.lower()), type="error", display=False)
+                log.logger("ERR_SETT_NOT_INT", form=[parsable, parsarg, u.lower()], type="error", display=False)
                 var.SYS_ERROR.append("int")
                 break
 
 def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
-        log.multiple(" - FATAL ERROR -", types=["error", "normal"])
-        log.multiple("An error occured. Please report this.", types=["error", "normal"])
+        log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
         var.ERROR = True
         for reason in var.FATAL_ERROR:
             try:
@@ -471,11 +469,10 @@ def end_bootleg_early():
             except AttributeError:
                 why = get.Error.__unhandled__
             finally:
-                log.multiple("Error found: {0}".format(reason), types=["error", "normal"], display=False)
-                log.multiple(why(), types=["error", "normal"])
+                log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
+                log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
     if var.SYS_ERROR:
-        log.multiple("An error has been encountered.", types=["error", "normal"])
-        log.multiple("{0} may still run if you wish to.".format(con.PROGRAM_NAME), types=["error", "normal"])
+        log.multiple("ERR_ENC","MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
         var.ERROR = True
         for reason in var.SYS_ERROR:
             try:
@@ -483,8 +480,8 @@ def end_bootleg_early():
             except AttributeError:
                 why = get.Error.__unhandled__
             finally:
-                log.multiple("Error found: {0}".format(reason), types=["error", "normal"], display=False)
-                log.multiple(why(), types=["error", "normal"])
+                log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
+                log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
     log.logger("\n")
 
 def find_setting(setting): # gets parsable setting
@@ -496,28 +493,28 @@ def find_setting(setting): # gets parsable setting
     msg = parse()
     var.FINDING = setting
     if con.RANGE[setting] < 0:
-        log.help("Please enter exactly {0} digits.".format(len(str(con.RANGE[setting])[1:])))
+        log.help("ENT_EXACT_DIG", form=len(str(con.RANGE[setting])[1:]))
     else:
-        log.help("Please choose a value between 0 and {0}.".format(con.RANGE[setting]))
+        log.help("ENT_VALUE_BETWEEN", form=con.RANGE[setting])
     log.help("\n")
     if con.RANGE[setting] > 1:
         log.help(msg[0])
-        log.help("0 = No Change")
+        log.help("NO_CHG")
         log.help("\n".join(msg[1:]))
     if con.RANGE[setting] == 1:
         log.help(msg[0])
-        log.help("0 = NO")
-        log.help("1 = YES")
+        log.help("CHC_NO")
+        log.help("CHC_YES")
     if con.RANGE[setting] < 0:
         for line in msg:
             if line[0] == "1":
-                log.help("0 = No Change")
+                log.help("NO_CHG")
             log.help(line)
     log.help("\n")
-    tosay = "Default is '{0}'. It will be used if no value is given".format(getattr(var, setting))
+    tosay = "DEF_TO_USE", form=getattr(var, setting)
     if con.RANGE[setting] < 0:
-        tosay += ", or if there are too few digits"
+        tosay += "TOO_FEW_DIG"
     log.help(tosay + ".")
 
 def no_such_command(command):
-    log.logger("'{0}' is not a valid command.".format(command), write=False)
+    log.logger("ERR_INVALID_COMMAND", form=command, write=False)

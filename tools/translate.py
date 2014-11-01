@@ -151,7 +151,7 @@ French: "Mise à jour ratée. Essayez à nouveau plus tard.",
 
 DIS_AUTO_UPD = {
 English: "Disable Auto-Update in the configuration if it fails too often.",
-French: "Désactivez à mise à jour automatique (Auto-Update) dans la configuration si cela rate trop souvent.",
+French: "Désactivez la mise à jour automatique (Auto-Update) dans la configuration si cela rate trop souvent.",
 }
 
 NO_CMD_ENT = {
@@ -205,11 +205,6 @@ English: "Error: Git is not installed. The operation cannot continue.",
 French: "Erreur: Git n'est pas installé. L'opération ne peut pas continuer.",
 }
 
-PROCESS_EXITED = {
-English: "Process '{0}' exited with {1} {2}",
-French: "Le processus '{0}' s'est terminé de {1} {2}",
-}
-
 # End of the 'commands.py' lines
 
 # The following lines are contained in 'constants.py'
@@ -248,6 +243,11 @@ French: "Exécution de {1} en {0}.",
 RUN_OS = {
 English: "Running {1} on {0} (Windows: {2}).",
 French: "Exécution de {1} sous {0} (Windows: {2}).",
+}
+
+PROCESS_EXITED = {
+English: "Process '{0}' exited with {1} {2}",
+French: "Le processus '{0}' s'est terminé de {1} {2}",
 }
 
 AVAIL_CMD = {
@@ -347,4 +347,84 @@ English: "Extracting Final Fantasy VII Image . . .",
 
 IMG_REST_CMPL = {
 English: "Final Fantasy VII Image Restoration Completed.",
+}
+
+INST_FND_1998 = {
+English: "Final Fantasy VII Installation Found:",
+}
+
+INST_FND_2013 = {
+English: "Final Fantasy VII 2013 Steam Installation Found:",
+}
+
+INST_FND_2012 = {
+English: "Final Fantasy VII 2012 Square Enix Store Installation Found:",
+}
+
+INST_FND_DEF = {
+English: "Final Fantasy VII Default Installation Found:",
+}
+
+COULD_NOT_FINST = {
+English: "Could not find a Final Fantasy VII Installation.",
+}
+
+ABORT_BOOT = {
+English: "Aborting {0}...",
+}
+
+ERR_SETT_NOT_INT = {
+English: "{0} - {2} setting not integer ({1})",
+}
+
+FATAL_ERROR = {
+English: " - FATAL ERROR -",
+}
+
+ERR_TO_REPORT = {
+English: "An error occured. Please report this.",
+}
+
+ERR_ENC = {
+English: "An error has been encountered.",
+}
+
+MAY_STILL_RUN = {
+English:  "{0} may still run if you wish to.",
+}
+
+ERR_FOUND = {
+English: "Error found: {0}",
+}
+
+ENT_EXACT_DIG = {
+English: "Please enter exactly {0} digits.",
+}
+
+ENT_VALUE_BETWEEN = {
+English: "Please choose a value between 0 and {0}.",
+}
+
+NO_CHG = {
+English: "0 = No Change",
+}
+
+CHC_NO = {
+English: "0 = NO",
+}
+
+CHC_YES = {
+English: "1 = YES",
+}
+
+DEF_TO_USE = {
+English: "Default is '{0}'. It will be used if no value is given",
+}
+
+TOO_FEW_DIG = {
+English: ", or if there are too few digits",
+}
+
+ERR_INVALID_COMMAND = {
+English: "'{0}' is not a valid command.",
 }
