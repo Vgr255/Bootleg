@@ -161,7 +161,7 @@ def main():
         log.help("\n", totype, "\n")
         inp = ""
         try:
-            inp = input().strip()
+            inp = input(con.INPUT_PREFIX).strip()
         except EOFError:
             if var.FINDING:
                 parsed = var.FINDING
@@ -171,7 +171,7 @@ def main():
             if var.NEED_RESTART:
                 var.ALLOW_RUN = False
                 return
-        log.logger(inp, type="input", display=False)
+        log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="")
         if var.FINDING:
             get.setting(inp)
             return
