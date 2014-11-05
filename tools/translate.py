@@ -309,6 +309,10 @@ English: "Error: Value out of bounds.",
 French: "Erreur: Valeur hors limites.",
 }
 
+FND_2012_CONVERTING = {
+English: "Found 2012 Square Enix Store Re-Release. Converting . . .",
+}
+
 INV_PAR_FILE = {
 English: "Invalid setting found in {0}: {1}",
 }

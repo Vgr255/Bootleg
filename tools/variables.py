@@ -34,6 +34,9 @@ NEED_RESTART = False
 IGNORE_LOCAL_CHANGES = False
 SILENT_UPDATE = False
 FETCH_GIT = True
+SEVENZ_LOCATION = None
+ULGP_LOCATION = None
+RAR_LOCATION = None
 
 # launcher arguments. only here for consistency
 

@@ -11,6 +11,7 @@ import tempfile
 import hashlib
 import random
 import locale
+import shutil
 import os
 
 def initialize(): # initialize variables on startup and/or retry
@@ -46,7 +47,7 @@ class IsFile:
     def sys(inp):
         return os.path.isfile(var.SYS_FOLDER + inp)
     def game(inp):
-        return os.path.isfile(var.FFVII_PATH  + inp)
+        return os.path.isfile(var.FFVII_PATH + inp)
     def pro(inp):
         return os.path.isfile(var.PROGRAM_FILES + inp)
     def tmp(inp):
@@ -54,19 +55,18 @@ class IsFile:
     def get(inp):
         return os.path.isfile(inp)
 
-class ManipFile: # currently a placeholder, will change in the future
-    def _7zip(file, dir=""):
-        if dir:
-            args = ['7za.exe', 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
-        else:
-            args = ['7za.exe', 'x', '-o"{0}"'.format(os.getcwd()), '"{0}"'.format(file)]
+class ManipFile:
+    def _7zip(file, dir=os.getcwd()):
+        args = [var.SEVENZ_LOCATION, 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
         __handler__(args)
 
-    def lgp(file, dir=""):
-        pass
+    def lgp(file, dir=os.getcwd()):
+        args = [var.UGLP_LOCATION] # todo
+        __handler__(args)
 
-    def rar(file, dir=""):
-        pass
+    def rar(file, dir=os.getcwd()):
+        args = [var.RAR_LOCATION] # todo as well
+        __handler__(args)
 
     def __handler__(args):
         child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -106,14 +106,17 @@ def format_variables(): # formats a few variables to make sure they're correct
             var.MOD_LOCATION = moloc
     else:
         var.MOD_LOCATION = [os.getcwd()]
-    if var.SYS_FOLDER is None:
-        var.SYS_FOLDER = os.getcwd()
-    if var.FFVII_PATH is None:
+    if not var.SYS_FOLDER:
+        var.SYS_FOLDER = os.getcwd() + "/utils"
+    var.SYS_FOLDER = var.SYS_FOLDER.replace("/", "\\")
+    if not var.SYS_FOLDER[-1:] == "\\":
+        var.SYS_FOLDER += "\\"
+    if not var.FFVII_PATH:
         var.FFVII_PATH = os.getcwd() + "/Final Fantasy VII"
     var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
     if not var.FFVII_PATH[-1:] == "\\":
         var.FFVII_PATH = var.FFVII_PATH + "\\"
-    if var.BOOTLEG_TEMP is None:
+    if not var.BOOTLEG_TEMP:
         var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
     if not var.BOOTLEG_TEMP[-1:] == "\\":
         var.BOOTLEG_TEMP += "\\"
@@ -121,9 +124,15 @@ def format_variables(): # formats a few variables to make sure they're correct
     var.BOOTLEG_TEMP += make_random_() + "\\"
     log.logger(var.BOOTLEG_TEMP, display=False, type="temp")
     os.mkdir(var.BOOTLEG_TEMP) # no integrity check, there's too small a chance that the folder already exists. and if it does, I want an error to occur
-    if var.FFVII_IMAGE is not None:
+    if var.FFVII_IMAGE:
         if not var.FFVII_IMAGE[-4:].lower() == ".zip":
             var.FFVII_IMAGE = None
+    if IsFile.sys("7za.exe"):
+        var.SEVENZ_LOCATION = var.SYS_FOLDER + "7za.exe"
+    if IsFile.sys("UnRAR.exe"):
+        var.RAR_LOCATION = var.SYS_FOLDER + "UnRAR.exe"
+    if IsFile.sys("ulgp.exe"):
+        var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
     if var.LANGUAGE is not None:
         var.LANGUAGE = var.LANGUAGE[0].upper() + var.LANGUAGE[1:].lower()
         if var.LANGUAGE in ("Default", "Current", "System"):
@@ -257,12 +266,33 @@ def chk_game_language(inp=None):
 def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game version=2012, Install code in (1, 4, 7))
     if not IsFile.game("FF7_Launcher.exe"):
         return 1
+    log.logger("FND_2012_CONVERTING")
+    data = var.FFVII_PATH + "data\\"
+    attr = "-R -S -H -I" # not sure we need all those switches
+
+    # Remove some attributes from the files to manipulate them
+    attrib(data + "cd\\cr_us.lgp", attr)
+    attrib(data + "cd\\disc_us.lgp", attr)
+    attrib(data + "menu\\menu_us.lgp", attr)
+    attrib(data + "wm\\world_us.lgp", attr)
+    attrib(data + "field\\flevel.lgp", attr)
+    attrib(data + "minigame\\chocobo.lgp", attr)
+    attrib(data + "minigame\\condor.lgp", attr)
+    attrib(data + "minigame\\sub.lgp", attr)
+    attrib(data + "minigame\\high-us.lgp", attr)
+    attrib(data + "minigame\\snowboard-us.lgp", attr)
+
+    shutil.copytree(data + "movies", var.FFVII_PATH + "movies")
+    shutil.copy(data + "movies\\moviecam.lgp", data + "cd")
+    shutil.rmtree(data + "movies")
+
+    get.language_files()
 
 def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)
 
-def attrib(attr, file, params=""): # sets Windows file and folders attributes
+def attrib(file, attr, params=""): # sets Windows file and folders attributes
     os.system("C:\\Windows\\System32\\attrib.exe " + attr + ' "' + file + '" ' + params)
 
 def parse_settings_from_params(inp): # parse settings from launch parameters

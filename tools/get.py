@@ -42,6 +42,14 @@ def bool(inp):
         return 0
     return None
 
+def _type(inp): # Here for sake of being here, but don't use that unless absolutely necessary
+    return str(type(inp))[8:-2] # "foo" is "str", ["foo", "bar"] is "list", etc
+
+def language_files():
+    for lang in con.LANGUAGES.keys():
+        if var.GAME_LANGUAGE == con.LANG_INDEX[con.LANGUAGES[lang]]:
+            
+
 def setting(inp): # sets variables
     try:
         inp2 = int(inp)

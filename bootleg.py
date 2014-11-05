@@ -96,7 +96,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
             if fn.IsFile.cur(file):
                 os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
-        fn.attrib("+H", os.getcwd() + "/.git", "/S /D") # sets the git folder as hidden
+        fn.attrib(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
