@@ -9,6 +9,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     timestamp = str(datetime.datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     logall = None
+    toget = ""
     if form and not form == list(form):
         form = [form]
     if "\n" in output:
@@ -23,7 +24,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if not type:
         type = "normal"
 
-    trout, output, toform, toforml = translater(output, type, form)
+    trout, output, toform, toforml = translater(output, type, form, formo, formt)
 
     if type in con.IGNORE_TIMESTAMP:
         timestamp = ""
@@ -34,7 +35,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             type = "normal"
         logtype = con.LOGGERS[type]
 
-    write, display, file = getfile(write, display)
+    write, display, file = getfile(write, display, logtype)
 
     newfile = not os.path.isfile(os.getcwd() + "/" + file)
     if display:
@@ -123,7 +124,7 @@ def get(output, splitter):
             msg += splitter + line
     return msg
 
-def getfile(write, display):
+def getfile(write, display, logtype):
     if var.DEBUG_MODE or var.DEV_LOG or var.WRITE_EVERYTHING: # if there's an error I'll want every possible information. that's the way to go
         write = True
     if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
@@ -133,7 +134,7 @@ def getfile(write, display):
     file = logfile + "." + log_ext
     return write, display, file
 
-def translater(output, type, form):
+def translater(output, type, form, formo, formt):
     if output.isupper() and type not in con.IGNORE_CHECK: # to fetch in translate
         forml = list(form)
         newout = getattr(tr, output)
