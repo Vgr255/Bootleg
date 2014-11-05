@@ -11,15 +11,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     logall = None
     if form and not form == list(form):
         form = [form]
-    toget = ""
-    toform = []
-    toforml = []
-    forml = list(form)
     if "\n" in output:
         indx = output.index("\n")
         toget = output[indx+1:]
         output = output[:indx]
-    trout = output # not a fish
 
     if logtype:
         for typed in con.LOGGERS.keys():
@@ -28,33 +23,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if not type:
         type = "normal"
 
-    if output and output.isupper() and not output.islower() and not type in con.IGNORE_CHECK: # to fetch in translate, make sure it's not "" or non-words
-        newout = getattr(tr, output)
-        outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
-        trout = newout[outlang]
-        output = newout["English"]
-        iter = 0
-        foring = 0
-        while True:
-            if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
-                for writer in form:
-                    if writer.isupper(): # to translate as well
-                        forml[foring] = getattr(tr, writer)[var.LANGUAGE]
-                        form[foring] = getattr(tr, writer)["English"]
-                    foring += 1
-                foring = 0
-                iter += 1
-            else:
-                if formo and formt:
-                    form = formo
-                    forml = formt
-                trout = trout.format(*forml)
-                output = output.format(*form)
-                forml = forml[iter:]
-                form = form[iter:]
-                break
-    toform = list(form)
-    toforml = list(forml)
+    trout, output, toform, toforml = translater(output, type, form)
 
     if type in con.IGNORE_TIMESTAMP:
         timestamp = ""
@@ -64,13 +33,8 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         if type not in con.LOGGERS.keys():
             type = "normal"
         logtype = con.LOGGERS[type]
-    if var.DEBUG_MODE or var.DEV_LOG or var.WRITE_EVERYTHING: # if there's an error I'll want every possible information. that's the way to go
-        write = True
-    if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
-        display = True
-    logfile = getattr(var, logtype + "_FILE")
-    log_ext = getattr(var, logtype + "_EXT")
-    file = logfile + "." + log_ext
+
+    write, display, file = getfile(write, display)
 
     newfile = not os.path.isfile(os.getcwd() + "/" + file)
     if display:
@@ -158,6 +122,46 @@ def get(output, splitter):
         else:
             msg += splitter + line
     return msg
+
+def getfile(write, display):
+    if var.DEBUG_MODE or var.DEV_LOG or var.WRITE_EVERYTHING: # if there's an error I'll want every possible information. that's the way to go
+        write = True
+    if var.DEBUG_MODE or var.DISPLAY_EVERYTHING:
+        display = True
+    logfile = getattr(var, logtype + "_FILE")
+    log_ext = getattr(var, logtype + "_EXT")
+    file = logfile + "." + log_ext
+    return write, display, file
+
+def translater(output, type, form):
+    if output.isupper() and type not in con.IGNORE_CHECK: # to fetch in translate
+        forml = list(form)
+        newout = getattr(tr, output)
+        outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
+        trout = newout[outlang]
+        output = newout["English"]
+        iter = 0
+        foring = 0
+        while True:
+            if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
+                for writer in form:
+                    if writer.isupper(): # to translate as well
+                        forml[foring] = getattr(tr, writer)[var.LANGUAGE]
+                        form[foring] = getattr(tr, writer)["English"]
+                    foring += 1
+                foring = 0
+                iter += 1
+            else:
+                if formo and formt:
+                    form = formo
+                    forml = formt
+                trout = trout.format(*forml)
+                output = output.format(*form)
+                forml = forml[iter:]
+                form = form[iter:]
+                break
+        return trout, output, list(form), list(forml)
+    return output, output, list(form), list(form) # no translation
 
 def preset(): # makes a preset file with current settings
     userset = []
