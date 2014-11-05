@@ -37,6 +37,7 @@ FETCH_GIT = True
 SEVENZ_LOCATION = None
 ULGP_LOCATION = None
 RAR_LOCATION = None
+SILENT_RUN = True
 
 # launcher arguments. only here for consistency
 

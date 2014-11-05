@@ -111,6 +111,8 @@ def run(inp, params=[]):
             pro.extract()
         else:
             pro.run(params=" ".join(params))
+    elif inp == "silent": # Ran directly from the command line
+        pro.run(silent=True)
     else:
         pro.run()
 

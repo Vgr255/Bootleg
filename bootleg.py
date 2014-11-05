@@ -61,6 +61,8 @@ for x, y in config.__dict__.items():
         for a, b in cfgdict.items():
             if not b:
                 continue
+            if "_SETTINGS" in x and x[:-9] not in con.NON_INT_SETTINGS and not b.isdigit():
+                continue # don't copy non-numbers to number-only dicts
             vardict[a] = b
     except AttributeError: # not a dict
         setattr(var, x, y)
@@ -153,11 +155,15 @@ def main():
             totype = "ENT_CHC"
         if var.UPDATE_READY:
             totype = "ENT_UPD"
-        if var.NEED_RESTART:
+        if var.NEED_RESTART or var.SILENT_RUN:
             totype = ""
         if totype == "ENT_CMD":
             log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
-        log.help("\n", totype, "\n")
+        if totype:
+            log.help("\n", totype, "\n")
+        else: # nothing to print, either restarting after Git or silently running
+            if var.SILENT_RUN:
+                cmd.run("silent")
         inp = ""
         try:
             inp = input(con.INPUT_PREFIX).strip()

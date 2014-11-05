@@ -2,10 +2,15 @@
 
 # Possible language choices: English (en), French (fr) for now
 # This does NOT affect your in-game language
+# However, it will default to this when installing
 # Default means to use the system's current language
 # None means to use Bootleg's default, English
 
 LANGUAGE = "Default"
+
+# If True, the "Available commands" will not appear, and Bootleg will run directly
+
+SILENT_RUN = True
 
 # This option will automatically check for updates on startup
 # It's recommended to keep this on to check easily
