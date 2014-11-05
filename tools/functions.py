@@ -264,8 +264,6 @@ def chk_game_language(inp=None):
         pass # for now, maybe we'll add another check sometime
 
 def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game version=2012, Install code in (1, 4, 7))
-    if not IsFile.game("FF7_Launcher.exe"):
-        return 1
     log.logger("FND_2012_CONVERTING")
     data = var.FFVII_PATH + "data\\"
     attr = "-R -S -H -I" # not sure we need all those switches
@@ -282,11 +280,14 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
     attrib(data + "minigame\\high-us.lgp", attr)
     attrib(data + "minigame\\snowboard-us.lgp", attr)
 
-    shutil.copytree(data + "movies", var.FFVII_PATH + "movies")
     shutil.copy(data + "movies\\moviecam.lgp", data + "cd")
-    shutil.rmtree(data + "movies")
 
-    get.language_files()
+    get.language_files_2012()
+
+    if var.KRANMER_MASTER == 0:
+        var.ANY_CD = 1 # make sure to always have AnyCD enabled with the 2012 version
+
+    log.logger("COMPL_2012_CONVERT", "")
 
 def _mkdir(inp):
     if not os.path.isdir(inp):

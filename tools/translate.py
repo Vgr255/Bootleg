@@ -313,6 +313,10 @@ FND_2012_CONVERTING = {
 English: "Found 2012 Square Enix Store Re-Release. Converting . . .",
 }
 
+COMPL_2012_CONVERT = {
+English: "Completed 2012 Re-Release conversion.",
+}
+
 INV_PAR_FILE = {
 English: "Invalid setting found in {0}: {1}",
 }

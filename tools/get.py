@@ -5,6 +5,7 @@ from tools import translate as tr
 from tools import logger as log
 from tools import parser
 import platform
+import shutil
 
 def settings():
     for x in con.SETTINGS_PREFIXES.keys():
@@ -12,6 +13,8 @@ def settings():
         y = getattr(var, x)
         for s, u in y.items():
             setattr(var, s, u)
+            if x[:-9] not in con.NON_INT_SETTINGS:
+                setattr(var, s, int(u)) # make sure all parameters are integers
 
 def _parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
@@ -45,10 +48,21 @@ def _bool(inp):
 def _type(inp): # Here for sake of being here, but don't use that unless absolutely necessary
     return str(type(inp))[8:-2] # "foo" is "str", ["foo", "bar"] is "list", etc
 
-def language_files():
+def language_files_2012():
     for lang in con.LANGUAGES.keys():
         if var.GAME_LANGUAGE == con.LANG_INDEX[con.LANGUAGES[lang]]:
-            
+            if not os.path.isdir(var.FFVII_PATH + "data\\lang-" + lang):
+                lang = "en"
+            for i in ("battle", "kernel", "movies"):
+                for file in os.listdir(var.FFVII_PATH + "data\\lang-{0}\\{1}".format(lang, i)):
+                    shutil.copy("{0}data\\lang-{1}\\{2}\\{3}".format(var.FFVII_PATH, lang, i, file), "{0}data\\{1}\\{2}".format(var.FFVII_PATH, i, file))
+            shutil.move(data + "movies", var.FFVII_PATH + "movies")
+            os.rename("FF7_{0}.exe".format(lang), "FF7.exe")
+            var.GAME_LANGUAGE = con.LANG_INDEX[con.LANGUAGES[lang]] # makes sure to set that back to 0 if it couldn't be found
+            if var.GAME_LANGUAGE is not 0: # Backup English files
+                for lgp in ("cd\\cr_us", "cd\\disc_us", "menu\\menu_us", "wm\\world_us", "field\\flevel", "minigame\\chocobo", "minigame\\condor", "minigame\\sub", "minigame\\high-us", "minigame\\snowboard-us"):
+                    if os.path.isfile(var.FFVII_PATH + "data\\" + lgp + ".lgp"):
+                        os.rename(var.FFVII_PATH + "data\\" + lgp + ".lgp", var.FFVII_PATH + "data\\" + lgp + ".bak")
 
 def setting(inp): # sets variables
     try:
