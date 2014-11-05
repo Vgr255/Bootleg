@@ -2,8 +2,8 @@ from tools import variables as var
 from tools import constants as con
 from tools.logger import help
 
-def __unhandled__():
-    return '__unhandled__'
+def unhandled():
+    return "HELP_NOT_FOUND"
 
 def get_help(helping=""):
     helping = helping.lower()

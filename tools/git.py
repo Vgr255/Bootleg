@@ -6,7 +6,7 @@ from tools import variables as var
 from tools import logger as log
 import subprocess
 
-def __parse__(args, name):
+def parse(args, name):
     if not args == list(args):
         args = [args]
     if len(args) < 2:
@@ -18,7 +18,7 @@ def __parse__(args, name):
     return args
 
 def pull(args, silent=False):
-    args = __parse__(args, "pull")
+    args = parse(args, "pull")
     if not len(args) == 4:
         if var.USE_GIT_ORIGIN:
             args = [args[0], "pull", "origin", var.GIT_BRANCH]
@@ -29,13 +29,13 @@ def pull(args, silent=False):
     do(args)
 
 def diff(args, silent=False):
-    args = __parse__(args, "diff")
+    args = parse(args, "diff")
     if silent:
         return do(args, silent)
     do(args)
 
 def check(args, silent=False):
-    args = __parse__(args, "status")
+    args = parse(args, "status")
     checker = do(args, silent, needout=True)
     if checker:
         if checker[-1:] == "nothing to commit (working directory clean)":
@@ -47,7 +47,7 @@ def check(args, silent=False):
     return False
 
 def clone(args, silent=False): # use only if not a git repo
-    args = __parse__(args, "clone")
+    args = parse(args, "clone")
     do(args, silent)
 
 def do(args, silent=False, needout=False):

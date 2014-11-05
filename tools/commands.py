@@ -58,7 +58,7 @@ def clean(*args):
     if fn.IsFile.cur("cfg.py"):
         os.remove(os.getcwd() + "/cfg.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
-    if args: # args will be empty if the command is called after cloning, and tools/__pycache__ will not exist
+    if os.path.isdir(os.getcwd() + "tools/__pycache__"):
         shutil.rmtree(os.getcwd() + '/tools/__pycache__')
     var.ALLOW_RUN = False
 
@@ -66,7 +66,7 @@ def clean(*args):
 
 def help(inp, params=[]):
     if helper.get_help(" ".join(params)):
-        to_help = helper.__unhandled__
+        to_help = helper.unhandled
         type = "help"
         if params[0] in var.USERS:
             try:
@@ -92,8 +92,7 @@ def help(inp, params=[]):
                 except AttributeError:
                     pass
         helping = to_help()
-        if helping == '__unhandled__':
-            helping = "HELP_NOT_FOUND"
+        if helping == "HELP_NOT_FOUND":
             type = "error"
             var.ERROR = True
         elif params[0] in (var.USERS + var.COMMANDS):

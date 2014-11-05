@@ -112,8 +112,7 @@ var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
 
-if var.ALLOW_RUN: # prevent it from being printed if it was a new, cloned repo
-    log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False)
+log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)
 
 if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("CFG_DIS_OVR", display=False)
@@ -180,7 +179,7 @@ def main():
                 fn.chk_game_language(inp)
                 return
         if var.UPDATE_READY:
-            if get.bool(inp) is None:
+            if get._bool(inp) is None:
                 log.logger("ERR_INVALID_BOOL_YN")
                 return
             if get.bool(inp):

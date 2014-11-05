@@ -23,7 +23,7 @@ def _parser(setting): # get function xyz() in parser.py for variable XYZ
         break # we got what we wanted
     return parse
 
-def bool(inp):
+def _bool(inp):
     if tr.YES[var.LANGUAGE].lower() == inp.lower():
         return 1
     if tr.YES[var.LANGUAGE].lower()[0] == inp.lower():
@@ -117,5 +117,5 @@ class Error: # use this to get the reasons for various errors
         def documentation():
             return "The Documentation file could not be found."
 
-    def __unhandled__():
+    def unhandled():
         return "An unhandled error has occured. Please report this."

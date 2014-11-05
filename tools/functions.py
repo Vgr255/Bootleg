@@ -58,17 +58,17 @@ class IsFile:
 class ManipFile:
     def _7zip(file, dir=os.getcwd()):
         args = [var.SEVENZ_LOCATION, 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
-        __handler__(args)
+        handler(args)
 
     def lgp(file, dir=os.getcwd()):
         args = [var.UGLP_LOCATION] # todo
-        __handler__(args)
+        handler(args)
 
     def rar(file, dir=os.getcwd()):
         args = [var.RAR_LOCATION] # todo as well
-        __handler__(args)
+        handler(args)
 
-    def __handler__(args):
+    def handler(args):
         child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (out, err) = child.communicate()
         ret = child.returncode
@@ -134,7 +134,7 @@ def format_variables(): # formats a few variables to make sure they're correct
     if IsFile.sys("ulgp.exe"):
         var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
     if var.LANGUAGE is not None:
-        var.LANGUAGE = var.LANGUAGE[0].upper() + var.LANGUAGE[1:].lower()
+        var.LANGUAGE = var.LANGUAGE.capitalize()
         if var.LANGUAGE in ("Default", "Current", "System"):
             syslng = locale.getdefaultlocale()[0]
             if locale.getlocale()[0]:
