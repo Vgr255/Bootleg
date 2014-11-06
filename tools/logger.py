@@ -139,6 +139,8 @@ def translater(output, type, form, formo, formt):
         forml = list(form)
         newout = getattr(tr, output)
         outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
+        if not outlang in newout.keys():
+            outlang = "English"
         trout = newout[outlang]
         output = newout["English"]
         iter = 0
