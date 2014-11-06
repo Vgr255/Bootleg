@@ -60,12 +60,12 @@ class ManipFile:
         args = [var.SEVENZ_LOCATION, 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
         handler(args)
 
-    def lgp_d(file, dir=os.getcwd()):
-        args = [var.UGLP_LOCATION, "d", '"{0}{1}{2}"'.format(dir, "\\" if dir[:-1] not in ("/", "\\"), file), var.BOOTLEG_TEMP + file]
+    def lgp_x(file, dir=os.getcwd()):
+        args = [var.UGLP_LOCATION, "-x", '"{0}{1}{2}.lgp"'.format(dir, "\\" if dir[:-1] not in ("/", "\\") else "", file), "-C", '"{0}{1}"'.format(var.BOOTLEG_TEMP, file)]
         handler(args)
 
-    def lgp_e(file, dir=os.getcwd()):
-        args = [var.ULGP_LOCATION, "e", '"{0}{1}{2}"'.format(dir, "\\" if dir[:-1] not in ("/", "\\"), file), var.BOOTLEG_TEMP + file]
+    def lgp_c(file, dir=os.getcwd()):
+        args = [var.ULGP_LOCATION, "-c", '"{0}{1}{2}.lgp"'.format(dir, "\\" if dir[:-1] not in ("/", "\\") else "", file), "-C", '"{0}{1}"'.format(var.BOOTLEG_TEMP, file)]
         handler(args)
 
     def rar(file, dir=os.getcwd()):
@@ -215,8 +215,6 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
         _mkdir(fl.MODS_FINAL + "\\" + m.lower())
     for a in con.MODS_AVALANCHE:
         _mkdir(fl.MODS_AVALANCHE + "\\" + a.lower())
-    for k in con.MAKE_PATH:
-        _mkdir(var.FFVII_PATH + k.lower())
     _mkdir(var.BOOTLEG_TEMP + "Data_Working\\")
     for d in con.DATA_WORKING:
         _mkdir(var.BOOTLEG_TEMP + "Data_Working\\" + d.lower())
@@ -224,7 +222,7 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
         _mkdir(var.BOOTLEG_TEMP + u.lower() + "_undo")
     log.logger("INIT_CMPLT", "", "EXTR_SPRKL")
     _mkdir(var.BOOTLEG_TEMP + "Sprinkles")
-    ManipFile.Z7.extract(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
+    ManipFile._7zip(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
     log.logger("SPRINKLES_READY")
 
 def chk_game_language(inp=None):
@@ -311,10 +309,37 @@ def set_language_files():
             attrib(data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), attr)
             attrib(data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), attr)
 
-        if var.GAME_LANGUAGE == 0:
-            break
+            if var.GAME_LANGUAGE == 0:
+                break
 
-        
+            os.rename(data + "cd\\cr_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "cd\\cr_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
+            os.rename(data + "cd\\disc_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "cd\\disc_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
+            os.rename(data + "menu\\menu_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "menu\\menu_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
+            os.rename(data + "wm\\world_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "wm\\world_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
+            os.rename(data + "field\\{0}flevel.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "field\\{0}flevel.lgp".format(con.GAME_LANGUAGES["English"][3]))
+            os.rename(data + "minigame\\{0}chocobo.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "minigame\\{0}chocobo.lgp".format(con.GAME_LANGUAGES["English"][3]))
+            os.rename(data + "minigame\\{0}condor.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "minigame\\{0}condor.lgp".format(con.GAME_LANGUAGES["English"][3]))
+            os.rename(data + "minigame\\{0}sub.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "minigame\\{0}sub.lgp".format(con.GAME_LANGUAGES["English"][3]))
+            os.rename(data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES["English"][2]))
+            os.rename(data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES["English"][2]))
+
+            ManipFile.lgp_x("condor", data + "minigame")
+
+            tempc = var.BOOTLEG_TEMP + "condor\\"
+
+            for file in os.listdir(tempc):
+                if file == "mes02.tex":
+                    continue
+                for prefix in ("mes", "unit", "help"):
+                    if prefix in file:
+                        os.rename(tempc + file, tempc + "e" + file[1:])
+
+            for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Condor_Tran"):
+                shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Condor_Tran\\" + file, var.BOOTLEG_TEMP + "condor\\" + file)
+
+            ManipFile.lgp_c("condor", var.BOOTLEG_TEMP)
+            os.remove(data + "minigame\\condor.lgp")
+            shutil.copy(var.BOOTLEG_TEMP + "condor.lgp", data + "minigame\\condor.lgp")
 
 def _mkdir(inp):
     if not os.path.isdir(inp):
