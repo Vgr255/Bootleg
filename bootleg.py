@@ -209,10 +209,10 @@ def main():
         if var.ERROR and command not in con.ERROR_COMMANDS:
             log.help("NEED_RR")
         else:
-            try:
+            if hasattr(cmd, command):
                 iscmd = getattr(cmd, command)
                 iscmd(inp, params)
-            except AttributeError: # no such command
+            else: # no such command
                 fn.no_such_command(command)
 
 if __name__ == "__main__":

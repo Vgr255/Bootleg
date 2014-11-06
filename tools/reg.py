@@ -80,22 +80,18 @@ def write(inp, dir=os.getcwd(), file=var.TEMP_REG):
     if not file[-4:] == ".reg":
         file = file + ".reg"
     if inp == "Windows Registry Editor Version 5.00":
-        try:
+        if os.path.isfile(dir + file):
             os.remove(dir + file)
-        except OSError:
-            pass
-    try:
+    if os.path.isfile(dir + file):
         f = open("{1}{0}".format(file, dir), "r+")
         exists = True
-    except IOError: # path or file is inexistant
-        try:
-            f = open("{1}{0}".format(file, dir), "w") # let's create the file in the same directory...
-        except IOError:
-            try:
-                f = open(os.getcwd() + "\\{0}", "r+") # let's try the already-existing file in the current directory
-                exists = True
-            except IOError:
-                f = open(os.getcwd() + "\\{0}", "w") # I hope to simplify that
+    elif os.path.isdir(dir):
+        f = open("{1}{0}".format(file, dir), "w") # let's create the file in the same directory...
+    elif os.path.isfile(os.getcwd() + "/" + file):
+        f = open(os.getcwd() + "\\{0}", "r+") # let's try the already-existing file in the current directory
+        exists = True
+    else:
+        f = open(os.getcwd() + "\\{0}", "w")
     if inp[0] == "[":
         inp = inp + "]"
     f.seek(0, 2)

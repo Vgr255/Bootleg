@@ -35,6 +35,8 @@ def clean(*args):
                 line = line.replace("\n", "")
                 if not line:
                     continue
+                if not os.path.isdir(line):
+                    continue
                 try:
                     shutil.rmtree(line)
                 except OSError:
@@ -69,28 +71,19 @@ def help(inp, params=[]):
         to_help = helper.unhandled
         type = "help"
         if params[0] in var.USERS:
-            try:
+            if hasattr(helper.Users, params[0]):
                 to_help = getattr(helper.Users, params[0])
-            except AttributeError:
-                pass
         elif params[0] in var.COMMANDS:
-            try:
+            if hasattr(helper.Commands, params[0]):
                 to_help = getattr(helper.Commands, params[0])
-            except AttributeError:
-                pass
         else:
-            try:
+            if hasattr(helper, params[0]):
                 to_help = getattr(helper, params[0])
-            except AttributeError:
-                pass
         if params[0] in var.USERS and params[0] in var.COMMANDS:
-            try:
+            if hasattr(helper.Users, params[0]):
                 to_help = getattr(helper.Users, params[0])
-            except AttributeError:
-                try:
-                    to_help = getattr(helper.Commands, params[0])
-                except AttributeError:
-                    pass
+            elif hasattr(helper.Commands, params[0]):
+                to_help = getattr(helper.Commands, params[0])
         helping = to_help()
         if helping == "HELP_NOT_FOUND":
             type = "error"
