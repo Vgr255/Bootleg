@@ -209,6 +209,16 @@ French: "Erreur: Git n'est pas installé. L'opération ne peut pas continuer.",
 
 # The following lines are contained in 'constants.py'
 
+# Those are for language detection
+
+IDENT_LANG_VERS_EN = {
+English: "Identified Compatible US Version.",
+}
+
+IDENT_LANG_VERS_DE = {
+English: "Identified German Version.",
+}
+
 # Note: Those lines are part of the ASCII, and need to stay the same length
 
 BOOT_ARCH = {
@@ -313,6 +323,10 @@ FND_2012_CONVERTING = {
 English: "Found 2012 Square Enix Store Re-Release. Converting . . .",
 }
 
+VALIDATING_LANGUAGES = {
+English: "Validating Language Files . . .",
+}
+
 COMPL_2012_CONVERT = {
 English: "Completed 2012 Re-Release conversion.",
 }
@@ -379,10 +393,6 @@ English: "Could not find a Final Fantasy VII Installation.",
 
 ABORT_BOOT = {
 English: "Aborting {0}...",
-}
-
-ERR_SETT_NOT_INT = {
-English: "{0} - {2} setting not integer ({1})",
 }
 
 FATAL_ERROR = {

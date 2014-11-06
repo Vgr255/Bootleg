@@ -49,16 +49,16 @@ def _type(inp): # Here for sake of being here, but don't use that unless absolut
     return str(type(inp))[8:-2] # "foo" is "str", ["foo", "bar"] is "list", etc
 
 def language_files_2012():
-    for lang in con.LANGUAGES.keys():
-        if var.GAME_LANGUAGE == con.LANG_INDEX[con.LANGUAGES[lang]]:
-            if not os.path.isdir(var.FFVII_PATH + "data\\lang-" + lang):
-                lang = "en"
+    for lang in con.GAME_LANGUAGES.keys():
+        if var.GAME_LANGUAGE == con.GAME_LANGUAGES[lang][4]:
+            if not os.path.isdir(var.FFVII_PATH + "data\\lang-" + con.GAME_LANGUAGES[lang][0]):
+                lang = "English"
             for i in ("battle", "kernel", "movies"):
-                for file in os.listdir(var.FFVII_PATH + "data\\lang-{0}\\{1}".format(lang, i)):
-                    shutil.copy("{0}data\\lang-{1}\\{2}\\{3}".format(var.FFVII_PATH, lang, i, file), "{0}data\\{1}\\{2}".format(var.FFVII_PATH, i, file))
+                for file in os.listdir(var.FFVII_PATH + "data\\lang-{0}\\{1}".format(con.GAME_LANGUAGES[lang][0], i)):
+                    shutil.copy("{0}data\\lang-{1}\\{2}\\{3}".format(var.FFVII_PATH, con.GAME_LANGUAGES[lang][0], i, file), "{0}data\\{1}\\{2}".format(var.FFVII_PATH, i, file))
             shutil.move(data + "movies", var.FFVII_PATH + "movies")
-            os.rename("FF7_{0}.exe".format(lang), "FF7.exe")
-            var.GAME_LANGUAGE = con.LANG_INDEX[con.LANGUAGES[lang]] # makes sure to set that back to 0 if it couldn't be found
+            os.rename("FF7_{0}.exe".format(con.GAME_LANGUAGES[lang][0]), "FF7.exe")
+            var.GAME_LANGUAGE = con.GAME_LANGUAGES[lang][4] # makes sure to set that back to 0 if it couldn't be found
             if var.GAME_LANGUAGE is not 0: # Backup English files
                 for lgp in ("cd\\cr_us", "cd\\disc_us", "menu\\menu_us", "wm\\world_us", "field\\flevel", "minigame\\chocobo", "minigame\\condor", "minigame\\sub", "minigame\\high-us", "minigame\\snowboard-us"):
                     if os.path.isfile(var.FFVII_PATH + "data\\" + lgp + ".lgp"):

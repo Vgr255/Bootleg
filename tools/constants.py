@@ -61,6 +61,8 @@ GIT_COPY_FILES = ["README.md", "DOCUMENTATION.md", "CONTRIBUTING.md", "SETTINGS.
 LANGUAGES = {"English": "en", "French": "fr"}
 LANG_INDEX = {"en": 0, "fr": 1}
 
+GAME_LANGUAGES = {"English": ["en", "us", "us", "", 0], "German": ["de", "gm", "ge", "g", 3]}
+
 # filenames to set variables
 
 FFVII_PATH = ["MODS_AVALANCHE", "MODS_OVERHAUL", "MODS_FINAL"]

@@ -60,12 +60,16 @@ class ManipFile:
         args = [var.SEVENZ_LOCATION, 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
         handler(args)
 
-    def lgp(file, dir=os.getcwd()):
-        args = [var.UGLP_LOCATION] # todo
+    def lgp_d(file, dir=os.getcwd()):
+        args = [var.UGLP_LOCATION, "d", '"{0}{1}{2}"'.format(dir, "\\" if dir[:-1] not in ("/", "\\"), file), var.BOOTLEG_TEMP + file]
+        handler(args)
+
+    def lgp_e(file, dir=os.getcwd()):
+        args = [var.ULGP_LOCATION, "e", '"{0}{1}{2}"'.format(dir, "\\" if dir[:-1] not in ("/", "\\"), file), var.BOOTLEG_TEMP + file]
         handler(args)
 
     def rar(file, dir=os.getcwd()):
-        args = [var.RAR_LOCATION] # todo as well
+        args = [var.RAR_LOCATION] # todo
         handler(args)
 
     def handler(args):
@@ -289,6 +293,29 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
 
     log.logger("COMPL_2012_CONVERT", "")
 
+def set_language_files():
+    log.logger("VALIDATING_LANGUAGES")
+    for lang in con.GAME_LANGUAGES.keys():
+        if var.GAME_LANGUAGE == con.GAME_LANGUAGES[lang][4]:
+            log.logger("IDENT_LANG_VERS_" + con.GAME_LANGUAGES[lang][0].upper())
+            data = var.FFVII_PATH + "data\\"
+            attr = "-R -S -H -I"
+            attrib(data + "cd\\cr_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
+            attrib(data + "cd\\disc_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
+            attrib(data + "menu\\menu_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
+            attrib(data + "wm\\world_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
+            attrib(data + "field\\{0}flevel.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
+            attrib(data + "minigame\\{0}chocobo.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
+            attrib(data + "minigame\\{0}condor.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
+            attrib(data + "minigame\\{0}sub.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
+            attrib(data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), attr)
+            attrib(data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), attr)
+
+        if var.GAME_LANGUAGE == 0:
+            break
+
+        
+
 def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)
@@ -404,20 +431,20 @@ def extract_image():
         return 1
     if IsFile.game("ff7.exe"):
         log.logger("FND_EXIST_INST")
-        try:
+        if os.path.isdir(var.FFVII_PATH + "save"):
             shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "IMAGE\save")
             log.logger("COPY_SAVE_FILES")
-        except OSError:
+        else:
             log.logger("NO_SAVE_FND")
-        try:
+        if IsFile.game("ff7input.cfg"):
             shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "IMAGE\ff7input.cfg")
             log.logger("COPY_INP_SET")
-        except OSError:
+        else:
             log.logger("NO_INP_SET_FND")
-    try:
+    if os.path.isdir(var.FFVII_PATH):
         shutil.rmtree(var.FFVII_PATH)
         log.logger("REM_CUR_INST")
-    except OSError:
+    else:
         log.logger("NO_INST_FND")
 
     log.logger("EXTR_IMG")
@@ -469,50 +496,28 @@ def chk_existing_install():
         retcode = 1
     return retcode
 
-def settings_to_int():
-    for x in con.SETTINGS_PREFIXES:
-        u = x.replace("_VAR", "")
-        if u in con.NON_INT_SETTINGS:
-            continue
-        x = x.replace("VAR", "SETTINGS")
-        y = getattr(var, x)
-    for parsable in y.keys():
-        parsarg = getattr(var, parsable)
-        try:
-            setattr(var, parsable, int(parsarg))
-        except ValueError: # something went wrong and settings aren't integers
-            if var.DEBUG_MODE:
-                log.logger("ERR_SETT_NOT_INT", form=[parsable, parsarg, u.lower()], type="debug")
-                continue # debug mode, let's assume the person knows what's going on
-            else:
-                log.logger("ERR_SETT_NOT_INT", form=[parsable, parsarg, u.lower()], type="error", display=False)
-                var.SYS_ERROR.append("int")
-                break
-
 def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
         log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
         var.ERROR = True
         for reason in var.FATAL_ERROR:
-            try:
+            if hasattr(get.Error.Fatal, reason):
                 why = getattr(get.Error.Fatal, reason)
-            except AttributeError:
-                why = get.Error.__unhandled__
-            finally:
-                log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
-                log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
+            else:
+                why = get.Error.unhandled
+            log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
+            log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
     if var.SYS_ERROR:
         log.multiple("ERR_ENC","MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
         var.ERROR = True
         for reason in var.SYS_ERROR:
-            try:
+            if hasattr(get.Error.System, reason):
                 why = getattr(get.Error.System, reason)
-            except AttributeError:
-                why = get.Error.__unhandled__
-            finally:
-                log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
-                log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
+            else:
+                why = get.Error.unhandled
+            log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
+            log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
     log.logger("\n")
 
 def find_setting(setting): # gets parsable setting
