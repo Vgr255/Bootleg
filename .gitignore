@@ -25,3 +25,6 @@ config.py
 
 # Temporary files
 *.tmp
+
+# Extensions
+*.dll
