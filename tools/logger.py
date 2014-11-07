@@ -44,7 +44,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
         f.seek(0, 2)
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
-            filel = con.LANGUAGES[var.LANGUAGE] + "_" + file
+            filel = con.LANGUAGES[var.LANGUAGE][0] + "_" + file
             newfilel = not os.path.isfile(os.getcwd() + "/" + filel)
             fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+")
             fl.seek(0, 2)
@@ -74,7 +74,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             fa.close()
             if not var.LANGUAGE == "English" and type not in con.IGNORE_MIXED:
                 trouta = "type.{0} - {1}".format(type, trout)
-                filet = con.LANGUAGES[var.LANGUAGE] + "_" + filea
+                filet = con.LANGUAGES[var.LANGUAGE][0] + "_" + filea
                 ft = open(os.getcwd() + "/" + filet, "w" if var.NEWFILE_TRA else "r+")
                 var.NEWFILE_TRA = False
                 ft.seek(0, 2)

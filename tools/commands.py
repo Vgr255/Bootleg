@@ -52,7 +52,7 @@ def clean(*args):
         if fn.IsFile.cur(file):
             os.remove(os.getcwd() + "\\" + file)
         for s in con.LANGUAGES.values():
-            filel = s + "_" + file
+            filel = s[0] + "_" + file
             if fn.IsFile.cur(filel):
                 os.remove(os.getcwd() + "\\" + filel)
     if fn.IsFile.cur(var.TEMP_REG + ".reg"):

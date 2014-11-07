@@ -145,7 +145,7 @@ def format_variables(): # formats a few variables to make sure they're correct
                 syslng = locale.getlocale()[0]
             var.LANGUAGE = syslng[:2]
         for lang, lng in con.LANGUAGES.items():
-            if var.LANGUAGE.lower() == lng:
+            if var.LANGUAGE.lower() == lng[0]:
                 var.LANGUAGE = lang
                 break
         if var.LANGUAGE == "None":
@@ -231,34 +231,25 @@ def chk_game_language(inp=None):
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:
-            for lngy, replyy in con.YES.items():
-                if lngy == var.LANGUAGE:
-                    if replyy == inp.lower() or replyy[0] == inp.lower()[0]:
-                        var.GAME_LANGUAGE = con.LANG_INDEX[lngy]
-                        var.PARSING = None
-                        return
-            for lngn, replyn in con.NO.items():
-                if lngn == var.LANGUAGE:
-                    if replyn == inp.lower() or replyn[0] == inp.lower()[0]:
-                        log.help("TYPE_LANG")
-                        return
+            if get._bool(inp) == 1:
+                var.GAME_LANGUAGE = con.LANGUAGES[var.LANGUAGE][1]
+                var.PARSING = None
+                return
+            elif get._bool(inp) == 0:
+                log.help("TYPE_LANG")
+                return
+            else:
+                log.logger("ERR_INVALID_BOOL_YN", form=["YES", "NO"])
+                return
         for lang, short in con.LANGUAGES.items():
             if lang.lower() == inp.lower():
-                var.GAME_LANGUAGE = con.LANG_INDEX[con.LANGUAGES[lang]]
+                var.GAME_LANGUAGE = con.LANGUAGES[lang][1]
                 var.PARSING = None
-            elif inp.lower() == short:
-                var.GAME_LANGUAGE = con.LANG_INDEX[short]
+            elif inp.lower() == short[0]:
+                var.GAME_LANGUAGE = con.LANGUAGES[lang][1]
                 var.PARSING = None
-            else:
-                try:
-                    inp = int(inp)
-                    if inp in con.LANG_INDEX.values():
-                        var.GAME_LANGUAGE = inp
-                        var.PARSING = None
-                    else:
-                        log.help("INT_OUTBOUNDS")
-                except ValueError:
-                    pass
+            elif inp.isdigit() and int(inp) == con.LANGUAGES[lang][1]:
+                var.GAME_LANGUAGE = int(inp)
     elif inp is None: # first check
         var.PARSING = "Language"
         log.help("TYPE_LANG")
