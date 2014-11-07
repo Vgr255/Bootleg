@@ -37,6 +37,21 @@ English: "No",
 French: "Non",
 }
 
+PLURAL = {
+English: "s",
+French: "s",
+}
+
+SING_IS = {
+English: "is",
+French: "est",
+}
+
+PLUR_ARE = {
+English: "are",
+French: "sont",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 UPDATE_AVAIL = {

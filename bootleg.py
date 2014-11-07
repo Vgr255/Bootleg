@@ -165,7 +165,7 @@ def main():
         if var.NEED_RESTART or var.SILENT_RUN:
             totype = ""
         if totype == "ENT_CMD":
-            log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
+            log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
         if totype:
             log.help("\n", totype, "\n", form=form)
         else: # nothing to print, either restarting after Git or silently running
