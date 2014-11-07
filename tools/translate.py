@@ -228,6 +228,18 @@ French: "            \ \/ /| | |_ |  _  /   Bienvenue au configurateur {1} {0}",
 
 # End of the 'constants.py' lines
 
+# The following lines are contained in 'errors.py'
+
+UNH_ERR_TOREP = {
+English: "An unhandled error has occured. Please report this.",
+}
+
+MIS_FILE_FROM_SYS = {
+English: "'{0}' is missing from {1}.",
+}
+
+# End of the 'errors.py' lines
+
 # The following lines are contained in 'functions.py'
 
 BEGIN_BOOT = {

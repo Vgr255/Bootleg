@@ -1,6 +1,5 @@
 from tools import constants as con
 from tools import variables as var
-from tools import filenames as fl
 from tools import translate as tr
 from tools import logger as log
 from tools import parser
@@ -69,11 +68,10 @@ def language_files_2012():
                         os.rename(var.FFVII_PATH + "data\\" + lgp + ".lgp", var.FFVII_PATH + "data\\" + lgp + ".bak")
 
 def setting(inp): # sets variables
-    try:
-        inp2 = int(inp)
-    except ValueError:
+    if not inp.isdigit():
         log.logger("Please enter only numbers.")
         return
+    inp2 = int(inp)
     if con.RANGE[var.FINDING] < 0:
         rng = str(con.RANGE[var.FINDING])[1:]
         if len(str(inp2)) == len(rng):
@@ -119,21 +117,3 @@ def commands():
         if comm in var.COMMANDS:
             continue
         var.COMMANDS.append(comm)
-
-class Error: # use this to get the reasons for various errors
-    class Fatal:
-        def sprinkles():
-            return "'{0}' is missing from {1}.", fl.SPRINKLES, var.SYS_FOLDER
-        def _7za():
-            return "'7za.exe' is missing from {0}.", var.SYS_FOLDER
-
-    class System:
-        def int():
-            return "Please make sure your settings contain only numbers (No letters allowed)."
-        def readme():
-            return "The Readme file could not be found."
-        def documentation():
-            return "The Documentation file could not be found."
-
-    def unhandled():
-        return "An unhandled error has occured. Please report this."

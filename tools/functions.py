@@ -227,7 +227,7 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
 
 def chk_game_language(inp=None):
     if var.LANGUAGE and not inp:
-        log.help("INST_LANG", form=[getattr(tr, var.LANGUAGE.upper())])
+        log.help("INST_LANG", form=[var.LANGUAGE.upper()])
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:
@@ -516,24 +516,25 @@ def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
         log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
-        var.ERROR = True
-        for reason in var.FATAL_ERROR:
-            if hasattr(get.Error.Fatal, reason):
-                why = getattr(get.Error.Fatal, reason)
-            else:
-                why = get.Error.unhandled
-            log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
-            log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
     if var.SYS_ERROR:
-        log.multiple("ERR_ENC","MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
+        log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
+    if var.FATAL_ERROR or var.SYS_ERROR:
         var.ERROR = True
-        for reason in var.SYS_ERROR:
-            if hasattr(get.Error.System, reason):
-                why = getattr(get.Error.System, reason)
-            else:
-                why = get.Error.unhandled
+        for reason in var.FATAL_ERROR + var.SYS_ERROR:
+            reason = reason.capitalize()
             log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
-            log.multiple(why()[0], types=["error", "normal"], form=list(why()[1:]))
+            if hasattr(errors, reason):
+                why = getattr(errors, reason)
+                formlist = []
+                if "Format" in why:
+                    toformat = why["Format"]
+                    for lister in toformat:
+                        if hasattr(*lister):
+                            formlist.append(getattr(*lister))
+
+                log.multiple(why["Message"], types=["error", "normal"], form=formlist)
+            else:
+                log.multiple(errors.unhandled, types=["error", "normal"])
     log.logger("\n")
 
 def find_setting(setting): # gets parsable setting

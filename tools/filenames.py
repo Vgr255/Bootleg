@@ -180,6 +180,7 @@ FINAL_PATCH = "Final Fantasy VII"
 
 # System files
 
+SEVENZ="7za.exe"
 SPRINKLES="Sprinkles.7z"
 README="README.md"
 DOCUMENTATION="DOCUMENTATION.md"
