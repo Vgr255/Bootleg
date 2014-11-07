@@ -60,7 +60,7 @@ def clean(*args):
     if fn.IsFile.cur("cfg.py"):
         os.remove(os.getcwd() + "/cfg.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
-    if os.path.isdir(os.getcwd() + "tools/__pycache__"):
+    if os.path.isdir(os.getcwd() + "/tools/__pycache__"):
         shutil.rmtree(os.getcwd() + '/tools/__pycache__')
     var.ALLOW_RUN = False
 
