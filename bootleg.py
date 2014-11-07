@@ -1,19 +1,22 @@
-# Copyright (c) 2014 Emanuel 'Vgr' Barry
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# Bootleg (2014) by Emanuel 'Vgr' Barry
+# The developper of this software (hereafter refered to as "The Developper")
+# allows for the use and redistribution of the present software and all its
+# associated files (hereafter refered to as "The Software") free of charge. The
+# user of the Software consents to the following if they use it in any way:
+# - The Developper is not to be help responsible for any sort of damage,
+#   physical, virtual or otherwise arising from the use of the Software.
+# - Modification and redistribution, partial or total, of the Software is
+#   allowed provided this notice is not altered in any way and the name of
+#   the Developper appears in the first line of the present file.
+# - The Developper is not entitled to anything towards any user of the Software.
+# - As well as the present notice, the user needs to acknowledge the following
+#   notice, contained in the following paragraph. Use of the present software
+#   is an implicit consent to both the current and aforementioned notices.
+
+# This software is provided "as is", in the hopes that it will be useful, but
+# without any warranty of any kind, explicit or implicit. In no event is the
+# Software Developper to be held accountable for any sort of damage, tort or
+# otherwise, arising from the use of the present Software.
 
 import traceback
 import argparse
