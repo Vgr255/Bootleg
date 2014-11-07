@@ -185,11 +185,6 @@ French: "Suppliez votre fichier '{0}.{1}'.",
 
 # The following lines are contained in 'commands.py'
 
-HELP_NOT_FOUND = {
-English: "Error: '{0}' was not found but is in the database. Critical error.",
-French: "Erreur: '{0}' se trouve dans la base de données mais n'a pas été trouvé. Erreur critique.",
-}
-
 NOT_DEFINED = {
 English: "Error: {0} is not defined.",
 French: "Erreur: {0} n'est pas défini.",
@@ -475,3 +470,110 @@ English: "Setting used for {0}: {1}.",
 }
 
 # End of the 'get.py' lines
+
+# The following lines are contained in 'help.py'
+
+HELP_NOT_FOUND = {
+English: "Error: '{0}' was not found but is in the database. Critical error.",
+French: "Erreur: '{0}' se trouve dans la base de données mais n'a pas été trouvé. Erreur critique.",
+}
+
+HELP_FILE_BOOT_CONF = {
+English: "               - Final Fantasy VII {0} Mod Configurator -",
+}
+
+HELP_FILE_NEW_HELP = {
+English: "                                * Help file *",
+}
+
+HELP_NOT_VALID_HELP = {
+English: "'{0}' is not a valid help topic.",
+}
+
+HELP_POS_HELP_TOPICS = {
+English: "Possible help topic{1}: {0}.",
+}
+
+HELP_HIDDEN_COMMANDS = {
+English: "Hidden help command{1}: {0}.",
+}
+
+HELP_USE_ITEM_SPEC = {
+English: "Use 'help <item>' to view a specific help topic.",
+}
+
+HELP_BOOT_CUR_REL = {
+English: "{1} - Final Fantasy VII Configurator - Version {0}",
+}
+
+HELP_FIRST_DEV = {
+English: "First developper{1} and base idea: {0}.",
+}
+
+HELP_USER_HELPING = {
+English: "User helper{0} and support team: {1}.",
+}
+
+HELP_CODERS = {
+English: "Current active programmer{0} and developper{0}: {1}.",
+}
+
+HELP_GUI_CODERS = {
+English: "Programming of the Graphical User Interface (GUI): {0}.",
+}
+
+HELP_PROCESS_CODERS = {
+English: "Programming of the {1} process: {0}.",
+}
+
+HELP_GAME_CONV = {
+English: "Game Converter developping and support: {0}.",
+}
+
+HELP_BETA_TESTERS = {
+English: "Beta tester{0}: {1}.",
+}
+
+HELP_TRANSLATORS = {
+English: "Translator{0}: {1}.",
+}
+
+HELP_FRENCH_TRANSLATORS = {
+English: "French Translator{0}: {1}.",
+}
+
+HELP_OTHER_SUPPORT = {
+English: "Other helper{0}: {1}.",
+}
+
+HELP_SPECIAL_THANKS = {
+English: "Special thanks to: {0}.",
+}
+
+HELP_EXT_HELP = {
+English: "Helper{0} external to the project: {1}.",
+}
+
+HELP_EMAIL = {
+English: "Official {1} email for support and questions: {0}",
+}
+
+HELP_POSSIBLE_HELP = {
+English: "Possible help topic{1}: {0}.",
+}
+
+HELP_HIDDEN_HELP = {
+English: "Hidden help topic{1}: {0}.",
+}
+
+HELP_VIEW_SPEC_TOP = {
+English: "Use 'help <item>' to view a specific help topic.",
+}
+
+HELP_VIEW_SPEC_USR = {
+English: "Type 'help <user>' to view information on a specific person.",
+}
+
+HELP_VIEW_SPEC_CMD = {
+English: "You can do 'help <command>' to get help on a specific command.",
+}

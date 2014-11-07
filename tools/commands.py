@@ -68,27 +68,14 @@ def clean(*args):
 
 def help(inp, params=[]):
     if helper.get_help(" ".join(params)):
-        to_help = helper.unhandled
+        helping = helper.unhandled
         type = "help"
-        if params[0] in var.USERS:
-            if hasattr(helper.Users, params[0]):
-                to_help = getattr(helper.Users, params[0])
-        elif params[0] in var.COMMANDS:
-            if hasattr(helper.Commands, params[0]):
-                to_help = getattr(helper.Commands, params[0])
-        else:
-            if hasattr(helper, params[0]):
-                to_help = getattr(helper, params[0])
-        if params[0] in var.USERS and params[0] in var.COMMANDS:
-            if hasattr(helper.Users, params[0]):
-                to_help = getattr(helper.Users, params[0])
-            elif hasattr(helper.Commands, params[0]):
-                to_help = getattr(helper.Commands, params[0])
-        helping = to_help()
-        if helping == "HELP_NOT_FOUND":
+        if hasattr(helper, params[0]):
+            helping = getattr(helper, params[0])()
+        if helping == helper.unhandled:
             type = "error"
             var.ERROR = True
-        elif params[0] in (var.USERS + var.COMMANDS):
+        elif helping == list(helping):
             helping = "\n".join(helping)
         log.help(helping, type=type, form=params[0])
 
