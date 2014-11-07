@@ -148,7 +148,7 @@ def translater(output, type, form, formo, formt):
         while True:
             if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
                 for writer in form:
-                    if writer.isupper(): # to translate as well
+                    if writer.isupper() and hasattr(tr, writer): # to translate as well
                         forml[foring] = getattr(tr, writer)[var.LANGUAGE]
                         form[foring] = getattr(tr, writer)["English"]
                     foring += 1
