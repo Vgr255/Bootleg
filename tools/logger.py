@@ -165,32 +165,3 @@ def translater(output, type, form, formo, formt):
                 break
         return trout, output, list(form), list(forml)
     return output, output, list(form), list(form) # no translation
-
-def preset(): # makes a preset file with current settings
-    userset = []
-    _usrset = []
-    bootset = []
-    for setting in var.USER_SETTINGS.keys():
-        value = getattr(var, setting)
-        for set, prefix in con.USER_SETTINGS.items():
-            if set == setting:
-                userset.append("{2}{0}{1}".format(prefix, value, con.USER_VAR))
-                _usrset.append("{0}={1}".format(prefix, value))
-                break
-    for setting in var.PATH_SETTINGS.keys():
-        value = getattr(var, setting)
-        for set, prefix in con.PATH_SETTINGS.items():
-            if set == setting:
-                userset.append("{2}{0}{1}".format(prefix, value, con.PATH_VAR))
-                _usrset.append("{0}={1}".format(prefix, value))
-                break
-    for setting in var.BOOT_PACK_SETTINGS.keys():
-        value = getattr(var, setting)
-        for set in con.BOOT_PACK_SETTINGS.keys():
-            if set == setting:
-                bootset.append(value)
-                break
-    logger("SETTINGS: {0}".format(" ".join(userset)))
-    logger("")
-    logger("{2} PACK: {0}{1}".format(con.BOOT_PACK_VAR, "".join(bootset), con.PROGRAM_NAME.upper()))
-    logger("\n".join(_usrset), con.BOOT_PACK_VAR + "=" + "".join(bootset), type="settings", display=False, splitter="\n")
