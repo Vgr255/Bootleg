@@ -56,8 +56,6 @@ IGNORE_NEWLINE = ["temp"]
 IGNORE_MIXED = ["temp"]
 IGNORE_CHECK = ["temp", "git"]
 
-GIT_COPY_FILES = ["README.md", "DOCUMENTATION.md", "CONTRIBUTING.md", "SETTINGS.md", "TODO.md", ".gitignore", "config.py.example", "bootleg.py"]
-
 LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
 
 GAME_LANGUAGES = {"English": ["en", "us", "us", "", 0], "German": ["de", "gm", "ge", "g", 3]}

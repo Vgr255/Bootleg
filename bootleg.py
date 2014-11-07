@@ -94,7 +94,9 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         shutil.rmtree(os.getcwd() + "\\tools")
         shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
         os.remove("config.py")
-        for file in con.GIT_COPY_FILES:
+        for file in os.listdir(tmpfold):
+            if not fn.IsFile.get(tmpfold + "\\" + file): # Not a file, let's not copy it
+                continue
             if fn.IsFile.cur(file):
                 os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
