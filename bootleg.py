@@ -149,18 +149,20 @@ def main():
         if var.DEBUG_MODE:
             commands.extend(con.DEBUG_COMMANDS)
         totype = "ENT_CMD"
+        form = []
         if var.FINDING:
             totype = "ENT_VAL"
         if var.PARSING:
             totype = "ENT_CHC"
         if var.UPDATE_READY:
             totype = "ENT_UPD"
+            form = ["YES", "NO"]
         if var.NEED_RESTART or var.SILENT_RUN:
             totype = ""
         if totype == "ENT_CMD":
             log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "s"])
         if totype:
-            log.help("\n", totype, "\n")
+            log.help("\n", totype, "\n", form=form)
         else: # nothing to print, either restarting after Git or silently running
             if var.SILENT_RUN:
                 cmd.run("silent")

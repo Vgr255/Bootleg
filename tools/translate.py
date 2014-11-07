@@ -110,8 +110,8 @@ French: "Veuillez entrer une valeur :",
 }
 
 ENT_UPD = {
-English: "Update now? (Yes/No)",
-French: "Mettre à jour maintenant? (Oui/Non)",
+English: "Update now? ({0}/{1})",
+French: "Mettre à jour maintenant? ({0}/{1})",
 }
 
 NO_USR_INP = {
@@ -119,14 +119,9 @@ English: "No user input was detected. Using {0} for {1}.",
 French: "Aucun choix n'a été détecté. {0} est utilisé pour {1}.",
 }
 
-ERR_INVALID_BOOL_YN = {
-English: "Error: Invalid boolean value (Enter either 'Yes' or 'No').",
-French: "Erreur: Valeur binaire invalide (Entrez soit 'Oui' ou 'Non').",
-}
-
-ERR_INVALID_BOOL_TF = {
-English: "Error: Invalid boolean value (Enter either 'True' or 'False').",
-French: "Erreur: Valeur binaire invalide (Entrez soit 'Vrai' ou 'Faux').",
+ERR_INVALID_BOOL = {
+English: "Error: Invalid boolean value (Enter either '{0}' or '{1}').",
+French: "Erreur: Valeur binaire invalide (Entrez soit '{0}' ou '{1}').",
 }
 
 WAIT_UPD = {

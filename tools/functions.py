@@ -239,7 +239,7 @@ def chk_game_language(inp=None):
                 log.help("TYPE_LANG")
                 return
             else:
-                log.logger("ERR_INVALID_BOOL_YN", form=["YES", "NO"])
+                log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
                 return
         for lang, short in con.LANGUAGES.items():
             if lang.lower() == inp.lower():
