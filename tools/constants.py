@@ -49,12 +49,13 @@ SETTINGS_PREFIXES = {
 }
 
 LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "DEBUG"}
+
 IGNORE_ALL = ["all", "settings", "temp", "git"] # will not write to these files when calling log-to-all
-IGNORE_TRANSLATE = ["traceback", "input", "temp", "git"]
-IGNORE_TIMESTAMP = ["temp"]
-IGNORE_NEWLINE = ["temp"]
-IGNORE_MIXED = ["temp"]
-IGNORE_CHECK = ["temp", "git"]
+IGNORE_TRANSLATE = ["traceback", "settings", "input", "temp", "git"] # will not attempt to translate
+IGNORE_CHECK = ["traceback", "settings", "input", "temp", "git"] # will print as-is without attempting to check in translate.py
+IGNORE_TIMESTAMP = ["settings", "temp"] # will not write timestamps when logging
+IGNORE_MIXED = ["settings", "temp"] # will not write this one to the mixed file
+IGNORE_NEWLINE = ["temp", "git"] # will not print two lines on new run
 
 LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
 
