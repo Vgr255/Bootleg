@@ -35,6 +35,8 @@ def _bool(inp):
         return 1
     if tr.TRUE[var.LANGUAGE].lower()[0] == inp.lower():
         return 1
+    if inp.isdigit() and int(inp) == 1:
+        return 1
     if tr.NO[var.LANGUAGE].lower() == inp.lower():
         return 0
     if tr.NO[var.LANGUAGE].lower()[0] == inp.lower():
@@ -42,6 +44,8 @@ def _bool(inp):
     if tr.FALSE[var.LANGUAGE].lower() == inp.lower():
         return 0
     if tr.FALSE[var.LANGUAGE].lower()[0] == inp.lower():
+        return 0
+    if inp.isdigit() and int(inp) == 0:
         return 0
     return None
 
