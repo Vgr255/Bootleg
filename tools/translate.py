@@ -129,6 +129,11 @@ English: "Update now? ({0}/{1})",
 French: "Mettre à jour maintenant? ({0}/{1})",
 }
 
+AVAIL_CMD = {
+English: "Available command{1}: {0}.",
+French: "Commande{1} disponible{1}: {0}.",
+}
+
 NO_USR_INP = {
 English: "No user input was detected. Using {0} for {1}.",
 French: "Aucun choix n'a été détecté. {0} est utilisé pour {1}.",
@@ -275,11 +280,6 @@ French: "Exécution de {1} sous {0} (Windows: {2}).",
 PROCESS_EXITED = {
 English: "Process '{0}' exited with {1} {2}",
 French: "Le processus '{0}' s'est terminé de {1} {2}",
-}
-
-AVAIL_CMD = {
-English: "Available command{1}: {0}.",
-French: "Commande{1} disponible{1}: {0}.",
 }
 
 SYST_PATHS = {

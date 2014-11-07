@@ -145,6 +145,9 @@ def translater(output, type, form, formo, formt):
         output = newout["English"]
         iter = 0
         foring = 0
+        if formo and formt:
+            form = list(formo)
+            forml = list(formt)
         while True:
             if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
                 for writer in form:
@@ -155,9 +158,6 @@ def translater(output, type, form, formo, formt):
                 foring = 0
                 iter += 1
             else:
-                if formo and formt:
-                    form = formo
-                    forml = formt
                 trout = trout.format(*forml)
                 output = output.format(*form)
                 forml = forml[iter:]
