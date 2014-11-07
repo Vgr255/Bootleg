@@ -3,6 +3,7 @@ from tools import variables as var
 from tools import translate as tr
 from tools import logger as log
 from tools import parser
+
 import datetime
 import platform
 import hashlib
@@ -72,7 +73,7 @@ def random_string(): # generates a random string of numbers for temporary folder
 
 def setting(inp): # sets variables
     if not inp.isdigit():
-        log.logger("Please enter only numbers.")
+        log.logger("ENTER_ONLY_NUMS")
         return
     inp2 = int(inp)
     if con.RANGE[var.FINDING] < 0:
@@ -82,16 +83,16 @@ def setting(inp): # sets variables
                 if int(str(inp2)[x]) in range(0, int(rng[x]) + 1):
                     continue
                 else:
-                    log.logger("Error: Value out of bounds at position {0}: {1} (Max: {2}).".format(x + 1, str(inp2)[x], rng[x]))
+                    log.logger("ERR_VALUE_OUTBOUNDS", form=[x + 1, str(inp2)[x], rng[x]])
                     return
             setattr(var, var.FINDING, inp2)
-            log.logger("Using '{0}' for {1}".format(inp2, var.FINDING), display=False)
+            log.logger("USR_INP_SET_USING", form=[inp2, var.FINDING], display=False)
             var.FINDING = None
         else:
-            log.logger("Please enter exactly {0} digits.".format(len(rng)))
+            log.logger("ENT_EXACT_DIG", form=len(rng))
     elif inp2 in range(0, con.RANGE[var.FINDING] + 1):
         setattr(var, var.FINDING, inp2)
-        log.logger("Setting used for {0}: {1}".format(var.FINDING, inp2), display=False)
+        log.logger("SET_DEF_NO_INP_USED", form=[var.FINDING, inp2], display=False)
         var.FINDING = None
 
 def architecture(): # find processor architecture

@@ -453,3 +453,25 @@ English: ", or if there are too few digits",
 ERR_INVALID_COMMAND = {
 English: "'{0}' is not a valid command.",
 }
+
+# End of the 'functions.py' lines
+
+# The following lines are contained in 'get.py'
+
+ENTER_ONLY_NUMS = {
+English: "Please enter only numbers.",
+}
+
+ERR_VALUE_OUTBOUNDS = {
+English: "Error: Value out of bounds at position {0}: {1} (Max: {2}).",
+}
+
+USR_INP_SET_USING = {
+English: "Using '{0}' for {1}.",
+}
+
+SET_DEF_NO_INP_USED = {
+English: "Setting used for {0}: {1}.",
+}
+
+# End of the 'get.py' lines
