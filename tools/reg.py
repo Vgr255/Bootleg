@@ -1,11 +1,13 @@
+from tools import constants as con
 from tools import variables as var
 from tools import logger as log
 import os
 
 try:
     import winreg
+    var.ON_WINDOWS = True
 except ImportError:
-    log.logger("Bootleg will not work properly on a different operating system than Windows.", type="error")
+    log.logger("{0} will not work properly on a different operating system than Windows.".format(con.PROGRAM_NAME), type="error")
     var.ON_WINDOWS = False
 
 def git(): # get the registry key for the git install location
@@ -17,8 +19,8 @@ def git(): # get the registry key for the git install location
     reg = winreg.OpenKey(reg, "CurrentVersion")
     reg = winreg.OpenKey(reg, "Uninstall")
     try:
-        var.GIT_REG = winreg.OpenKey(reg, "Git_is1")
-        var.GIT_LOCATION = winreg.QueryValueEx(var.GIT_REG, "InstallLocation")[0] + "bin\\git.exe"
+        reg = winreg.OpenKey(reg, "Git_is1")
+        var.GIT_LOCATION = winreg.QueryValueEx(reg, "InstallLocation")[0] + "bin\\git.exe"
     except OSError:
         pass
 

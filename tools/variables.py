@@ -15,7 +15,6 @@ ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
 REG_ENTRY = None
 SHORT_REG = None
-GIT_REG = None
 FINDING = None
 SYS_FOLDER = None
 PRINT = None # print everytime, can be anything
