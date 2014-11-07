@@ -125,7 +125,7 @@ def format_variables(): # formats a few variables to make sure they're correct
     if not var.BOOTLEG_TEMP[-1:] == "\\":
         var.BOOTLEG_TEMP += "\\"
     _mkdir(var.BOOTLEG_TEMP)
-    var.BOOTLEG_TEMP += make_random_() + "\\"
+    var.BOOTLEG_TEMP += get.random_string() + "\\"
     log.logger(var.BOOTLEG_TEMP, display=False, type="temp")
     os.mkdir(var.BOOTLEG_TEMP) # no integrity check, there's too small a chance that the folder already exists. and if it does, I want an error to occur
     if var.FFVII_IMAGE:
@@ -163,22 +163,6 @@ def format_variables(): # formats a few variables to make sure they're correct
     for coder in con.GUI_CODERS + con.PROCESS_CODERS:
         if coder not in con.CODERS:
             con.CODERS.append(coder)
-
-def make_random_(): # generates a random string of numbers for temporary folders
-    iter = random.randrange(1, 10)
-    tmpnum = str(datetime.datetime.now())
-    tmpnum = tmpnum.replace("-", "").replace(" ", "").replace(":", "").replace(".", "") # make the whole thing only numbers
-    tmpnum = int(tmpnum) * random.randrange(1, 9)
-    tmpnum = str(random.randrange(100, 999)) + str(tmpnum) + str(random.randrange(100, 999))
-    tmpnum = tmpnum[:13] + str(random.randrange(1000, 9999)) + tmpnum[13:26]
-    tmpnum = "[" + tmpnum + "]"
-    if iter % 2:
-        return tmpnum
-    tmpnum = hashlib.md5(bytes(tmpnum, "utf-8")).hexdigest().upper()
-    tmpnum = "{" + tmpnum[:18] + "-"
-    tmpnum = tmpnum + hashlib.md5(bytes(tmpnum, "utf-8")).hexdigest().upper()
-    tmpnum = tmpnum[:31] + "}"
-    return tmpnum
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install
     usr_set = ["BootOptions:"]
@@ -275,7 +259,20 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
 
     shutil.copy(data + "movies\\moviecam.lgp", data + "cd")
 
-    get.language_files_2012()
+    for lang in con.GAME_LANGUAGES.keys():
+        if var.GAME_LANGUAGE == con.GAME_LANGUAGES[lang][4]:
+            if not os.path.isdir(var.FFVII_PATH + "data\\lang-" + con.GAME_LANGUAGES[lang][0]):
+                lang = "English"
+            for i in ("battle", "kernel", "movies"):
+                for file in os.listdir(var.FFVII_PATH + "data\\lang-{0}\\{1}".format(con.GAME_LANGUAGES[lang][0], i)):
+                    shutil.copy("{0}data\\lang-{1}\\{2}\\{3}".format(var.FFVII_PATH, con.GAME_LANGUAGES[lang][0], i, file), "{0}data\\{1}\\{2}".format(var.FFVII_PATH, i, file))
+            shutil.move(data + "movies", var.FFVII_PATH + "movies")
+            os.rename("FF7_{0}.exe".format(con.GAME_LANGUAGES[lang][0]), "FF7.exe")
+            var.GAME_LANGUAGE = con.GAME_LANGUAGES[lang][4] # makes sure to set that back to 0 if it couldn't be found
+            if var.GAME_LANGUAGE is not 0: # Backup English files
+                for lgp in ("cd\\cr_us", "cd\\disc_us", "menu\\menu_us", "wm\\world_us", "field\\flevel", "minigame\\chocobo", "minigame\\condor", "minigame\\sub", "minigame\\high-us", "minigame\\snowboard-us"):
+                    if os.path.isfile(var.FFVII_PATH + "data\\" + lgp + ".lgp"):
+                        os.rename(var.FFVII_PATH + "data\\" + lgp + ".lgp", var.FFVII_PATH + "data\\" + lgp + ".bak")
 
     if var.KRANMER_MASTER == 0:
         var.ANY_CD = 1 # make sure to always have AnyCD enabled with the 2012 version
@@ -437,10 +434,8 @@ def use_index(inp, setting): # still not sure if that'll work. mainly a placehol
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):
         var.FATAL_ERROR.append("sprinkles")
-    if not IsFile.cur(fl.README):
-        var.SYS_ERROR.append("readme")
-    if not IsFile.cur(fl.DOCUMENTATION):
-        var.SYS_ERROR.append("documentation")
+    if not IsFile.sys(fl.SEVENZ):
+        var.FATAL_ERROR.append("sevenz")
 
 def extract_image():
     if var.FFVII_IMAGE is None:
@@ -516,7 +511,7 @@ def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
         log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
-    if var.SYS_ERROR:
+    if var.SYS_ERROR and not var.FATAL_ERROR:
         log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
     if var.FATAL_ERROR or var.SYS_ERROR:
         var.ERROR = True

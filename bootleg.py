@@ -83,7 +83,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 git.pull(var.GIT_LOCATION, silent=True)
                 var.ALLOW_RUN = False
     if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo, make it so
-        tmpfold = tempfile.gettempdir() + "\\" + fn.make_random_()
+        tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
