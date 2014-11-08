@@ -232,8 +232,8 @@ English: "Identified German Version.",
 # Note: Those lines are part of the ASCII, and need to stay the same length
 
 BOOT_ARCH = {
-English: "    by    \ \    / / ____|  __ \   Running on {0}  |___/",
-French: "    par   \ \    / / ____|  __ \   Exécution: {0}  |___/",
+English: "    by    \ \    / / ____|  __ \   Running on {0}   |___/",
+French: "    par   \ \    / / ____|  __ \   Exécution: {0}   |___/",
 }
 
 BOOT_STARTUP = {
