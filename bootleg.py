@@ -183,7 +183,7 @@ def main():
             if var.NEED_RESTART:
                 var.ALLOW_RUN = False
                 return
-        log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="")
+        log.logger(con.INPUT_PREFIX, inp, type="user_input", display=False, splitter="")
         if var.FINDING:
             get.setting(inp)
             return
