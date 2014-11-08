@@ -2,14 +2,12 @@ from tools import constants as con
 from tools import variables as var
 from tools import filenames as fl
 from tools import logger as log
+from tools import errors
 from tools import get
 from tools import reg
 
 import subprocess
-import datetime
 import tempfile
-import hashlib
-import random
 import locale
 import shutil
 import os
@@ -216,7 +214,7 @@ def chk_game_language(inp=None):
     elif inp:
         if var.LANGUAGE:
             if get._bool(inp) == 1:
-                var.GAME_LANGUAGE = con.LANGUAGES[var.LANGUAGE][1]
+                var.GAME_LANGUAGE = con.GAME_LANGUAGES[var.LANGUAGE][4]
                 var.PARSING = None
                 return
             elif get._bool(inp) == 0:
@@ -225,14 +223,14 @@ def chk_game_language(inp=None):
             else:
                 log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
                 return
-        for lang, short in con.LANGUAGES.items():
+        for lang, short in con.GAME_LANGUAGES.items():
             if lang.lower() == inp.lower():
-                var.GAME_LANGUAGE = con.LANGUAGES[lang][1]
+                var.GAME_LANGUAGE = con.GAME_LANGUAGES[lang][4]
                 var.PARSING = None
             elif inp.lower() == short[0]:
-                var.GAME_LANGUAGE = con.LANGUAGES[lang][1]
+                var.GAME_LANGUAGE = con.GAME_LANGUAGES[lang][4]
                 var.PARSING = None
-            elif inp.isdigit() and int(inp) == con.LANGUAGES[lang][1]:
+            elif inp.isdigit() and int(inp) == con.GAME_LANGUAGES[lang][4]:
                 var.GAME_LANGUAGE = int(inp)
     elif inp is None: # first check
         var.PARSING = "Language"
@@ -290,6 +288,8 @@ def set_language_files():
                 os.rename(data + file.format(con.GAME_LANGUAGES[lang][1], con.GAME_LANGUAGES[lang][3], con.GAME_LANGUAGES[lang][2]) + ".lgp",
                           data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp")
 
+            # Condor minigame translation
+
             ManipFile.lgp_x("condor", data + "minigame")
 
             tempc = var.BOOTLEG_TEMP + "condor\\"
@@ -307,6 +307,60 @@ def set_language_files():
             ManipFile.lgp_c("condor", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\condor.lgp")
             shutil.copy(var.BOOTLEG_TEMP + "condor.lgp", data + "minigame\\condor.lgp")
+
+            # Snowboard minigame translation
+
+            ManipFile.lgp_x("snowboard-us", data + "minigame")
+
+            tempc = var.BOOTLEG_TEMP + "snowboard-us\\"
+
+            for file in os.listdir(tempc):
+                for prefix in ("_k.tex", "stamp", "time"):
+                    if prefix in file:
+                        e = "e"
+                        if prefix == "time":
+                            e = ""
+                        os.rename(tempc + file, tempc + e + file[1:])
+
+            ManipFile.lgp_c("snowboard-us", var.BOOTLEG_TEMP)
+            os.remove(data + "minigame\\snowboard-us.lgp")
+            shutil.copy(var.BOOTLEG_TEMP + "snowboard-us.lgp", data + "minigame\\snowboard-us.lgp")
+
+            # Submarine minigame translation
+
+            ManipFile.lgp_x("sub", data + "minigame")
+
+            tempc = var.BOOTLEG_TEMP + "sub\\"
+
+            for file in os.listdir(tempc):
+                os.rename(tempc + file, tempc + file[1:])
+
+            ManipFile.lgp_c("sub", var.BOOTLEG_TEMP)
+            os.remove(data + "minigame\\sub.lgp")
+            shutil.copy(var.BOOTLEG_TEMP + "sub.lgp", data + "minigame\\sub.lgp")
+
+            # Disc files translation
+
+            ManipFile.lgp_x("disc-us", data + "cd")
+
+            tempc = var.BOOTLEG_TEMP + "cd\\"
+
+            for file in os.listdir(tempc):
+                for prefix in ("disc", "over"):
+                    if prefix in file:
+                        e = "e"
+                        if prefix == "disk":
+                            e = ""
+                        os.rename(tempc + file, tempc + e + file[1:])
+
+            ManipFile.lgp_c("disc-us", var.BOOTLEG_TEMP)
+            os.remove(data + "cd\\disc-us.lgp")
+            shutil.copy(var.BOOTLEG_TEMP + "disc-us.lgp", data + "cd\\disc-us.lgp")
+
+            # End of conversion, break out
+            break
+
+    log.logger("Language conversion completed.", "")
 
 def _mkdir(inp):
     if not os.path.isdir(inp):

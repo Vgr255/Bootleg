@@ -225,8 +225,16 @@ IDENT_LANG_VERS_EN = {
 English: "Identified Compatible US Version.",
 }
 
+IDENT_LANG_VERS_FR = {
+English: "Identified French Version.",
+}
+
 IDENT_LANG_VERS_DE = {
 English: "Identified German Version.",
+}
+
+IDENT_LANG_VERS_ES = {
+English: "Identified Spanish Version.",
 }
 
 # Note: Those lines are part of the ASCII, and need to stay the same length
