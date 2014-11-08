@@ -21,7 +21,8 @@ def initialize(): # initialize variables on startup and/or retry
     log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
     log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
     var.USED_HELP = False
-    var.FATAL_ERROR = None
+    var.FATAL_ERROR = []
+    var.SYS_ERROR = []
     var.EMPTY_SETTINGS = []
     var.NONEXISTANT_FILE = False
     var.PARSING = None
@@ -209,7 +210,7 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
 
 def chk_game_language(inp=None):
     if var.LANGUAGE and not inp:
-        log.help("INST_LANG", form=[var.LANGUAGE.upper()])
+        log.help("INST_LANG", form=[var.LANGUAGE.upper(), "YES", "NO"])
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:
@@ -543,9 +544,9 @@ def chk_existing_install():
 def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
-        log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
+        log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"], display_once=True)
     elif var.SYS_ERROR:
-        log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
+        log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"], display_once=True)
     if var.FATAL_ERROR or var.SYS_ERROR:
         var.ERROR = True
         for reason in var.FATAL_ERROR + var.SYS_ERROR:

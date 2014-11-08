@@ -189,12 +189,7 @@ English: "WARNING: SIGTERM Detected.",
 French: "ATTENTION: SIGTERM Détecté.",
 }
 
-PROVIDE_TRACE1 = {
-English: "An error occured. Please report this.",
-French: "Une erreur est survenue. Veuillez le rapporter.",
-}
-
-PROVIDE_TRACE2 = {
+PROVIDE_TRACE = {
 English: "Provide your '{0}.{1}' file.",
 French: "Suppliez votre fichier '{0}.{1}'.",
 }
@@ -258,7 +253,7 @@ English: "An unhandled error has occured. Please report this.",
 }
 
 MIS_FILE_FROM_SYS = {
-English: "'{0}' is missing from {1}.",
+English: "'{0}' is missing from '{1}'.",
 }
 
 # End of the 'errors.py' lines
@@ -330,8 +325,8 @@ English: "Sprinkles are ready.",
 }
 
 INST_LANG = {
-English: "Do you want to install the game in {0}? (Yes/No)",
-French: "Voulez-vous installer le jeu en {0}? (Oui/Non)",
+English: "Do you want to install the game in {0}? ({1}/{2})",
+French: "Voulez-vous installer le jeu en {0}? ({1}/{2})",
 }
 
 TYPE_LANG = {

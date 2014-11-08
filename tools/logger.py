@@ -93,7 +93,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if toget:
         logger(toget, logtype=logtype, display=display, write=write, formo=toform, formt=toforml) # don't iterate again if already translated
 
-def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
+def multiple(*output, types=[], display=True, write=True, splitter="\n", display_once=False, form=[]):
     output = get(output, splitter)
     if "all" in types:
         log_it = []
@@ -104,9 +104,13 @@ def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]
                 log_it.append(con.LOGGERS[logged])
         for l in log_it:
             logger(output, logtype=l, display=display, write=write, splitter=splitter, form=form)
+            if display_once:
+                display = False # Don't want to needlessly display the same message multiple times
     elif types:
         for t in types:
             logger(output, type=t, display=display, write=write, splitter=splitter, form=form)
+            if display_once:
+                display = False
     else: # no type
         logger(output, display=display, write=write, splitter=splitter, form=form)
 
@@ -151,7 +155,7 @@ def translater(output, type, form, formo, formt):
         while True:
             if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
                 for writer in form:
-                    if writer.isupper() and hasattr(tr, writer): # to translate as well
+                    if str(writer) == writer and writer.isupper() and hasattr(tr, writer): # to translate as well
                         forml[foring] = getattr(tr, writer)[var.LANGUAGE]
                         form[foring] = getattr(tr, writer)["English"]
                     foring += 1
