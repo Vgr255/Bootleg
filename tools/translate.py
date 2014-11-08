@@ -582,7 +582,7 @@ English: "Hidden help topic{1}: {0}.",
 }
 
 HELP_VIEW_SPEC_TOP = {
-English: "Use 'help <item>' to view a specific help topic.",
+English: "Type 'help <item>' to view a specific help topic.",
 }
 
 HELP_VIEW_SPEC_USR = {
@@ -590,5 +590,5 @@ English: "Type 'help <user>' to view information on a specific person.",
 }
 
 HELP_VIEW_SPEC_CMD = {
-English: "You can do 'help <command>' to get help on a specific command.",
+English: "Type 'help <command>' to get help on a specific command.",
 }
