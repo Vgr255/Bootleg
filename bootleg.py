@@ -193,7 +193,7 @@ def main():
                 return
         if var.UPDATE_READY:
             if get._bool(inp) is None:
-                log.logger("ERR_INVALID_BOOL_YN")
+                log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
                 return
             if get.bool(inp):
                 log.logger("", "WAIT_UPD", "\n")

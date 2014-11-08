@@ -79,6 +79,8 @@ MODS_AVALANCHE = ["FIELD"]
 DATA_WORKING = ["BATTLE", "FIELD", "MINIGAME", "WM"]
 FILES_UNDO = ["BATTLE", "MAGIC", "CHAR", "HIGH", "CHOCOBO", "WORLD"]
 
+TRANSLATE_CHANGER = ["cd\\cr_{0}", "cd\\disc_{0}", "menu\\menu_{0}", "wm\\world_{0}", "field\\{1}flevel", "minigame\\{1}chocobo", "minigame\\{1}condor", "minigame\\{1}sub", "minigame\\high-{2}", "minigame\\snowboard-{2}"]
+
 # parsables
 
 USER_SETTINGS = { # uses USER_VAR

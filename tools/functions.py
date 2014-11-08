@@ -246,16 +246,8 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
     attr = "-R -S -H -I" # not sure we need all those switches
 
     # Remove some attributes from the files to manipulate them
-    attrib(data + "cd\\cr_us.lgp", attr)
-    attrib(data + "cd\\disc_us.lgp", attr)
-    attrib(data + "menu\\menu_us.lgp", attr)
-    attrib(data + "wm\\world_us.lgp", attr)
-    attrib(data + "field\\flevel.lgp", attr)
-    attrib(data + "minigame\\chocobo.lgp", attr)
-    attrib(data + "minigame\\condor.lgp", attr)
-    attrib(data + "minigame\\sub.lgp", attr)
-    attrib(data + "minigame\\high-us.lgp", attr)
-    attrib(data + "minigame\\snowboard-us.lgp", attr)
+    for file in con.TRANSLATE_CHANGER:
+        attrib(data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp", attr)
 
     shutil.copy(data + "movies\\moviecam.lgp", data + "cd")
 
@@ -270,7 +262,8 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
             os.rename("FF7_{0}.exe".format(con.GAME_LANGUAGES[lang][0]), "FF7.exe")
             var.GAME_LANGUAGE = con.GAME_LANGUAGES[lang][4] # makes sure to set that back to 0 if it couldn't be found
             if var.GAME_LANGUAGE is not 0: # Backup English files
-                for lgp in ("cd\\cr_us", "cd\\disc_us", "menu\\menu_us", "wm\\world_us", "field\\flevel", "minigame\\chocobo", "minigame\\condor", "minigame\\sub", "minigame\\high-us", "minigame\\snowboard-us"):
+                for lgp in con.TRANSLATE_CHANGER:
+                    lgp = lgp.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2])
                     if os.path.isfile(var.FFVII_PATH + "data\\" + lgp + ".lgp"):
                         os.rename(var.FFVII_PATH + "data\\" + lgp + ".lgp", var.FFVII_PATH + "data\\" + lgp + ".bak")
 
@@ -286,30 +279,16 @@ def set_language_files():
             log.logger("IDENT_LANG_VERS_" + con.GAME_LANGUAGES[lang][0].upper())
             data = var.FFVII_PATH + "data\\"
             attr = "-R -S -H -I"
-            attrib(data + "cd\\cr_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
-            attrib(data + "cd\\disc_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
-            attrib(data + "menu\\menu_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
-            attrib(data + "wm\\world_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), attr)
-            attrib(data + "field\\{0}flevel.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
-            attrib(data + "minigame\\{0}chocobo.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
-            attrib(data + "minigame\\{0}condor.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
-            attrib(data + "minigame\\{0}sub.lgp".format(con.GAME_LANGUAGES[lang][3]), attr)
-            attrib(data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), attr)
-            attrib(data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), attr)
+
+            for file in con.TRANSLATE_CHANGER:
+                attrib(data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp", attr)
 
             if var.GAME_LANGUAGE == 0:
                 break
 
-            os.rename(data + "cd\\cr_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "cd\\cr_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
-            os.rename(data + "cd\\disc_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "cd\\disc_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
-            os.rename(data + "menu\\menu_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "menu\\menu_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
-            os.rename(data + "wm\\world_{0}.lgp".format(con.GAME_LANGUAGES[lang][1]), data + "wm\\world_{0}.lgp".format(con.GAME_LANGUAGES["English"][1]))
-            os.rename(data + "field\\{0}flevel.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "field\\{0}flevel.lgp".format(con.GAME_LANGUAGES["English"][3]))
-            os.rename(data + "minigame\\{0}chocobo.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "minigame\\{0}chocobo.lgp".format(con.GAME_LANGUAGES["English"][3]))
-            os.rename(data + "minigame\\{0}condor.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "minigame\\{0}condor.lgp".format(con.GAME_LANGUAGES["English"][3]))
-            os.rename(data + "minigame\\{0}sub.lgp".format(con.GAME_LANGUAGES[lang][3]), data + "minigame\\{0}sub.lgp".format(con.GAME_LANGUAGES["English"][3]))
-            os.rename(data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), data + "minigame\\high-{0}.lgp".format(con.GAME_LANGUAGES["English"][2]))
-            os.rename(data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES[lang][2]), data + "minigame\\snowboard-{0}.lgp".format(con.GAME_LANGUAGES["English"][2]))
+            for file in con.TRANSLATE_CHANGER:
+                os.rename(data + file.format(con.GAME_LANGUAGES[lang][1], con.GAME_LANGUAGES[lang][3], con.GAME_LANGUAGES[lang][2]) + ".lgp",
+                          data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp")
 
             ManipFile.lgp_x("condor", data + "minigame")
 
@@ -511,7 +490,7 @@ def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
         log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
-    if var.SYS_ERROR and not var.FATAL_ERROR:
+    elif var.SYS_ERROR:
         log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
     if var.FATAL_ERROR or var.SYS_ERROR:
         var.ERROR = True
@@ -526,6 +505,8 @@ def end_bootleg_early():
                     for lister in toformat:
                         if hasattr(*lister):
                             formlist.append(getattr(*lister))
+                        else:
+                            formlist.append(toformat)
 
                 log.multiple(why["Message"], types=["error", "normal"], form=formlist)
             else:
