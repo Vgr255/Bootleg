@@ -46,6 +46,16 @@ def check(args, silent=False):
             return None
     return False
 
+def diff_get(args, silent=False):
+    args = parse(args, "status")
+    checker = do(args, silent, needout=True)
+    lines = []
+    if checker:
+        for line in checker:
+            if line[:11] == b"#\tmodified:":
+                lines.append(line.decode("utf-8")[14:])
+    return lines
+
 def clone(args, silent=False): # use only if not a git repo
     args = parse(args, "clone")
     do(args, silent)
@@ -57,7 +67,7 @@ def do(args, silent=False, needout=False):
 
     lines = []
     for line in (out + err).splitlines():
-        log.logger(line.decode('utf-8'), type="git", display=not silent, write=var.ALLOW_RUN) # make sure it doesn't write anything anymore if it stops running. prevents orphan log file
+        log.logger(line.decode('utf-8'), type="git", display=not silent, write=var.ALLOW_RUN) # Make sure it doesn't write anything if it stops running to prevent orphan log file
         lines.append(line)
     if not (out + err):
         return False

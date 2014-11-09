@@ -107,7 +107,8 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
-        log.logger("", "UNCOMMITTED_FILES")
+        log.logger("", "UNCOMMITTED_FILES", "")
+        log.lines(git.diff_get(var.GIT_LOCATION, silent=True))
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--admin", action="store_true")
@@ -167,7 +168,7 @@ def main():
         if totype == "ENT_CMD":
             log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
         if totype:
-            log.help("\n", totype, "\n", form=form)
+            log.help("\n", totype, "", form=form)
         else: # nothing to print, either restarting after Git or silently running
             if var.SILENT_RUN:
                 cmd.run("silent")
@@ -196,7 +197,7 @@ def main():
                 log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
                 return
             if get.bool(inp):
-                log.logger("", "WAIT_UPD", "\n")
+                log.logger("", "WAIT_UPD", "")
                 if git.pull(var.GIT_LOCATION, silent=True):
                     log.logger("SUCCESS_UPD", "REST_FOR_CHG", form=con.PROGRAM_NAME)
                     var.NEED_RESTART = True
