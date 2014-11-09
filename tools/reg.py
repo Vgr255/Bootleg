@@ -52,7 +52,9 @@ def get():
                 var.GAME_VERSION = 1999
                 set_new()
 
-def add(drive, app=var.FFVII_PATH, new_reg=False):
+def add(drive, app=None, new_reg=False):
+    if app is None:
+        app = var.FFVII_PATH
     write("Windows Registry Editor Version 5.00")
     write("")
     if new_reg:
