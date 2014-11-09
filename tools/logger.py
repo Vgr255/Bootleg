@@ -25,6 +25,8 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         type = "normal"
 
     trout, output, toform, toforml = translater(output, type, form, formo, formt)
+    if len(trout) > 80:
+        trout, toget = line_splitter(trout, toget)
 
     if type in con.IGNORE_TIMESTAMP:
         timestamp = ""
@@ -134,6 +136,19 @@ def get(output, splitter):
                 line = "\n"
             msg += splitter + line
     return msg
+
+def line_splitter(output, toget):
+    iter = 0
+    iter2 = iter
+    while " " in output[iter+1:]:
+        if iter >= 80:
+            break
+        if iter < 80:
+            iter2 = iter
+            iter = output.index(" ", iter+1)
+    toget = "  " + output[iter2+1:] + "\n" + toget
+    output = output[:iter2]
+    return output, toget
 
 def getfile(write, display, logtype):
     if var.DEBUG_MODE or var.DEV_LOG or var.WRITE_EVERYTHING: # if there's an error I'll want every possible information. that's the way to go
