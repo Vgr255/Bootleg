@@ -41,7 +41,7 @@ MUSICTRACK1="3-06 - The Nightmare's Beginning-rev8.ogg"
 MUSICTRACK2="3-16 - Interrupted by Fireworks-rev18.ogg"
 MUSICTRACK3="3-20 - Buried in the Snow-v.2.ogg"
 MUSICTRACK4="JenovaRemix.ogg"
-OPENGL="ff7_opengl-0.7.11b.zip"
+OPENGL="ff7_opengl-0.8.1b.zip"
 PATCH102="ff7102zx.zip"
 PATCH102_A="ff7_102.zip"
 PATCH102_B="ff7_1.02.zip"
@@ -150,14 +150,6 @@ AVALANCHEMATERIA="materia.rar"
 BATTLESCENEENHANCEMENTSPNG="FFVII Scene Enhancements PNG.7z"
 BATTLESCENEENHANCEMENTSLGP="FFVII Scene Enhancements LGP.7z"
 BATTLESCENEBLOODSHOT="Battle Scene PNGs.rar"
-
-# Installation constants
-
-WORLD_LGP = "world_us.lgp"
-HIGH_LGP = "high_us.lgp"
-CONDOR_LGP = "condor.lgp"
-CR_LGP = "cr_us.lgp"
-CHOCOBO_LGP = "chocobo.lgp"
 
 # Variables (set during runtime)
 # These will be in the game folder

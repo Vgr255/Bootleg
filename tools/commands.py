@@ -119,7 +119,7 @@ def do(inp, params=[]):
             done = True
             log.help("",
                      "Developper commands:",
-                     "\n",
+                     "",
                      "'do call python3; exec(\"command\");'",
                      "'do call run function; eval(\"module.function\");'",
                      "'do print(\"string\");'",

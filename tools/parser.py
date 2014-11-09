@@ -1,6 +1,7 @@
 # Finding each variable's parameter if unset
-# If a setting has only a yes/no choice, do NOT put it here
+# If a setting has only a yes/no choice, do NOT put the choices here (only the question)
 # It will be automatically added
+# Do not add the '0' choice, it will be added automatically
 # 0 is ALWAYS no change/no install
 
 # Make sure to set the default in tools/variables.py

@@ -52,7 +52,7 @@ def get():
                 var.GAME_VERSION = 1999
                 set_new()
 
-def add(drive, app, new_reg=False):
+def add(drive, app=var.FFVII_PATH, new_reg=False):
     write("Windows Registry Editor Version 5.00")
     write("")
     if new_reg:
@@ -100,6 +100,7 @@ def write(inp, dir=os.getcwd(), file=var.TEMP_REG):
     if exists:
         f.write("\n")
     f.write(inp)
+    f.close()
 
 def get_key(value):
     try:
