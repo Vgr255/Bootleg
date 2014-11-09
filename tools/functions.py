@@ -71,6 +71,10 @@ class ManipFile:
         args = [var.RAR_LOCATION] # todo
         handler(args)
 
+    def raw(*args): # Handler for any other process than above
+        args = list(args)
+        handler(args)
+
     def handler(args):
         child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (out, err) = child.communicate()
@@ -184,25 +188,31 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
             setattr(fl, p, getattr(fl, p).format(con.PROGRAM_NAME))
     for v in con.FFVII_PATH:
         if hasattr(fl, v):
-            setattr(fl, v, var.FFVII_PATH + getattr(fl, v))
+            setattr(fl, v, var.FFVII_PATH + getattr(fl, v) + "\\")
             _mkdir(getattr(fl, v))
     for l in con.LGP_TEMP:
         if hasattr(fl, l + "_PATCH"):
-            setattr(fl, l + "_PATCH", var.BOOTLEG_TEMP + getattr(fl, l + "_PATCH"))
+            setattr(fl, l + "_PATCH", var.BOOTLEG_TEMP + getattr(fl, l + "_PATCH") + "\\")
             _mkdir(getattr(fl, l + "_PATCH"))
     for t in con.TEMP_FOLDERS:
-        _mkdir(var.BOOTLEG_TEMP + t.lower().replace("_", "\\"))
+        setattr(fl, t, var.BOOTLEG_TEMP + t.lower().replace("_", "\\") + "\\")
+        _mkdir(getattr(fl, t))
     for f in con.FINAL_PATCH:
-        _mkdir(fl.FINAL_PATCH + "\\data\\" + f.lower())
+        setattr(fl, f + "_PATCH", fl.FINAL_PATCH + "\\data\\" + f.lower() + "\\")
+        _mkdir(getattr(fl, f + "_PATCH"))
     for m in con.MODS_FINAL:
-        _mkdir(fl.MODS_FINAL + "\\" + m.lower())
+        setattr(fl, "FINAL_" + m, fl.MODS_FINAL + "\\" + m.lower() + "\\")
+        _mkdir(getattr(fl, "FINAL_" + m))
     for a in con.MODS_AVALANCHE:
-        _mkdir(fl.MODS_AVALANCHE + "\\" + a.lower())
+        setattr(fl, "AVALANCHE_" + a, fl.MODS_AVALANCE + "\\" + a.lower() + "\\")
+        _mkdir(getattr(fl, "AVALANCHE_" + a))
     _mkdir(var.BOOTLEG_TEMP + "Data_Working\\")
     for d in con.DATA_WORKING:
-        _mkdir(var.BOOTLEG_TEMP + "Data_Working\\" + d.lower())
+        setattr(fl, "DATA_WORKING_" + d, var.BOOTLEG_TEMP + "Data_Working\\" + d.lower() + "\\")
+        _mkdir(getattr(fl, "DATA_WORKING_" + d))
     for u in con.FILES_UNDO:
-        _mkdir(var.BOOTLEG_TEMP + u.lower() + "_undo")
+        setattr(fl, "FILES_UNDO_" + u, var.BOOTLEG_TEMP + u.lower() + "_undo\\")
+        _mkdir(getattr(fl, "FILES_UNDO_" + u))
     log.logger("INIT_CMPLT", "", "EXTR_SPRKL")
     _mkdir(var.BOOTLEG_TEMP + "Sprinkles")
     ManipFile._7zip(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
@@ -271,12 +281,12 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
 
     log.logger("COMPL_2012_CONVERT", "")
 
-def set_language_files():
+def set_language_files(): # Converts any language to a working English version
     log.logger("VALIDATING_LANGUAGES")
+    data = var.FFVII_PATH + "data\\"
     for lang in con.GAME_LANGUAGES.keys():
         if var.GAME_LANGUAGE == con.GAME_LANGUAGES[lang][4]:
             log.logger("IDENT_LANG_VERS_" + con.GAME_LANGUAGES[lang][0].upper())
-            data = var.FFVII_PATH + "data\\"
             attr = "-R -S -H -I"
 
             for file in con.TRANSLATE_CHANGER:
@@ -361,7 +371,78 @@ def set_language_files():
             # End of conversion, break out
             break
 
-    log.logger("Language conversion completed.", "")
+    log.logger("LANG_FILES_CONV_COMPL", "", "BACKUP_VANILLA")
+
+    for file in ("kernel\\KERNEL.BIN", "kernel\\kernel2.bin", "kernel\\window.bin", "wm\\world_us.lgp", "battle\\scene.bin", "battle\\battle.lgp"):
+        shutil.copy(data + file, var.BOOTLEG_TEMP + "vanilla_Backup\\" + file)
+
+    log.logger("FILES_BACKUP_COMPL", "")
+
+def convert_rerelease_flevel(): # Converts the Square Enix Store Flevel to a 1998-compatible version
+    log.logger("CONV_2012_SES_FLEVEL")
+
+    for flevel in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Tools\\NewToOld"):
+        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Tools\\NewToOld" + flevel, var.FFVII_PATH + flevel)
+
+    ManipFile.raw(var.FFVII_PATH + "patch.exe", "flevel.pat", "data\\field\\flevel.lgp", "data\\field\\conv_flevel.lgp")
+
+    os.rename(var.FFVII_PATH + "data\\field\\flevel.lgp", var.FFVII_PATH + "data\\field\\flevel.bak")
+    os.remove(var.FFVII_PATH + "data\\field\\flevel.lgp")
+    os.rename(var.FFVII_PATH + "data\\field\\conv_flevel.lgp", var.FFVII_PATH + "data\\field\\flevel.lgp")
+    os.remove(var.FFVII_PATH + "patch.exe")
+    os.remove(var.FFVII_PATH + "flevel.pat")
+
+    log.logger("COMPL_2012_FLEVEL_CONV", "")
+
+def install_setup_files():
+    log.logger("APPLYING_102_PATCH")
+    for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Patch102"):
+        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Patch102\\" + file, var.FFVII_PATH + file)
+
+    log.logger("COMPL_102_PATCH_INST", "")
+
+    if not var.BASE_MODELS == 0:
+        log.logger("ADJUSTING_ALPHA_BLEND")
+
+        for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Battle\\Battle.lgp\\Alpha_Fixes\\Various"):
+            shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Battle\\Battle.lgp\\Alpha_Fixes\\Various\\" + file, fl.BATTLE_PATCH + file)
+
+        log.logger("COMPL_BAT_MODELS_ADJ", "")
+
+    aali = False
+    if IsFile.game("ff7_opengl.fgd"): # It was already installed
+        log.logger("WARN_OLDER_AALI", "RUN_BOOT_CLEAN")
+        var.FATAL_ERROR.append("old_opengl")
+        return
+    for path in var.MOD_LOCATION:
+        for file in os.listdir(path):
+            if fl.OPENGL == file:
+                aali = True
+                log.logger("INST_AALIS_DRIVER")
+                ManipFile._7zip(path + "\\" if path[-1] not in ("/", "\\") else "" + file, var.BOOTLEG_TEMP + "OpenGL")
+                for gl in os.listdir(var.BOOTLEG_TEMP + "OpenGL"):
+                    shutil.copy(var.BOOTLEG_TEMP + "OpenGL\\" + gl, var.FFVII_PATH + gl)
+
+                for shader in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Shaders"):
+                    if shader == "nolight":
+                        continue # That's a folder
+                    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\" + shader, var.FFVII_PATH + "shaders\\" + shader)
+
+                for shader in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight"):
+                    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight\\" + shader, var.FFVII_PATH + "shaders\\nolight\\" + shader)
+
+    if aali: # Aali's driver installed properly
+        log.logger("AALI_INSTALLED")
+    else:
+        log.logger("WARN_NO_AALI", "ADD_AALI_TO_MOD", form=[fl.OPENGL, "MULT_IN_ONE" if len(var.MOD_LOCATION) > 1 else "ONE_IN", "', '".join(var.MOD_LOCATION)])
+        var.FATAL_ERROR.append("no_opengl")
+        return
+
+    log.logger("", "INST_BOOT_SYS_FILES", form=con.PROGRAM_NAME)
+    for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Bootleg"):
+        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Bootleg\\" + file, var.FFVII_PATH + file)
+
+    log.logger("COMPL_BOOT_SYS_FILES", form=con.PROGRAM_NAME)
 
 def _mkdir(inp):
     if not os.path.isdir(inp):
@@ -544,9 +625,9 @@ def chk_existing_install():
 def end_bootleg_early():
     log.logger("\n")
     if var.FATAL_ERROR:
-        log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"], display_once=True)
+        log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
     elif var.SYS_ERROR:
-        log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"], display_once=True)
+        log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
     if var.FATAL_ERROR or var.SYS_ERROR:
         var.ERROR = True
         for reason in var.FATAL_ERROR + var.SYS_ERROR:
@@ -580,7 +661,7 @@ def find_setting(setting): # gets parsable setting
         log.help("ENT_EXACT_DIG", form=len(str(con.RANGE[setting])[1:]))
     else:
         log.help("ENT_VALUE_BETWEEN", form=con.RANGE[setting])
-    log.help("\n")
+    log.help("")
     if con.RANGE[setting] > 1:
         log.help(msg[0])
         log.help("NO_CHG")
@@ -594,7 +675,7 @@ def find_setting(setting): # gets parsable setting
             if line[0] == "1":
                 log.help("NO_CHG")
             log.help(line)
-    log.help("\n")
+    log.help("")
     tosay = "DEF_TO_USE"
     if con.RANGE[setting] < 0:
         tosay += "TOO_FEW_DIG"

@@ -52,6 +52,14 @@ English: "are",
 French: "sont",
 }
 
+ONE_IN = {
+English: "in",
+}
+
+MULT_IN_ONE = {
+English: "in one of",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 UPDATE_AVAIL = {
@@ -80,8 +88,8 @@ French: "Veuillez patienter pendant que l'assistant installe les fichiers. . .",
 }
 
 UNCOMMITTED_FILES = {
-English: "Warning: You have uncommitted changes.",
-French: "Attention: Vous avez des modifications non synchronisées.",
+English: "Warning: You have local changes in:",
+French: "Attention: Vous avez des modifications locales dans :",
 }
 
 BOOT_DESC = {
@@ -232,6 +240,10 @@ IDENT_LANG_VERS_ES = {
 English: "Identified Spanish Version.",
 }
 
+IDENT_LANG_VERS_IT = {
+English: "Identified Italian Version.",
+}
+
 # Note: Those lines are part of the ASCII, and need to stay the same length
 
 BOOT_ARCH = {
@@ -254,6 +266,14 @@ English: "An unhandled error has occured. Please report this.",
 
 MIS_FILE_FROM_SYS = {
 English: "'{0}' is missing from '{1}'.",
+}
+
+OLD_OPENGL_INST = {
+English: "An older version of Aali's driver has been detected.",
+}
+
+NO_OPENGL_ABORTING = {
+English: "Aali's OpenGL driver was not detected.",
 }
 
 # End of the 'errors.py' lines
@@ -343,12 +363,80 @@ FND_2012_CONVERTING = {
 English: "Found 2012 Square Enix Store Re-Release. Converting . . .",
 }
 
+COMPL_2012_CONVERT = {
+English: "Completed 2012 Re-Release conversion.",
+}
+
 VALIDATING_LANGUAGES = {
 English: "Validating Language Files . . .",
 }
 
-COMPL_2012_CONVERT = {
-English: "Completed 2012 Re-Release conversion.",
+LANG_FILES_CONV_COMPL = {
+English: "Language conversion completed.",
+}
+
+BACKUP_VANILLA = {
+English: "Backing up Vanilla Data. . .",
+}
+
+FILES_BACKUP_COMPL = {
+English: "Files backup completed.",
+}
+
+CONV_2012_SES_FLEVEL = {
+English: "Converting 2012 Square Enix Store flevel. . .",
+}
+
+COMPL_2012_FLEVEL_CONV = {
+English: "Completed flevel Conversion.",
+}
+
+APPLYING_102_PATCH = {
+English: "Applying the Official Final Fantasy VII 1.02 English patch . . .",
+}
+
+COMPL_102_PATCH_INST = {
+English: "Completed Final Fantasy VII 1.02 Patch Installation.",
+}
+
+ADJUSTING_ALPHA_BLEND = {
+English: "Adjusting Alpha Blending for NPC Battle Models . . .",
+}
+
+COMPL_BAT_MODELS_ADJ = {
+English: "Completed Battle Model Adjustements.",
+}
+
+WARN_OLDER_AALI = {
+English: "Warning: You have an older version of Aali's driver.",
+}
+
+RUN_BOOT_CLEAN = {
+English: "Please run Bootleg on a fresh install.",
+}
+
+INST_AALIS_DRIVER = {
+English: "Installing Aali's OpenGL Driver . . .",
+}
+
+AALI_INSTALLED = {
+English: "Installed Aali's OpenGL Custom Driver.",
+}
+
+WARN_NO_AALI = {
+English: "Warning: Aali's OpenGL driver wasn't detected. Aborting.",
+}
+
+ADD_AALI_TO_MOD = {
+English: "Please add '{0}' {1} '{2}' and retry.",
+}
+
+INST_BOOT_SYS_FILES = {
+English: "Installing {0} System files.",
+}
+
+COMPL_BOOT_SYS_FILES = {
+English: "Completed {0} System files.",
 }
 
 INV_PAR_FILE = {

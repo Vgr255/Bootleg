@@ -15,3 +15,11 @@ Sevenz = {
 Message: "MIS_FILE_FROM_SYS",
 Format: [[fl, "SEVENZ"], [var, "SYS_FOLDER"]],
 }
+
+Old_opengl = {
+Message: "OLD_OPENGL_INST",
+}
+
+No_opengl = {
+Message: "NO_OPENGL_ABORTING",
+}
