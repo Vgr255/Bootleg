@@ -93,7 +93,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if toget:
         logger(toget, logtype=logtype, display=display, write=write, formo=toform, formt=toforml) # don't iterate again if already translated
 
-def multiple(*output, types=[], display=True, write=True, splitter="\n", display_once=False, form=[]):
+def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
     output = get(output, splitter)
     if "all" in types:
         log_it = []
@@ -104,19 +104,24 @@ def multiple(*output, types=[], display=True, write=True, splitter="\n", display
                 log_it.append(con.LOGGERS[logged])
         for l in log_it:
             logger(output, logtype=l, display=display, write=write, splitter=splitter, form=form)
-            if display_once:
-                display = False # Don't want to needlessly display the same message multiple times
+            display = False # Don't want to needlessly display the same message multiple times
     elif types:
         for t in types:
             logger(output, type=t, display=display, write=write, splitter=splitter, form=form)
-            if display_once:
-                display = False
+            display = False
     else: # no type
         logger(output, display=display, write=write, splitter=splitter, form=form)
 
 def help(*output, type="help", write=False, display=True, splitter="\n", form=[]):
     output = get(output, splitter)
     logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
+
+def lines(output, type="normal", write=True, display=True, splitter="\n", form=[]):
+    if not list(lines) == lines:
+        log.logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
+        return
+    for line in output:
+        log.logger(line, type=type, write=write, display=display, splitter=splitter, form=form)
 
 def get(output, splitter):
     output = list(output)
@@ -125,6 +130,8 @@ def get(output, splitter):
         if msg is None:
             msg = line
         else:
+            if line == "":
+                line = "\n"
             msg += splitter + line
     return msg
 
