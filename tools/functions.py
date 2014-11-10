@@ -224,11 +224,11 @@ def chk_game_language(inp=None):
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:
-            if get._bool(inp) == 1:
+            if get.bool(inp) == 1:
                 var.GAME_LANGUAGE = con.GAME_LANGUAGES[var.LANGUAGE][4]
                 var.PARSING = None
                 return
-            elif get._bool(inp) == 0:
+            elif get.bool(inp) == 0:
                 log.help("TYPE_LANG")
                 return
             else:
@@ -652,7 +652,7 @@ def end_bootleg_early():
 def find_setting(setting): # gets parsable setting
     if not hasattr(var, setting):
         return
-    parse = get._parser("find_" + setting.lower())
+    parse = get.parser("find_" + setting.lower())
     if not parse:
         return
     msg = parse()

@@ -21,6 +21,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         for typed in con.LOGGERS.keys():
             if con.LOGGERS[typed] == logtype:
                 type = typed
+                break
     if not type:
         type = "normal"
 

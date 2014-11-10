@@ -1,8 +1,8 @@
 from tools import constants as con
 from tools import variables as var
 from tools import translate as tr
+from tools import parser as par
 from tools import logger as log
-from tools import parser
 
 import datetime
 import platform
@@ -19,17 +19,17 @@ def settings():
             if x[:-9] not in con.NON_INT_SETTINGS:
                 setattr(var, s, int(u)) # make sure all parameters are integers
 
-def _parser(setting): # get function xyz() in parser.py for variable XYZ
+def parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
-    for x in parser.__dict__.keys():
+    for x in pars.__dict__.keys():
         y = setting.lower()
         if not x == y:
             continue
-        parse = getattr(parser, y)
+        parse = getattr(par, y)
         break # we got what we wanted
     return parse
 
-def _bool(inp):
+def bool(inp):
     if tr.YES[var.LANGUAGE].lower() == inp.lower():
         return 1
     if tr.YES[var.LANGUAGE].lower()[0] == inp.lower():
