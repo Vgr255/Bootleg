@@ -25,8 +25,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         type = "normal"
 
     trout, output, toform, toforml = translater(output, type, form, formo, formt)
-    if len(trout) > 80:
-        trout, toget = line_splitter(trout, toget)
+    pout = trout # Does a pouting trout pout a trout?
+    if len(pout) > 80:
+        pout, toget = line_splitter(pout, toget)
 
     if type in con.IGNORE_TIMESTAMP:
         timestamp = ""
@@ -41,7 +42,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
 
     newfile = not os.path.isfile(os.getcwd() + "/" + file)
     if display:
-        print(trout)
+        print(pout)
     if write:
         f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
         f.seek(0, 2)
