@@ -120,12 +120,12 @@ def help(*output, type="help", write=False, display=True, splitter="\n", form=[]
     output = get(output, splitter)
     logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
 
-def lines(output, type="normal", write=True, display=True, splitter="\n", form=[]):
+def lines(output, type="normal", write=True, display=True, form=[]):
     if not list(lines) == lines:
-        logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
+        logger(output, type=type, write=write, display=display, form=form)
         return
     for line in output:
-        logger(line, type=type, write=write, display=display, splitter=splitter, form=form)
+        logger(line, type=type, write=write, display=display, form=form)
 
 def get(output, splitter):
     output = list(output)
