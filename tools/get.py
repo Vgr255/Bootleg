@@ -21,7 +21,7 @@ def settings():
 
 def parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
-    for x in pars.__dict__.keys():
+    for x in par.__dict__.keys():
         y = setting.lower()
         if not x == y:
             continue
