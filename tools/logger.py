@@ -1,10 +1,325 @@
+__doc__ = """
+- Beginning of documentation -
+
+Section 1 - Introduction
+
+This 'logger' module was developped along with and for the Bootleg Mod
+Configurator for Final Fantasy VII by Vgr. Due to its versatility, it can be
+reused in other projects; this documentation is here to help other programmers
+understand better what's going on in this code, should they want to use it.
+
+Section 1.1 - Index
+
+  Section 1      :Introduction
+  + Section 1.1  :Index
+  + Section 1.2  :Module definition
+  Section 2      :Function documentation - logger()
+  + Section 2.1  :Calling the function
+  + Section 2.2  :List of positional arguments
+  + Section 2.3  :In-depth documentation - Step-by-step explanation
+  Section 3      :Function documentation - multiple()
+  + Section 3.1  :Calling the function
+  + Section 3.2  :List of positional arguments
+  + Section 3.3  :In-depth documentation - Step-by-step explanation
+  Section 4      :Function documentation - help()
+  + Section 4.1  :Calling the function
+  + Section 4.2  :List of positional arguments
+  Section 5      :Function documentation - lines()
+  + Section 5.1  :Calling the function
+  + Section 5.2  :List of positional arguments
+  + Section 5.3  :In-depth documentation - Step-by-step explanation
+  Section 6      :Conclusion
+  + Section 6.1  :Credits
+  + Section 6.2  :Documentation changelog
+
+Section 1.2 - Module definition
+
+This logger module (and more specifically, the logger() function) is used to
+perform all operations to print and log various information. With various
+parameters and variables, it can be fully customized to perform differing
+operations based on the conditions met.
+
+Section 2 - Function documentation: logger()
+
+The logger() function is the core of this module, handling many operations.
+It can print a string to the console or write it to a maximum of 4 files,
+as well as use the proper translation for every line (provided by the module
+'translate' in the 'tools' package).
+
+Section 2.1 - Calling the function
+
+The logger() function can be fed an arbitrary number of arguments.
+Every unnamed argument not following a named argument is part of the output.
+Depending on positional named arguments, it can perform a few things.
+
+Positional named arguments can be called with name=value in the function call.
+They can be called in any order, and any or all of them can be omitted without
+any issue, except for the first argument, output.
+
+Each parameter has a default value.
+The default value will be used if the argument is not specified.
+
+Section 2.2 - List of positional arguments
+
+'output'     :A string or strings to print and/or write, depending on the
+              positional named arguments.
+
+Default      :None - This parameter is required.
+
+'logtype'    :Raw logging type, which you should not use. It is called
+              internally by some functions as a more direct approach.
+              If this setting is set, it will override the value of 'type'.
+
+Default      :"" - Empty string
+
+'type'       :Use that to distinguish between which file to write to.
+              It is defined in the constants module, more specifically
+              the 'LOGGERS' dictionary. For each type is associated a
+              logging type, which may be used for one or more type(s).
+
+Default      :"normal"
+
+'display'    :Parameter to determine whether the output should be printed to
+              the screen. The variables 'DEBUG_MODE' or 'DISPLAY_EVERYTHING',
+              if set to True, will override this parameter and set it to True.
+
+Default      :True
+
+'write'      :This parameter determines whether the output should be written to
+              a log file, defined by the 'logtype' parameter, or, if it is not
+              defined, it will use the 'type' parameter's value. The variables
+              'DEBUG_MODE', 'DEV_LOG' or 'WRITE_EVERYTHING' will override this
+              parameter's value and set it to True.
+
+Default      :True
+
+'splitter'   :This is only useful if the number of unnamed parameters, fed in
+              as the 'output' argument, is superior ro 1. If there are more
+              than one line to output, the splitter will be used to separate
+              those lines. The splitter argument can be "", which will simply
+              concatenate the strings together.
+
+Default      :"\\n" - Newline
+
+'form'       :The form parameter is a derivation of the str.format() function.
+              It is a list of strings to be added into the output, not unlike
+              str.format(), using the same syntax (and later calling it). The
+              strings contained in form carry over all lines in the output,
+              which means that the fourth string can be the second line's
+              first format, assuming the first line had three formats.
+
+Default      :[] - Empty list
+
+'formo'
+'formt'      :These arguments should not ever be called directly. They are
+              only used when logger() is called recursively, if there are more
+              than one line. 'formo' contains the parsed format arguments for
+              the original English language , while 'formt' contains the parsed
+              format arguments for the translated version, which may also be
+              English.
+
+Default      :[] - Empty lists
+
+Section 2.3 - In-depth description - Step-by-step explanation of the function
+
+When called, logger() performs a number of checks before printing or writing
+to a file. First, it formats the output using the 'splitter' argument to make
+one single string containing all the lines. It then initializes some variables,
+and checks for newlines ('\\n') to not print them at once, but in separate
+instances. If the raw logging type is defined, it will override the 'type'
+setting with the first matching type in the 'LOGGERS' dictionary constant.
+
+The function will then perform translation according to the settings. The
+translated line is the only one that will be printed, if the 'display' argument
+is True. Before printing however, it checks if the length of the line exceeds
+80 characters, which is the width of the python console. If it does, it will
+split the line in two at the latest space before the 80-characters limit, and
+prepend two spaces to the rest, which is stored in a variable for recursive
+iteration.
+
+Various checks are then done to clean up some variables. If the 'write'
+argument is True, it will open various log files to write the lines. If the
+process is being initialized or restarted, and if the log file already exists,
+it will print two newlines in the file before starting to write the contents.
+This is to make an easier distinction between each run; search the file for two
+blank lines. It will also write to more than one files if the proper conditions
+are met, such as: There is more than one language (translated output), one of
+the variables 'DEV_LOG' or 'LOG_EVERYTHING' is True (logging everything in a
+single file as well as their normal file), and if both those conditions are
+True, it will write to a total of 4 files.
+
+If there was more than one line, logger() calls itself recursively with the
+lines in buffer to print and write them separately.
+
+Section 3 - Function documentation: multiple()
+
+The multiple() function is used to log one or more lines to more than just a
+single file. It calls logger() for each type. If the 'types' list parameter is
+empty, it will only log once using logger()'s default type. By logging to more
+than one type, the function will also make sure to display the message only
+once, unless 'DISPLAY_EVERYTHING' is set to True.
+
+Section 3.1 - Calling the function
+
+The multiple() function can be fed a number of arguments, which are similar or
+identical to logger()'s arguments. These arguments are described below.
+
+Section 3.2 - List of positional arguments
+
+'output'     :Identical to logger()'s parameter of the same name; it contains
+              a line or multiple lines to print and/or write.
+
+Default      :None - This parameter is required.
+
+'types'      :Similar to logger()'s 'type' parameter, except this argument
+              requires a list to be fed in. The list can contain zero or more
+              parameters, and 'all' can be used to log to every logging type
+              found in the 'LOGGERS' constant and not in the 'IGNORE_ALL'
+              constant.
+
+Default      :[] - Empty list
+
+'display'
+'write'
+'splitter'
+'form'       :All of these parameters have the exact same purpose and calls
+              than the parameters of the same names in logger().
+
+Defaults:    :All identical to their logger() counterparts.
+
+Section 3.3 - In-depth explanation - Step-by-step explanation
+
+When called, multiple() will check if the parameter 'all' is present in the
+'types' list. If it is, it will write the output to every logging type found
+in the 'LOGGERS' constant and not in the 'IGNORE_ALL' constant. It will then
+iterate through every type in the 'LOGGERS' constant, to append the logging
+type in a list, ignoring those already in that list and the types present in
+the 'IGNORE_ALL' constant. After this iteration is done, it will call logger()
+for the first logging type, then set 'display' to False to prevent the same
+line from printing multiple times on the screen. It will then loop through all
+of the other types and call logger() for each of them, the display now being
+set to False.
+
+If 'all' is not a parameter of the 'types' list, it will check if any type is
+present in the list. If so, it will iterate through every type without any
+other sort of check, displaying only the first line. If there are no types
+present, it will use logger()'s default value.
+
+Section 4 - Function documentation: help()
+
+The help() function is an easier way to display help lines to the user, and an
+explicit way to only display a line. It indeed sets the 'write' parameter to
+False by default, and 'type' to "help".
+
+Section 4.1 - Calling the function
+
+The help() function is basically an alias of the logger() function with the
+same possibilities - its only difference is that it sets write to False by
+default. It is mainly used in the 'help' module to display help lines to the
+users, without writing such lines to log files.
+
+Section 4.2 - List of positional arguments
+
+'output'     :Identical to the logger() and multiple() counterparts.
+
+Default      :None - This parameter is required.
+
+'type'       :Identical to the logger() counterpart.
+
+Default      :"help"
+
+'display'    :Identical to the logger() and multiple() counterparts.
+
+Default      :True
+
+'write'      :Identical to the logger() and multiple() counterparts.
+
+Default      :False
+
+'splitter'   :Identical to the logger() and multiple() counterparts.
+
+Default      :"\\n" - Newline
+
+'form'       :Identical to the logger() and multiple() counterparts.
+
+Default      :[] - Empty list
+
+Section 5 - Function documentation: lines()
+
+The lines() method can be used to print multiple lines. It is fed a list and
+will call logger() for each item in the list, printing or writing them on a
+separate line every time, regardless of the 'splitter' parameter.
+
+Section 5.1 - Calling the function
+
+The lines() function should be called whenever all items of a list need to be
+printed and/or written to file. Do not use it if you don't need to, as it is
+much less versatile than any other of the previously mentioned functions.
+
+Section 5.2 - List of positional arguments
+
+'output'     :Unlike the previouses functions, this parameter requires a list.
+              It can be a string, but in that case logger() is recommended.
+
+Default      :None - This parameter is required.
+
+'type'       :Identical to the logger() and help() counterparts
+
+Default      :"normal"
+
+'display'    :Identical to the other functions' counterparts.
+
+Default      :True
+
+'write'      :Identical to the other functions' counterparts.
+
+Default      :True
+
+'form'       :Similar to the other functions' counterparts. The format used
+              with this function is immutable, which means the first parameter
+              will be the first format of any item, regardless of their
+              position in the list. This is important to know, as some lines
+              may need higher format indexes to account for that.
+
+Default      :[] - Empty list
+
+Section 5.3 - In-depth documentation - Step-by-step explanation
+
+When called, lines() checks if the output is a list. If it is not, it will
+directly call logger() using the raw output. If it is a list, it will iterate
+through the items and call logger() for each item.
+
+Section 6 - Conclusion
+
+The logger module will probably see some changes happening in the future after
+the initial writing of this documentation. If there are changes that affect
+the information contained in this documentation by invalidating it, obsoleting
+or otherwise, it will be updated to keep up-to-date with the functions. It is
+however possible that the information
+
+Section 6.1 - Credits
+
+The entirety of the logger module, all its functions and the current
+documentation, was written by Vgr. Nobody else currently participates in the
+development of Bootleg.
+
+Section 6.2 - Documentation changelog
+
+November 9th and 10th, 2014 - Initial writing of the documentation
+
+- End of documentation -
+"""
+
+__all__ = ["logger", "multiple", "help", "lines"]
+
 from tools import variables as var
 from tools import constants as con
 from tools import translate as tr
 import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[], formo=[], formt=[]): # logs everything to file and/or screen. always use this
+def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[], formo=[], formt=[]):
+    """Logs everything to console and/or file. Always use this."""
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
@@ -98,6 +413,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         logger(toget, logtype=logtype, display=display, write=write, formo=toform, formt=toforml) # don't iterate again if already translated
 
 def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
+    """Logs one or more lines to multiple files."""
     output = get(output, splitter)
     if "all" in types:
         log_it = []
@@ -117,10 +433,12 @@ def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]
         logger(output, display=display, write=write, splitter=splitter, form=form)
 
 def help(*output, type="help", write=False, display=True, splitter="\n", form=[]):
+    """Explicit way to only print to screen."""
     output = get(output, splitter)
     logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
 
 def lines(output, type="normal", write=True, display=True, form=[]):
+    """Prints lines contained in a list."""
     if not list(lines) == lines:
         logger(output, type=type, write=write, display=display, form=form)
         return
