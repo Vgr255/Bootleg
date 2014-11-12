@@ -189,11 +189,10 @@ def main():
             get.setting(inp)
             return
         if var.PARSING:
-            if var.PARSING == "Language":
-                fn.chk_game_language(inp)
-                return
+            fn.parser(inp)
+            return
         if var.UPDATE_READY:
-            if get._bool(inp) is None:
+            if get.bool(inp) is None:
                 log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
                 return
             if get.bool(inp):
