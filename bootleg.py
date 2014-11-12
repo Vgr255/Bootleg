@@ -22,6 +22,7 @@ import traceback
 import argparse
 import tempfile
 import shutil
+import ctypes
 import sys
 import os
 
@@ -108,17 +109,21 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
-        log.lines(git.diff_get(var.GIT_LOCATION, silent=True))
+        for line in git.diff_get(var.GIT_LOCATION, silent=True):
+            log.logger(line, type="debug")
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
-launcher.add_argument("--admin", action="store_true")
 launcher.add_argument("--silent", action="store_true")
 launcher.add_argument("--run", action="store_true")
 #launcher.add_argument("--settings", action="") # still todo
-var.LADMIN = launcher.parse_args().admin
 var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
+
+var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())
+
+if not var.LADMIN:
+    log.logger("", "WARN_NOT_RUN_ADMIN", "RUN_BOOT_ELEVATED", form=[con.PROGRAM_NAME, con.PROGRAM_NAME])
 
 log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)
 

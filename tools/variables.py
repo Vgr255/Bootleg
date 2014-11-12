@@ -3,6 +3,7 @@
 
 # system variables
 
+INITIALIZED = False
 RETRY = False
 ALLOW_RUN = True
 ERROR = False

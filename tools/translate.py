@@ -103,6 +103,14 @@ English: "{0} Final Fantasy VII Mod Configurator {1}",
 French: "Configurateur {0} pour Final Fantasy VII {1}",
 }
 
+WARN_NOT_RUN_ADMIN = {
+English: "Warning: {0} is not running as admin. Some functions will not work.",
+}
+
+RUN_BOOT_ELEVATED = {
+English: "Please run '{0}.exe' with elevated privileges.",
+}
+
 LNCH_PAR = {
 English: "Launch parameters: {0}",
 French: "Paramètres de lancement : {0}",
