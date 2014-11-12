@@ -37,6 +37,7 @@ SEVENZ_LOCATION = None
 ULGP_LOCATION = None
 RAR_LOCATION = None
 SILENT_RUN = True
+CD_DRIVE = None
 
 # launcher arguments. only here for consistency
 

@@ -444,12 +444,36 @@ def install_setup_files():
 
     log.logger("COMPL_BOOT_SYS_FILES", form=con.PROGRAM_NAME)
 
+def find_data_drive(inp=None):
+    if inp is None:
+        log.logger("REG_LOCATING_DATADRIVE")
+        cdrom = reg.get_key("DataDrive")
+        if not cdrom:
+            log.logger("", "CANT_LOCATE_FF7_DRIVE", "ENTER_VALID_DRIVE_LET")
+            var.PARSING = "DataDrive"
+            return
+    else:
+        cdrom = inp
+    cdrom = cdrom[0]
+    if os.system("vol {0}: 2>nul>nul".format(cdrom)) == 0 or var.DEBUG_MODE: # Drive exists and is ready (or in debug mode)
+        log.logger("USING_DRIVE_FOR_CDS", form=cdrom)
+        var.CD_DRIVE = cdrom + ":"
+        var.PARSING = None
+    else:
+        log.logger("ERR_DRIVE_NOT_EXIST_READY", "ENT_VALID_DRIVE_LETTER")
+
 def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)
 
 def attrib(file, attr, params=""): # sets Windows file and folders attributes
     os.system("C:\\Windows\\System32\\attrib.exe " + attr + ' "' + file + '" ' + params)
+
+def parser(inp):
+    if var.PARSING == "Language":
+        chk_game_language(inp)
+    if var.PARSING == "DataDrive":
+        find_data_drive(inp)
 
 def parse_settings_from_params(inp): # parse settings from launch parameters
     for x, prefix in con.SETTINGS_PREFIXES.items():

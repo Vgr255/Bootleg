@@ -439,6 +439,30 @@ COMPL_BOOT_SYS_FILES = {
 English: "Completed {0} System files.",
 }
 
+REG_LOCATING_DATADRIVE = {
+English: "Locating Data Drive . . .",
+}
+
+CANT_LOCATE_FF7_DRIVE = {
+English: "Unable to locate the Final Fantasy VII Installation Drive.",
+}
+
+ENTER_VALID_DRIVE_LET = {
+English: "Please enter a valid drive letter.",
+}
+
+USING_DRIVE_FOR_CDS = {
+English: "Using Drive '{0}:' for the Final Fantasy VII CDs.",
+}
+
+ERR_DRIVE_NOT_EXIST_READY = {
+English: "Error: Drive does not exist or is not ready.",
+}
+
+ENT_VALID_DRIVE_LETTER = {
+English: "Please enter a valid drive letter.",
+}
+
 INV_PAR_FILE = {
 English: "Invalid setting found in {0}: {1}",
 }
