@@ -129,19 +129,17 @@ elif var.FORCE_CONFIG:
 
 def main():
     while var.ALLOW_RUN:
-        if var.PRINT:
-            log.logger(var.PRINT)
         if var.RETRY:
             fn.initialize()
         if var.ERROR:
             log.help("RES_RET", form=con.PROGRAM_NAME)
-        if var.FATAL_ERROR and not var.ERROR:
+        elif var.FATAL_ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []
             else:
                 fn.end_bootleg_early()
                 return
-        if var.SYS_ERROR and not var.ERROR:
+        elif var.SYS_ERROR:
             if var.IGNORE_SYSTEM_ERROR or var.DEBUG_MODE:
                 var.SYS_ERROR = []
             else:

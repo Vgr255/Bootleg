@@ -3,40 +3,40 @@
 
 # system variables
 
-INITIALIZED = False
 RETRY = False
 ALLOW_RUN = True
-SHOW_HIDDEN_COMMANDS = False
-SHOW_HIDDEN_HELP = False
 ERROR = False
+
 FATAL_ERROR = []
 SYS_ERROR = []
+
 ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
 REG_ENTRY = None
 SHORT_REG = None
+
 FINDING = None
-SYS_FOLDER = None
-PRINT = None # print everytime, can be anything
+PARSING = None
+
 USERS = None
 COMMANDS = None
 LANGUAGE = None
+
 PROGRAM_FILES = None
 GAME_VERSION = None
-PARSING = None
 GIT_LOCATION = None
+
 NEWFILE_ALL = True
 NEWFILE_TRA = True
+
 UPDATE_READY = False
 AUTO_UPDATE = False
 NEED_RESTART = False
-IGNORE_LOCAL_CHANGES = False
-SILENT_UPDATE = False
-FETCH_GIT = True
+
 SEVENZ_LOCATION = None
 ULGP_LOCATION = None
 RAR_LOCATION = None
-SILENT_RUN = True
+
 CD_DRIVE = None
 
 # launcher arguments. only here for consistency
@@ -97,6 +97,14 @@ PRESET_FILE = ""
 PREVIOUS_PRESET = ""
 PRESET_EXT = "bp"
 TEMP_PRESET = False
+
+SYS_FOLDER = None
+
+IGNORE_LOCAL_CHANGES = False
+SILENT_UPDATE = False
+FETCH_GIT = True
+
+SILENT_RUN = True
 
 GIT_BRANCH = "master"
 USE_GIT_LINK = True # if set to False, only "git pull" will be sent
