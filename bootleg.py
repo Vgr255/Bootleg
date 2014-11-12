@@ -133,18 +133,14 @@ def main():
             fn.initialize()
         if var.ERROR:
             log.help("RES_RET", form=con.PROGRAM_NAME)
-        elif var.FATAL_ERROR:
+        elif var.FATAL_ERROR or var.SYS_ERROR:
             if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
                 var.FATAL_ERROR = []
-            else:
-                fn.end_bootleg_early()
-                return
-        elif var.SYS_ERROR:
             if var.IGNORE_SYSTEM_ERROR or var.DEBUG_MODE:
                 var.SYS_ERROR = []
-            else:
-                fn.end_bootleg_early()
-                return
+        if var.FATAL_ERROR or var.SYS_ERROR:
+            fn.end_bootleg_early()
+            return
         commands = []
         commands.extend(con.COMMANDS)
         if var.SHOW_HIDDEN_COMMANDS:
@@ -158,11 +154,11 @@ def main():
             totype = "ENT_VAL"
         if var.PARSING:
             totype = "ENT_CHC"
+        if var.NEED_RESTART or var.SILENT_RUN:
+            totype = ""
         if var.UPDATE_READY:
             totype = "ENT_UPD"
             form = ["YES", "NO"]
-        if var.NEED_RESTART or var.SILENT_RUN:
-            totype = ""
         if totype == "ENT_CMD":
             log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
         if totype:
@@ -170,6 +166,7 @@ def main():
         else: # nothing to print, either restarting after Git or silently running
             if var.SILENT_RUN:
                 cmd.run("silent")
+                return
         inp = ""
         try:
             inp = input(con.INPUT_PREFIX).strip()

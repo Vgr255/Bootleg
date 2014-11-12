@@ -7,6 +7,8 @@ French = "French"
 
 # Various constants
 
+# Languages checking
+
 ENGLISH = {
 English: "English",
 French: "Anglais",
@@ -16,6 +18,8 @@ FRENCH = {
 English: "French",
 French: "Français",
 }
+
+# Boolean values
 
 TRUE = {
 English: "True",
@@ -36,6 +40,8 @@ NO = {
 English: "No",
 French: "Non",
 }
+
+# Small words that are part of larger sentences by format
 
 PLURAL = {
 English: "s",
