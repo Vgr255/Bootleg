@@ -24,13 +24,9 @@ Section 1.1 - Index
   Section 4      :Function documentation - help()
   + Section 4.1  :Calling the function
   + Section 4.2  :List of positional arguments
-  Section 5      :Function documentation - lines()
-  + Section 5.1  :Calling the function
-  + Section 5.2  :List of positional arguments
-  + Section 5.3  :In-depth documentation - Step-by-step explanation
-  Section 6      :Conclusion
-  + Section 6.1  :Credits
-  + Section 6.2  :Documentation changelog
+  Section 5      :Conclusion
+  + Section 5.1  :Credits
+  + Section 5.2  :Documentation changelog
 
 Section 1.2 - Module definition
 
@@ -135,7 +131,8 @@ is True. Before printing however, it checks if the length of the line exceeds
 80 characters, which is the width of the python console. If it does, it will
 split the line in two at the latest space before the 80-characters limit, and
 prepend two spaces to the rest, which is stored in a variable for recursive
-iteration.
+iteration. If the line beings by two spaces, it will remove them before
+performing the checks, to prevent an endless loop on long lines.
 
 Various checks are then done to clean up some variables. If the 'write'
 argument is True, it will open various log files to write the lines. If the
@@ -244,52 +241,7 @@ Default      :"\\n" - Newline
 
 Default      :[] - Empty list
 
-Section 5 - Function documentation: lines()
-
-The lines() method can be used to print multiple lines. It is fed a list and
-will call logger() for each item in the list, printing or writing them on a
-separate line every time, regardless of the 'splitter' parameter.
-
-Section 5.1 - Calling the function
-
-The lines() function should be called whenever all items of a list need to be
-printed and/or written to file. Do not use it if you don't need to, as it is
-much less versatile than any other of the previously mentioned functions.
-
-Section 5.2 - List of positional arguments
-
-'output'     :Unlike the previouses functions, this parameter requires a list.
-              It can be a string, but in that case logger() is recommended.
-
-Default      :None - This parameter is required.
-
-'type'       :Identical to the logger() and help() counterparts
-
-Default      :"normal"
-
-'display'    :Identical to the other functions' counterparts.
-
-Default      :True
-
-'write'      :Identical to the other functions' counterparts.
-
-Default      :True
-
-'form'       :Similar to the other functions' counterparts. The format used
-              with this function is immutable, which means the first parameter
-              will be the first format of any item, regardless of their
-              position in the list. This is important to know, as some lines
-              may need higher format indexes to account for that.
-
-Default      :[] - Empty list
-
-Section 5.3 - In-depth documentation - Step-by-step explanation
-
-When called, lines() checks if the output is a list. If it is not, it will
-directly call logger() using the raw output. If it is a list, it will iterate
-through the items and call logger() for each item.
-
-Section 6 - Conclusion
+Section 5 - Conclusion
 
 The logger module will probably see some changes happening in the future after
 the initial writing of this documentation. If there are changes that affect
@@ -297,15 +249,17 @@ the information contained in this documentation by invalidating it, obsoleting
 or otherwise, it will be updated to keep up-to-date with the functions. It is
 however possible that the information
 
-Section 6.1 - Credits
+Section 5.1 - Credits
 
 The entirety of the logger module, all its functions and the current
 documentation, was written by Vgr. Nobody else currently participates in the
 development of Bootleg.
 
-Section 6.2 - Documentation changelog
+Section 5.2 - Documentation changelog
 
 November 9th and 10th, 2014 - Initial writing of the documentation
+November 12th - Removed the lines() function and its matching documentation
+              - Added notice regarding change to the way lines are split
 
 - End of documentation -
 """
@@ -437,14 +391,6 @@ def help(*output, type="help", write=False, display=True, splitter="\n", form=[]
     output = get(output, splitter)
     logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
 
-def lines(output, type="normal", write=True, display=True, form=[]):
-    """Prints lines contained in a list."""
-    if not list(lines) == lines:
-        logger(output, type=type, write=write, display=display, form=form)
-        return
-    for line in output:
-        logger(line, type=type, write=write, display=display, form=form)
-
 def get(output, splitter):
     output = list(output)
     msg = None
@@ -460,6 +406,8 @@ def get(output, splitter):
 def line_splitter(output, toget):
     iter = 0
     iter2 = iter
+    if output[:2] == "  ": # already iterated
+        output = output[2:]
     while " " in output[iter+1:]:
         if iter >= 80:
             break
