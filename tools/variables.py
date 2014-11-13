@@ -14,7 +14,9 @@ SYS_ERROR = []
 ARCHITECTURE = None # '32bit' or '64bit'
 REGISTRY = None # location of the registry
 REG_ENTRY = None
-SHORT_REG = None
+REG_SOUND = None
+REG_GRAPH = None
+REG_MIDI = None
 
 FINDING = None
 PARSING = None
@@ -60,8 +62,6 @@ WRITE_EVERYTHING = False # writes every occurence to file
 
 SHOW_HIDDEN_COMMANDS = False
 SHOW_HIDDEN_HELP = False
-
-TEMP_REG = "bootleg"
 
 IGNORE_FATAL_ERROR = False
 IGNORE_SYSTEM_ERROR = False

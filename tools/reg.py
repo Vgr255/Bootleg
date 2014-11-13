@@ -3,106 +3,65 @@ from tools import variables as var
 from tools import logger as log
 import os
 
-try:
+if var.ON_WINDOWS:
     import winreg
-    var.ON_WINDOWS = True
-except ImportError:
+else:
     log.logger("{0} will not work properly on a different operating system than Windows.".format(con.PROGRAM_NAME), type="error")
-    var.ON_WINDOWS = False
 
-def git(): # get the registry key for the git install location
-    reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
-    if var.ARCHITECTURE == "64bit":
-        reg = winreg.OpenKey(reg, "Wow6432Node")
-    reg = winreg.OpenKey(reg, "Microsoft")
-    reg = winreg.OpenKey(reg, "Windows")
-    reg = winreg.OpenKey(reg, "CurrentVersion")
-    reg = winreg.OpenKey(reg, "Uninstall")
-    try:
-        reg = winreg.OpenKey(reg, "Git_is1")
-        var.GIT_LOCATION = winreg.QueryValueEx(reg, "InstallLocation")[0] + "bin\\git.exe"
-    except OSError:
-        pass
+if var.GAME_VERSION == 1999: # No game installed, create new reg entry
+    set_new()
 
-def get():
-    if not var.ON_WINDOWS:
-        return # not on Windows
-    reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
-    if var.ARCHITECTURE == "64bit":
-        reg = winreg.OpenKey(reg, "Wow6432Node")
-    try: # 1998 original
-        reg = winreg.OpenKey(reg, "Square Soft, Inc.")
-        var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
-        var.GAME_VERSION = 1998
-    except OSError: # does not exist
-        try: # 2012 Square Enix store
-            reg = winreg.OpenKey(reg, "Microsoft")
-            reg = winreg.OpenKey(reg, "Windows")
-            reg = winreg.OpenKey(reg, "CurrentVersion")
-            reg = winreg.OpenKey(reg, "Uninstall")
-            var.REGISTRY = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
-            var.GAME_VERSION = 2012
-            change()
-        except OSError:
-            try: # 2013 Steam
-                var.REGISTRY = winreg.OpenKey(reg, "Steam App 39140")
-                var.GAME_VERSION = 2013
-                change()
-            except OSError:
-                var.GAME_VERSION = 1999
-                set_new()
+if var.GAME_VERSION in (2012, 2013):
+    change()
 
 def add(drive, app=None, new_reg=False):
     if app is None:
         app = var.FFVII_PATH
-    write("Windows Registry Editor Version 5.00")
-    write("")
-    if new_reg:
-        write(var.SHORT_REG)
-        write("")
-    write(var.REG_ENTRY)
     if not app[-1:] == "\\":
         app = app + "\\"
     if not drive[-1:] == "\\":
         drive = drive + "\\"
     drive = drive.replace("\\", "\\\\") # need to print two backslahses
     app = app.replace("\\", "\\\\")
-    write('"DataDrive"="{0}"'.format(drive))
-    write('"AppPath"="{0}"'.format(app))
-    write('"DataPath"="{0}Data\\\\"'.format(app))
-    write('"MoviePath"="{0}movies\\\\"'.format(app))
-    write('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
-    write('')
-    write(var.REG_ENTRY + '\\1.00\\Graphics')
-    write('"DriverPath"="{0}ff7_opengl.fgd"'.format(app))
+    write("DataDrive", drive)
+    write("AppPath", app)
+    write("DataPath", "{0}Data\\\\".format(app))
+    write("MoviePath", "{0}movies\\\\".format(app))
+    write("DriverPath", "{0}ff7_opengl.fgd".format(app))
+    write("DriverPath", "{0}ff7_opengl.fgd".format(app), 1, 1)
 
-def write(inp, dir=os.getcwd(), file=var.TEMP_REG):
-    exists = False
-    dir = dir.replace("/", "\\")
-    if not dir[-1:] == "\\":
-        dir = dir + "\\"
-    if not file[-4:] == ".reg":
-        file = file + ".reg"
-    if inp == "Windows Registry Editor Version 5.00":
-        if os.path.isfile(dir + file):
-            os.remove(dir + file)
-    if os.path.isfile(dir + file):
-        f = open("{1}{0}".format(file, dir), "r+")
-        exists = True
-    elif os.path.isdir(dir):
-        f = open("{1}{0}".format(file, dir), "w") # let's create the file in the same directory...
-    elif os.path.isfile(os.getcwd() + "/" + file):
-        f = open(os.getcwd() + "\\{0}", "r+") # let's try the already-existing file in the current directory
-        exists = True
+def write(key=None, value=None, type=1, path=0, create=False): # There are no integrity checks
+    # Possible types:
+    # 0 = No type
+    # 1 = String
+    # 2 = String with references to system variables
+    # 3 = Binary data
+    # 4 = 32-bit Dword (little endian) ... whatever endian means
+    # 5 = 32-bit Dword (big endian)
+    # 6 = Unicode symbolic link
+    # 7 = Sequence of strings
+    # 8 = Device-driver resource list
+    # 9 = Hardware setting
+    # 10 = Hardware resource list
+    # Possible path integer constants:
+    # 0 = var.REG_ENTRY
+    # 1 = var.REG_GRAPH
+    # 2 = var.REG_SOUND
+    # 3 = var.REG_MIDI
+
+    path_ints = {0: var.REG_ENTRY, 1: var.REG_GRAPH, 2: var.REG_SOUND, 3: var.REG_MIDI}
+
+    if (not key or not value) and not create:
+        return # Not allowed
+
+    if path.isdigit():
+        path = path_ints[int(path)]
+
+    reg = winreg.OpenKey(18446744071562067970, path, 0, 131078) # Do not alter these numbers
+    if create:
+        winreg.CreateKey(reg, path)
     else:
-        f = open(os.getcwd() + "\\{0}", "w")
-    if inp[0] == "[":
-        inp = inp + "]"
-    f.seek(0, 2)
-    if exists:
-        f.write("\n")
-    f.write(inp)
-    f.close()
+        winreg.SetValueEx(reg, key, 0, type, value)
 
 def get_key(value):
     try:
@@ -115,37 +74,28 @@ def change(): # converts 2012/2013 registry keys to 1998
     pass # todo
     # InstallLocation holds the install path for both the 2012 and 2013 version
 
-def set_new(): # make a new registry entry if it doesn't exist. need to call add_to_reg() after
-    write("Windows Registry Editor Version 5.00")
-    write("")
-    write(var.SHORT_REG)
-    write("")
-    write(var.REG_ENTRY)
-    write('"DataDrive"=""')
-    write('"AppPath"=""')
-    write('"DataPath"=""')
-    write('"MoviePath"=""')
-    write('"DiskNo"=dword:00000000')
-    write('"FullInstall"=dword:00000001')
-    write('"SSI_DEBUG"=hex:53,48,4f,57,4d,45,54,48,45,41,50,50,4c,4f,47,00')
-    write('"DriverPath"=""')
-    write('')
-    write(var.REG_ENTRY + '\\1.00')
-    write('')
-    write(var.REG_ENTRY + '\\1.00\\Graphics')
-    write('"DD_GUID"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00')
-    write('"DriverPath"=""')
-    write('"Driver"=dword:00000003')
-    write('"Mode"=dword:00000002')
-    write('"Options"=dword:00000000')
-    write('')
-    write(var.REG_ENTRY + '\\1.00\\MIDI')
-    write('"MIDI_DeviceID"=dword:00000000')
-    write('"MIDI_data"="GENERAL_MIDI"')
-    write('"MusicVolume"=dword:00000064')
-    write('"Options"=dword:00000001')
-    write('')
-    write(var.REG_ENTRY + '\\1.00\\Sound')
-    write('"Sound_GUID"=hex:dd,39,42,c5,d1,6b,e0,4f,83,42,5f,7b,7d,11,a0,f5')
-    write('"Options"=dword:00000000')
-    write('"SFXVolume"=dword:00000064')
+def set_new(): # Create a new registry entry
+    write(create=True)
+    write("DataDrive", "")
+    write("AppPath", "")
+    write("DataPath", "")
+    write("MoviePath", "")
+    write("DiskNo", "00000000", 4)
+    write("FullInstall", "00000001", 4)
+    write("SSI_DEBUG", "53,48,4f,57,4d,45,54,48,45,41,50,50,4c,4f,47,00", 3)
+    write("DriverPath", "")
+    write(path=1, create=True)
+    write("DD_GUID", "00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00", 3, 1)
+    write("DriverPath", "", 1, 1)
+    write("Driver", "00000003", 4, 1)
+    write("Mode", "00000002", 4, 1)
+    write("Options", "00000000", 4, 1)
+    write(path=3, create=True)
+    write("MIDI_DeviceID", "00000000", 4, 3)
+    write("MIDI_data", "GENERAL_MIDI", 1, 3)
+    write("MusicVolume", "00000064", 4, 3)
+    write("Options", "00000001", 4, 3)
+    write(path=2, create=True)
+    write("Sound_GUID", "dd,39,42,c5,d1,6b,e0,4f,83,42,5f,7b,7d,11,a0,f5", 3, 2)
+    write("Options", "00000000", 4, 2)
+    write("SFXVolume", "00000064", 4, 2)

@@ -55,8 +55,6 @@ def clean(*args):
             filel = s[0] + "_" + file
             if fn.IsFile.cur(filel):
                 os.remove(os.getcwd() + "\\" + filel)
-    if fn.IsFile.cur(var.TEMP_REG + ".reg"):
-        os.remove(var.TEMP_REG + ".reg")
     if fn.IsFile.cur("cfg.py"):
         os.remove(os.getcwd() + "/cfg.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
