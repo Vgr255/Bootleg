@@ -11,6 +11,10 @@ if platform.system() == "Windows":
     import winreg
     var.ON_WINDOWS = True
 
+# Gets processor architecture
+
+var.ARCHITECTURE = platform.architecture()[0]
+
 if var.ON_WINDOWS:
     try:
         reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1".format("Wow6432Node\\" if var.ARCHITECTURE == "64bit" else ""))
@@ -27,10 +31,6 @@ for x in con.SETTINGS_PREFIXES.keys():
         setattr(var, s, u)
         if x[:-9] not in con.NON_INT_SETTINGS:
             setattr(var, s, int(u)) # make sure all parameters are integers
-
-# Gets processor architecture
-
-var.ARCHITECTURE = platform.architecture()[0]
 
 # Fetches users and commands lists for help
 
