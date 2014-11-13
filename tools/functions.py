@@ -30,16 +30,6 @@ def initialize(): # initialize variables on startup and/or retry
     var.RETRY = False
     begin_anew()
 
-def do_init(): # initialize on startup only
-    get.settings()
-    format_variables()
-    get.architecture()
-    get.users()
-    get.commands()
-    reg.get()
-    reg.git()
-    initialize() # needs to be called after get.architecture()
-
 class IsFile:
     def cur(inp):
         return os.path.isfile(os.getcwd() + "/" + inp)
@@ -166,6 +156,8 @@ def format_variables(): # formats a few variables to make sure they're correct
     for coder in con.GUI_CODERS + con.PROCESS_CODERS:
         if coder not in con.CODERS:
             con.CODERS.append(coder)
+
+    initialize()
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install
     usr_set = ["BootOptions:"]
@@ -455,12 +447,13 @@ def find_data_drive(inp=None):
     else:
         cdrom = inp
     cdrom = cdrom[0]
-    if os.system("vol {0}: 2>nul>nul".format(cdrom)) == 0 or var.DEBUG_MODE: # Drive exists and is ready (or in debug mode)
+    if not os.system("vol {0}: 2>nul>nul".format(cdrom)) == 0 or var.DEBUG_MODE: # Drive exists and is ready (or in debug mode)
         log.logger("USING_DRIVE_FOR_CDS", form=cdrom)
         var.CD_DRIVE = cdrom + ":"
         var.PARSING = None
     else:
         log.logger("ERR_DRIVE_NOT_EXIST_READY", "ENT_VALID_DRIVE_LETTER")
+        return
 
 def _mkdir(inp):
     if not os.path.isdir(inp):

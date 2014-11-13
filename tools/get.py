@@ -5,19 +5,8 @@ from tools import parser as par
 from tools import logger as log
 
 import datetime
-import platform
 import hashlib
 import random
-import shutil
-
-def settings():
-    for x in con.SETTINGS_PREFIXES.keys():
-        x = x.replace("VAR", "SETTINGS")
-        y = getattr(var, x)
-        for s, u in y.items():
-            setattr(var, s, u)
-            if x[:-9] not in con.NON_INT_SETTINGS:
-                setattr(var, s, int(u)) # make sure all parameters are integers
 
 def parser(setting): # get function xyz() in parser.py for variable XYZ
     parse = None
@@ -94,33 +83,6 @@ def setting(inp): # sets variables
         setattr(var, var.FINDING, inp2)
         log.logger("SET_DEF_NO_INP_USED", form=[var.FINDING, inp2], display=False)
         var.FINDING = None
-
-def architecture(): # find processor architecture
-    var.ARCHITECTURE = platform.architecture()[0]
-    if str(platform.architecture()[1]) == "WindowsPE":
-        var.ON_WINDOWS = True
-    rgent = "[HKEY_LOCAL_MACHINE\\SOFTWARE\\"
-    if var.ARCHITECTURE == "64bit":
-        rgent = rgent + "Wow6432Node\\"
-    var.SHORT_REG = rgent + "Square Soft, Inc."
-    var.REG_ENTRY = var.SHORT_REG + "\\Final Fantasy VII"
-    var.PROGRAM_FILES = "C:\\Program Files{0}\\Square Soft, Inc\\Final Fantasy VII\\".format(" (x86)" if var.ARCHITECTURE == "64bit" else "")
-
-def users():
-    var.USERS = []
-    usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.GAME_CONV + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.TRANSLATORS
-    for user in usr:
-        if user in var.USERS:
-            continue
-        var.USERS.append(user.lower())
-
-def commands():
-    var.COMMANDS = []
-    cmd = con.COMMANDS + con.ERROR_COMMANDS + con.DEBUG_COMMANDS + con.HIDDEN_COMMANDS
-    for comm in cmd:
-        if comm in var.COMMANDS:
-            continue
-        var.COMMANDS.append(comm)
 
 def preset(): # makes a preset file with current settings
     userset = []

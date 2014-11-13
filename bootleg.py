@@ -59,22 +59,14 @@ for x, y in config.__dict__.items():
         continue
     if x == "FORCE_CONFIG":
         continue # forcing config cannot be manually set
-    try:
-        cfgdict = getattr(config, x)
-        vardict = getattr(var, x)
-        for a, b in cfgdict.items():
-            if not b:
-                continue
-            if "_SETTINGS" in x and x[:-9] not in con.NON_INT_SETTINGS and not b.isdigit():
-                continue # don't copy non-numbers to number-only dicts
-            vardict[a] = b
-    except AttributeError: # not a dict
-        setattr(var, x, y)
+    setattr(var, x, y)
 
 for x, y in con.SETTINGS_PREFIXES.items():
     setattr(con, x, y)
 
-fn.do_init() # mandatory initialization, everything fails if not initialized (including the logging function)
+# Launch setup
+
+fn.format_variables()
 
 if var.GIT_LOCATION and var.AUTO_UPDATE:
     if git.check(var.GIT_LOCATION, silent=True):
