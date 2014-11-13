@@ -105,6 +105,8 @@ IGNORE_LOCAL_CHANGES = False
 SILENT_UPDATE = False
 FETCH_GIT = True
 
+IGNORE_NON_ADMIN = False # Ignores running not as admin
+
 SILENT_RUN = True
 
 GIT_BRANCH = "master"

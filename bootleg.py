@@ -114,7 +114,7 @@ var.RUNNING = launcher.parse_args().run
 
 var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())
 
-if not var.LADMIN:
+if not var.LADMIN and not var.IGNORE_NON_ADMIN:
     log.logger("", "WARN_NOT_RUN_ADMIN", "RUN_BOOT_ELEVATED", form=[con.PROGRAM_NAME, con.PROGRAM_NAME])
 
 log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)
