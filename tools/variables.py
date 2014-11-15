@@ -158,6 +158,7 @@ PATH_SETTINGS = {
 "FFVII_PATH":        None,
 "BOOTLEG_TEMP":      None,
 "MOD_LOCATION":      None,
+"CD_DRIVE":          None,
 
 }
 

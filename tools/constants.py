@@ -124,6 +124,7 @@ PATH_SETTINGS = { # uses PATH_VAR
 "FFVII_PATH":        "D",
 "BOOTLEG_TEMP":      "X",
 "MOD_LOCATION":      "F",
+"CD_DRIVE":          "c",
 
 }
 

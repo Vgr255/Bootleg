@@ -461,20 +461,28 @@ CANT_LOCATE_FF7_DRIVE = {
 English: "Unable to locate the Final Fantasy VII Installation Drive.",
 }
 
-ENTER_VALID_DRIVE_LET = {
+ENTER_VALID_DRIVE_LETTER = {
 English: "Please enter a valid drive letter.",
-}
-
-USING_DRIVE_FOR_CDS = {
-English: "Using Drive '{0}:' for the Final Fantasy VII CDs.",
 }
 
 ERR_DRIVE_NOT_EXIST_READY = {
 English: "Error: Drive does not exist or is not ready.",
 }
 
-ENT_VALID_DRIVE_LETTER = {
-English: "Please enter a valid drive letter.",
+USING_DRIVE_FOR_CDS = {
+English: "Using Drive '{0}:' for the Final Fantasy VII CDs.",
+}
+
+BUILDING_SYS_FILES = {
+English: "Building system files . . .",
+}
+
+UPDATING_REG_SILENT = {
+English: "Updating Registry . . .",
+}
+
+COMPL_REG_SILENT = {
+English: "Registry successfully updated.",
 }
 
 INV_PAR_FILE = {

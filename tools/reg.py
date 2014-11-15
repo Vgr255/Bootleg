@@ -14,13 +14,14 @@ if var.GAME_VERSION == 1999: # No game installed, create new reg entry
 if var.GAME_VERSION in (2012, 2013):
     change()
 
-def add(drive, app=None, new_reg=False):
+def add(drive=None, app=None, new_reg=False):
     if app is None:
         app = var.FFVII_PATH
+    if drive is None:
+        drive = var.CD_DRIVE
     if not app[-1:] == "\\":
         app = app + "\\"
-    if not drive[-1:] == "\\":
-        drive = drive + "\\"
+    drive = drive[0] + ":\\"
     drive = drive.replace("\\", "\\\\") # need to print two backslahses
     app = app.replace("\\", "\\\\")
     write("DataDrive", drive)
@@ -28,6 +29,7 @@ def add(drive, app=None, new_reg=False):
     write("DataPath", "{0}Data\\\\".format(app))
     write("MoviePath", "{0}movies\\\\".format(app))
     write("DriverPath", "{0}ff7_opengl.fgd".format(app))
+    write("FullInstall", "00000001", 4)
     write("DriverPath", "{0}ff7_opengl.fgd".format(app), 1, 1)
 
 def write(key=None, value=None, type=1, path=0, create=False): # There are no integrity checks

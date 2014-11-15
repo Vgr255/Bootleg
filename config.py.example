@@ -57,8 +57,8 @@ USER_SETTINGS = {
 
 }
 
-# other settings
-# Information is in SETTINGS.md
+# Other settings
+# Information is in the documentation folder
 
 SYS_SETTINGS = {
 
@@ -75,6 +75,7 @@ PATH_SETTINGS = {
 "FFVII_PATH":        "",
 "BOOTLEG_TEMP":      "",
 "MOD_LOCATION":      "",
+"CD_DRIVE":          "",
 
 }
 

@@ -28,7 +28,13 @@ def initialize(): # initialize variables on startup and/or retry
     var.PARSING = None
     var.ERROR = False
     var.RETRY = False
-    begin_anew()
+
+    os.system("cls") # clear the screen off everything.
+    log.help("\n".join(con.BOOT_ASCII1))
+    log.help("BOOT_ARCH", form=[var.ARCHITECTURE])
+    log.help(con.BOOT_ASCII2)
+    log.help("BOOT_STARTUP", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
+    log.help("\n".join(con.BOOT_ASCII3))
 
 class IsFile:
     def cur(inp):
@@ -79,14 +85,6 @@ class ManipFile:
                 cause = 'status'
 
             log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
-
-def begin_anew():
-    os.system("cls") # clear the screen off everything.
-    log.help("\n".join(con.BOOT_ASCII1))
-    log.help("BOOT_ARCH", form=[var.ARCHITECTURE])
-    log.help(con.BOOT_ASCII2)
-    log.help("BOOT_STARTUP", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
-    log.help("\n".join(con.BOOT_ASCII3))
 
 def format_variables(): # formats a few variables to make sure they're correct
     if var.MOD_LOCATION:
@@ -441,19 +439,23 @@ def find_data_drive(inp=None):
         log.logger("REG_LOCATING_DATADRIVE")
         cdrom = reg.get_key("DataDrive")
         if not cdrom:
-            log.logger("", "CANT_LOCATE_FF7_DRIVE", "ENTER_VALID_DRIVE_LET")
+            log.logger("", "CANT_LOCATE_FF7_DRIVE", "ENTER_VALID_DRIVE_LETTER")
             var.PARSING = "DataDrive"
             return
     else:
         cdrom = inp
     cdrom = cdrom[0]
-    if not os.system("vol {0}: 2>nul>nul".format(cdrom)) == 0 or var.DEBUG_MODE: # Drive exists and is ready (or in debug mode)
-        log.logger("USING_DRIVE_FOR_CDS", form=cdrom)
-        var.CD_DRIVE = cdrom + ":"
-        var.PARSING = None
-    else:
-        log.logger("ERR_DRIVE_NOT_EXIST_READY", "ENT_VALID_DRIVE_LETTER")
+    if not os.system("vol {0}: 2>nul>nul".format(cdrom)) and not var.DEBUG_MODE: # Drive doesn't exist/not ready (and not in debug mode)
+        log.logger("ERR_DRIVE_NOT_EXIST_READY", "ENTER_VALID_DRIVE_LETTER")
         return
+
+    log.logger("", "USING_DRIVE_FOR_CDS", form=cdrom)
+    var.CD_DRIVE = cdrom + ":"
+    var.PARSING = None
+
+    log.logger("", "BUILDING_SYS_FILES", "UPDATING_REG_SILENT")
+    reg.add()
+    log.logger("", "COMPL_REG_SILENT")
 
 def _mkdir(inp):
     if not os.path.isdir(inp):
