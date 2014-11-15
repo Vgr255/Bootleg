@@ -88,6 +88,13 @@ Default      :True
 
 Default      :True
 
+'checker'    :This parameter determines if a line should be split or not. If
+              set to True, logger() will proceed to check for matching lines
+              in the translations file. If set to False, it will completely
+              ignore the check and display/print as-is.
+
+Default      :True
+
 'splitter'   :This is only useful if the number of unnamed parameters, fed in
               as the 'output' argument, is superior ro 1. If there are more
               than one line to output, the splitter will be used to separate
@@ -177,11 +184,12 @@ Default      :[] - Empty list
 
 'display'
 'write'
+'checker'
 'splitter'
 'form'       :All of these parameters have the exact same purpose and calls
               than the parameters of the same names in logger().
 
-Defaults:    :All identical to their logger() counterparts.
+Defaults     :All identical to their logger() counterparts.
 
 Section 3.3 - In-depth explanation - Step-by-step explanation
 
@@ -232,6 +240,10 @@ Default      :True
 
 Default      :False
 
+'checker'    :Identical to the logger() and multiple() counterparts.
+
+Default      :True
+
 'splitter'   :Identical to the logger() and multiple() counterparts.
 
 Default      :"\\n" - Newline
@@ -259,5 +271,6 @@ Section 5.2 - Documentation changelog
 November 9th and 10th, 2014 - Initial writing of the documentation
 November 12th - Removed the lines() function and its matching documentation
               - Added notice regarding change to the way lines are split
+November 15th - Added the 'checker' parameter and its documentation
 
 - End of documentation -
