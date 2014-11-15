@@ -74,7 +74,7 @@ def do(args, silent=False, needout=False):
     if needout:
         return lines
 
-    if ret != 0:
+    if ret != 0 and len(args) > 1:
         if ret < 0:
             cause = 'signal'
         else:
