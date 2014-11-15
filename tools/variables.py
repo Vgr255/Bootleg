@@ -103,8 +103,6 @@ PREVIOUS_PRESET = ""
 PRESET_EXT = "bp"
 TEMP_PRESET = False
 
-SYS_FOLDER = None
-
 IGNORE_LOCAL_CHANGES = False
 SILENT_UPDATE = False
 FETCH_GIT = True
@@ -163,6 +161,7 @@ PATH_SETTINGS = {
 "BOOTLEG_TEMP":      None,
 "MOD_LOCATION":      None,
 "CD_DRIVE":          None,
+"SYS_FOLDER":        None,
 
 }
 

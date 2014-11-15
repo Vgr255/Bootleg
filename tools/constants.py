@@ -121,6 +121,7 @@ PATH_SETTINGS = { # uses PATH_VAR
 "BOOTLEG_TEMP":      "X",
 "MOD_LOCATION":      "F",
 "CD_DRIVE":          "c",
+"SYS_FOLDER":        "s",
 
 }
 
