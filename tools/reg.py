@@ -14,7 +14,7 @@ if var.GAME_VERSION == 1999: # No game installed, create new reg entry
 if var.GAME_VERSION in (2012, 2013):
     change()
 
-def add(drive=None, app=None, new_reg=False):
+def add(drive=None, app=None):
     if app is None:
         app = var.FFVII_PATH
     if drive is None:
@@ -34,7 +34,12 @@ def add(drive=None, app=None, new_reg=False):
     write("Driver", "00000003", 4, 1)
     write("Mode", "00000002", 4, 1)
 
-def write(key=None, value=None, type=1, path=0, create=False): # There are no integrity checks
+    write("{0}ff7.exe".format(var.FFVII_PATH), "RUNASADMIN", 1, "Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", 1)
+    write("{0}FF7Config.exe".format(var.FFVII_PATH), "RUNASADMIN", 1, "Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", 1)
+
+    
+
+def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There are no integrity checks
     # Possible types:
     # 0 = No type
     # 1 = String
@@ -52,6 +57,12 @@ def write(key=None, value=None, type=1, path=0, create=False): # There are no in
     # 1 = var.REG_GRAPH
     # 2 = var.REG_SOUND
     # 3 = var.REG_MIDI
+    # Possible opener integers:
+    # 0 = HKEY_CLASSES_ROOT
+    # 1 = HKEY_CURRENT_USER
+    # 2 = HKEY_LOCAL_MACHINE
+    # 3 = HKEY_PERFORMANCE_DATA
+    # 4 = HKEY_CURRENT_CONFIG
 
     path_ints = {0: var.REG_ENTRY, 1: var.REG_GRAPH, 2: var.REG_SOUND, 3: var.REG_MIDI}
 
@@ -61,15 +72,17 @@ def write(key=None, value=None, type=1, path=0, create=False): # There are no in
     if path.isdigit():
         path = path_ints[int(path)]
 
-    reg = winreg.OpenKey(18446744071562067970, path, 0, 131078) # Do not alter these numbers
+    reg = winreg.OpenKey(18446744071562067968+opener, path, 0, 131078) # Do not alter these numbers
     if create:
         winreg.CreateKey(reg, path)
     else:
         winreg.SetValueEx(reg, key, 0, type, value)
 
-def get_key(value):
+def get_key(value, path=None):
+    if path is None:
+        path = var.REGISTRY
     try:
-        reg = winreg.QueryValueEx(var.REGISTRY, value)
+        reg = winreg.QueryValueEx(path, value)
     except OSError:
         reg = None
     return reg
@@ -95,11 +108,11 @@ def set_new(): # Create a new registry entry
     write("Mode", "00000002", 4, 1)
     write("Options", "00000000", 4, 1)
     write(path=3, create=True)
-    write("MIDI_DeviceID", "00000000", 4, 3)
+    write("MIDI_DeviceID", "ffffffff", 4, 3)
     write("MIDI_data", "GENERAL_MIDI", 1, 3)
     write("MusicVolume", "00000064", 4, 3)
     write("Options", "00000001", 4, 3)
     write(path=2, create=True)
-    write("Sound_GUID", "dd,39,42,c5,d1,6b,e0,4f,83,42,5f,7b,7d,11,a0,f5", 3, 2)
+    write("Sound_GUID", "00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00", 3, 2)
     write("Options", "00000000", 4, 2)
     write("SFXVolume", "00000064", 4, 2)
