@@ -13,6 +13,8 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     logall = None
     toget = ""
+    toform = list(form)
+    toforml = list(form)
     if form and not form == list(form):
         form = [form]
     if "\n" in output:
@@ -28,7 +30,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
     if not type:
         type = "normal"
 
-    trout, output, toform, toforml = translater(output, type, form, formo, formt)
+    trout = output
+    if output.isupper() and type not in con.IGNORE_CHECK:
+        trout, output, toform, toforml = translater(output, type, form, formo, formt)
     pout = trout # Does a pouting trout pout a trout?
     if len(pout) > 80:
         pout, toget = line_splitter(pout, toget)
@@ -163,33 +167,33 @@ def getfile(write, display, logtype):
     return write, display, file
 
 def translater(output, type, form, formo, formt):
-    if output.isupper() and type not in con.IGNORE_CHECK: # to fetch in translate
-        forml = list(form)
-        newout = getattr(tr, output)
-        outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
-        if not outlang in newout.keys():
-            outlang = "English"
-        trout = newout[outlang]
-        output = newout["English"]
-        iter = 0
-        foring = 0
-        if formo and formt:
-            form = list(formo)
-            forml = list(formt)
-        while True:
-            if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
-                for writer in form:
-                    if str(writer) == writer and writer.isupper() and hasattr(tr, writer): # to translate as well
-                        forml[foring] = getattr(tr, writer)[var.LANGUAGE]
-                        form[foring] = getattr(tr, writer)["English"]
-                    foring += 1
-                foring = 0
-                iter += 1
-            else:
-                trout = trout.format(*forml)
-                output = output.format(*form)
-                forml = forml[iter:]
-                form = form[iter:]
-                break
-        return trout, output, list(form), list(forml)
-    return output, output, list(form), list(form) # no translation
+    forml = list(form)
+    if not hasattr(tr, output):
+        return output, output, list(form), list(form)
+    newout = getattr(tr, output)
+    outlang = "English" if type in con.IGNORE_TRANSLATE else var.LANGUAGE
+    if not outlang in newout.keys():
+        outlang = "English"
+    trout = newout[outlang]
+    output = newout["English"]
+    iter = 0
+    foring = 0
+    if formo and formt:
+        form = list(formo)
+        forml = list(formt)
+    while True:
+        if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
+            for writer in form:
+                if str(writer) == writer and writer.isupper() and hasattr(tr, writer): # to translate as well
+                    forml[foring] = getattr(tr, writer)[var.LANGUAGE]
+                    form[foring] = getattr(tr, writer)["English"]
+                foring += 1
+            foring = 0
+            iter += 1
+        else:
+            trout = trout.format(*forml)
+            output = output.format(*form)
+            forml = forml[iter:]
+            form = form[iter:]
+            break
+    return trout, output, list(form), list(forml)
