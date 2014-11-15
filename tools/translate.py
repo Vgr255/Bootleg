@@ -1,9 +1,9 @@
 ﻿# Languages constants
 
+# Use the constants to define languages, that makes it easier to change later on
+
 English = "English"
 French = "French"
-
-# Use the constants to define languages, that makes it easier to change later on
 
 # Various constants
 
@@ -66,9 +66,17 @@ MULT_IN_ONE = {
 English: "in one of",
 }
 
+STATUS = {
+English: "status",
+}
+
+SIGNAL = {
+English: "signal",
+}
+
 # The following lines are contained in 'bootleg.py'
 
-UPDATE_AVAIL = {
+UPDATE_AVAIL = { # 0 Program name
 English: "A {0} update is available!",
 French: "Une mise à jour de {0} est disponible!",
 }
@@ -78,12 +86,12 @@ English: "An update is available. Downloading . . .",
 French: "Une mise à jour est disponible. Téléchargement . . .",
 }
 
-REST_AFT_UPD = {
+REST_AFT_UPD = { # 0 = Program name
 English: "Launch {0} again once it finishes.",
 French: "Relancez {0} une fois terminé.",
 }
 
-CREATING_REPO = {
+CREATING_REPO = { # 0 = Current folder; 1 = Program name
 English: "Performing first-time setup for {1} in '{0}'.",
 French: "Installation de {1} dans '{0}'.",
 }
@@ -98,20 +106,20 @@ English: "Warning: You have local changes in:",
 French: "Attention: Vous avez des modifications locales dans :",
 }
 
-BOOT_DESC = {
+BOOT_DESC = { # 0 = Program name; 1 = Version
 English: "{0} Final Fantasy VII Mod Configurator {1}",
 French: "Configurateur {0} pour Final Fantasy VII {1}",
 }
 
-WARN_NOT_RUN_ADMIN = {
+WARN_NOT_RUN_ADMIN = { # 0 = Program name
 English: "Warning: {0} is not running as admin. Some functions will not work.",
 }
 
-RUN_BOOT_ELEVATED = {
+RUN_BOOT_ELEVATED = { # 0 = Program name
 English: "Please run '{0}.exe' with elevated privileges.",
 }
 
-LNCH_PAR = {
+LNCH_PAR = { # 0 = Launch parameters
 English: "Launch parameters: {0}",
 French: "Paramètres de lancement : {0}",
 }
@@ -126,7 +134,7 @@ English: "Forcing config into var.",
 French: "La configuration a été copiée de force.",
 }
 
-RES_RET = {
+RES_RET = { # 0 = Program name
 English: "Type 'exit' or 'restart' to exit or restart {0}, or Ctrl+C to quit.",
 French: "Entrez 'exit' ou 'restart' pour quitter ou recommencer {0}, ou Ctrl+C pour quitter.",
 }
@@ -146,22 +154,22 @@ English: "Please enter a value:",
 French: "Veuillez entrer une valeur :",
 }
 
-ENT_UPD = {
+ENT_UPD = { # 0,1 = Yes/No (fill at the top)
 English: "Update now? ({0}/{1})",
 French: "Mettre à jour maintenant? ({0}/{1})",
 }
 
-AVAIL_CMD = {
+AVAIL_CMD = { # 0 = Commands; 1 = Plural (fill at the top)
 English: "Available command{1}: {0}.",
 French: "Commande{1} disponible{1}: {0}.",
 }
 
-NO_USR_INP = {
+NO_USR_INP = { # 0 = Default value; 1 = Setting
 English: "No user input was detected. Using {0} for {1}.",
 French: "Aucun choix n'a été détecté. {0} est utilisé pour {1}.",
 }
 
-ERR_INVALID_BOOL = {
+ERR_INVALID_BOOL = { # 0,1 = Yes/No/True/False (fill at the top)
 English: "Error: Invalid boolean value (Enter either '{0}' or '{1}').",
 French: "Erreur: Valeur binaire invalide (Entrez soit '{0}' ou '{1}').",
 }
@@ -176,7 +184,7 @@ English: "Files successfully updated.",
 French: "Fichiers mis à jour avec succès.",
 }
 
-REST_FOR_CHG = {
+REST_FOR_CHG = { # 0 = Program name
 English: "Please restart {0} for the changes to take effect.",
 French: "Veuillez relancer {0} pour que les changements prennent effet.",
 }
@@ -211,7 +219,7 @@ English: "WARNING: SIGTERM Detected.",
 French: "ATTENTION: SIGTERM Détecté.",
 }
 
-PROVIDE_TRACE = {
+PROVIDE_TRACE = { # 0,1 = Filename/File extension
 English: "Provide your '{0}.{1}' file.",
 French: "Suppliez votre fichier '{0}.{1}'.",
 }
@@ -222,7 +230,7 @@ French: "Suppliez votre fichier '{0}.{1}'.",
 
 # The following lines are contained in 'commands.py'
 
-NOT_DEFINED = {
+NOT_DEFINED = { # 0 = Can be anything
 English: "Error: {0} is not defined.",
 French: "Erreur: {0} n'est pas défini.",
 }
@@ -260,12 +268,12 @@ English: "Identified Italian Version.",
 
 # Note: Those lines are part of the ASCII, and need to stay the same length
 
-BOOT_ARCH = {
+BOOT_ARCH = { # 0 = '32bit' or '64bit' depending on architecture
 English: "    by    \ \    / / ____|  __ \   Running on {0}   |___/",
 French: "    par   \ \    / / ____|  __ \   Exécution: {0}   |___/",
 }
 
-BOOT_STARTUP = {
+BOOT_STARTUP = { # 0 = Version number; 1 = Program name
 English: "            \ \/ /| | |_ |  _  /   Welcome to the {1} configurator {0}",
 French: "            \ \/ /| | |_ |  _  /   Bienvenue au configurateur {1} {0}",
 }
@@ -278,7 +286,7 @@ UNH_ERR_TOREP = {
 English: "An unhandled error has occured. Please report this.",
 }
 
-MIS_FILE_FROM_SYS = {
+MIS_FILE_FROM_SYS = { # 0 = Filename; 1 = Folder
 English: "'{0}' is missing from '{1}'.",
 }
 
@@ -294,27 +302,27 @@ English: "Aali's OpenGL driver was not detected.",
 
 # The following lines are contained in 'functions.py'
 
-BEGIN_BOOT = {
+BEGIN_BOOT = { # 0 = Program name
 English: "Beginning {0} operation.",
 French: "Commencement du processus {0}.",
 }
 
-RESTART_BOOT = {
+RESTART_BOOT = { # 0 = Program name
 English: "Restarting {0} operation.",
 French: "Recommencement du processus {0}.",
 }
 
-RUN_LANG = {
+RUN_LANG = { # 0 = Language; 1 = Program name
 English: "Running {1} in {0}.",
 French: "Exécution de {1} en {0}.",
 }
 
-RUN_OS = {
+RUN_OS = { # 0 = Architecture (32/64); 1 = Program name; 2 = True/False (fill at the top)
 English: "Running {1} on {0} (Windows: {2}).",
 French: "Exécution de {1} sous {0} (Windows: {2}).",
 }
 
-PROCESS_EXITED = {
+PROCESS_EXITED = { # 0 = Called process; 1 = 'status' or 'signal' (fill at the top); 2 = Integer
 English: "Process '{0}' exited with {1} {2}",
 French: "Le processus '{0}' s'est terminé de {1} {2}",
 }
@@ -324,25 +332,25 @@ English: "- System paths -",
 French: "- Chemins système -",
 }
 
-DEST_LOCT = {
+DEST_LOCT = { # 0 = Installation location (duh)
 English: 'Destination location: "{0}"',
 French: 'Emplacement de l\'installation: "{0}"',
 }
 
-INST_IMG = {
+INST_IMG = { # 0 = Name of the .zip image
 English: 'Install image: "{0}"',
 French: 'Installation de l\'image: "{0}"',
 }
 
-MOD_LOCT = {
+MOD_LOCT = { # 0 = Mods location
 English: 'Mods Location: "{0}"',
 }
 
-TMP_FILES = {
+TMP_FILES = { # 0 = Temporary files location
 English: 'Temporary files: "{0}"',
 }
 
-BOOT_INIT = {
+BOOT_INIT = { # 0 = Program name
 English: "Initializing {0} . . .",
 }
 
@@ -358,7 +366,7 @@ SPRINKLES_READY = {
 English: "Sprinkles are ready.",
 }
 
-INST_LANG = {
+INST_LANG = { # 0 = Language; 1,2 = Yes/No (fill at the top)
 English: "Do you want to install the game in {0}? ({1}/{2})",
 French: "Voulez-vous installer le jeu en {0}? ({1}/{2})",
 }
@@ -441,15 +449,15 @@ WARN_NO_AALI = {
 English: "Warning: Aali's OpenGL driver wasn't detected. Aborting.",
 }
 
-ADD_AALI_TO_MOD = {
+ADD_AALI_TO_MOD = { # 0 = Zip file of Aali's driver; 1 = 'in' or 'in one of' (fill at the top); 2 = Mods location(s)
 English: "Please add '{0}' {1} '{2}' and retry.",
 }
 
-INST_BOOT_SYS_FILES = {
+INST_BOOT_SYS_FILES = { # 0 = Program names
 English: "Installing {0} System files.",
 }
 
-COMPL_BOOT_SYS_FILES = {
+COMPL_BOOT_SYS_FILES = { # 0 = Program name
 English: "Completed {0} System files.",
 }
 
@@ -469,7 +477,7 @@ ERR_DRIVE_NOT_EXIST_READY = {
 English: "Error: Drive does not exist or is not ready.",
 }
 
-USING_DRIVE_FOR_CDS = {
+USING_DRIVE_FOR_CDS = { # 0 = Drive letter
 English: "Using Drive '{0}:' for the Final Fantasy VII CDs.",
 }
 
@@ -485,7 +493,7 @@ COMPL_REG_SILENT = {
 English: "Registry successfully updated.",
 }
 
-INV_PAR_FILE = {
+INV_PAR_FILE = { # 0 = File name; 1 = Setting
 English: "Invalid setting found in {0}: {1}",
 }
 
@@ -545,7 +553,7 @@ COULD_NOT_FINST = {
 English: "Could not find a Final Fantasy VII Installation.",
 }
 
-ABORT_BOOT = {
+ABORT_BOOT = { # 0 = Program name
 English: "Aborting {0}...",
 }
 
@@ -561,19 +569,19 @@ ERR_ENC = {
 English: "An error has been encountered.",
 }
 
-MAY_STILL_RUN = {
+MAY_STILL_RUN = { # 0 = Program name
 English:  "{0} may still run if you wish to.",
 }
 
-ERR_FOUND = {
+ERR_FOUND = { # 0 = Error (... did you really need to ask?)
 English: "Error found: {0}",
 }
 
-ENT_EXACT_DIG = {
+ENT_EXACT_DIG = { # 0 = Amount of digits to enter (integer)
 English: "Please enter exactly {0} digits.",
 }
 
-ENT_VALUE_BETWEEN = {
+ENT_VALUE_BETWEEN = { # 0 = Max value (integer)
 English: "Please choose a value between 0 and {0}.",
 }
 
@@ -589,15 +597,15 @@ CHC_YES = {
 English: "1 = YES",
 }
 
-DEF_TO_USE = {
+DEF_TO_USE = { # 0 = Default value for settings - Don't add a final period
 English: "Default is '{0}'. It will be used if no value is given",
 }
 
-TOO_FEW_DIG = {
+TOO_FEW_DIG = { # This is a continuity of the above line (doesn't always display) - Don't add a final period
 English: ", or if there are too few digits",
 }
 
-ERR_INVALID_COMMAND = {
+ERR_INVALID_COMMAND = { # 0 = Name of the invalid command
 English: "'{0}' is not a valid command.",
 }
 
@@ -609,15 +617,15 @@ ENTER_ONLY_NUMS = {
 English: "Please enter only numbers.",
 }
 
-ERR_VALUE_OUTBOUNDS = {
+ERR_VALUE_OUTBOUNDS = { # 0 = Position of the faulty value; 1 = Value; 2 = Max value - All integers
 English: "Error: Value out of bounds at position {0}: {1} (Max: {2}).",
 }
 
-USR_INP_SET_USING = {
+USR_INP_SET_USING = { # 0 = Default value; 1 = Setting
 English: "Using '{0}' for {1}.",
 }
 
-SET_DEF_NO_INP_USED = {
+SET_DEF_NO_INP_USED = { # 0 = Setting; 1 = Value
 English: "Setting used for {0}: {1}.",
 }
 
@@ -625,12 +633,12 @@ English: "Setting used for {0}: {1}.",
 
 # The following lines are contained in 'help.py'
 
-HELP_NOT_FOUND = {
+HELP_NOT_FOUND = { # 0 = Help topic
 English: "Error: '{0}' was not found but is in the database. Critical error.",
 French: "Erreur: '{0}' se trouve dans la base de données mais n'a pas été trouvé. Erreur critique.",
 }
 
-HELP_FILE_BOOT_CONF = {
+HELP_FILE_BOOT_CONF = { # 0 = Program name
 English: "               - Final Fantasy VII {0} Mod Configurator -",
 }
 
@@ -638,79 +646,75 @@ HELP_FILE_NEW_HELP = {
 English: "                                * Help file *",
 }
 
-HELP_NOT_VALID_HELP = {
+HELP_NOT_VALID_HELP = { # 0 = Invalid help topic
 English: "'{0}' is not a valid help topic.",
 }
 
-HELP_POS_HELP_TOPICS = {
+HELP_POS_HELP_TOPICS = { # 0 = Possible helps; 1 = Plural (fill at the top)
 English: "Possible help topic{1}: {0}.",
-}
-
-HELP_HIDDEN_COMMANDS = {
-English: "Hidden help command{1}: {0}.",
 }
 
 HELP_USE_ITEM_SPEC = {
 English: "Use 'help <item>' to view a specific help topic.",
 }
 
-HELP_BOOT_CUR_REL = {
+HELP_BOOT_CUR_REL = { # 0 = Program name; 1 = Version number
 English: "{1} - Final Fantasy VII Configurator - Version {0}",
 }
 
-HELP_FIRST_DEV = {
+HELP_FIRST_DEV = { # 0 = FIRST_DEV constant; 1 = Plural (fill at the top)
 English: "First developper{1} and base idea: {0}.",
 }
 
-HELP_USER_HELPING = {
+HELP_USER_HELPING = { # 0 = Plural (fill at the top); 1 = USER_HELP constant
 English: "User helper{0} and support team: {1}.",
 }
 
-HELP_CODERS = {
+HELP_CODERS = { # 0 = Plural (fill at the top); 1 = CODERS constant
 English: "Current active programmer{0} and developper{0}: {1}.",
 }
 
-HELP_GUI_CODERS = {
+HELP_GUI_CODERS = { # 0 = GUI_CODERS constant
 English: "Programming of the Graphical User Interface (GUI): {0}.",
 }
 
-HELP_PROCESS_CODERS = {
+HELP_PROCESS_CODERS = { # 0 = PROCESS_CODERS constant; 1 = Program name
 English: "Programming of the {1} process: {0}.",
 }
 
-HELP_GAME_CONV = {
-English: "Game Converter developping and support: {0}.",
-}
-
-HELP_BETA_TESTERS = {
+HELP_BETA_TESTERS = { # 0 = Plural (fill at the top); 1 = BETA_TESTERS constant
 English: "Beta tester{0}: {1}.",
 }
 
-HELP_TRANSLATORS = {
+HELP_TRANSLATORS = { # 0 = Plural (fill at the top); 1 = TRANSLATORS constant
 English: "Translator{0}: {1}.",
 }
 
-HELP_FRENCH_TRANSLATORS = {
+HELP_FRENCH_TRANSLATORS = { # 0 = Plural (fill at the top); 1 = FRENCH_TRANSLATORS constant
 English: "French Translator{0}: {1}.",
 }
 
-HELP_OTHER_SUPPORT = {
-English: "Other helper{0}: {1}.",
+HELP_OTHER_SUPPORT = { # 0 = Program name; 1 = OTHER_SUPPORT constant
+English: "Direct support to {0}: {1}.",
 }
 
-HELP_SPECIAL_THANKS = {
+HELP_SPECIAL_THANKS = { # 0 = SPECIAL_THANKS constant
 English: "Special thanks to: {0}.",
 }
 
-HELP_EXT_HELP = {
+HELP_EXT_HELP = { # 0 = Plural (fill at the top); 1 = EXT_HELP constant
 English: "Helper{0} external to the project: {1}.",
 }
 
-HELP_EMAIL = {
+HELP_EMAIL = { # 0 = Email; 1 = Program name
 English: "Official {1} email for support and questions: {0}",
 }
 
-HELP_POSSIBLE_HELP = {
+HELP_DEVELOPERS = { # 0 = Plural (fill at the top); 1 = DEVELOPERS constant
+English: "Current active programmer{0} and developer{0}: {1}.",
+}
+
+HELP_POSSIBLE_HELP = { # 0 = HELPERS variable; 1 = Plural (fill at the top)
 English: "Possible help topic{1}: {0}.",
 }
 

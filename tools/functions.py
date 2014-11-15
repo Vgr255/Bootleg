@@ -80,9 +80,9 @@ class ManipFile:
 
         if ret != 0:
             if ret < 0:
-                cause = 'signal'
+                cause = 'SIGNAL'
             else:
-                cause = 'status'
+                cause = 'STATUS'
 
             log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
 

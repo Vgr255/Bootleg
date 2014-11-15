@@ -14,12 +14,10 @@ def get_help(helping=""):
     helping = helping.lower()
     log.help("", "HELP_FILE_BOOT_CONF", form=con.PROGRAM_NAME)
     log.help("HELP_FILE_NEW_HELP", "\n")
-    if helping and helping not in var.HELPERS:
+    if helping and helping not in (var.HELPERS + var.USERS + var.COMMANDS):
         log.help("HELP_NOT_VALID_HELP", form=helping)
         if con.POSSIBLE_HELP:
             log.help("HELP_POS_HELP_TOPICS", form=[", ".join(con.POSSIBLE_HELP), "PLURAL" if len(con.POSSIBLE_HELP) > 1 else ""])
-            if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and var.SHOW_HIDDEN_HELP):
-                log.help("HELP_HIDDEN_COMMANDS", form=[", ".join(con.HIDDEN_HELP), "PLURAL" if len(con.HIDDEN_HELP) > 1 else ""])
             log.help("HELP_USE_ITEM_SPEC")
             return False
     elif not helping:
@@ -37,8 +35,6 @@ def get_help(helping=""):
                 log.help("HELP_GUI_CODERS", form=", ".join(con.GUI_CODERS))
             if con.PROCESS_CODERS:
                 log.help("HELP_PROCESS_CODERS", form=[", ".join(con.PROCESS_CODERS), con.PROGRAM_NAME])
-        if con.GAME_CONV:
-            log.help("HELP_GAME_CONV", form=", ".join(con.GAME_CONV))
         if con.BETA_TESTERS:
             log.help("HELP_BETA_TESTERS", form=["PLURAL" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)])
         if con.TRANSLATORS:
@@ -46,16 +42,21 @@ def get_help(helping=""):
             if con.FRENCH_TRANSLATORS:
                 log.help("HELP_FRENCH_TRANSLATORS", form=["PLURAL" if len(con.FRENCH_TRANSLATORS) > 1 else "", ", ".join(con.FRENCH_TRANSLATORS)])
         if con.OTHER_SUPPORT:
-            log.help("HELP_OTHER_SUPPORT", form=["PLURAL" if len(con.OTHER_SUPPORT) > 1 else "", ", ".join(con.OTHER_SUPPORT)])
+            log.help("HELP_OTHER_SUPPORT", form=[con.PROGRAM_NAME", ", ".join(con.OTHER_SUPPORT)])
         if con.SPECIAL_THANKS:
             log.help("HELP_SPECIAL_THANKS", form=", ".join(con.SPECIAL_THANKS))
         if con.EXT_HELP:
             log.help("HELP_EXT_HELP", form=["PLURAL" if len(con.EXT_HELP) > 1 else "", ", ".join(con.EXT_HELP)])
         if con.EMAIL:
             log.help("HELP_EMAIL", form=[con.EMAIL, con.PROGRAM_NAME])
+        if con.DEVELOPERS:
+            log.help("", "HELP_DEVELOPERS", form=["PLURAL" if len(con.DEVELOPERS) > 1 else "", ", ".join(con.DEVELOPERS))
         if var.HELPERS:
-            log.help("", "HELP_POSSIBLE_HELP", form=[", ".join(var.HELPERS), "PLURAL" if len(var.HELPERS) > 1 else ""])
-            log.help("HELP_VIEW_SPEC_TOP", "HELP_VIEW_SPEC_USR", "HELP_VIEW_SPEC_CMD")
+            log.help("", "HELP_POSSIBLE_HELP", "HELP_VIEW_SPEC_TOP", form=[", ".join(var.HELPERS), "PLURAL" if len(var.HELPERS) > 1 else ""])
+        if var.USERS:
+            log.help("HELP_VIEW_SPEC_USR")
+        if var.COMMANDS:
+            log.help("HELP_VIEW_SPEC_CMD")
         return False
     return True
 
