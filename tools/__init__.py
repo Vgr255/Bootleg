@@ -56,7 +56,7 @@ for comm in cmd:
 var.HELPERS = []
 
 for topic in help.__dict__.keys():
-    if "_" in topic or topic in (var.USERS + var.COMMANDS) or topic in ("users", "commands"):
+    if "_" in topic or topic in (var.USERS + var.COMMANDS) or topic in ("var", "con", "log", "unhandled"):
         continue
     var.HELPERS.append(topic)
 

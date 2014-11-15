@@ -719,9 +719,9 @@ English: "Type 'help <item>' to view a specific help topic.",
 }
 
 HELP_VIEW_SPEC_USR = {
-English: "Type 'help <user>' to view information on a specific person, or 'help users' to view all users.",
+English: "Type 'help <user>' to view information on a specific person.",
 }
 
 HELP_VIEW_SPEC_CMD = {
-English: "Type 'help <command>' to get help on a specific command, or 'help commands' to view all commands.",
+English: "Type 'help <command>' to get help on a specific command.",
 }

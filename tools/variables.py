@@ -95,6 +95,9 @@ SETTINGS_EXT = "ini"
 TEMP_FILE = "bootleg"
 TEMP_EXT = "tmp"
 
+GIT_FILE = "auto-updater"
+GIT_EXT = "log"
+
 PRESET_FILE = ""
 PREVIOUS_PRESET = ""
 PRESET_EXT = "bp"

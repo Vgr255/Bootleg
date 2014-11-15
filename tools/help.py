@@ -53,8 +53,8 @@ def get_help(helping=""):
             log.help("HELP_EXT_HELP", form=["PLURAL" if len(con.EXT_HELP) > 1 else "", ", ".join(con.EXT_HELP)])
         if con.EMAIL:
             log.help("HELP_EMAIL", form=[con.EMAIL, con.PROGRAM_NAME])
-        if con.POSSIBLE_HELP:
-            log.help("", "HELP_POSSIBLE_HELP", form=[", ".join(con.POSSIBLE_HELP), "PLURAL" if len(con.POSSIBLE_HELP) > 1 else ""])
+        if var.HELPERS:
+            log.help("", "HELP_POSSIBLE_HELP", form=[", ".join(var.HELPERS), "PLURAL" if len(var.HELPERS) > 1 else ""])
             log.help("HELP_VIEW_SPEC_TOP", "HELP_VIEW_SPEC_USR", "HELP_VIEW_SPEC_CMD")
         return False
     return True

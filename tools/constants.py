@@ -43,7 +43,7 @@ SETTINGS_PREFIXES = {
 
 }
 
-LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "user_input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "DEBUG"}
+LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "user_input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "GIT"}
 
 IGNORE_ALL = ["all", "settings", "temp", "git"] # will not write to these files when calling log-to-all
 IGNORE_TRANSLATE = ["traceback", "settings", "input", "temp", "git"] # will not attempt to translate
