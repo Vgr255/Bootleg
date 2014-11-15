@@ -6,7 +6,7 @@ from tools import translate as tr
 import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, splitter="\n", form=[], formo=[], formt=[]):
+def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[]):
     """Logs everything to console and/or file. Always use this."""
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
@@ -31,11 +31,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         type = "normal"
 
     trout = output
-    if output.isupper() and type not in con.IGNORE_CHECK:
+    if output.isupper() and type not in con.IGNORE_CHECK and checker:
         trout, output, toform, toforml = translater(output, type, form, formo, formt)
     pout = trout # Does a pouting trout pout a trout?
-    if len(pout) > 80:
-        pout, toget = line_splitter(pout, toget)
 
     if type in con.IGNORE_TIMESTAMP:
         timestamp = ""
@@ -47,6 +45,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
         logtype = con.LOGGERS[type]
 
     write, display, file = getfile(write, display, logtype)
+
+    if len(pout) > 80 and display and type not in con.IGNORE_SPLITTER:
+        pout, toget = line_splitter(pout, toget)
 
     newfile = not os.path.isfile(os.getcwd() + "/" + file)
     if display:
@@ -102,9 +103,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, splitte
             fl.close()
         f.close()
     if toget:
-        logger(toget, logtype=logtype, display=display, write=write, formo=toform, formt=toforml) # don't iterate again if already translated
+        logger(toget, logtype=logtype, display=display, write=write, checker=checker, formo=toform, formt=toforml) # don't iterate again if already translated
 
-def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]):
+def multiple(*output, types=[], display=True, write=True, checker=True, splitter="\n", form=[]):
     """Logs one or more lines to multiple files."""
     output = get(output, splitter)
     if "all" in types:
@@ -115,19 +116,19 @@ def multiple(*output, types=[], display=True, write=True, splitter="\n", form=[]
             if con.LOGGERS[logged] not in log_it:
                 log_it.append(con.LOGGERS[logged])
         for l in log_it:
-            logger(output, logtype=l, display=display, write=write, splitter=splitter, form=form)
+            logger(output, logtype=l, display=display, write=write, checker=checker, splitter=splitter, form=form)
             display = False # Don't want to needlessly display the same message multiple times
     elif types:
         for t in types:
-            logger(output, type=t, display=display, write=write, splitter=splitter, form=form)
+            logger(output, type=t, display=display, write=write, checker=checker, splitter=splitter, form=form)
             display = False
     else: # no type
-        logger(output, display=display, write=write, splitter=splitter, form=form)
+        logger(output, display=display, write=write, checker=checker, splitter=splitter, form=form)
 
-def help(*output, type="help", write=False, display=True, splitter="\n", form=[]):
+def help(*output, type="help", write=False, display=True, checker=True, splitter="\n", form=[]):
     """Explicit way to only print to screen."""
     output = get(output, splitter)
-    logger(output, type=type, write=write, display=display, splitter=splitter, form=form)
+    logger(output, type=type, write=write, display=display, checker=checker, splitter=splitter, form=form)
 
 def get(output, splitter):
     output = list(output)
@@ -143,17 +144,18 @@ def get(output, splitter):
 
 def line_splitter(output, toget):
     iter = 0
-    iter2 = iter
+    iter2 = -1
     if output[:2] == "  ": # already iterated
         output = output[2:]
-    while " " in output[iter+1:]:
+    while " " in output[81:]:
         if iter >= 80:
             break
         if iter < 80:
             iter2 = iter
             iter = output.index(" ", iter+1)
-    toget = "  " + output[iter2+1:] + "\n" + toget
-    output = output[:iter2]
+    if iter2 >= 0:
+        toget = "  " + output[iter2+1:] + "\n" + toget
+        output = output[:iter2]
     return output, toget
 
 def getfile(write, display, logtype):
