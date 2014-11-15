@@ -31,6 +31,8 @@ def add(drive=None, app=None, new_reg=False):
     write("DriverPath", "{0}ff7_opengl.fgd".format(app))
     write("FullInstall", "00000001", 4)
     write("DriverPath", "{0}ff7_opengl.fgd".format(app), 1, 1)
+    write("Driver", "00000003", 4, 1)
+    write("Mode", "00000002", 4, 1)
 
 def write(key=None, value=None, type=1, path=0, create=False): # There are no integrity checks
     # Possible types:
