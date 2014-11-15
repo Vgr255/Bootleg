@@ -4,6 +4,7 @@ import platform
 
 from tools import variables as var
 from tools import constants as con
+from tools import help
 
 var.ON_WINDOWS = False
 
@@ -49,6 +50,15 @@ for comm in cmd:
     if comm in var.COMMANDS:
         continue
     var.COMMANDS.append(comm)
+
+# Gets actual possibilities for helping
+
+var.HELPERS = []
+
+for topic in help.__dict__.keys():
+    if "_" in topic or topic in (var.USERS + var.COMMANDS) or topic in ("users", "commands"):
+        continue
+    var.HELPERS.append(topic)
 
 # Gets the registry entry for the game
 

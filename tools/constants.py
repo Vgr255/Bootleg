@@ -5,8 +5,8 @@ GUI_CODERS = ["Insight"]
 PROCESS_CODERS = ["Vgr"]
 GAME_CONV = ["Kompass63"]
 OTHER_SUPPORT = []
-BETA_TESTERS = ["Iceboundphoenix", "Vgr", "EQ2Alyza", "Kompass63"]
-SPECIAL_THANKS = ["DLPB", "Kranmer", "UGerstl", "Aali", "ficedula", "Covarr", "Qhimm"]
+BETA_TESTERS = ["Iceboundphoenix", "Vgr", "EQ2Alyza"]
+SPECIAL_THANKS = ["Kranmer", "UGerstl", "Aali", "ficedula", "Covarr", "Qhimm"]
 EXT_HELP = ["nasonfish"]
 
 TRANSLATORS = ["Vgr"]
@@ -27,12 +27,6 @@ ERROR_COMMANDS = ["exit", "restart"]
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour
 
 DISALLOWED_COMMANDS = ["help", "run"] # commands to be disallowed during setting finding
-
-POSSIBLE_HELP = ["programming", "support", "code", "commands"]
-HIDDEN_HELP = ["bootleg"]
-
-POSSIBLE_RUN = ["help", "silent"]
-HIDDEN_RUN = []
 
 CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"

@@ -23,6 +23,8 @@ PARSING = None
 
 USERS = None
 COMMANDS = None
+HELPERS = None
+
 LANGUAGE = None
 
 PROGRAM_FILES = None
@@ -61,7 +63,6 @@ DISPLAY_EVERYTHING = False # displays everything to screen
 WRITE_EVERYTHING = False # writes every occurence to file
 
 SHOW_HIDDEN_COMMANDS = False
-SHOW_HIDDEN_HELP = False
 
 IGNORE_FATAL_ERROR = False
 IGNORE_SYSTEM_ERROR = False

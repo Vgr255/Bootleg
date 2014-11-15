@@ -14,7 +14,7 @@ def get_help(helping=""):
     helping = helping.lower()
     log.help("", "HELP_FILE_BOOT_CONF", form=con.PROGRAM_NAME)
     log.help("HELP_FILE_NEW_HELP", "\n")
-    if helping and helping not in (con.POSSIBLE_HELP + con.HIDDEN_HELP + var.USERS + var.COMMANDS):
+    if helping and helping not in var.HELPERS:
         log.help("HELP_NOT_VALID_HELP", form=helping)
         if con.POSSIBLE_HELP:
             log.help("HELP_POS_HELP_TOPICS", form=[", ".join(con.POSSIBLE_HELP), "PLURAL" if len(con.POSSIBLE_HELP) > 1 else ""])
@@ -28,7 +28,7 @@ def get_help(helping=""):
         if con.RELEASE_INFO and con.BUILD_INFO and con.VERSION_INFO:
             log.help(con.BUILD_INFO, con.VERSION_INFO, con.RELEASE_INFO, splitter=" ")
         if con.FIRST_DEV:
-            log.help("HELP_FIRST_DEV", form=[", ".join(con.FIRST_DEV), "PLURAL" if len(con.FIRST_DEV) >1 else ""])
+            log.help("HELP_FIRST_DEV", form=[", ".join(con.FIRST_DEV), "PLURAL" if len(con.FIRST_DEV) > 1 else ""])
         if con.USER_HELP:
             log.help("HELP_USER_HELPING", form=["PLURAL" if len(con.USER_HELP) > 1 else "", ", ".join(con.USER_HELP)])
         if con.CODERS:
@@ -55,8 +55,6 @@ def get_help(helping=""):
             log.help("HELP_EMAIL", form=[con.EMAIL, con.PROGRAM_NAME])
         if con.POSSIBLE_HELP:
             log.help("", "HELP_POSSIBLE_HELP", form=[", ".join(con.POSSIBLE_HELP), "PLURAL" if len(con.POSSIBLE_HELP) > 1 else ""])
-            if (con.HIDDEN_HELP and var.DEBUG_MODE) or (con.HIDDEN_HELP and var.SHOW_HIDDEN_HELP):
-                log.help("HELP_HIDDEN_HELP", form=[", ".join(con.HIDDEN_HELP), "PLURAL" if len(con.HIDDEN_HELP) > 1 else ""])
             log.help("HELP_VIEW_SPEC_TOP", "HELP_VIEW_SPEC_USR", "HELP_VIEW_SPEC_CMD")
         return False
     return True
@@ -73,7 +71,7 @@ def programming():
     return msg + "."
 
 def code():
-    msg = "The {0}{1} code is completely open-source".format(con.CURRENT_RELEASE + " ", con.PROGRAM_NAME)
+    msg = "The {0} {1} code is completely open-source".format(con.CURRENT_RELEASE, con.PROGRAM_NAME)
     if con.PROCESS_CODE:
         msg = msg + ", and can be viewed at \n{0}".format(con.PROCESS_CODE)
     msg = msg + "."

@@ -714,18 +714,14 @@ HELP_POSSIBLE_HELP = {
 English: "Possible help topic{1}: {0}.",
 }
 
-HELP_HIDDEN_HELP = {
-English: "Hidden help topic{1}: {0}.",
-}
-
 HELP_VIEW_SPEC_TOP = {
 English: "Type 'help <item>' to view a specific help topic.",
 }
 
 HELP_VIEW_SPEC_USR = {
-English: "Type 'help <user>' to view information on a specific person.",
+English: "Type 'help <user>' to view information on a specific person, or 'help users' to view all users.",
 }
 
 HELP_VIEW_SPEC_CMD = {
-English: "Type 'help <command>' to get help on a specific command.",
+English: "Type 'help <command>' to get help on a specific command, or 'help commands' to view all commands.",
 }
