@@ -14,9 +14,6 @@ config.py
 # Batch files
 *.bat
 
-# Registry files
-*.reg
-
 # Binary files
 *.exe
 
