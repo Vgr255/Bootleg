@@ -38,7 +38,7 @@ def check(args, silent=False):
     args = parse(args, "status")
     checker = do(args, silent, needout=True)
     if checker:
-        if checker[-1:] == "nothing to commit (working directory clean)":
+        if checker[-1:] == b"nothing to commit (working directory clean)":
             return False
         if len(checker) > 2:
             return True
