@@ -2,7 +2,9 @@
 
 import tempfile
 import platform
+import argparse
 import shutil
+import ctypes
 import os
 
 from tools import variables as var
@@ -11,6 +13,10 @@ from tools import logger as log
 from tools import help
 from tools import get
 from tools import git
+
+# Check for admin privileges
+
+var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())
 
 # Copy or create config file if it doesn't exist
 
@@ -276,3 +282,27 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
+
+# Warn if not ran as admin
+
+if not var.LADMIN and not var.IGNORE_NON_ADMIN:
+    log.logger("", "WARN_NOT_RUN_ADMIN", "RUN_BOOT_ELEVATED", form=[con.PROGRAM_NAME, con.PROGRAM_NAME], display=var.ALLOW_RUN)
+
+# Check for forced config
+
+if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
+    log.logger("CFG_DIS_OVR", display=False)
+elif var.FORCE_CONFIG:
+    log.logger("CFG_FORCED", display=False)
+
+# Launch parameters
+
+launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
+launcher.add_argument("--silent", action="store_true")
+launcher.add_argument("--run", action="store_true")
+#launcher.add_argument("--settings", action="") # still todo
+var.SILENT = launcher.parse_args().silent
+var.RUNNING = launcher.parse_args().run
+#var.ARGUMENTS = launcher.parse_args().settings
+
+log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)

@@ -76,64 +76,6 @@ English: "signal",
 
 # The following lines are contained in 'bootleg.py'
 
-UPDATE_AVAIL = { # 0 Program name
-English: "A {0} update is available!",
-French: "Une mise à jour de {0} est disponible!",
-}
-
-SILENT_UPD = {
-English: "An update is available. Downloading . . .",
-French: "Une mise à jour est disponible. Téléchargement . . .",
-}
-
-REST_AFT_UPD = { # 0 = Program name
-English: "Launch {0} again once it finishes.",
-French: "Relancez {0} une fois terminé.",
-}
-
-CREATING_REPO = { # 0 = Current folder; 1 = Program name
-English: "Performing first-time setup for {1} in '{0}'.",
-French: "Installation de {1} dans '{0}'.",
-}
-
-FIRST_SETUP_WAIT = {
-English: "Please wait while setup is installing the files. . .",
-French: "Veuillez patienter pendant que l'assistant installe les fichiers. . .",
-}
-
-UNCOMMITTED_FILES = {
-English: "Warning: You have local changes in:",
-French: "Attention: Vous avez des modifications locales dans :",
-}
-
-BOOT_DESC = { # 0 = Program name; 1 = Version
-English: "{0} Final Fantasy VII Mod Configurator {1}",
-French: "Configurateur {0} pour Final Fantasy VII {1}",
-}
-
-WARN_NOT_RUN_ADMIN = { # 0 = Program name
-English: "Warning: {0} is not running as admin. Some functions will not work.",
-}
-
-RUN_BOOT_ELEVATED = { # 0 = Program name
-English: "Please run '{0}.exe' with elevated privileges.",
-}
-
-LNCH_PAR = { # 0 = Launch parameters
-English: "Launch parameters: {0}",
-French: "Paramètres de lancement : {0}",
-}
-
-CFG_DIS_OVR = {
-English: "Config was disallowed. Overriding.",
-French: "La configuration était désactivée. Réactivation.",
-}
-
-CFG_FORCED = {
-English: "Forcing config into var.",
-French: "La configuration a été copiée de force.",
-}
-
 RES_RET = { # 0 = Program name
 English: "Type 'exit' or 'restart' to exit or restart {0}, or Ctrl+C to quit.",
 French: "Entrez 'exit' ou 'restart' pour quitter ou recommencer {0}, ou Ctrl+C pour quitter.",
@@ -227,6 +169,63 @@ French: "Suppliez votre fichier '{0}.{1}'.",
 # End of the 'bootleg.py' lines
 
 # All the following entries are lines contained within files inside the 'tools' folder
+
+# The following lines are contained in '__init__.py'
+
+UPDATE_AVAIL = { # 0 Program name
+English: "A {0} update is available!",
+French: "Une mise à jour de {0} est disponible!",
+}
+
+SILENT_UPD = {
+English: "An update is available. Downloading . . .",
+French: "Une mise à jour est disponible. Téléchargement . . .",
+}
+
+REST_AFT_UPD = { # 0 = Program name
+English: "Launch {0} again once it finishes.",
+French: "Relancez {0} une fois terminé.",
+}
+
+CREATING_REPO = { # 0 = Current folder; 1 = Program name
+English: "Performing first-time setup for {1} in '{0}'.",
+French: "Installation de {1} dans '{0}'.",
+}
+
+FIRST_SETUP_WAIT = {
+English: "Please wait while setup is installing the files. . .",
+French: "Veuillez patienter pendant que l'assistant installe les fichiers. . .",
+}
+
+UNCOMMITTED_FILES = {
+English: "Warning: You have local changes in:",
+French: "Attention: Vous avez des modifications locales dans :",
+}
+
+WARN_NOT_RUN_ADMIN = { # 0 = Program name
+English: "Warning: {0} is not running as admin. Some functions will not work.",
+}
+
+RUN_BOOT_ELEVATED = { # 0 = Program name
+English: "Please run '{0}.exe' with elevated privileges.",
+}
+
+CFG_DIS_OVR = {
+English: "Config was disallowed. Overriding.",
+French: "La configuration était désactivée. Réactivation.",
+}
+
+CFG_FORCED = {
+English: "Forcing config into var.",
+French: "La configuration a été copiée de force.",
+}
+
+LNCH_PAR = { # 0 = Launch parameters
+English: "Launch parameters: {0}",
+French: "Paramètres de lancement : {0}",
+}
+
+# End of the '__init__.py' lines
 
 # The following lines are contained in 'commands.py'
 
