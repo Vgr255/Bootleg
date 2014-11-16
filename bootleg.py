@@ -101,8 +101,8 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
-        for line in git.diff_get(var.GIT_LOCATION, silent=True):
-            log.logger(line, type="debug")
+        line = git.diff_get(var.GIT_LOCATION, silent=True)
+        log.logger(line, type="debug")
 
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--silent", action="store_true")

@@ -132,6 +132,8 @@ def help(*output, type="help", write=False, display=True, checker=True, splitter
 
 def get(output, splitter):
     output = list(output)
+    if len(output) == 1 and list(output[0]) == output[0]:
+        output = output[0]
     msg = None
     for line in output:
         if msg is None:
