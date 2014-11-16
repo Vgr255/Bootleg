@@ -55,12 +55,8 @@ class ManipFile:
         args = [var.SEVENZ_LOCATION, 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
         handler(args)
 
-    def lgp_x(file, dir=os.getcwd()):
-        args = [var.UGLP_LOCATION, "-x", '"{0}{1}{2}.lgp"'.format(dir, "\\" if dir[:-1] not in ("/", "\\") else "", file), "-C", '"{0}{1}"'.format(var.BOOTLEG_TEMP, file)]
-        handler(args)
-
-    def lgp_c(file, dir=os.getcwd()):
-        args = [var.ULGP_LOCATION, "-c", '"{0}{1}{2}.lgp"'.format(dir, "\\" if dir[:-1] not in ("/", "\\") else "", file), "-C", '"{0}{1}"'.format(var.BOOTLEG_TEMP, file)]
+    def lgp(type, file, dir=os.getcwd()):
+        args = [var.UGLP_LOCATION, "-{0}".format(type), '"{0}{1}{2}.lgp"'.format(dir, "\\" if dir[:-1] not in ("/", "\\") else "", file), "-C", '"{0}{1}"'.format(var.BOOTLEG_TEMP, file)]
         handler(args)
 
     def rar(file, dir=os.getcwd()):
@@ -85,68 +81,6 @@ class ManipFile:
                 cause = 'STATUS'
 
             log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
-
-def format_variables(): # formats a few variables to make sure they're correct
-    if var.MOD_LOCATION:
-        mod_loc = var.MOD_LOCATION.split(";")
-        moloc = []
-        for semicolon in mod_loc:
-            if semicolon == "":
-                continue
-            semicolon = semicolon.replace("/", "\\")
-            if not semicolon[-1:] == "\\":
-                semicolon = semicolon + "\\"
-            moloc.append(semicolon)
-        if moloc:
-            var.MOD_LOCATION = moloc
-    else:
-        var.MOD_LOCATION = [os.getcwd()]
-    if not var.SYS_FOLDER:
-        var.SYS_FOLDER = os.getcwd() + "/utils"
-    var.SYS_FOLDER = var.SYS_FOLDER.replace("/", "\\")
-    if not var.SYS_FOLDER[-1:] == "\\":
-        var.SYS_FOLDER += "\\"
-    if not var.FFVII_PATH:
-        var.FFVII_PATH = os.getcwd() + "/Final Fantasy VII"
-    var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
-    if not var.FFVII_PATH[-1:] == "\\":
-        var.FFVII_PATH = var.FFVII_PATH + "\\"
-    if not var.BOOTLEG_TEMP:
-        var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
-    if not var.BOOTLEG_TEMP[-1:] == "\\":
-        var.BOOTLEG_TEMP += "\\"
-    _mkdir(var.BOOTLEG_TEMP)
-    var.BOOTLEG_TEMP += get.random_string() + "\\"
-    log.logger(var.BOOTLEG_TEMP, display=False, type="temp")
-    os.mkdir(var.BOOTLEG_TEMP) # no integrity check, there's too small a chance that the folder already exists. and if it does, I want an error to occur
-    if var.FFVII_IMAGE:
-        if not var.FFVII_IMAGE[-4:].lower() == ".zip":
-            var.FFVII_IMAGE = None
-    if IsFile.sys("7za.exe"):
-        var.SEVENZ_LOCATION = var.SYS_FOLDER + "7za.exe"
-    if IsFile.sys("UnRAR.exe"):
-        var.RAR_LOCATION = var.SYS_FOLDER + "UnRAR.exe"
-    if IsFile.sys("ulgp.exe"):
-        var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
-    if var.LANGUAGE is not None:
-        var.LANGUAGE = var.LANGUAGE.capitalize()
-        if var.LANGUAGE in ("Default", "Current", "System"):
-            syslng = locale.getdefaultlocale()[0]
-            if locale.getlocale()[0]:
-                syslng = locale.getlocale()[0]
-            var.LANGUAGE = syslng[:2]
-        for lang, lng in con.LANGUAGES.items():
-            if var.LANGUAGE.lower() == lng[0]:
-                var.LANGUAGE = lang
-                break
-        if var.LANGUAGE == "None":
-            var.LANGUAGE = None
-        if var.LANGUAGE not in con.LANGUAGES.keys():
-            var.LANGUAGE = None
-    if var.LANGUAGE is None:
-        var.LANGUAGE = "English"
-
-    initialize()
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install
     usr_set = ["BootOptions:"]
@@ -282,7 +216,7 @@ def set_language_files(): # Converts any language to a working English version
 
             # Condor minigame translation
 
-            ManipFile.lgp_x("condor", data + "minigame")
+            ManipFile.lgp("x", "condor", data + "minigame")
 
             tempc = var.BOOTLEG_TEMP + "condor\\"
 
@@ -296,13 +230,13 @@ def set_language_files(): # Converts any language to a working English version
             for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Condor_Tran"):
                 shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Condor_Tran\\" + file, var.BOOTLEG_TEMP + "condor\\" + file)
 
-            ManipFile.lgp_c("condor", var.BOOTLEG_TEMP)
+            ManipFile.lgp("c", "condor", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\condor.lgp")
             shutil.copy(var.BOOTLEG_TEMP + "condor.lgp", data + "minigame\\condor.lgp")
 
             # Snowboard minigame translation
 
-            ManipFile.lgp_x("snowboard-us", data + "minigame")
+            ManipFile.lgp("x", "snowboard-us", data + "minigame")
 
             tempc = var.BOOTLEG_TEMP + "snowboard-us\\"
 
@@ -314,26 +248,26 @@ def set_language_files(): # Converts any language to a working English version
                             e = ""
                         os.rename(tempc + file, tempc + e + file[1:])
 
-            ManipFile.lgp_c("snowboard-us", var.BOOTLEG_TEMP)
+            ManipFile.lgp("c", "snowboard-us", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\snowboard-us.lgp")
             shutil.copy(var.BOOTLEG_TEMP + "snowboard-us.lgp", data + "minigame\\snowboard-us.lgp")
 
             # Submarine minigame translation
 
-            ManipFile.lgp_x("sub", data + "minigame")
+            ManipFile.lgp("x", "sub", data + "minigame")
 
             tempc = var.BOOTLEG_TEMP + "sub\\"
 
             for file in os.listdir(tempc):
                 os.rename(tempc + file, tempc + file[1:])
 
-            ManipFile.lgp_c("sub", var.BOOTLEG_TEMP)
+            ManipFile.lgp("c", "sub", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\sub.lgp")
             shutil.copy(var.BOOTLEG_TEMP + "sub.lgp", data + "minigame\\sub.lgp")
 
             # Disc files translation
 
-            ManipFile.lgp_x("disc-us", data + "cd")
+            ManipFile.lgp("x", "disc-us", data + "cd")
 
             tempc = var.BOOTLEG_TEMP + "cd\\"
 
@@ -345,7 +279,7 @@ def set_language_files(): # Converts any language to a working English version
                             e = ""
                         os.rename(tempc + file, tempc + e + file[1:])
 
-            ManipFile.lgp_c("disc-us", var.BOOTLEG_TEMP)
+            ManipFile.lgp("c", "disc-us", var.BOOTLEG_TEMP)
             os.remove(data + "cd\\disc-us.lgp")
             shutil.copy(var.BOOTLEG_TEMP + "disc-us.lgp", data + "cd\\disc-us.lgp")
 
@@ -446,7 +380,7 @@ def find_data_drive(inp=None):
 
     log.logger("", "BUILDING_SYS_FILES", "UPDATING_REG_SILENT")
     reg.add()
-    log.logger("", "COMPL_REG_SILENT")
+    log.logger("", "COMPL_REG_SILENT", "")
 
 def _mkdir(inp):
     if not os.path.isdir(inp):

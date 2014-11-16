@@ -1,10 +1,37 @@
 # Startup initialization
 
+import tempfile
 import platform
+import shutil
+import os
 
 from tools import variables as var
 from tools import constants as con
+from tools import logger as log
 from tools import help
+from tools import get
+from tools import git
+
+# Copy or create config file if it doesn't exist
+
+if not os.path.isfile(os.getcwd() + "/config.py"): # user did not rename their config file, let's silently copy it
+    if os.path.isfile(os.getcwd() + "/config.py.example"):
+        shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+    else: # if it can't use default, create a blank config
+        newconf = open(os.getcwd() + "/config.py", "w")
+        newconf.write("# New blank config created by {0}".format(con.PROGRAM_NAME))
+        newconf.close()
+
+import config
+
+# Check for overriding config file
+
+if os.path.isfile(os.getcwd() + "/cfg.py"):
+    import cfg
+    for x in cfg.__dict__.keys():
+        y = getattr(cfg, x)
+        setattr(config, x, y)
+    var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
 # Gets processor architecture
 
@@ -59,13 +86,38 @@ if platform.system() == "Windows":
 
 # Converts settings into standalone variables
 
+for x, y in config.__dict__.items():
+    if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
+        break # don't carry config over if disallowed
+    if not x.isupper() or y == "":
+        continue
+    if x == "FORCE_CONFIG":
+        continue # forcing config cannot be manually set
+    if isinstance(getattr(config, x), dict):
+        cfgdict = getattr(config, x)
+        vardict = getattr(var, x)
+        for a, b in cfgdict.items():
+            if not b:
+                continue
+            if "_SETTINGS" in x and x[:-9] not in con.NON_INT_SETTINGS and not b.isdigit():
+                continue # don't copy non-numbers to number-only dicts
+            vardict[a] = b
+    else:
+        setattr(var, x, y)
+
 for x in con.SETTINGS_PREFIXES.keys():
     x = x.replace("VAR", "SETTINGS")
     y = getattr(var, x)
     for s, u in y.items():
         setattr(var, s, u)
         if x[:-9] not in con.NON_INT_SETTINGS:
-            setattr(var, s, int(u)) # make sure all parameters are integers
+            if isinstance(u, int) or u.isdigit(): # If not, keep the default
+                setattr(var, s, int(u)) # make sure all parameters are integers
+        else:
+            setattr(var, s, u)
+
+for x, y in con.SETTINGS_PREFIXES.items():
+    setattr(con, x, y)
 
 # Brings translators and coders in a single place
 
@@ -105,4 +157,122 @@ var.HELPERS = []
 for topic in help.__dict__.keys():
     if "_" in topic or topic in (var.USERS + var.COMMANDS) or topic in ("var", "con", "log", "unhandled"):
         continue
-    var.HELPERS.append(topic)
+    var.HELPERS.append(topic.lower())
+
+# Variables formatting
+
+# Mods location
+
+if var.MOD_LOCATION:
+    mod_loc = var.MOD_LOCATION.split(";")
+    moloc = []
+    for semicolon in mod_loc:
+        if semicolon == "":
+            continue
+        semicolon = semicolon.replace("/", "\\")
+        if not semicolon[-1:] == "\\":
+            semicolon = semicolon + "\\"
+        moloc.append(semicolon)
+    if moloc:
+        var.MOD_LOCATION = moloc
+else:
+    var.MOD_LOCATION = [os.getcwd()]
+
+# System folder
+
+if not var.SYS_FOLDER:
+    var.SYS_FOLDER = os.getcwd() + "/utils"
+var.SYS_FOLDER = var.SYS_FOLDER.replace("/", "\\")
+if not var.SYS_FOLDER[-1:] == "\\":
+    var.SYS_FOLDER += "\\"
+
+# FFVII installation
+
+if not var.FFVII_PATH:
+    var.FFVII_PATH = os.getcwd() + "/Final Fantasy VII"
+var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
+if not var.FFVII_PATH[-1:] == "\\":
+    var.FFVII_PATH = var.FFVII_PATH + "\\"
+
+# Temporary files
+
+if not var.BOOTLEG_TEMP:
+    var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
+if not var.BOOTLEG_TEMP[-1:] == "\\":
+    var.BOOTLEG_TEMP += "\\"
+if not os.path.isdir(var.BOOTLEG_TEMP):
+    os.mkdir(var.BOOTLEG_TEMP)
+var.BOOTLEG_TEMP += get.random_string() + "\\"
+log.logger(var.BOOTLEG_TEMP, display=False, type="temp")
+os.mkdir(var.BOOTLEG_TEMP)
+
+# Installation image
+
+if var.FFVII_IMAGE:
+    if not var.FFVII_IMAGE[-4:].lower() == ".zip":
+        var.FFVII_IMAGE = None
+
+# System files
+
+if os.path.isfile(var.SYS_FOLDER + "7za.exe"):
+    var.SEVENZ_LOCATION = var.SYS_FOLDER + "7za.exe"
+if os.path.isfile(var.SYS_FOLDER + "UnRAR.exe"):
+    var.RAR_LOCATION = var.SYS_FOLDER + "UnRAR.exe"
+if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
+    var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
+
+# Language
+
+if var.LANGUAGE is not None:
+    var.LANGUAGE = var.LANGUAGE.capitalize()
+    if var.LANGUAGE in ("Default", "Current", "System"):
+        syslng = locale.getdefaultlocale()[0]
+        if locale.getlocale()[0]:
+            syslng = locale.getlocale()[0]
+        var.LANGUAGE = syslng[:2]
+    for lang, lng in con.LANGUAGES.items():
+        if var.LANGUAGE.lower() == lng[0]:
+            var.LANGUAGE = lang
+            break
+    if var.LANGUAGE not in con.LANGUAGES.keys():
+        var.LANGUAGE = None
+if var.LANGUAGE is None:
+    var.LANGUAGE = "English"
+
+# Auto-update checking via git
+
+if var.GIT_LOCATION and var.AUTO_UPDATE:
+    if git.check(var.GIT_LOCATION, silent=True):
+        if not git.diff(var.GIT_LOCATION, silent=True):
+            if not var.SILENT_UPDATE:
+                log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
+                var.UPDATE_READY = True
+            else:
+                log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
+                git.pull(var.GIT_LOCATION, silent=True)
+                var.ALLOW_RUN = False
+    if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo, make it so
+        tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
+        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
+        log.logger(tmpfold, type="temp", display=False)
+        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
+        shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
+        if os.path.isdir(os.getcwd() + "\\presets"):
+            shutil.rmtree(os.getcwd() + "\\presets") # making sure to overwrite everything
+        shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
+        shutil.rmtree(os.getcwd() + "\\tools")
+        shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
+        os.remove("config.py")
+        for file in os.listdir(tmpfold):
+            if not fn.IsFile.get(tmpfold + "\\" + file): # Not a file, let's not copy it
+                continue
+            if fn.IsFile.cur(file):
+                os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
+            shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
+        fn.attrib(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
+        git.pull(var.GIT_LOCATION, silent=True)
+        cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
+    if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
+        log.logger("", "UNCOMMITTED_FILES", "")
+        line = git.diff_get(var.GIT_LOCATION, silent=True)
+        log.logger(line, type="debug")

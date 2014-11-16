@@ -35,75 +35,6 @@ from tools import logger as log
 from tools import get
 from tools import git
 
-if not fn.IsFile.cur("config.py"): # user did not rename their config file, let's silently copy it
-    if fn.IsFile.cur("config.py.example"):
-        shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
-    else: # if it can't use default, create a blank config
-        newconf = open(os.getcwd() + "/config.py", "w")
-        newconf.write("# New blank config created by {0}".format(con.PROGRAM_NAME))
-        newconf.close()
-
-import config
-
-if fn.IsFile.cur("cfg.py"):
-    import cfg
-    for x in cfg.__dict__.keys():
-        y = getattr(cfg, x)
-        setattr(config, x, y)
-    var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
-
-for x, y in config.__dict__.items():
-    if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
-        break # don't carry config over if disallowed
-    if not x.isupper() or y == "":
-        continue
-    if x == "FORCE_CONFIG":
-        continue # forcing config cannot be manually set
-    setattr(var, x, y)
-
-for x, y in con.SETTINGS_PREFIXES.items():
-    setattr(con, x, y)
-
-# Launch setup
-
-fn.format_variables()
-
-if var.GIT_LOCATION and var.AUTO_UPDATE:
-    if git.check(var.GIT_LOCATION, silent=True):
-        if not git.diff(var.GIT_LOCATION, silent=True):
-            if not var.SILENT_UPDATE:
-                log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
-                var.UPDATE_READY = True
-            else:
-                log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
-                git.pull(var.GIT_LOCATION, silent=True)
-                var.ALLOW_RUN = False
-    if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo, make it so
-        tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
-        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
-        log.logger(tmpfold, type="temp", display=False)
-        git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
-        shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
-        if os.path.isdir(os.getcwd() + "\\presets"):
-            shutil.rmtree(os.getcwd() + "\\presets") # making sure to overwrite everything
-        shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
-        shutil.rmtree(os.getcwd() + "\\tools")
-        shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
-        os.remove("config.py")
-        for file in os.listdir(tmpfold):
-            if not fn.IsFile.get(tmpfold + "\\" + file): # Not a file, let's not copy it
-                continue
-            if fn.IsFile.cur(file):
-                os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
-            shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
-        fn.attrib(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
-        git.pull(var.GIT_LOCATION, silent=True)
-        cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
-    if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
-        log.logger("", "UNCOMMITTED_FILES", "")
-        line = git.diff_get(var.GIT_LOCATION, silent=True)
-        log.logger(line, type="debug")
-
 launcher = argparse.ArgumentParser(description=tr.BOOT_DESC[var.LANGUAGE].format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--silent", action="store_true")
 launcher.add_argument("--run", action="store_true")
@@ -126,7 +57,7 @@ elif var.FORCE_CONFIG:
 
 def main():
     while var.ALLOW_RUN:
-        if var.RETRY:
+        if not var.INITIALIZED or var.RETRY:
             fn.initialize()
         if var.ERROR:
             log.help("RES_RET", form=con.PROGRAM_NAME)
