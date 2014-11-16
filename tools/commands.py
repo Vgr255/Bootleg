@@ -110,9 +110,6 @@ def do(inp, params=[]):
             except NameError:
                 prnt = "NOT_DEFINED"
             log.logger(prnt, type="debug", write=False, form=inp[9:-2])
-        elif inp[:18] == "do ask print; get(" and inp[-2:] == ");":
-            done = True
-            var.PRINT = inp[18:-2]
         elif inp == "do call help; get help;":
             done = True
             log.help("",
@@ -120,8 +117,7 @@ def do(inp, params=[]):
                      "",
                      "'do call python3; exec(\"command\");'",
                      "'do call run function; eval(\"module.function\");'",
-                     "'do print(\"string\");'",
-                     "'do ask print; get(\"string\");")
+                     "'do print(\"string\");'")
     if not done:
         fn.no_such_command("do")
 

@@ -42,7 +42,7 @@ def get_help(helping=""):
             if con.FRENCH_TRANSLATORS:
                 log.help("HELP_FRENCH_TRANSLATORS", form=["PLURAL" if len(con.FRENCH_TRANSLATORS) > 1 else "", ", ".join(con.FRENCH_TRANSLATORS)])
         if con.OTHER_SUPPORT:
-            log.help("HELP_OTHER_SUPPORT", form=[con.PROGRAM_NAME", ", ".join(con.OTHER_SUPPORT)])
+            log.help("HELP_OTHER_SUPPORT", form=[con.PROGRAM_NAME, ", ".join(con.OTHER_SUPPORT)])
         if con.SPECIAL_THANKS:
             log.help("HELP_SPECIAL_THANKS", form=", ".join(con.SPECIAL_THANKS))
         if con.EXT_HELP:
@@ -50,7 +50,7 @@ def get_help(helping=""):
         if con.EMAIL:
             log.help("HELP_EMAIL", form=[con.EMAIL, con.PROGRAM_NAME])
         if con.DEVELOPERS:
-            log.help("", "HELP_DEVELOPERS", form=["PLURAL" if len(con.DEVELOPERS) > 1 else "", ", ".join(con.DEVELOPERS))
+            log.help("", "HELP_DEVELOPERS", form=["PLURAL" if len(con.DEVELOPERS) > 1 else "", ", ".join(con.DEVELOPERS)])
         if var.HELPERS:
             log.help("", "HELP_POSSIBLE_HELP", "HELP_VIEW_SPEC_TOP", form=[", ".join(var.HELPERS), "PLURAL" if len(var.HELPERS) > 1 else ""])
         if var.USERS:
