@@ -145,15 +145,6 @@ def format_variables(): # formats a few variables to make sure they're correct
             var.LANGUAGE = None
     if var.LANGUAGE is None:
         var.LANGUAGE = "English"
-    for lang in con.LANGUAGES.keys():
-        if hasattr(con, lang.upper() + "_TRANSLATORS"):
-            lng = getattr(con, lang.upper() + "_TRANSLATORS")
-            for trnl in lng:
-                if trnl not in con.TRANSLATORS:
-                    con.TRANSLATORS.append(trnl)
-    for coder in con.GUI_CODERS + con.PROCESS_CODERS:
-        if coder not in con.CODERS:
-            con.CODERS.append(coder)
 
     initialize()
 

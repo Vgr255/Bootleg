@@ -67,13 +67,26 @@ for x in con.SETTINGS_PREFIXES.keys():
         if x[:-9] not in con.NON_INT_SETTINGS:
             setattr(var, s, int(u)) # make sure all parameters are integers
 
+# Brings translators and coders in a single place
+
+for lang in con.LANGUAGES.keys():
+    if hasattr(con, lang.upper() + "_TRANSLATORS"):
+        lng = getattr(con, lang.upper() + "_TRANSLATORS")
+        for trnl in lng:
+            if trnl not in con.TRANSLATORS:
+                con.TRANSLATORS.append(trnl)
+
+for coder in con.GUI_CODERS + con.PROCESS_CODERS:
+    if coder not in con.CODERS:
+        con.CODERS.append(coder)
+
 # Fetches users and commands lists for help
 
 var.USERS = []
 
-usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.GAME_CONV + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.TRANSLATORS
+usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.OTHER_SUPPORT + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.TRANSLATORS + con.DEVELOPERS
 for user in usr:
-    if user in var.USERS:
+    if user.lower() in var.USERS:
         continue
     var.USERS.append(user.lower())
 
@@ -81,9 +94,9 @@ var.COMMANDS = []
 
 cmd = con.COMMANDS + con.ERROR_COMMANDS + con.DEBUG_COMMANDS + con.HIDDEN_COMMANDS
 for comm in cmd:
-    if comm in var.COMMANDS:
+    if comm.lower() in var.COMMANDS:
         continue
-    var.COMMANDS.append(comm)
+    var.COMMANDS.append(comm.lower())
 
 # Gets actual possibilities for helping
 
