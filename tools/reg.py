@@ -1,12 +1,9 @@
-from tools import constants as con
 from tools import variables as var
 from tools import logger as log
 import os
 
 if var.ON_WINDOWS:
     import winreg
-else:
-    log.logger("{0} will not work properly on a different operating system than Windows.".format(con.PROGRAM_NAME), type="error")
 
 if var.GAME_VERSION == 1999: # No game installed, create new reg entry
     set_new()

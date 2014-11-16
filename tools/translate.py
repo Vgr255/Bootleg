@@ -172,7 +172,11 @@ French: "Suppliez votre fichier '{0}.{1}'.",
 
 # The following lines are contained in '__init__.py'
 
-UPDATE_AVAIL = { # 0 Program name
+NOT_ON_WINDOWS = { # 0 = Program name
+English: "{0} will not work properly on a different operating system than Windows.",
+}
+
+UPDATE_AVAIL = { # 0 = Program name
 English: "A {0} update is available!",
 French: "Une mise à jour de {0} est disponible!",
 }

@@ -9,6 +9,7 @@ import os
 
 from tools import variables as var
 from tools import constants as con
+from tools import commands as cmd
 from tools import logger as log
 from tools import help
 from tools import get
@@ -39,7 +40,7 @@ if os.path.isfile(os.getcwd() + "/cfg.py"):
         setattr(config, x, y)
     var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
-# Gets processor architecture
+# Get processor architecture
 
 var.ARCHITECTURE = platform.architecture()[0]
 
@@ -90,7 +91,10 @@ if platform.system() == "Windows":
         var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
         var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
 
-# Converts settings into standalone variables
+else:
+    log.logger("NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
+
+# Convert settings into standalone variables
 
 for x, y in config.__dict__.items():
     if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
@@ -125,7 +129,7 @@ for x in con.SETTINGS_PREFIXES.keys():
 for x, y in con.SETTINGS_PREFIXES.items():
     setattr(con, x, y)
 
-# Brings translators and coders in a single place
+# Bring translators and coders in a single place
 
 for lang in con.LANGUAGES.keys():
     if hasattr(con, lang.upper() + "_TRANSLATORS"):
@@ -138,7 +142,7 @@ for coder in con.GUI_CODERS + con.PROCESS_CODERS:
     if coder not in con.CODERS:
         con.CODERS.append(coder)
 
-# Fetches users and commands lists for help
+# Fetch users and commands lists for help
 
 var.USERS = []
 
@@ -150,13 +154,13 @@ for user in usr:
 
 var.COMMANDS = []
 
-cmd = con.COMMANDS + con.ERROR_COMMANDS + con.DEBUG_COMMANDS + con.HIDDEN_COMMANDS
-for comm in cmd:
+cmds = con.COMMANDS + con.ERROR_COMMANDS + con.DEBUG_COMMANDS + con.HIDDEN_COMMANDS
+for comm in cmds:
     if comm.lower() in var.COMMANDS:
         continue
     var.COMMANDS.append(comm.lower())
 
-# Gets actual possibilities for helping
+# Get actual possibilities for helping
 
 var.HELPERS = []
 
@@ -295,14 +299,30 @@ if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
 elif var.FORCE_CONFIG:
     log.logger("CFG_FORCED", display=False)
 
-# Launch parameters
+# Check launch parameters
 
 launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
 launcher.add_argument("--silent", action="store_true")
 launcher.add_argument("--run", action="store_true")
+launcher.add_argument("--dump", action="store_true")
+launcher.add_argument("--verbose", action="store_true")
+launcher.add_argument("--debug", action="store_true")
+launcher.add_argument("--logall", action="store_true")
+launcher.add_argument("--writeall", action="store_true")
 #launcher.add_argument("--settings", action="") # still todo
 var.SILENT = launcher.parse_args().silent
 var.RUNNING = launcher.parse_args().run
 #var.ARGUMENTS = launcher.parse_args().settings
+
+if launcher.parse_args().dump:
+    var.DEV_LOG = True
+if launcher.parse_args().verbose:
+    var.DISPLAY_EVERYTHING = True
+if launcher.parse_args().debug:
+    var.DEBUG_MODE = True
+if launcher.parse_args().logall:
+    var.LOG_EVERYTHING = True
+if launcher.parse_args().writeall:
+    var.WRITE_EVERYTHING = True
 
 log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)
