@@ -13,10 +13,10 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     logall = None
     toget = ""
-    toform = list(form)
-    toforml = list(form)
     if form and not form == list(form):
         form = [form]
+    toform = list(form)
+    toforml = list(form)
     if "\n" in output:
         indx = output.index("\n")
         toget = output[indx+1:]

@@ -42,7 +42,7 @@ def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There
     # 1 = String
     # 2 = String with references to system variables
     # 3 = Binary data
-    # 4 = 32-bit Dword (little endian) ... whatever endian means
+    # 4 = 32-bit Dword (little endian) ... whatever that means
     # 5 = 32-bit Dword (big endian)
     # 6 = Unicode symbolic link
     # 7 = Sequence of strings
@@ -75,11 +75,15 @@ def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There
     else:
         winreg.SetValueEx(reg, key, 0, type, value)
 
-def get_key(value, path=None):
-    if path is None:
-        path = var.REGISTRY
+def get_key(value, path=None, opener=2):
+
+    path_ints = {0: var.REG_ENTRY, 1: var.REG_GRAPH, 2: var.REG_SOUND, 3: var.REG_MIDI}
+
+    if path.isdigit():
+        path = path_ints[int(path)]
     try:
-        reg = winreg.QueryValueEx(path, value)
+        entry = winreg.OpenKey(18446744071562067968+opener, path)
+        reg = winreg.QueryValueEx(entry, value)
     except OSError:
         reg = None
     return reg

@@ -16,8 +16,8 @@ def get_help(helping=""):
     log.help("HELP_FILE_NEW_HELP", "\n")
     if helping and helping not in (var.HELPERS + var.USERS + var.COMMANDS):
         log.help("HELP_NOT_VALID_HELP", form=helping)
-        if con.POSSIBLE_HELP:
-            log.help("HELP_POS_HELP_TOPICS", form=[", ".join(con.POSSIBLE_HELP), "PLURAL" if len(con.POSSIBLE_HELP) > 1 else ""])
+        if var.HELPERS:
+            log.help("HELP_POS_HELP_TOPICS", form=[", ".join(var.HELPERS), "PLURAL" if len(var.HELPERS) > 1 else ""])
             log.help("HELP_USE_ITEM_SPEC")
             return False
     elif not helping:
