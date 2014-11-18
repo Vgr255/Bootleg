@@ -29,6 +29,10 @@ from tools import logger as log
 from tools import get
 from tools import git
 
+# Get custom exceptions for handling
+
+from tools.exceptions import *
+
 def main():
     if not var.INITIALIZED or var.RETRY:
         fn.initialize()

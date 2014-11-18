@@ -132,7 +132,7 @@ def git(inp, params=[]):
     args = [var.GIT_LOCATION]
     if params:
         args.extend(params)
-        if hasattr(_git, params[0]):
-            getattr(_git, second)(args)
+        if hasattr(_git, params[0]) and params[0] not in ("con", "var", "log", "subprocess", "parse"):
+            getattr(_git, " ".join(params))(args)
             return
     _git.do(args)
