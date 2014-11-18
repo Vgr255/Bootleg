@@ -63,29 +63,27 @@ def get_help(helping=""):
 # Various help topics
 
 def programming():
-    msg = "The current version of {0} is coded in Python 3".format(con.PROGRAM_NAME)
+    if con.PROCESS_CODERS and con.GUI_CODERS:
+        return ["HELP_PROGRAMMING_PROCESS", "HELP_PROGRAMMING_GUI"], con.PROGRAM_NAME, ", ".join(con.PROCESS_CODERS), ", ".join(con.GUI_CODERS)
     if con.PROCESS_CODERS:
-        msg = msg + " by {0}".format(", ".join(con.PROCESS_CODERS))
-    msg = msg + ".\nThe Graphical User Interface is coded in C#"
+        return "HELP_PROGRAMMING_PROCESS", con.PROGRAM_NAME, ", ".join(con.PROCESS_CODERS)
     if con.GUI_CODERS:
-        msg = msg + " by {0}".format(", ".join(con.GUI_CODERS))
-    return msg + "."
+        return "HELP_PROGRAMMING_GUI", ", ".join(con.GUI_CODERS)
+    return "HELP_PROGRAMMING_NONE", con.PROGRAM_NAME
 
 def code():
-    msg = "The {0} {1} code is completely open-source".format(con.CURRENT_RELEASE, con.PROGRAM_NAME)
     if con.PROCESS_CODE:
-        msg = msg + ", and can be viewed at \n{0}".format(con.PROCESS_CODE)
-    msg = msg + "."
-    return msg
+        return "HELP_CODE_PROCESS", con.PROGRAM_NAME, con.CURRENT_RELEASE, con.PROCESS_CODE
+    return "HELP_CODE_NONE", con.PROGRAM_NAME, con.CURRENT_RELEASE
 
 def support():
-    msg = "You can request help by going on the forums"
+    if con.EMAIL and con.USER_HELP:
+        return "HELP_SUPPORT_EMAIL_HELP", con.EMAIL, "PLURAL" if len(con.USER_HELP) > 1 else "", ", ".join(con.USER_HELP)
     if con.EMAIL:
-        msg = msg + " or send an email to {0}".format(con.EMAIL)
+        return "HELP_SUPPORT_EMAIL", con.EMAIL
     if con.USER_HELP:
-        msg = msg + "; {0} {1} the official helper{2}".format(", ".join(con.USER_HELP), "PLUR_ARE" if len(con.USER_HELP) > 1 else "SING_IS", "PLURAL" if len(con.USER_HELP) > 1 else "")
-    msg = msg + "."
-    return msg
+        return "HELP_SUPPORT_HELP", "PLURAL" if len(con.USER_HELP) > 1 else "", "PLUR_ARE" if len(con.USER_HELP) > 1 else "SING_IS", ", ".join(con.USER_HELP)
+    return "HELP_SUPPORT_NONE"
 
 def commands():
     msg = "There are no available commands."

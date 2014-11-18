@@ -9,14 +9,8 @@ import hashlib
 import random
 
 def parser(setting): # get function xyz() in parser.py for variable XYZ
-    parse = None
-    for x in par.__dict__.keys():
-        y = setting.lower()
-        if not x == y:
-            continue
-        parse = getattr(par, y)
-        break # we got what we wanted
-    return parse
+    if hasattr(par, setting):
+        return getattr(par, setting)
 
 def bool(inp):
     if tr.YES[var.LANGUAGE].lower() == inp.lower():
@@ -39,10 +33,6 @@ def bool(inp):
         return 0
     if inp.isdigit() and int(inp) == 0:
         return 0
-    return None
-
-def _type(inp): # Here for sake of being here, but don't use that unless absolutely necessary
-    return str(type(inp))[8:-2] # "foo" is "str", ["foo", "bar"] is "list", etc
 
 def random_string(): # generates a random string of numbers for temporary folders
     iter = random.randrange(1, 10)

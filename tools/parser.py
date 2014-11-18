@@ -7,6 +7,19 @@
 # Make sure to set the default in tools/variables.py
 # and the maximum possible in tools/constants.py
 
+from tools import variables as var
+from tools import filenames as fl
+from tools import logger as log
+
+import subprocess
+import shutil
+import os
+
+def OpenFile(args):
+    if not list(args) == args:
+        args = [args]
+    subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 def find_cloud_field():
     return [
     "Pick Cloud's appearance in the field:",
@@ -306,26 +319,6 @@ def find_cloud_swords():
     "3 = Mike's Ultima Weapon",
     "4 = Oblivion External Mod Ultima Weapon",    ]
 
-def find_kernel_select(): # preset kernel settings for general use
-    return [
-    "Pick your Kernel settings:",
-    "1 = Remastered - Kernel AI, stats and equipment from The Remix",
-    "2 = Scene Redux - Better items to steal",
-    "3 = Harder Items Easy - Items are less powerful",
-    "4 = Harder Items Normal - Items are significantly less powerful",
-    "5 = Harder Items Difficult - Items are much less powerful",
-    "6 = Harder Items Easy + Scene Redux",
-    "7 = Harder Items Normal + Scene Redux",
-    "8 = Harder Items Difficult + Scene Redux",
-    "9 = Lost Wing - Complete overhaul with extensive modifications", 
-    "10 = Gjoerulv's Hardcore Mod - The prominent difficulty mod",
-    "11 = Mode Switching - All mods",
-    "12 = Mode Switching - Without hardcore",
-    "13 = Reasonable Difficulty - Not as challenging as hardcore",
-    "14 = Reasonable Difficulty + Harder Items Easy",
-    "15 = Reasonable Difficulty + Harder Items Normal",
-    "16 = Reasonable Difficulty + Harder Items Difficult",    ]
-
 def find_reasonable_diff(): # individual parsers for each kernel selection. might or might not get used
     return [
     "Install Reasonable Difficulty mod?",    ]
@@ -358,3 +351,29 @@ def find_mode_switching():
     return [
     "Install Bootleg's Mode Switching?",
     ]
+
+def find_avalanche():
+    return [
+    "Install Avalanche Hi-Res Overhaul?",
+    ]
+
+# From this point are the installer functions for each of the above parameters
+
+# The return code should be a tuple with an integer as first argument
+# The integer is passed on to the PARSER_RETCODES constant
+# The rest is the format to be used for that line
+
+def install_avalanche():
+    for folder in var.MOD_LOCATION:
+        for file in os.listdir(folder):
+            if file == fl.AVALANCHE:
+                log.logger("", "PARS_INST_AVALANCHE")
+                log.help("PLEASE_REMAIN_PATIENT")
+                OpenFile(folder + file)
+                for repair in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic"):
+                    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic\\" + repair, fl.MAGIC_PATCH + repair)
+                shutil.copy(var.FFVII_PATH + "textures\\Summons\\leviathan\\water_00.png", var.FFVII_PATH + "textures\\Summons\\leviathan\\water_1_00.png")
+                log.logger("PARS_COMPL_AVOV")
+                return 0, "AVALANCHE_HIRES"
+
+    return 1, fl.AVALANCHE

@@ -74,6 +74,12 @@ SIGNAL = {
 English: "signal",
 }
 
+# Mods names
+
+AVALANCHE_HIRES = {
+English: "Avalanche High-Res Overhaul",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 RES_RET = { # 0 = Program name
@@ -159,6 +165,10 @@ French: "SIGTERM reçu. Fermeture du processus.",
 SIGTERM_WARN = {
 English: "WARNING: SIGTERM Detected.",
 French: "ATTENTION: SIGTERM Détecté.",
+}
+
+MOD_NOT_FOUND = { # 0 = Mod file; 1 = "in" or "in one of" (fill above); 2 = MOD_LOCATION variable
+English: "Error: {0} could not be found {1} '{2}'.",
 }
 
 PROVIDE_TRACE = { # 0,1 = Filename/File extension
@@ -620,6 +630,10 @@ TOO_FEW_DIG = { # This is a continuity of the above line (doesn't always display
 English: ", or if there are too few digits",
 }
 
+PARS_COMPL_INST_SUCCESS = {
+English: "Completed installation of {0} successfully.",
+}
+
 ERR_INVALID_COMMAND = { # 0 = Name of the invalid command
 English: "'{0}' is not a valid command.",
 }
@@ -743,4 +757,60 @@ English: "Type 'help <user>' to view information on a specific person.",
 
 HELP_VIEW_SPEC_CMD = {
 English: "Type 'help <command>' to get help on a specific command.",
+}
+
+HELP_PROGRAMMING_PROCESS = { # 0 = Program name; PROCESS_CODERS constant
+English: "The current version of {0} is written in Python 3 by {1}.",
+}
+
+HELP_PROGRAMMING_GUI = { # 0 = GUI_CODERS constant
+English: "The User Interface is written in C# by {0}.",
+}
+
+HELP_PROGRAMMING_NONE = { # 0 = Program name
+English: "{0} is written in Python 3; the User Interface is in C#.",
+}
+
+HELP_CODE_PROCESS = { # 0 = Program name; 1 = Version number; 2 = Link to the code
+English: "The {1} {0} code is completely open-source, and can be viewed at:\n'{2}'",
+}
+
+HELP_CODE_NONE = { # 0 = Program name; 1 = Version number
+English: "The {1} {0} code is completely open-source.",
+}
+
+HELP_SUPPORT_EMAIL_HELP = { # 0 = Email; 1 = USER_HELP constant
+English: "You can request help by going on the forums, or by sending an email.\nEmail: '{0}'\nHelper{1}: {2}",
+}
+
+HELP_SUPPORT_EMAIL = { # 0 = Email (duh)
+English: "To request help, you can go on the forums or send an email.\nEmail: '{0}'",
+}
+
+HELP_SUPPORT_HELP = {
+English: "You can request help on the forums; the helper{0} {1} {2}.",
+}
+
+HELP_SUPPORT_NONE = {
+English: "You can go on the forums to ask for help.",
+}
+
+# End of the 'help.py' lines
+
+# The following lines are contained in 'parser.py'
+
+# These lines are the finder part
+
+# These lines are the installer part
+
+PARS_INST_AVALANCHE = {
+English: "Installing Avalanche High-Res Overhaul . . .",
+}
+
+PLEASE_REMAIN_PATIENT = { # This name is too confusing and not obvious enough
+English: "Please remain patient.",
+}
+
+PARS_COMPL_AVOV = {
+English: "Completed Avalanche High-Res Overhaul.",
 }

@@ -66,6 +66,7 @@ def clean(*args):
 
 def help(inp, params=[]):
     if helper.get_help(" ".join(params)):
+        formatter = params[0]
         helping = helper.unhandled
         type = "help"
         if hasattr(helper, params[0]):
@@ -75,7 +76,10 @@ def help(inp, params=[]):
             var.ERROR = True
         elif helping == list(helping):
             helping = "\n".join(helping)
-        log.help(helping, type=type, form=params[0])
+        elif helping == tuple(helping):
+            formatter = list(helping[1:])
+            helping = helping[0]
+        log.help(helping, type=type, form=formatter)
 
 def copy(inp, params=[]):
     if params and " ".join(params) == "config":
@@ -128,8 +132,7 @@ def git(inp, params=[]):
     args = [var.GIT_LOCATION]
     if params:
         args.extend(params)
-        for second in _git.__dict__.keys():
-            if params[0] == second:
-                getattr(_git, second)(args)
-                return
+        if hasattr(_git, params[0]):
+            getattr(_git, second)(args)
+            return
     _git.do(args)

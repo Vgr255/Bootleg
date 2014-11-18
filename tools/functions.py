@@ -12,12 +12,17 @@ import locale
 import shutil
 import os
 
+# Get the custom exception handlers
+
+from tools.exceptions import *
+
 def initialize(): # initialize variables on startup and/or retry
     begin = "BEGIN_BOOT"
     if var.RETRY:
         begin = "RESTART_BOOT"
     log.multiple(begin, form=[con.PROGRAM_NAME], types=["all"], display=False)
     var.INITIALIZED = True
+    var.RETRY = False
     log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
     log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
     var.USED_HELP = False
@@ -27,7 +32,6 @@ def initialize(): # initialize variables on startup and/or retry
     var.NONEXISTANT_FILE = False
     var.PARSING = None
     var.ERROR = False
-    var.RETRY = False
 
     os.system("cls") # clear the screen off everything.
     log.help("\n".join(con.BOOT_ASCII1))
@@ -427,7 +431,7 @@ def parse_settings_from_file(inp):
     if not inp[-x:] == "." + var.PRESET_EXT:
         inp = inp + "." + var.PRESET_EXT
     if not IsFile.cur("presets/" + inp):
-        return 1
+        return
     else:
         file = open(os.getcwd() + "/presets/" + inp)
         file.seek(0) # make sure we're at the beginning of the file
@@ -587,6 +591,8 @@ def end_bootleg_early():
         var.ERROR = True
         for reason in var.FATAL_ERROR + var.SYS_ERROR:
             reason = reason.capitalize()
+            if reason in ("Message", "Format"):
+                raise InvalidError(reason)
             log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
             if hasattr(errors, reason):
                 why = getattr(errors, reason)
@@ -595,6 +601,9 @@ def end_bootleg_early():
                     toformat = why["Format"]
                     for lister in toformat:
                         if hasattr(*lister):
+                            if getattr(*lister) == list(getattr(*lister)):
+                                formlist.append("', '".join(lister))
+                                continue
                             formlist.append(getattr(*lister))
                         else:
                             formlist.append(toformat)
@@ -604,37 +613,56 @@ def end_bootleg_early():
                 log.multiple(errors.unhandled, types=["error", "normal"])
     log.logger("\n")
 
-def find_setting(setting): # gets parsable setting
+def find_setting(setting, type="find"): # gets parsable setting
     if not hasattr(var, setting):
-        return
-    parse = get.parser("find_" + setting.lower())
-    if not parse:
-        return
-    msg = parse()
-    var.FINDING = setting
-    if con.RANGE[setting] < 0:
-        log.help("ENT_EXACT_DIG", form=len(str(con.RANGE[setting])[1:]))
-    else:
-        log.help("ENT_VALUE_BETWEEN", form=con.RANGE[setting])
-    log.help("")
-    if con.RANGE[setting] > 1:
-        log.help(msg[0])
-        log.help("NO_CHG")
-        log.help("\n".join(msg[1:]))
-    if con.RANGE[setting] == 1:
-        log.help(msg[0])
-        log.help("CHC_NO")
-        log.help("CHC_YES")
-    if con.RANGE[setting] < 0:
-        for line in msg:
-            if line[0] == "1":
-                log.help("NO_CHG")
-            log.help(line)
-    log.help("")
-    tosay = "DEF_TO_USE"
-    if con.RANGE[setting] < 0:
-        tosay += "TOO_FEW_DIG"
-    log.help(tosay + ".", form=getattr(var, setting))
+        raise SettingNotFound(setting)
+
+    if type not in ("find", "install"):
+        raise WrongParsingType(type)
+
+    if type == "find":
+        parse = get.parser("find_" + setting.lower())
+        if not parse:
+            raise NoParserFound(setting)
+        msg = parse()
+        var.FINDING = setting
+        if con.RANGE[setting] < 0:
+            log.help("ENT_EXACT_DIG", form=len(str(con.RANGE[setting])[1:]))
+        else:
+            log.help("ENT_VALUE_BETWEEN", form=con.RANGE[setting])
+        log.help("")
+        if con.RANGE[setting] > 1:
+            log.help(msg.pop(0))
+            log.help("NO_CHG")
+            log.help("\n".join(msg))
+        if con.RANGE[setting] == 1:
+            log.help(msg.pop(0))
+            log.help("CHC_NO")
+            log.help("CHC_YES")
+        if con.RANGE[setting] < 0:
+            for line in msg:
+                if line[0] == "1":
+                    log.help("NO_CHG")
+                log.help(line)
+        log.help("")
+        tosay = "DEF_TO_USE"
+        if con.RANGE[setting] < 0:
+            tosay += "TOO_FEW_DIG"
+        log.help(tosay + ".", form=getattr(var, setting))
+
+    else: # Installer
+        parse = get.parser("install_" + setting.lower())
+        if not parse:
+            raise NoInstallerFound(setting)
+
+        retcode = parse() # Let the installer handle everything; get return code
+        formatter = list(retcode[1:])
+        retcode = retcode[0]
+
+        if retcode == 0: # Success!
+            log.logger("PARS_COMPL_INST_SUCCESS", form=formatter)
+        elif retcode == 1: # File not found
+            raise ModFileNotFound(formatter[0]) # Let it be handled elsewhere
 
 def no_such_command(command):
     log.logger("ERR_INVALID_COMMAND", form=command, write=False)
