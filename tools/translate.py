@@ -496,6 +496,18 @@ COMPL_REG_SILENT = {
 English: "Registry successfully updated.",
 }
 
+REGISTERING_AUDIO_DEVICES = {
+English: "Registering audio devices . . .",
+}
+
+CONFIG_SND_MIDI_DEVICES = {
+English: "Please configure the SOUND and MIDI devices.",
+}
+
+COMPL_AUDIO_DEVICES = {
+English: "Completed Audio devices.",
+}
+
 INV_PAR_FILE = { # 0 = File name; 1 = Setting
 English: "Invalid setting found in {0}: {1}",
 }

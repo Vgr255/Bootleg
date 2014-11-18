@@ -382,6 +382,17 @@ def find_data_drive(inp=None):
     reg.add()
     log.logger("", "COMPL_REG_SILENT", "")
 
+    audio_device = reg.get_key("Sound_GUID", 2)
+
+    log.logger("REGISTERING_AUDIO_DEVICES")
+    if IsFile.game("FF7Config.exe"):
+        log.logger("CONFIG_SND_MIDI_DEVICES")
+        ManipFile.raw(var.FFVII_PATH + "FF7Config.exe")
+    else:
+        var.FATAL_ERROR.append("ff7config")
+
+    log.logger("COMPL_AUDIO_DEVICES", "")
+
 def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)

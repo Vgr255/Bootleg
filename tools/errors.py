@@ -23,3 +23,8 @@ Message: "OLD_OPENGL_INST",
 No_opengl = {
 Message: "NO_OPENGL_ABORTING",
 }
+
+Ff7config = {
+Message: "MIS_FILE_FROM_SYS",
+Format: ["FF7Config.exe", [var, "FFVII_PATH"]],
+}
