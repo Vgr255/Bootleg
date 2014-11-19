@@ -6,21 +6,25 @@
 # They MAY be called due to user input, but only if it's absolutely necessary
 # For example, someone tries to run arbitrary code or purposely make it crash
 # If they are called for user-related input, it's preferred to catch it after
+# Use the CustomBootException class to derive from (easier to catch)
 
-class SettingNotFound(Exception):
+class CustomBootException(Exception):
     pass
 
-class WrongParsingType(Exception):
+class SettingNotFound(CustomBootException):
     pass
 
-class NoParserFound(Exception):
+class WrongParsingType(CustomBootException):
     pass
 
-class NoInstallerFound(Exception):
+class NoParserFound(CustomBootException):
     pass
 
-class InvalidError(Exception):
+class NoInstallerFound(CustomBootException):
     pass
 
-class ModFileNotFound(Exception):
+class InvalidError(CustomBootException):
+    pass
+
+class ModFileNotFound(CustomBootException):
     pass

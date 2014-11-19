@@ -5,7 +5,6 @@ import platform
 import argparse
 import shutil
 import ctypes
-import sys
 import os
 
 from tools import variables as var
@@ -249,12 +248,8 @@ if var.LANGUAGE is None:
 
 # Warn if not on Windows
 
-if not var.ON_WINDOWS;
+if not var.ON_WINDOWS:
     log.logger("NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
-
-# Log version number
-
-log.multiple("Python", sys.version, display=False, splitter=" ", checker=False, types=["normal", "debug"])
 
 # Auto-update checking via git
 
