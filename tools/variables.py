@@ -142,6 +142,7 @@ USER_SETTINGS = {
 "SOUNDTRACK":        2,
 "ANY_CD":            0,
 "OPENING_CREDITS":   2,
+"AVALANCHE_GUI":     1,
 "CLOUD_SWORDS":      4111111111111133,
 "BOOT_PACK":         0, # this one doesn't actually get checked
 

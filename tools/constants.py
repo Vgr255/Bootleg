@@ -102,6 +102,7 @@ USER_SETTINGS = { # uses USER_VAR
 "SOUNDTRACK":        "W",
 "ANY_CD":            "Y",
 "OPENING_CREDITS":   "Q",
+"AVALANCHE_GUI":     "a",
 "CLOUD_SWORDS":      "G",
 "BOOT_PACK":         "@",
 

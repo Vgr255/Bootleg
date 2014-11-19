@@ -15,10 +15,22 @@ import subprocess
 import shutil
 import os
 
+# Various methods related to file manipulation
+
 def OpenFile(args):
     if not list(args) == args:
         args = [args]
     subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+def FindFile(seeker):
+    for folder in var.MOD_LOCATION:
+        for file in os.listdir(folder):
+            if file.lower() == seeker.lower():
+                return folder + file
+
+    raise ModFileNotFound(seeker) # Exit out if the mod could not be found
+
+# The following are for finding the settings
 
 def find_cloud_field():
     return [
@@ -354,26 +366,36 @@ def find_mode_switching():
 
 def find_avalanche():
     return [
-    "Install Avalanche Hi-Res Overhaul?",
+    "Install Avalanche High-Res Overhaul?",
+    ]
+
+def find_avalanche_gui():
+    return [
+    "Install Avalanche GUI?",
     ]
 
 # From this point are the installer functions for each of the above parameters
 
-# The return code should be a tuple with an integer as first argument
-# The integer is passed on to the PARSER_RETCODES constant
-# The rest is the format to be used for that line
+# Return the mod name defined in the translate file
+# Use the FindFile() method to retrieve the folder and filename for each mod
+# It will automatically stop the execution if the mod can't be found
 
 def install_avalanche():
-    for folder in var.MOD_LOCATION:
-        for file in os.listdir(folder):
-            if file == fl.AVALANCHE:
-                log.logger("", "PARS_INST_AVALANCHE")
-                log.help("PLEASE_REMAIN_PATIENT")
-                OpenFile(folder + file)
-                for repair in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic"):
-                    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic\\" + repair, fl.MAGIC_PATCH + repair)
-                shutil.copy(var.FFVII_PATH + "textures\\Summons\\leviathan\\water_00.png", var.FFVII_PATH + "textures\\Summons\\leviathan\\water_1_00.png")
-                log.logger("PARS_COMPL_AVOV")
-                return 0, "AVALANCHE_HIRES"
+    file = FindFile(fl.AVALANCHE)
 
-    return 1, fl.AVALANCHE
+    log.logger("", "PARS_INST_AVALANCHE")
+    log.help("PLEASE_REMAIN_PATIENT")
+    OpenFile(file)
+    for repair in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic"):
+        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic\\" + repair, fl.MAGIC_PATCH + repair)
+    shutil.copy(var.FFVII_PATH + "textures\\Summons\\leviathan\\water_00.png", var.FFVII_PATH + "textures\\Summons\\leviathan\\water_1_00.png")
+    log.logger("PARS_COMPL_AVOV")
+
+    return "AVALANCHE_HIRES"
+
+def install_avalanche_gui():
+    file = FindFile(fl.AVALANCHEGUI)
+
+    log.logger("", "PARS_INST_AVAGUI")
+    OpenFile(file)
+    log.logger("PARS_COMPL_AVAGUI", "")

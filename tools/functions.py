@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 import locale
 import shutil
+import sys
 import os
 
 # Get the custom exception handlers
@@ -25,6 +26,7 @@ def initialize(): # initialize variables on startup and/or retry
     var.RETRY = False
     log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
     log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
+    log.multiple("Python", sys.version, display=False, splitter=" ", types=["normal", "debug"])
     var.USED_HELP = False
     var.FATAL_ERROR = []
     var.SYS_ERROR = []
@@ -665,13 +667,8 @@ def find_setting(setting, type="find"): # gets parsable setting
             raise NoInstallerFound(setting)
 
         retcode = parse() # Let the installer handle everything; get return code
-        formatter = list(retcode[1:])
-        retcode = retcode[0]
 
-        if retcode == 0: # Success!
-            log.logger("PARS_COMPL_INST_SUCCESS", form=formatter)
-        elif retcode == 1: # File not found
-            raise ModFileNotFound(formatter[0]) # Let it be handled elsewhere
+        log.logger("PARS_COMPL_INST_SUCCESS", form=retcode)
 
 def no_such_command(command):
     log.logger("ERR_INVALID_COMMAND", form=command, write=False)

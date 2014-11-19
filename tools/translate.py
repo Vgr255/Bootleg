@@ -80,6 +80,10 @@ AVALANCHE_HIRES = {
 English: "Avalanche High-Res Overhaul",
 }
 
+AVALANCHE_GUI = {
+English: "Avalanche GUI",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 RES_RET = { # 0 = Program name
@@ -803,14 +807,22 @@ English: "You can go on the forums to ask for help.",
 
 # These lines are the installer part
 
-PARS_INST_AVALANCHE = {
-English: "Installing Avalanche High-Res Overhaul . . .",
-}
-
 PLEASE_REMAIN_PATIENT = { # This name is too confusing and not obvious enough
 English: "Please remain patient.",
 }
 
+PARS_INST_AVALANCHE = {
+English: "Installing Avalanche High-Res Overhaul . . .",
+}
+
 PARS_COMPL_AVOV = {
 English: "Completed Avalanche High-Res Overhaul.",
+}
+
+PARS_INST_AVAGUI = {
+English: "Updating Avalanche GUI.",
+}
+
+PARS_COMPL_AVAGUI = {
+English: "Completed Avalanche GUI.",
 }
