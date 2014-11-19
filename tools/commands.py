@@ -8,8 +8,10 @@ from tools import git as _git
 import shutil
 import os
 
+__ignore__ = ["con", "var", "fn", "pro", "log", "helper", "_git", "shutil", "os"]
+
 # This holds all the commands
-# Must have (inp, params=[]) in the def all the time, even if not used
+# Must have (inp, params=[]) in the def,
 # Or (*stuff) if parameters don't matter
 
 # To add a new command, simply make a new def block

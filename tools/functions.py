@@ -582,6 +582,15 @@ def chk_existing_install():
     return retcode
 
 def end_bootleg_early():
+    if var.DEBUG_MODE:
+        var.FATAL_ERROR = []
+        var.SYS_ERROR = []
+    if var.IGNORE_FATAL_ERROR:
+        var.FATAL_ERROR = []
+    if var.IGNORE_SYSTEM_ERROR:
+        var.SYS_ERROR = []
+    if not (var.FATAL_ERROR + var.SYS_ERROR):
+        return
     log.logger("\n")
     if var.FATAL_ERROR:
         log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])

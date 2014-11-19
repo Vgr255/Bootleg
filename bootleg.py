@@ -38,11 +38,6 @@ def main():
         fn.initialize()
     if var.ERROR:
         log.help("RES_RET", form=con.PROGRAM_NAME)
-    elif var.FATAL_ERROR or var.SYS_ERROR:
-        if var.IGNORE_FATAL_ERROR or var.DEBUG_MODE:
-            var.FATAL_ERROR = []
-        if var.IGNORE_SYSTEM_ERROR or var.DEBUG_MODE:
-            var.SYS_ERROR = []
     if var.FATAL_ERROR or var.SYS_ERROR:
         fn.end_bootleg_early()
         return
@@ -114,9 +109,8 @@ def main():
     if var.ERROR and command not in con.ERROR_COMMANDS:
         log.help("NEED_RR")
     else:
-        if hasattr(cmd, command):
-            iscmd = getattr(cmd, command)
-            iscmd(inp, params)
+        if hasattr(cmd, command) and command not in cmd.__ignore__:
+            getattr(cmd, command)(inp, params)
         else: # no such command
             fn.no_such_command(command)
 
