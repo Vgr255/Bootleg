@@ -634,6 +634,14 @@ TOO_FEW_DIG = { # This is a continuity of the above line (doesn't always display
 English: ", or if there are too few digits",
 }
 
+PARS_INSTALLING = {
+English: "Beginning installation of {0} . . .",
+}
+
+PLEASE_REMAIN_PATIENT = { # This name is too confusing and not obvious enough
+English: "Please remain patient.",
+}
+
 PARS_COMPL_INST_SUCCESS = {
 English: "Completed installation of {0} successfully.",
 }
@@ -801,28 +809,8 @@ English: "You can go on the forums to ask for help.",
 
 # End of the 'help.py' lines
 
-# The following lines are contained in 'parser.py'
+# The following lines are contained within 'parser.py'
 
-# These lines are the finder part
-
-# These lines are the installer part
-
-PLEASE_REMAIN_PATIENT = { # This name is too confusing and not obvious enough
-English: "Please remain patient.",
-}
-
-PARS_INST_AVALANCHE = {
-English: "Installing Avalanche High-Res Overhaul . . .",
-}
-
-PARS_COMPL_AVOV = {
-English: "Completed Avalanche High-Res Overhaul.",
-}
-
-PARS_INST_AVAGUI = {
-English: "Updating Avalanche GUI.",
-}
-
-PARS_COMPL_AVAGUI = {
-English: "Completed Avalanche GUI.",
+PARS_EXTR_FILE = { # 0 = File; 1 = Folder
+English: "Currently extracting '{0}' from '{1}'.",
 }

@@ -666,9 +666,9 @@ def find_setting(setting, type="find"): # gets parsable setting
         if not parse:
             raise NoInstallerFound(setting)
 
-        retcode = parse() # Let the installer handle everything; get return code
-
-        log.logger("PARS_COMPL_INST_SUCCESS", form=retcode)
+        log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
+        parse()
+        log.logger("PARS_COMPL_INST_SUCCESS", form=setting)
 
 def no_such_command(command):
     log.logger("ERR_INVALID_COMMAND", form=command, write=False)

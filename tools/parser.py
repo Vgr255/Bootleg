@@ -15,18 +15,13 @@ import subprocess
 import shutil
 import os
 
-# Various methods related to file manipulation
-
-def OpenFile(args):
-    if not list(args) == args:
-        args = [args]
-    subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-def FindFile(seeker):
+def ExecuteFile(seeker):
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
             if file.lower() == seeker.lower():
-                return folder + file
+                log.logger("PARS_EXTR_FILE", form=[file, folder[:-1]])
+                subprocess.Popen([folder + file])
+                return # We got it
 
     raise ModFileNotFound(seeker) # Exit out if the mod could not be found
 
@@ -381,21 +376,11 @@ def find_avalanche_gui():
 # It will automatically stop the execution if the mod can't be found
 
 def install_avalanche():
-    file = FindFile(fl.AVALANCHE)
+    ExecuteFile(fl.AVALANCHE)
 
-    log.logger("", "PARS_INST_AVALANCHE")
-    log.help("PLEASE_REMAIN_PATIENT")
-    OpenFile(file)
     for repair in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic"):
         shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic\\" + repair, fl.MAGIC_PATCH + repair)
     shutil.copy(var.FFVII_PATH + "textures\\Summons\\leviathan\\water_00.png", var.FFVII_PATH + "textures\\Summons\\leviathan\\water_1_00.png")
-    log.logger("PARS_COMPL_AVOV")
-
-    return "AVALANCHE_HIRES"
 
 def install_avalanche_gui():
-    file = FindFile(fl.AVALANCHEGUI)
-
-    log.logger("", "PARS_INST_AVAGUI")
-    OpenFile(file)
-    log.logger("PARS_COMPL_AVAGUI", "")
+    ExecuteFile(fl.AVALANCHEGUI)
