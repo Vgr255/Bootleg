@@ -5,6 +5,7 @@ import platform
 import argparse
 import shutil
 import ctypes
+import sys
 import os
 
 from tools import variables as var
@@ -90,9 +91,6 @@ if platform.system() == "Windows":
         var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
         var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
         var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
-
-else:
-    log.logger("NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
 
 # Convert settings into standalone variables
 
@@ -248,6 +246,15 @@ if var.LANGUAGE is not None:
         var.LANGUAGE = None
 if var.LANGUAGE is None:
     var.LANGUAGE = "English"
+
+# Warn if not on Windows
+
+if not var.ON_WINDOWS;
+    log.logger("NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
+
+# Log version number
+
+log.multiple("Python", sys.version, display=False, splitter=" ", checker=False, types=["normal", "debug"])
 
 # Auto-update checking via git
 
