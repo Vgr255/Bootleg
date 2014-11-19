@@ -18,10 +18,11 @@ def add(drive=None, app=None):
         drive = var.CD_DRIVE
     if not app[-1:] == "\\":
         app = app + "\\"
-    drive = drive[0] + ":\\"
-    drive = drive.replace("\\", "\\\\") # need to print two backslahses
-    app = app.replace("\\", "\\\\")
-    write("DataDrive", drive)
+        app = app.replace("\\", "\\\\")
+    if drive:
+        drive = drive[0] + ":\\"
+        drive = drive.replace("\\", "\\\\") # need to print two backslahses
+        write("DataDrive", drive)
     write("AppPath", app)
     write("DataPath", "{0}Data\\\\".format(app))
     write("MoviePath", "{0}movies\\\\".format(app))
@@ -63,10 +64,10 @@ def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There
 
     path_ints = {0: var.REG_ENTRY, 1: var.REG_GRAPH, 2: var.REG_SOUND, 3: var.REG_MIDI}
 
-    if (not key or not value) and not create:
+    if not (key and value and create):
         return # Not allowed
 
-    if path.isdigit():
+    if isinstance(path, int) or path.isdigit():
         path = path_ints[int(path)]
 
     reg = winreg.OpenKey(18446744071562067968+opener, path, 0, 131078) # Do not alter these numbers
@@ -75,22 +76,24 @@ def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There
     else:
         winreg.SetValueEx(reg, key, 0, type, value)
 
-def get_key(value, path=None, opener=2):
+def get_key(value, path=0, opener=2):
 
     path_ints = {0: var.REG_ENTRY, 1: var.REG_GRAPH, 2: var.REG_SOUND, 3: var.REG_MIDI}
 
-    if path.isdigit():
+    if isinstance(path, int) or path.isdigit():
         path = path_ints[int(path)]
     try:
         entry = winreg.OpenKey(18446744071562067968+opener, path)
-        reg = winreg.QueryValueEx(entry, value)
+        return winreg.QueryValueEx(entry, value)
     except OSError:
-        reg = None
-    return reg
+        pass
 
 def change(): # converts 2012/2013 registry keys to 1998
-    pass # todo
-    # InstallLocation holds the install path for both the 2012 and 2013 version
+    oldpath = var.REG_ENTRY
+    var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format("Wow6432Node\\" if var.ARCHITECTURE == "64bit" else "")
+    inst = get_key("InstallLocation", oldpath)
+    set_new()
+    add(None, inst) # Adds the install path to the registry
 
 def set_new(): # Create a new registry entry
     write(create=True)
@@ -117,3 +120,4 @@ def set_new(): # Create a new registry entry
     write("Sound_GUID", "00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00", 3, 2)
     write("Options", "00000000", 4, 2)
     write("SFXVolume", "00000064", 4, 2)
+    var.GAME_VERSION = 1998
