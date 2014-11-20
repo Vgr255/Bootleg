@@ -25,3 +25,6 @@ config.py
 
 # Extensions
 *.dll
+
+# Settings file
+*.ini
