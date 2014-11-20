@@ -102,6 +102,9 @@ for x, y in config.__dict__.items():
         continue
     if x in con.DISALLOW_CARRYING:
         continue # forcing config cannot be manually set
+    if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or y.isdigit()):
+        setattr(var, x, int(y))
+        continue
     setattr(var, x, y)
 
 # Check launch parameters

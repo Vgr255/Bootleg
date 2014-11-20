@@ -57,7 +57,7 @@ def random_small(length): # similar as above, except for other stuff
     msg = ""
     while True:
         msg += random.choice(chars)
-        if len(msg) == length:
+        if len(msg) >= length:
             return msg
 
 def setting(inp): # sets variables

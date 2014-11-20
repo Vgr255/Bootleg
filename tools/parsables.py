@@ -39,7 +39,7 @@ FIELD_TEXTURES     = "FT"
 ROMEO_MAT          = "RM"
 CONDOR_MINIGAME    = "CM"
 COIN_SKILL         = "CS"
-BLUE_COUNTER       = "BC"
+BLUE_COUNTER       = "CO"
 GLITCHED_FIELD     = "GF"
 GRIMMY_MAGIC       = "GM"
 CLOUD_SWORDS       = "CW"
@@ -48,18 +48,18 @@ CAIT_WEAPONS       = "SW"
 # Models
 
 TANK_PIRATE_SHIP   = "PS"
-NEW_AERITH         = "AE"
+NEW_AERITH         = "RI"
 BASE_MODELS        = "BM"
 GUARD_SCORPION     = "GS"
-SWEEPER            = "SW"
+SWEEPER            = "SE"
 MATERIAS_MODELS    = "MM"
 RUBY_WEAPON        = "RW"
 FIELD_POTIONS      = "FP"
 GRIMMY_HUGE_MAT    = "GH"
 BUGGY_COSTA        = "BC"
 SUBMARINE_COSTA    = "SC"
-HIGHWIND_COSTA     = "HC"
-CUSTOM_MODELS      = "CM"
+HIGHWIND_COSTA     = "HI"
+CUSTOM_MODELS      = "MO"
 
 # Assault team
 
@@ -100,9 +100,9 @@ CHOCOBO_AVATARS    = "OA"
 
 MOVIES             = "MV"
 SOUNDTRACK         = "ST"
-AV_SOUND_FX        = "SF"
+AV_SOUND_FX        = "SX"
 FMV_NO_CAIT        = "NC"
-RETRANSLATED_FMV   = "RF"
+RETRANSLATED_FMV   = "FM"
 
 # Other
 
@@ -123,15 +123,15 @@ CREATE_IMAGE       = "CI"
 
 FFVII_IMAGE        = "IM"
 FFVII_PATH         = "PA"
-BOOTLEG_TEMP       = "TM"
+BOOTLEG_TEMP       = "MP"
 MOD_LOCATION       = "ML"
 CD_DRIVE           = "CD"
-SYS_FOLDER         = "SF"
+SYS_FOLDER         = "SY"
 
 # Kernel settings
 
 REASONABLE_DIFF    = "RD"
-REMASTERED_AI      = "RM"
+REMASTERED_AI      = "AI"
 SCENE_REDUX        = "SR"
 ITEMS_EASY         = "IE"
 ITEMS_NORMAL       = "IN"

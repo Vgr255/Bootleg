@@ -419,12 +419,16 @@ def parse_settings():
     for setting, short in par.__dict__.items():
         if not setting.isupper():
             continue
-        for data, value in preset.__dict__.items():
-            if data in (setting, short):
-                file = open(os.getcwd() + "/_{0}_{1}".format(short.lower(), get.random_small(11)), "w")
-                file.write(getattr(var, setting))
-                file.close()
-                setattr(var, setting, value)
+        getter = None
+        if hasattr(preset, setting):
+            getter = setting
+        elif hasattr(preset, short):
+            getter = short
+        if getter:
+            file = open(os.getcwd() + "/_{0}_{1}".format(short.lower(), get.random_small(11)), "w")
+            file.write(getattr(var, setting))
+            file.close()
+            setattr(var, setting, getattr(preset, getter))
 
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):
