@@ -23,7 +23,7 @@ def ExecuteFile(seeker):
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
             if file.lower() == seeker.lower():
-                log.logger("PARS_EXTR_FILE", form=[file, folder[:-1]])
+                log.logger("PARS_EXEC_FILE", form=[file, folder[:-1]])
                 subprocess.Popen([folder + file])
                 return # We got it
 
@@ -364,6 +364,16 @@ def find_new_threat_mod():
     "Install the New Threat Mod by Sega Chief?",
     ]
 
+def find_hardcore_gjoerulv():
+    return [
+    "Install Gjoerulv's Hardcore Mod?",
+    ]
+
+def find_new_60_fps():
+    return [
+    "Install the 60 FPS mod?",
+    ]
+
 def find_avalanche():
     return [
     "Install Avalanche High-Res Overhaul?",
@@ -398,3 +408,6 @@ def install_avalanche_gui():
 def install_romeo_mat():
     for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent"):
         shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent\\" + file, fl.MODS_FINAL + "menu\\" + file)
+
+def install_hardcore_gjoerulv():
+    subprocess.Popen([var.BOOTLEG_TEMP + "Gjoerulv.exe"])

@@ -81,6 +81,7 @@ REUNION            = "RE"
 SPELL_PATCH        = "SP"
 KERNEL_SELECT      = "KS"
 NEW_THREAT_MOD     = "NT"
+HARDCORE_GJOERULV  = "HC"
 
 # Avatars
 
@@ -114,6 +115,7 @@ GAME_LANGUAGE      = "GL"
 ALWAYS_RUN_TOGGLE  = "RT"
 KRANMER_MASTER     = "KM"
 RE_ANIMATIONS      = "AN"
+NEW_60_FPS         = "NF"
 
 # System settings
 
@@ -141,4 +143,4 @@ LOST_WINGS         = "LW"
 MODE_SWITCHING     = "MS"
 AERITH_INSTALLED   = "AE"
 AERITH_HARDCORE    = "AH"
-HARDMOD_INSTALLED  = "HC"
+HARDMOD_INSTALLED  = "HM"

@@ -109,6 +109,7 @@ REUNION            = ""
 SPELL_PATCH        = ""
 KERNEL_SELECT      = ""
 NEW_THREAT_MOD     = ""
+HARDCORE_GJOERULV  = ""
 
 # Avatars
 
@@ -142,6 +143,7 @@ GAME_LANGUAGE      = ""
 ALWAYS_RUN_TOGGLE  = ""
 KRANMER_MASTER     = ""
 RE_ANIMATIONS      = ""
+NEW_60_FPS         = ""
 
 # System settings
 

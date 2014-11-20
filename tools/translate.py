@@ -88,6 +88,10 @@ ROMEO_MAT = {
 English: "Romeo14's AC Style Materias for Avalanche",
 }
 
+HARDCORE_GJOERULV = {
+English: "Gjoerulv's Hardcore mod",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 RES_RET = { # 0 = Program name
@@ -873,6 +877,6 @@ English: "Use this command to run the Bootleg process.",
 
 # The following lines are contained within 'parser.py'
 
-PARS_EXTR_FILE = { # 0 = File; 1 = Folder
-English: "Currently extracting '{0}' from '{1}'.",
+PARS_EXEC_FILE = { # 0 = File; 1 = Folder
+English: "Currently exexcuting '{0}' from '{1}'.",
 }
