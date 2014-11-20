@@ -359,6 +359,11 @@ def find_mode_switching():
     "Install Bootleg's Mode Switching?",
     ]
 
+def find_new_threat_mod():
+    return [
+    "Install the New Threat Mod by Sega Chief?",
+    ]
+
 def find_avalanche():
     return [
     "Install Avalanche High-Res Overhaul?",

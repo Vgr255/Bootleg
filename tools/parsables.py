@@ -80,6 +80,7 @@ AERITH_REVIVAL     = "AR"
 REUNION            = "RE"
 SPELL_PATCH        = "SP"
 KERNEL_SELECT      = "KS"
+NEW_THREAT_MOD     = "NT"
 
 # Avatars
 
