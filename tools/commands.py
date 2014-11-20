@@ -5,10 +5,13 @@ from tools import process as pro
 from tools import logger as log
 from tools import help as helper
 from tools import git as _git
+from tools import links
+
+import webbrowser
 import shutil
 import os
 
-__ignore__ = ["con", "var", "fn", "pro", "log", "helper", "_git", "shutil", "os"]
+__ignore__ = ["con", "var", "fn", "pro", "log", "helper", "_git", "links", "webbrowser", "shutil", "os"]
 
 # This holds all the commands
 # Must have (inp, params=[]) in the def,
@@ -145,3 +148,17 @@ def git(inp, params=[]):
             getattr(_git, " ".join(params))(args)
             return
     _git.do(args)
+
+def get(inp, params=[]):
+    if params:
+        if params[0] == "mod":
+            lines = []
+            for lnk in links.__dict__.keys():
+                if not lnk.isupper():
+                    continue
+                getter = lnk.replace("_", "")
+                if "".join(params[1:]) in getter or getter in "".join(params[1:]):
+                    lines.append(lnk)
+            if lines:
+                for line in lines:
+                    webbrowser.open(line)

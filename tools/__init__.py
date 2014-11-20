@@ -102,7 +102,7 @@ for x, y in config.__dict__.items():
         continue
     if x in con.DISALLOW_CARRYING:
         continue # forcing config cannot be manually set
-    if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or y.isdigit()):
+    if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or (isinstance(y, str) and y.isdigit())):
         setattr(var, x, int(y))
         continue
     setattr(var, x, y)
@@ -116,7 +116,7 @@ launcher.add_argument("--verbose", action="store_true")
 launcher.add_argument("--debug", action="store_true")
 launcher.add_argument("--logall", action="store_true")
 launcher.add_argument("--writeall", action="store_true")
-launcher.add_argument("--help", action="store_true")
+launcher.add_argument("--gethelp", action="store_true")
 launcher.add_argument("--preset")
 
 if launcher.parse_args().silent:
@@ -131,7 +131,7 @@ if launcher.parse_args().logall:
     var.LOG_EVERYTHING = True
 if launcher.parse_args().writeall:
     var.WRITE_EVERYTHING = True
-if launcher.parse_args().help:
+if launcher.parse_args().gethelp:
     var.GET_HELP = True
 if launcher.parse_args().preset:
     var.PREVIOUS_PRESET = var.PRESET
