@@ -86,43 +86,32 @@ def support():
     return "HELP_SUPPORT_NONE"
 
 def commands():
-    msg = "There are no available commands."
+    if con.COMMANDS and con.HIDDEN_COMMANDS and (var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS):
+        return ["HELP_COMM", "HELP_HID_COMM"], "PLURAL" if len(con.COMMANDS) > 1 else "", ", ".join(con.COMMANDS), "PLURAL" if len(con.HIDDEN_COMMANDS) > 1 else "", ", ".join(con.HIDDEN_COMMANDS)
     if con.COMMANDS:
-        msg = "Available command{1}: {0}.".format(", ".join(con.COMMANDS), "PLURAL" if len(con.COMMANDS) > 1 else "")
-    if (con.HIDDEN_COMMANDS and var.DEBUG_MODE) or (con.HIDDEN_COMMANDS and var.SHOW_HIDDEN_COMMANDS):
-        msg = msg + "\nHidden command{1}: {0}.".format(", ".join(con.HIDDEN_COMMANDS), "PLURAL" if len(con.HIDDEN_COMMANDS) > 1 else "")
-    return msg
+        return "HELP_COMM", "PLURAL" if len(con.COMMANDS) > 1 else "", ", ".join(con.COMMANDS)
+    return "HELP_NO_AVAIL_CMD"
 
 def users():
-    msg = "There are no users."
     if var.USERS:
-        msg = "Users with or without a direct link to {0}: {1}".format(con.PROGRAM_NAME, ", ".join(var.USERS))
-    return msg
+        return "HELP_USERS", con.PROGRAM_NAME, ", ".join(var.USERS)
+    return "HELP_NO_USERS"
 
 # Users are down here
 
 def pitbrat():
-    return ["PitBrat started Bootleg as a personal project.",
-            "After a while, he decided to release it for the public to use.",
-            "After 040's release, life took over and he couldn't work on Bootleg anymore."]
+    return "HELP_PITBRAT"
 
 def eq2alyza():
-    return ["EQ2Alyza made Tifa's Bootleg Tutorial, which significantly helped users.",
-            "She helped many users to troubleshoot various issues."]
+    return "HELP_ALYZA"
 
 def vgr():
-    return ["Vgr joined the development of Bootleg not long after it became public.",
-            "He did a lot of debugging and beta-testing of many versions.",
-            "He also provides user support for Bootleg.", "",
-            "After PitBrat left the scene, he decided to give a new life to Bootleg.",
-            "He converted the old and buggy code in Python 3 and made it open-source.",
-            "He is so far the only Bootleg programmer."]
+    return "HELP_VGR"
 
 # Commands are down here
 
 def help():
-    return ["The help command is used to display various information.",
-            "This is what you're currently viewing."]
+    return "HELP_HELP_CMD"
 
 def run():
-    return "Use this command to run the Bootleg process."
+    return "HELP_RUN"

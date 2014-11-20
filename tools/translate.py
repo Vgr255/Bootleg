@@ -811,12 +811,62 @@ HELP_SUPPORT_EMAIL = { # 0 = Email (duh)
 English: "To request help, you can go on the forums or send an email.\nEmail: '{0}'",
 }
 
-HELP_SUPPORT_HELP = {
+HELP_SUPPORT_HELP = { # 0 = PLURAL (fill at the top); 1 = "is" or "are" (fill at the top); 2 = USER_HELP constant
 English: "You can request help on the forums; the helper{0} {1} {2}.",
 }
 
 HELP_SUPPORT_NONE = {
 English: "You can go on the forums to ask for help.",
+}
+
+HELP_COMM = { # 0 = PLURAL (fill at the top); 1 = COMMANDS constant
+English: "Available command{0}: {1}",
+}
+
+HELP_HID_COMM = { # 0 = PLURAL (fill at the top); 1 = HIDDEN_COMMANDS constant
+English: "Hidden command{0}: {1}",
+}
+
+HELP_NO_AVAIL_CMD = {
+English: "There are no available commands.",
+}
+
+HELP_USERS = { # 0 = Program name; 1 = USERS variable
+English: "Users with or without a direct link to {0}: {1}",
+}
+
+HELP_NO_USERS = {
+English: "There are no users.",
+}
+
+HELP_PITBRAT = { # The backslashes are needed to ignore the line change and concatenate the strings
+English: "PitBrat started Bootleg as a personal project.\n" \
+         "After a while, he decided to release it for the public to use.\n" \
+         "After 040's release, life took over and he couldn't work on Bootleg anymore.",
+}
+
+HELP_ALYZA = {
+English: "EQ2Alyza made Tifa's Bootleg Tutorial, which significantly helped users.\n" \
+         "She helped many users to troubleshoot various issues.",
+}
+
+HELP_VGR = {
+English: "Vgr joined the development of Bootleg not long after it became public.\n" \
+         "He did a lot of debugging and beta-testing of many versions.\n" \
+         "Along with PitBrat, he was the only one with access to the code.\n" \
+         "He also provides user support for Bootleg.\n\n" \
+         "After PitBrat left the scene, he decided to give a new life to Bootleg.\n" \
+         "He converted the old and buggy code in Python 3 and made it open-source.\n" \
+         "He is so far the only Bootleg programmer.",
+}
+
+HELP_HELP_CMD = {
+English: "The help command is used to display various information.\n" \
+         "This is what you're currently viewing.",
+}
+
+HELP_RUN = {
+English: "Use this command to run the Bootleg process.",
 }
 
 # End of the 'help.py' lines
