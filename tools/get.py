@@ -2,7 +2,7 @@ from tools import constants as con
 from tools import variables as var
 from tools import parsables as par
 from tools import translate as tr
-from tools import parser as par
+from tools import parser as pars
 from tools import logger as log
 
 import datetime
@@ -11,8 +11,8 @@ import random
 import os
 
 def parser(setting): # get function xyz() in parser.py for variable XYZ
-    if hasattr(par, setting):
-        return getattr(par, setting)
+    if hasattr(pars, setting):
+        return getattr(pars, setting)
 
 def bool(inp):
     if tr.YES[var.LANGUAGE].lower() == inp.lower():

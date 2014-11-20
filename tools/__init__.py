@@ -116,6 +116,7 @@ launcher.add_argument("--verbose", action="store_true")
 launcher.add_argument("--debug", action="store_true")
 launcher.add_argument("--logall", action="store_true")
 launcher.add_argument("--writeall", action="store_true")
+launcher.add_argument("--help", action="store_true")
 launcher.add_argument("--preset")
 
 if launcher.parse_args().silent:
@@ -130,6 +131,8 @@ if launcher.parse_args().logall:
     var.LOG_EVERYTHING = True
 if launcher.parse_args().writeall:
     var.WRITE_EVERYTHING = True
+if launcher.parse_args().help:
+    var.GET_HELP = True
 if launcher.parse_args().preset:
     var.PREVIOUS_PRESET = var.PRESET
     var.PRESET = launcher.parse_args().preset
@@ -312,3 +315,7 @@ elif var.FORCE_CONFIG:
     log.logger("CFG_FORCED", display=False)
 
 log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)
+
+if var.GET_HELP:
+    var.SILENT_RUN = False
+    cmd.help("help")
