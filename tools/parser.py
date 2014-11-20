@@ -15,6 +15,10 @@ import subprocess
 import shutil
 import os
 
+# Get the custom exceptions
+
+from tools.exceptions import *
+
 def ExecuteFile(seeker):
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
@@ -365,10 +369,15 @@ def find_avalanche_gui():
     "Install Avalanche GUI?",
     ]
 
+def find_romeo_mat():
+    return [
+    "Install Romeo14's AC Style Materias for Avalanche?",
+    ]
+
 # From this point are the installer functions for each of the above parameters
 
 # Return the mod name defined in the translate file
-# Use the FindFile() method to retrieve the folder and filename for each mod
+# Use the ExecuteFile() method to launch a mod directly
 # It will automatically stop the execution if the mod can't be found
 
 def install_avalanche():
@@ -380,3 +389,7 @@ def install_avalanche():
 
 def install_avalanche_gui():
     ExecuteFile(fl.AVALANCHEGUI)
+
+def install_romeo_mat():
+    for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent"):
+        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent\\" + file, fl.MODS_FINAL + "menu\\" + file)

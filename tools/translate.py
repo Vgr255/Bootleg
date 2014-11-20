@@ -84,6 +84,10 @@ AVALANCHE_GUI = {
 English: "Avalanche GUI",
 }
 
+ROMEO_MAT = {
+English: "Romeo14's AC Style Materias for Avalanche",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 RES_RET = { # 0 = Program name
@@ -634,12 +638,12 @@ CHC_YES = {
 English: "1 = YES",
 }
 
-DEF_TO_USE = { # 0 = Default value for settings - Don't add a final period
-English: "Default is '{0}'. It will be used if no value is given",
+DEF_TO_USE = { # 0 = Default value for settings
+English: "Default is '{0}'. It will be used if no value is given.",
 }
 
-TOO_FEW_DIG = { # This is a continuity of the above line (doesn't always display) - Don't add a final period
-English: ", or if there are too few digits",
+TOO_FEW_DIG = { # 0 = Default value for settings
+English: "Default is '{0}'. It will be used if no value is given, or if there are too few digits.",
 }
 
 PARS_INSTALLING = {
