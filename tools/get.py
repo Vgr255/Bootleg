@@ -1,5 +1,6 @@
 from tools import constants as con
 from tools import variables as var
+from tools import parsables as par
 from tools import translate as tr
 from tools import parser as par
 from tools import logger as log
@@ -7,6 +8,7 @@ from tools import logger as log
 import datetime
 import hashlib
 import random
+import os
 
 def parser(setting): # get function xyz() in parser.py for variable XYZ
     if hasattr(par, setting):
@@ -50,6 +52,14 @@ def random_string(): # generates a random string of numbers for temporary folder
     tmpnum = tmpnum[:31] + "}"
     return tmpnum
 
+def random_small(length): # similar as above, except for other stuff
+    chars = list("abcdefghijklmnopqrstuvwxyz0123456789")
+    msg = ""
+    while True:
+        msg += random.choice(chars)
+        if len(msg) == length:
+            return msg
+
 def setting(inp): # sets variables
     if not inp.isdigit():
         log.logger("ENTER_ONLY_NUMS")
@@ -75,29 +85,12 @@ def setting(inp): # sets variables
         var.FINDING = None
 
 def preset(): # makes a preset file with current settings
-    userset = []
-    _usrset = []
-    bootset = []
-    for setting in var.USER_SETTINGS.keys():
-        value = getattr(var, setting)
-        for set, prefix in con.USER_SETTINGS.items():
-            if set == setting:
-                userset.append("{2}{0}{1}".format(prefix, value, con.USER_VAR))
-                _usrset.append("{0}={1}".format(prefix, value))
-                break
-    for setting in var.PATH_SETTINGS.keys():
-        value = getattr(var, setting)
-        for set, prefix in con.PATH_SETTINGS.items():
-            if set == setting:
-                userset.append("{2}{0}{1}".format(prefix, value, con.PATH_VAR))
-                _usrset.append("{0}={1}".format(prefix, value))
-                break
-    for setting in var.BOOT_PACK_SETTINGS.keys():
-        value = getattr(var, setting)
-        for set in con.BOOT_PACK_SETTINGS.keys():
-            if set == setting:
-                bootset.append(value)
-                break
-    log.logger("SETTINGS: {0}".format(" ".join(userset)))
-    log.logger("", "{2} PACK: {0}{1}".format(con.BOOT_PACK_VAR, "".join(bootset), con.PROGRAM_NAME.upper()))
-    log.logger("\n".join(_usrset), con.BOOT_PACK_VAR + "=" + "".join(bootset), type="settings", display=False, splitter="\n")
+    lines = []
+    for setting in par.__dict__.keys():
+        if not setting.isupper():
+            continue
+        lines.append(setting + " = " + getattr(var, setting))
+    log.logger(lines, display=False, type="preset")
+    logfile = getattr(var, con.LOGGERS["preset"] + "_FILE")
+    log_ext = getattr(var, con.LOGGERS["preset"] + "_EXT")
+    os.rename("{0}/{1}.{2}".format(os.getcwd(), logfile, log_ext), "{0}/presets/{1}.{2}".format(os.getcwd(), random_small(12), log_ext))

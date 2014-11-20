@@ -175,6 +175,10 @@ MOD_NOT_FOUND = { # 0 = Mod file; 1 = "in" or "in one of" (fill above); 2 = MOD_
 English: "Error: {0} could not be found {1} '{2}'.",
 }
 
+PRESET_ALIMPORTED = { # 0(1) = Preset file; 0(2) = Program name
+English: "Warning: The preset '{0}' is already loaded.\nYou need to restart {0} to be able to load another preset.",
+}
+
 PROVIDE_TRACE = { # 0,1 = Filename/File extension
 English: "Provide your '{0}.{1}' file.",
 French: "Suppliez votre fichier '{0}.{1}'.",
@@ -342,6 +346,10 @@ French: "Exécution de {1} sous {0} (Windows: {2}).",
 PROCESS_EXITED = { # 0 = Called process; 1 = 'status' or 'signal' (fill at the top); 2 = Integer
 English: "Process '{0}' exited with {1} {2}",
 French: "Le processus '{0}' s'est terminé de {1} {2}",
+}
+
+LOGGING_SETTINGS = {
+English: "Settings:",
 }
 
 SYST_PATHS = {

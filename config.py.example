@@ -26,133 +26,149 @@ SILENT_UPDATE = True
 
 DEV_LOG = False
 
-# User-defined settings
-# Please read SETTINGS.md for an information on each variable
+# User settings
 
-USER_SETTINGS = {
+# Battle models
 
-"CLOUD_FIELD":       "",
-"TRISH_SAVE":        "",
-"TRISH_PHOENIX":     "",
-"TRISH_MASAMUNE":    "",
-"AERITH_REVIVAL":    "",
-"REUNION":           "",
-"SPELL_PATCH":       "",
-"AVALANCHE":         "",
-"NEW_AERITH":        "",
-"CLOUD_BATTLE":      "",
-"LIMIT_BREAK":       "",
-"MENU_BACKGROUND":   "",
-"KERNEL_SELECT":     "",
-"MOVIES":            "",
-"FIELD_TEXTURES":    "",
-"AVATARS":           "",
-"IND_AVATARS":       "",
-"BUNNY_GIRLS":       "",
-"SOUNDTRACK":        "",
-"ANY_CD":            "",
-"OPENING_CREDITS":   "",
-"AVALANCHE_GUI":     "",
-"CLOUD_SWORDS":      "",
-"BOOT_PACK":         "",
+CLOUD_BATTLE       = ""
+BARRET_BATTLE      = ""
+TIFA_BATTLE        = ""
+YUFFIE_BATTLE      = ""
+RED_XIII_BATTLE    = ""
+CAIT_BATTLE        = ""
+VINCENT_BATTLE     = ""
+SEPHIROTH_BATTLE   = ""
 
-}
+# Field models
 
-# Other settings
-# Information is in the documentation folder
+CLOUD_FIELD        = ""
+SEPHIROTH_FIELD    = ""
+YUFFIE_FIELD       = ""
+TIFA_FIELD         = ""
+AERITH_FIELD       = ""
+VINCENT_FIELD      = ""
+BARRET_FIELD       = ""
+RED_XIII_FIELD     = ""
+CID_FIELD          = ""
 
-SYS_SETTINGS = {
+# Textures
 
-"DEBUG_CODE":        "",
-"CREATE_IMAGE":      "",
+TRISH_SAVE         = ""
+TRISH_PHOENIX      = ""
+TRISH_MASAMUNE     = ""
+AVALANCHE          = ""
+MENU_BACKGROUND    = ""
+LIMIT_BREAK        = ""
+OPENING_CREDITS    = ""
+AVALANCHE_GUI      = ""
+BATTLE_SCENES_LGP  = ""
+BATTLE_SCENES_PNG  = ""
+FIELD_TEXTURES     = ""
+ROMEO_MAT          = ""
+CONDOR_MINIGAME    = ""
+COIN_SKILL         = ""
+BLUE_COUNTER       = ""
+GLITCHED_FIELD     = ""
+GRIMMY_MAGIC       = ""
+CLOUD_SWORDS       = ""
+CAIT_WEAPONS       = ""
 
-}
+# Models
 
-# Paths
+TANK_PIRATE_SHIP   = ""
+NEW_AERITH         = ""
+BASE_MODELS        = ""
+GUARD_SCORPION     = ""
+SWEEPER            = ""
+MATERIAS_MODELS    = ""
+RUBY_WEAPON        = ""
+FIELD_POTIONS      = ""
+GRIMMY_HUGE_MAT    = ""
+BUGGY_COSTA        = ""
+SUBMARINE_COSTA    = ""
+HIGHWIND_COSTA     = ""
+CUSTOM_MODELS      = ""
 
-PATH_SETTINGS = {
+# Assault team
 
-"FFVII_IMAGE":       "",
-"FFVII_PATH":        "",
-"BOOTLEG_TEMP":      "",
-"MOD_LOCATION":      "",
-"CD_DRIVE":          "",
-"SYS_FOLDER":        "",
+ASSAULT_BIGGS      = ""
+ASSAULT_JESSIE     = ""
+ASSAULT_WEDGE      = ""
 
-}
+# New hair
 
-BOOT_PACK_SETTINGS = {
+CLOUD_HAIR         = ""
+TIFA_HAIR          = ""
+YUFFIE_HAIR        = ""
 
-"ROMEO_MAT":         "",
-"CONDOR_MINIGAME":   "",
-"AV_SOUND_FX":       "",
-"GLITCHED_FIELD":    "",
-"TANK_PIRATE_SHIP":  "",
-"BARRET_BATTLE":     "",
-"BATTLE_SCENES_LGP": "",
-"BATTLE_SCENES_PNG": "",
-"LAPTOP_KEYPATCH":   "",
-"VINCENT_BATTLE":    "",
-"FMV_NO_CAIT":       "",
-"RETRANSLATED_FMV":  "",
-"ASSAULT_BIGGS":     "",
-"ASSAULT_JESSIE":    "",
-"ASSAULT_WEDGE":     "",
-"CLOUD_HAIR":        "",
-"TIFA_HAIR":         "",
-"YUFFIE_HAIR":       "",
-"BASE_MODELS":       "",
-"STYLE_SWITCHER":    "",
-"FIELD_POTIONS":     "",
-"SEPHIROTH_BATTLE":  "",
-"GRIMMY_MAGIC":      "",
-"GRIMMY_HUGE_MAT":   "",
-"GAME_LANGUAGE":     "",
-"ALWAYS_RUN_TOGGLE": "",
-"BUGGY_COSTA":       "",
-"SUBMARINE_COSTA":   "",
-"HIGHWIND_COSTA":    "",
-"CUSTOM_MODELS":     "",
-"KRANMER_MASTER":    "",
-"TIFA_BATTLE":       "",
-"YUFFIE_BATTLE":     "",
-"RED_XIII_BATTLE":   "",
-"COIN_SKILL":        "", # this needs to be two numbers
-"BLUE_COUNTER":      "",
-"CAIT_WEAPONS":      "",
-"CID_FIELD":         "",
-"RE_ANIMATIONS":     "",
-"SEPHIROTH_FIELD":   "",
-"YUFFIE_FIELD":      "",
-"TIFA_FIELD":        "",
-"AERITH_FIELD":      "",
-"VINCENT_FIELD":     "",
-"BARRET_FIELD":      "",
-"RED_XIII_FIELD":    "",
-"RUBY_WEAPON":       "",
-"NIGHTMARE_SEVEN":   "",
-"CAIT_BATTLE":       "",
-"GUARD_SCORPION":    "",
-"SWEEPER":           "",
-"MATERIAS_MODELS":   "",
+# Gameplay modifications
 
-}
+NIGHTMARE_SEVEN    = ""
+AERITH_REVIVAL     = ""
+REUNION            = ""
+SPELL_PATCH        = ""
+KERNEL_SELECT      = ""
 
-KERNEL_SETTINGS = {
+# Avatars
 
-"REASONABLE_DIFF":   "",
-"REMASTERED_AI":     "",
-"SCENE_REDUX":       "",
-"ITEMS_EASY":        "",
-"ITEMS_NORMAL":      "",
-"ITEMS_DIFFICULT":   "",
-"LOST_WINGS":        "",
-"MODE_SWITCHING":    "",
-"AERITH_INSTALLED":  "",
-"AERITH_HARDCORE":   "",
-"HARDMOD_INSTALLED": "",
+CLOUD_AVATARS      = ""
+BARRET_AVATARS     = ""
+TIFA_AVATARS       = ""
+AERITH_AVATARS     = ""
+RED_XIII_AVATARS   = ""
+YUFFIE_AVATARS     = ""
+CAIT_AVATARS       = ""
+VINCENT_AVATARS    = ""
+CID_AVATARS        = ""
+YOUNG_AVATARS      = ""
+SEPHIROTH_AVATARS  = ""
+CHOCOBO_AVATARS    = ""
 
-}
+# Media
+
+MOVIES             = ""
+SOUNDTRACK         = ""
+AV_SOUND_FX        = ""
+FMV_NO_CAIT        = ""
+RETRANSLATED_FMV   = ""
+
+# Other
+
+ANY_CD             = ""
+LAPTOP_KEYPATCH    = ""
+STYLE_SWITCHER     = ""
+GAME_LANGUAGE      = ""
+ALWAYS_RUN_TOGGLE  = ""
+KRANMER_MASTER     = ""
+RE_ANIMATIONS      = ""
+
+# System settings
+
+DEBUG_CODE         = ""
+CREATE_IMAGE       = ""
+
+# Path settings
+
+FFVII_IMAGE        = ""
+FFVII_PATH         = ""
+BOOTLEG_TEMP       = ""
+MOD_LOCATION       = ""
+CD_DRIVE           = ""
+SYS_FOLDER         = ""
+
+# Kernel settings
+
+REASONABLE_DIFF    = ""
+REMASTERED_AI      = ""
+SCENE_REDUX        = ""
+ITEMS_EASY         = ""
+ITEMS_NORMAL       = ""
+ITEMS_DIFFICULT    = ""
+LOST_WINGS         = ""
+MODE_SWITCHING     = ""
+AERITH_INSTALLED   = ""
+AERITH_HARDCORE    = ""
+HARDMOD_INSTALLED  = ""
 
 # Do not edit past here if you don't know what you're doing
 

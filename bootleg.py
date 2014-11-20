@@ -129,6 +129,8 @@ while var.ALLOW_RUN:
             var.ERROR = True
     except ModFileNotFound as e:
         log.logger("MOD_NOT_FOUND", form=[e.args[0], "ONE_IN" if len(var.MOD_LOCATION) == 1 else "MULT_IN_ONE", "', '".join(var.MOD_LOCATION)])
+    except PresetAlreadyImported:
+        log.logger("PRESET_ALIMPORTED", form=[var.PRESET, con.PROGRAM_NAME])
     except Exception: # Don't want to catch everything
         if traceback.format_exc(): # if there's a traceback, let's have it
             log.logger("", type="traceback", write=False)

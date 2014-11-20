@@ -4,11 +4,13 @@ import tempfile
 import platform
 import argparse
 import shutil
+import locale
 import ctypes
 import os
 
 from tools import variables as var
 from tools import constants as con
+from tools import parsables as par
 from tools import commands as cmd
 from tools import logger as log
 from tools import help
@@ -98,33 +100,38 @@ for x, y in config.__dict__.items():
         break # don't carry config over if disallowed
     if not x.isupper() or y == "":
         continue
-    if x == "FORCE_CONFIG":
+    if x in con.DISALLOW_CARRYING:
         continue # forcing config cannot be manually set
-    if isinstance(getattr(config, x), dict):
-        cfgdict = getattr(config, x)
-        vardict = getattr(var, x)
-        for a, b in cfgdict.items():
-            if not b:
-                continue
-            if "_SETTINGS" in x and x[:-9] not in con.NON_INT_SETTINGS and not b.isdigit():
-                continue # don't copy non-numbers to number-only dicts
-            vardict[a] = b
-    else:
-        setattr(var, x, y)
+    setattr(var, x, y)
 
-for x in con.SETTINGS_PREFIXES.keys():
-    x = x.replace("VAR", "SETTINGS")
-    y = getattr(var, x)
-    for s, u in y.items():
-        setattr(var, s, u)
-        if x[:-9] not in con.NON_INT_SETTINGS:
-            if isinstance(u, int) or u.isdigit(): # If not, keep the default
-                setattr(var, s, int(u)) # make sure all parameters are integers
-        else:
-            setattr(var, s, u)
+# Check launch parameters
 
-for x, y in con.SETTINGS_PREFIXES.items():
-    setattr(con, x, y)
+launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
+launcher.add_argument("--silent", action="store_true")
+launcher.add_argument("--dump", action="store_true")
+launcher.add_argument("--verbose", action="store_true")
+launcher.add_argument("--debug", action="store_true")
+launcher.add_argument("--logall", action="store_true")
+launcher.add_argument("--writeall", action="store_true")
+launcher.add_argument("--preset")
+
+if launcher.parse_args().silent:
+    var.SILENT_RUN = True
+if launcher.parse_args().dump:
+    var.DEV_LOG = True
+if launcher.parse_args().verbose:
+    var.DISPLAY_EVERYTHING = True
+if launcher.parse_args().debug:
+    var.DEBUG_MODE = True
+if launcher.parse_args().logall:
+    var.LOG_EVERYTHING = True
+if launcher.parse_args().writeall:
+    var.WRITE_EVERYTHING = True
+if launcher.parse_args().preset:
+    var.PREVIOUS_PRESET = var.PRESET
+    var.PRESET = launcher.parse_args().preset
+    if not var.PRESET.endswith("." + var.PRESET_EXT):
+        var.PRESET += "." + var.PRESET_EXT
 
 # Bring translators and coders in a single place
 
@@ -300,31 +307,5 @@ if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("CFG_DIS_OVR", display=False)
 elif var.FORCE_CONFIG:
     log.logger("CFG_FORCED", display=False)
-
-# Check launch parameters
-
-launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
-launcher.add_argument("--silent", action="store_true")
-launcher.add_argument("--run", action="store_true")
-launcher.add_argument("--dump", action="store_true")
-launcher.add_argument("--verbose", action="store_true")
-launcher.add_argument("--debug", action="store_true")
-launcher.add_argument("--logall", action="store_true")
-launcher.add_argument("--writeall", action="store_true")
-#launcher.add_argument("--settings", action="") # still todo
-var.SILENT = launcher.parse_args().silent
-var.RUNNING = launcher.parse_args().run
-#var.ARGUMENTS = launcher.parse_args().settings
-
-if launcher.parse_args().dump:
-    var.DEV_LOG = True
-if launcher.parse_args().verbose:
-    var.DISPLAY_EVERYTHING = True
-if launcher.parse_args().debug:
-    var.DEBUG_MODE = True
-if launcher.parse_args().logall:
-    var.LOG_EVERYTHING = True
-if launcher.parse_args().writeall:
-    var.WRITE_EVERYTHING = True
 
 log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)

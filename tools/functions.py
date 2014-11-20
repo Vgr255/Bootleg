@@ -1,5 +1,6 @@
 from tools import constants as con
 from tools import variables as var
+from tools import parsables as par
 from tools import filenames as fl
 from tools import logger as log
 from tools import errors
@@ -8,7 +9,6 @@ from tools import reg
 
 import subprocess
 import tempfile
-import locale
 import shutil
 import sys
 import os
@@ -89,14 +89,12 @@ class ManipFile:
             log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install
-    usr_set = ["BootOptions:"]
-    for setting, prefix in con.USER_SETTINGS.items():
-        usr_set.append(con.USER_VAR + prefix + getattr(var, setting))
-    log.logger(usr_set, display=False, splitter=" ")
-    bootset = "BootPack: {0}".format(con.BOOT_PACK_VAR)
-    for value in var.BOOT_PACK_SETTINGS.values():
-        bootset += str(value)
-    log.logger(bootset, display=False)
+    usr_set = ["LOGGING_SETTINGS"]
+    for setting, prefix in par.__dict__.items():
+        if not setting.isupper():
+            continue
+        usr_set.append(prefix + getattr(var, setting))
+    log.logger(usr_set, display=False, type="settings")
     log.logger("SYST_PATHS", display=False)
     log.logger("DEST_LOCT", form=[var.FFVII_PATH], display=False)
     if var.FFVII_IMAGE:
@@ -412,100 +410,21 @@ def parser(inp):
     if var.PARSING == "DataDrive":
         find_data_drive(inp)
 
-def parse_settings_from_params(inp): # parse settings from launch parameters
-    for x, prefix in con.SETTINGS_PREFIXES.items():
-        for param in inp:
-            u = x.replace("_VAR", "")
-            x = x.replace("VAR", "SETTINGS")
-            if param[0] == prefix:
-                y = getattr(con, x)
-                z = getattr(var, x)
-                for l in con.USE_INDEX:
-                    for s in y.keys():
-                        if s == l and param[1] == y[s]: # so many letters
-                            setattr(y, s, use_index(param[2:], x))
-                for parsable in z.keys():
-                    if param[1] == y[parsable]:
-                        setattr(var, parsable, param[2:])
-
-def parse_settings_from_file(inp):
-    x = len(var.PRESET_EXT) + 1
-    if not inp[-x:] == "." + var.PRESET_EXT:
-        inp = inp + "." + var.PRESET_EXT
-    if not IsFile.cur("presets/" + inp):
-        return
-    else:
-        file = open(os.getcwd() + "/presets/" + inp)
-        file.seek(0) # make sure we're at the beginning of the file
-        for y in con.SETTINGS_PREFIXES.keys():
-            t = y.replace("_VAR", "")
-            y = y.replace("VAR", "SETTINGS")
-            u = getattr(con, y)
-            if t in con.USE_INDEX:
-                f = file.readlines()
-                fp = []
-                for p in f:
-                    p = p.replace("\n", "")
-                    fp.append(p)
-                use_index(fp, y)
-                return 0
-            for e, i in u.items():
-                f = file.readline()
-                f.replace("\n", "")
-                if f[0] == i and f[1] == "=":
-                    setattr(var, e, f[2:])
-                    if "#" in f:
-                        hash = f.index("#")
-                        setattr(var, e, f[2:hash])
-                elif f[0] == i and f[1:4] == " = ": # this can work
-                    setattr(var, e, f[5:])
-                elif "#" in f or f == "":
-                    continue # ignore this
-                else:
-                    log.logger("INV_PAR_FILE", form=[inp, f], type="error")
-
-def parse_settings_from_input(inp):
-    for x, y in con.SETTINGS_PREFIXES.items(): # proper parsing
-        if inp[0] == y:
-            inp = inp[1:] # remove the prefix
-        p = x.replace("_VAR", "")
-        x = x.replace("VAR", "SETTINGS")
-        q = getattr(con, x)
-        s = getattr(var, x)
-        for parsable in s.keys():
-            setting = getattr(q, parsable)
-            for t, u in setting.items():
-                if inp[0] == u:
-                    var.PARSING = parsable
-                    parsed = inp[1:]
-                    if " " in parsed:
-                        if inp[1] == " ":
-                            parsed = inp[2:]
-                            if " " in parsed:
-                                space = parsed.index(" ")
-                                parsed = inp[2:space]
-                        else:
-                            space = parsed.index(" ")
-                            parsed = inp[1:space]
-                    if "=" in parsed:
-                        if inp[1] == "=":
-                            parsed = inp[2:]
-                            if "=" in parsed:
-                                equal = parsed.index("=")
-                                equal = equal - 1 # equal equal equal? now that is redundant
-                                parsed = inp[2:equal]
-                        else:
-                            equal = parsed.index("=")
-                            parsed = inp[1:equal]
-                    if p in con.USE_INDEX and u == q[p]:
-                        parsed = use_index(parsed, x)
-                    setattr(var, parsable, parsed)
-
-def use_index(inp, setting): # still not sure if that'll work. mainly a placeholder
-    colon = inp.index(":")
-    begin = int(inp[:colon])
-    end = int(inp[colon+1:])
-    return setting[begin:end]
+def parse_settings():
+    if var.PRESET_IMPORTED:
+        raise PresetAlreadyImported
+    shutil.copy(os.getcwd() + "/presets/" + var.PRESET, os.getcwd() + "/preset.py")
+    import preset
+    var.PRESET_IMPORTED = True
+    for setting, short in par.__dict__.items():
+        if not setting.isupper():
+            continue
+        for data, value in preset.__dict__.items():
+            if data in (setting, short):
+                file = open(os.getcwd() + "/_{0}_{1}".format(short.lower(), get.random_small(11)), "w")
+                file.write(getattr(var, setting))
+                file.close()
+                setattr(var, setting, value)
 
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):

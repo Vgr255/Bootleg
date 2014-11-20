@@ -28,3 +28,6 @@ class InvalidError(CustomBootException):
 
 class ModFileNotFound(CustomBootException):
     pass
+
+class PresetAlreadyImported(CustomBootException):
+    pass

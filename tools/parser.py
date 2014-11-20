@@ -222,10 +222,6 @@ def find_avatars():
     "22 = MinMin's Avatars",
     "23 = Recko's Transparent Avatars",    ]
 
-def find_bunny_girls():
-    return [
-    "Use the Bunny Girls models?",    ]
-
 def find_soundtrack():
     return [
     "Pick which soundtrack to install:",

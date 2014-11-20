@@ -27,6 +27,8 @@ def restart(*args):
 
 def clean(*args):
     for x, y in con.LOGGERS.items():
+        if args[0] == "keeplog":
+            break
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
         if x == "temp":
@@ -59,9 +61,14 @@ def clean(*args):
                 os.remove(os.getcwd() + "\\" + filel)
     if fn.IsFile.cur("cfg.py"):
         os.remove(os.getcwd() + "/cfg.py")
+    if fn.IsFile.cur("preset.py"):
+        os.remove(os.getcwd() + "/preset.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
     if os.path.isdir(os.getcwd() + "/tools/__pycache__"):
         shutil.rmtree(os.getcwd() + '/tools/__pycache__')
+    for file in os.listdir(os.getcwd()):
+        if file[:4:3] == "__" and (file[1:3]+file[4:]).isalnum() and file.islower() and fn.IsFile.cur(file) and len(file) == 15:
+            os.remove(os.getcwd() + "/" + file)
     var.ALLOW_RUN = False
 
 # The following commands may or may not require additional parameters

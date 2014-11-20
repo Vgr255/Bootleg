@@ -34,25 +34,17 @@ BUILD_INFO = "Alpha"
 RELEASE_INFO = "August 26th, 2014"
 VERSION_INFO = "build" # Build, Release, Version, etc
 
-SETTINGS_PREFIXES = {
+LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "GIT", "preset": "PRESET"}
 
-"USER_VAR":          "/",
-"PATH_VAR":          "/", # keep it the same as above
-"SYS_VAR":           "-",
-"BOOT_PACK_VAR":     "@",
-"KERNEL_VAR":        "%", # unused, but there for completeness' sake
-
-}
-
-LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "GIT"}
-
-IGNORE_ALL = ["all", "settings", "temp", "git"] # will not write to these files when calling log-to-all
-IGNORE_TRANSLATE = ["settings", "temp", "git"] # will not attempt to translate
-IGNORE_CHECK = ["settings", "temp", "git"] # will print as-is without attempting to check in translate.py
+IGNORE_ALL = ["all", "settings", "temp", "git", "preset"] # will not write to these files when calling log-to-all
+IGNORE_TRANSLATE = ["settings", "temp", "git", "preset"] # will not attempt to translate
+IGNORE_CHECK = ["settings", "temp", "git", "preset"] # will print as-is without attempting to check in translate.py
 IGNORE_SPLITTER = ["temp", "git"]
-IGNORE_TIMESTAMP = ["settings", "temp"] # will not write timestamps when logging
-IGNORE_MIXED = ["settings", "temp"] # will not write this one to the mixed file
-IGNORE_NEWLINE = ["temp", "git"] # will not print two lines on new run
+IGNORE_TIMESTAMP = ["settings", "temp", "preset"] # will not write timestamps when logging
+IGNORE_MIXED = ["settings", "temp", "preset"] # will not write this one to the mixed file
+IGNORE_NEWLINE = ["temp", "git", "preset"] # will not print two lines on new run
+
+DISALLOW_CARRYING = ["FORCE_CONFIG"]
 
 LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
 
@@ -76,128 +68,6 @@ DATA_WORKING = ["BATTLE", "FIELD", "MINIGAME", "WM"]
 FILES_UNDO = ["BATTLE", "MAGIC", "CHAR", "HIGH", "CHOCOBO", "WORLD"]
 
 TRANSLATE_CHANGER = ["cd\\cr_{0}", "cd\\disc_{0}", "menu\\menu_{0}", "wm\\world_{0}", "field\\{1}flevel", "minigame\\{1}chocobo", "minigame\\{1}condor", "minigame\\{1}sub", "minigame\\high-{2}", "minigame\\snowboard-{2}"]
-
-# parsables
-
-USER_SETTINGS = { # uses USER_VAR
-
-"CLOUD_FIELD":       "C",
-"TRISH_SAVE":        "S",
-"TRISH_PHOENIX":     "P",
-"TRISH_MASAMUNE":    "U",
-"AERITH_REVIVAL":    "R",
-"REUNION":           "O",
-"SPELL_PATCH":       "N",
-"AVALANCHE":         "A",
-"NEW_AERITH":        "V",
-"CLOUD_BATTLE":      "H",
-"LIMIT_BREAK":       "L",
-"MENU_BACKGROUND":   "M",
-"KERNEL_SELECT":     "K",
-"MOVIES":            "E",
-"FIELD_TEXTURES":    "T",
-"AVATARS":           "Z",
-"IND_AVATARS":       "J",
-"BUNNY_GIRLS":       "B",
-"SOUNDTRACK":        "W",
-"ANY_CD":            "Y",
-"OPENING_CREDITS":   "Q",
-"AVALANCHE_GUI":     "a",
-"CLOUD_SWORDS":      "G",
-"BOOT_PACK":         "@",
-
-}
-
-SYS_SETTINGS = { # uses SYS_VAR
-
-"DEBUG_CODE":        "!",
-"CREATE_IMAGE":      "$",
-
-}
-
-PATH_SETTINGS = { # uses PATH_VAR
-
-"FFVII_IMAGE":       "I",
-"FFVII_PATH":        "D",
-"BOOTLEG_TEMP":      "X",
-"MOD_LOCATION":      "F",
-"CD_DRIVE":          "c",
-"SYS_FOLDER":        "s",
-
-}
-
-BOOT_PACK_SETTINGS = { # the numbers here are start and end of index
-
-"ROMEO_MAT":         "0:1", # starts at 0, ends at 1. length=1
-"CONDOR_MINIGAME":   "1:2",
-"AV_SOUND_FX":       "2:3",
-"GLITCHED_FIELD":    "3:4",
-"TANK_PIRATE_SHIP":  "4:5",
-"BARRET_BATTLE":     "5:6",
-"BATTLE_SCENES_LGP": "6:7",
-"BATTLE_SCENES_PNG": "7:8",
-"LAPTOP_KEYPATCH":   "8:9",
-"VINCENT_BATTLE":    "9:10",
-"FMV_NO_CAIT":       "10:11",
-"RETRANSLATED_FMV":  "11:12",
-"ASSAULT_BIGGS":     "12:13",
-"ASSAULT_JESSIE":    "13:14",
-"ASSAULT_WEDGE":     "14:15",
-"CLOUD_HAIR":        "15:16",
-"TIFA_HAIR":         "16:17",
-"YUFFIE_HAIR":       "17:18",
-"BASE_MODELS":       "18:19",
-"STYLE_SWITCHER":    "19:20",
-"FIELD_POTIONS":     "20:21",
-"SEPHIROTH_BATTLE":  "21:22",
-"GRIMMY_MAGIC":      "22:23",
-"GRIMMY_HUGE_MAT":   "23:24",
-"GAME_LANGUAGE":     "24:25",
-"ALWAYS_RUN_TOGGLE": "25:26",
-"BUGGY_COSTA":       "26:27",
-"SUBMARINE_COSTA":   "27:28",
-"HIGHWIND_COSTA":    "28:29",
-"CUSTOM_MODELS":     "29:30",
-"KRANMER_MASTER":    "30:31",
-"TIFA_BATTLE":       "31:32",
-"YUFFIE_BATTLE":     "32:33",
-"RED_XIII_BATTLE":   "33:34",
-"COIN_SKILL":        "34:36", # this is why we need both start and end indexes
-"BLUE_COUNTER":      "36:37",
-"CAIT_WEAPONS":      "37:38",
-"CID_FIELD":         "38:39",
-"RE_ANIMATIONS":     "39:40",
-"SEPHIROTH_FIELD":   "40:41",
-"YUFFIE_FIELD":      "41:42",
-"TIFA_FIELD":        "42:43",
-"AERITH_FIELD":      "43:44",
-"VINCENT_FIELD":     "44:45",
-"BARRET_FIELD":      "45:46",
-"RED_XIII_FIELD":    "46:47",
-"RUBY_WEAPON":       "47:48",
-"NIGHTMARE_SEVEN":   "48:49",
-"CAIT_BATTLE":       "49:50",
-"GUARD_SCORPION":    "50:51",
-"SWEEPER":           "51:52",
-"MATERIAS_MODELS":   "52:53",
-
-}
-
-KERNEL_SETTINGS = { # I don't know yet if that will be used, but it's there
-
-"REASONABLE_DIFF":   "RD",
-"REMASTERED_AI":     "RM",
-"SCENE_REDUX":       "SR",
-"ITEMS_EASY":        "IE",
-"ITEMS_NORMAL":      "IN",
-"ITEMS_DIFFICULT":   "ID",
-"LOST_WINGS":        "LW",
-"MODE_SWITCHING":    "MS",
-"AERITH_INSTALLED":  "AE",
-"AERITH_HARDCORE":   "AH",
-"HARDMOD_INSTALLED": "HC",
-
-}
 
 RANGE = {
 
@@ -232,9 +102,7 @@ RANGE = {
 
 }
 
-NON_INT_SETTINGS = ["PATH"]
-ALLOWED_DEFAULTS = ["USER", "SYS", "BOOT_PACK", "KERNEL"]
-USE_INDEX = ["BOOT_PACK"]
+NON_INT_SETTINGS = ["FFVII_PATH", "FFVII_IMAGE", "BOOTLEG_TEMP", "MOD_LOCATION", "CD_DRIVE", "SYS_FOLDER"]
 
 # Random stuff
 
