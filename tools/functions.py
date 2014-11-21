@@ -560,11 +560,10 @@ def find_setting(setting, type="find"): # gets parsable setting
             raise NoParserFound(setting)
         msg = parse()
         var.FINDING = setting
-        if con.RANGE[setting] < 0:
-            log.help("ENT_EXACT_DIG", form=len(str(con.RANGE[setting])[1:]))
-        else:
-            log.help("ENT_VALUE_BETWEEN", form=con.RANGE[setting])
-        log.help("")
+        getter = 1
+        if setting in con.RANGE.keys():
+            getter = con.RANGE[setting]
+        log.help("ENT_VALUE_BETWEEN", "", form=getter)
         if con.RANGE[setting] > 1:
             log.help(msg.pop(0), form=setting)
             log.help("NO_CHG")
@@ -573,16 +572,7 @@ def find_setting(setting, type="find"): # gets parsable setting
             log.help(msg.pop(0), form=setting)
             log.help("CHC_NO")
             log.help("CHC_YES")
-        if con.RANGE[setting] < 0:
-            for line in msg:
-                if line[0] == "1":
-                    log.help("NO_CHG")
-                log.help(line, form=setting)
-        log.help("")
-        tosay = "DEF_TO_USE"
-        if con.RANGE[setting] < 0:
-            tosay = "TOO_FEW_DIG"
-        log.help(tosay, form=getattr(var, setting))
+        log.help("", "DEF_TO_USE", form=getattr(var, setting))
 
     else: # Installer
         parse = get.parser("install_" + setting.lower())

@@ -69,17 +69,12 @@ FILES_UNDO = ["BATTLE", "MAGIC", "CHAR", "HIGH", "CHOCOBO", "WORLD"]
 
 TRANSLATE_CHANGER = ["cd\\cr_{0}", "cd\\disc_{0}", "menu\\menu_{0}", "wm\\world_{0}", "field\\{1}flevel", "minigame\\{1}chocobo", "minigame\\{1}condor", "minigame\\{1}sub", "minigame\\high-{2}", "minigame\\snowboard-{2}"]
 
-RANGE = {
+RANGE = { # The maximum value for each setting. If it's not there, it will assume 1.
 
 "CLOUD_FIELD":       25,
 "CLOUD_BATTLE":      12,
 "TRISH_SAVE":        5,
 "TRISH_PHOENIX":     3,
-"TRISH_MASAMUNE":    1,
-"AERITH_REVIVAL":    1,
-"REUNION":           1,
-"SPELL_PATCH":       1,
-"AVALANCHE":         1,
 "NEW_AERITH":        3,
 "VINCENT_BATTLE":    2,
 "LIMIT_BREAK":       10,
@@ -88,17 +83,23 @@ RANGE = {
 "MOVIES":            12,
 "FIELD_TEXTURES":    4,
 "AVATARS":           23,
-"BUNNY_GIRLS":       1,
 "SOUNDTRACK":        9,
-"CLOUD_SWORDS":      -6222222224222234, # a - means it needs as many params as there are digits, each digit is the maximum
-"REASONABLE_DIFF":   1,
-"REMASTERED_AI":     1,
-"SCENE_REDUX":       1,
-"ITEMS_EASY":        1,
-"ITEMS_NORMAL":      1,
-"ITEMS_DIFFICULT":   1,
-"LOST_WINGS":        1,
-"MODE_SWITCHING":    1,
+"BUSTER_SWORD":      6,
+"MYTHRIL_SABER":     2,
+"HARDEDGE":          2,
+"BUTTERFLY_EDGE":    2,
+"ENHANCE_SWORD":     2,
+"ORGANICS":          2,
+"CRYSTAL_SWORD":     2,
+"FORCE_STEALER":     2,
+"RUNE_BLADE":        2,
+"MURASAME":          4,
+"NAIL_BAT":          2,
+"YOSHIYUKI":         2,
+"APOCALYPSE":        2,
+"HEAVENS_CLOUD":     2,
+"RAGNAROK":          3,
+"ULTIMA_WEAPON":     4,
 
 }
 

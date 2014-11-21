@@ -42,7 +42,6 @@ COIN_SKILL         = "CS"
 BLUE_COUNTER       = "CO"
 GLITCHED_FIELD     = "GF"
 GRIMMY_MAGIC       = "GM"
-CLOUD_SWORDS       = "CW"
 CAIT_WEAPONS       = "SW"
 
 # Models
@@ -60,6 +59,25 @@ BUGGY_COSTA        = "BC"
 SUBMARINE_COSTA    = "SC"
 HIGHWIND_COSTA     = "HI"
 CUSTOM_MODELS      = "MO"
+
+# Cloud's Swords
+
+BUSTER_SWORD       = "BS"
+MYTHRIL_SABER      = "MY"
+HARDEDGE           = "HE"
+BUTTERFLY_EDGE     = "BE"
+ENHANCE_SWORD      = "ES"
+ORGANICS           = "OR"
+CRYSTAL_SWORD      = "CW"
+FORCE_STEALER      = "FS"
+RUNE_BLADE         = "RU"
+MURASAME           = "MU"
+NAIL_BAT           = "NB"
+YOSHIYUKI          = "YO"
+APOCALYPSE         = "AP"
+HEAVENS_CLOUD      = "HS"
+RAGNAROK           = "RG"
+ULTIMA_WEAPON      = "UW"
 
 # Assault team
 

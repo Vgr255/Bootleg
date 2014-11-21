@@ -249,82 +249,126 @@ def find_opening_credits():
     "5 = Strayoff's Prelude Credits",
     "6 = Grimmy's Cloud and Tifa Prelude Credits",    ]
 
-def find_cloud_swords():
+def find_buster_sword():
     return [
-    "Choose Cloud's swords:",
-    "\n",
-    "Digit #1: Buster Sword replacement:",
+    "Pick the Buster Sword replacement:",
     "1 = Millenia's Buster Sword",
     "2 = Slayernext's Buster Sword",
     "3 = Mike's Buster Sword",
     "4 = APZ's Buster Sword",
     "5 = Omni Buster Sword",
     "6 = Masamune as Buster Sword",
-    "\n",
-    "Digit #2: Mythril Saber replacement:",
+    ]
+
+def find_mythril_saber():
+    return [
+    "Pick the Mythril Saber replacement:",
     "1 = Millenia's Mythril Saber",
     "2 = Slayernext's Mythril Saber",
-    "\n",
-    "Digit #3: Hardedge replacement:",
+    ]
+
+def find_hardedge():
+    return [
+    "Pick the Hardedge replacement:",
     "1 = Millenia's Hardedge",
     "2 = Slayernext's Hardedge",
-    "\n",
-    "Digit #4: Butterfly Edge replacement:",
+    ]
+
+def find_butterfly_edge():
+    return [
+    "Pick the Butterfly Edge replacement:",
     "1 = Millenia's Butterfly Edge",
     "2 = Slayernext's Butterfly Edge",
-    "\n",
-    "Digit #5: Enhance Sword replacement:",
-    "1 = Millenia's Enhance Sword",
-    "2 = Slayernext's Enhance Sword",
-    "\n",
-    "Digit #6: Organics replacement:",
+    ]
+
+def find_enhance_sword():
+    return [
+    "Pick the Enhance Sword replacement:",
+    "1 = Millenia's Butterfly Edge",
+    "2 = Slayernext's Butterfly Edge",
+    ]
+
+def find_organics():
+    return [
+    "Pick the Organics replacement:",
     "1 = Millenia's Organics",
     "2 = Slayernext's Organics",
-    "\n",
-    "Digit #7: Crystal Sword replacement:",
+    ]
+
+def find_crystal_sword():
+    return [
+    "Pick the Crystal Sword replacement:",
     "1 = Millenia's Crystal Sword",
     "2 = Slayernext's Crystal Sword",
-    "\n",
-    "Digit #8: Force Stealer replacement:",
+    ]
+
+def find_force_stealer():
+    return [
+    "Pick the Force Stealer replacement:",
     "1 = Millenia's Force Stealer",
     "2 = Slayernext's Force Stealer",
-    "\n",
-    "Digit #9: Rune Blade replacement:",
+    ]
+
+def find_rune_blade():
+    return [
+    "Pick the Rune Blade replacement:",
     "1 = Millenia's Rune Blade",
     "2 = Slayernext's Rune Blade",
-    "\n",
-    "Digit #10: Murasame replacement:",
+    ]
+
+def find_murasame():
+    return [
+    "Pick the Murasame replacement:",
     "1 = Millenia's Murasame",
     "2 = Slayernext's Murasame",
     "3 = Dragon Murasame",
     "4 = Oblivion Lovelace as Murasame",
-    "\n",
-    "Digit #11: Nail Bat replacement:",
+    ]
+
+def find_nail_bat():
+    return [
+    "Pick the Nail Bat replacement:",
     "1 = Millenia's Nail Bat",
     "2 = Slayernext's Nail Bat",
-    "\n",
-    "Digit #12: Yoshiyuki replacement:",
+    ]
+
+def find_yoshiyuki():
+    return [
+    "Pick the Yoshiyuki replacement:",
     "1 = Millenia's Yoshiyuki",
     "2 = Slayernext's Yoshiyuki",
-    "\n",
-    "Digit #13: Apocalypse replacement:",
+    ]
+
+def find_apocalypse():
+    return [
+    "Pick the Apocalypse replacement:",
     "1 = Millenia's Apocalypse",
     "2 = Slayernext's Apocalypse",
-    "\n",
-    "Digit #14: Heaven's Cloud replacement:",
+    ]
+
+def find_heavens_cloud():
+    return [
+    "Pick the Heaven's Cloud replacement:",
     "1 = Millenia's Heaven's Cloud",
     "2 = Slayernext's Heaven's Cloud",
-    "\n",
-    "Digit #15: Ragnarok replacement:",
+    ]
+
+def find_ragnarok():
+    return [
+    "Pick the Ragnarok replacement:",
     "1 = Millenia's Ragnarok",
     "2 = Slayernext's Ragnarok",
     "3 = APZ's Ragnarok",
-    "\n",
-    "Digit #16: Ultima Weapon replacement:",
+    ]
+
+def find_ultima_weapon():
+    return [
+    "Pick the Ultima Weapon replacement:",
     "1 = Millenia's Ultima Weapon",
     "2 = Slayernext's Ultima Weapon",
     "3 = Mike's Ultima Weapon",
-    "4 = Oblivion External Mod Ultima Weapon",    ]
+    "4 = Oblivion External Mod Ultima Weapon",
+    ]
 
 def find_reasonable_diff(): # individual parsers for each kernel selection. might or might not get used
     return [

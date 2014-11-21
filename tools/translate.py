@@ -622,10 +622,6 @@ ERR_FOUND = { # 0 = Error (... did you really need to ask?)
 English: "Error found: {0}",
 }
 
-ENT_EXACT_DIG = { # 0 = Amount of digits to enter (integer)
-English: "Please enter exactly {0} digits.",
-}
-
 ENT_VALUE_BETWEEN = { # 0 = Max value (integer)
 English: "Please choose a value between 0 and {0}.",
 }
@@ -644,10 +640,6 @@ English: "1 = YES",
 
 DEF_TO_USE = { # 0 = Default value for settings
 English: "Default is '{0}'. It will be used if no value is given.",
-}
-
-TOO_FEW_DIG = { # 0 = Default value for settings
-English: "Default is '{0}'. It will be used if no value is given, or if there are too few digits.",
 }
 
 PARS_INSTALLING = {
