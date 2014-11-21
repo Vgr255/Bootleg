@@ -1,5 +1,5 @@
 # Finding each variable's parameter if unset
-# If a setting has only a yes/no choice, do NOT put the choices here (only the question)
+# If a setting has only a yes/no choice, do NOT put it here
 # It will be automatically added
 # Do not add the '0' choice, it will be added automatically
 # 0 is ALWAYS no change/no install
@@ -91,26 +91,6 @@ def find_trish_phoenix():
     "1 = New Style Flaming Phoenix",
     "2 = Old Style Shaded Phoenix",
     "3 = Old Style Phoenix with Custom Brighter Texture",    ]
-
-def find_trish_masamune():
-    return [
-    "Use Mike's Masamune model?",    ]
-
-def find_aerith_revival():
-    return [
-    "Use Aerith Revival",    ]
-
-def find_reunion():
-    return [
-    "Install DLPB's Reunion?",    ]
-
-def find_spell_patch():
-    return [
-    "Install the new spells patch?",    ]
-
-def find_avalanche():
-    return [
-    "Install Team Avalanche's High-Res Graphics?",    ]
 
 def find_new_aerith():
     return [
@@ -368,69 +348,6 @@ def find_ultima_weapon():
     "2 = Slayernext's Ultima Weapon",
     "3 = Mike's Ultima Weapon",
     "4 = Oblivion External Mod Ultima Weapon",
-    ]
-
-def find_reasonable_diff(): # individual parsers for each kernel selection. might or might not get used
-    return [
-    "Install Reasonable Difficulty mod?",    ]
-
-def find_remastered_ai():
-    return [
-    "Install the Remastered AI from the Remix?",    ]
-
-def find_scene_redux():
-    return [
-    "Install Scene Redux?",    ]
-
-def find_items_easy():
-    return [
-    "Install Harder Items Easy?",    ]
-
-def find_items_normal():
-    return [
-    "Install Harder Items Normal?",    ]
-
-def find_items_difficult():
-    return [
-    "Install Harder Items Difficult?",    ]
-
-def find_lost_wings():
-    return [
-    "Install the Lost Wings complete overhaul?",    ]
-
-def find_mode_switching():
-    return [
-    "Install Bootleg's Mode Switching?",
-    ]
-
-def find_new_threat_mod():
-    return [
-    "Install the New Threat Mod by Sega Chief?",
-    ]
-
-def find_hardcore_gjoerulv():
-    return [
-    "Install Gjoerulv's Hardcore Mod?",
-    ]
-
-def find_new_60_fps():
-    return [
-    "Install the 60 FPS mod?",
-    ]
-
-def find_avalanche():
-    return [
-    "Install Avalanche High-Res Overhaul?",
-    ]
-
-def find_avalanche_gui():
-    return [
-    "Install Avalanche GUI?",
-    ]
-
-def find_romeo_mat():
-    return [
-    "Install Romeo14's AC Style Materias for Avalanche?",
     ]
 
 # From this point are the installer functions for each of the above parameters

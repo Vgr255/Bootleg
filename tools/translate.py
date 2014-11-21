@@ -76,12 +76,68 @@ English: "signal",
 
 # Mods names
 
-AVALANCHE_HIRES = {
-English: "Avalanche High-Res Overhaul",
+TRISH_MASAMUNE = {
+English: "Mike's Masamune model",
+}
+
+AERITH_REVIVAL = {
+English: "Aerith Revival",
+}
+
+REUNION = {
+English: "DLPB's Reunion",
+}
+
+SPELL_PATCH = {
+English: "he new spells Patch",
+}
+
+AVALANCHE = {
+English: "Team Avalanche High-Res Overhaul",
+}
+
+REASONABLE_DIFF = {
+English: "the Reasonable Difficulty mod",
+}
+
+REMASTERED_AI = {
+English: "the Remastered AI from the Remix",
+}
+
+SCENE_REDUX = {
+English: "the Scene Redux",
+}
+
+ITEMS_EASY = {
+English: "Harder Items (Easy)",
+}
+
+ITEMS_NORMAL = {
+English: "Harder Items (Normal)",
+}
+
+ITEMS_DIFFICULT = {
+English: "Harder Items (Difficult)",
 }
 
 AVALANCHE_GUI = {
 English: "Avalanche GUI",
+}
+
+LOST_WINGS = {
+English: "the Lost Wings complete overhaul",
+}
+
+MODE_SWITCHING = {
+English: "the Gameplay Modes Switching",
+}
+
+NEW_THREAT = {
+English: "the New Threat mod by Sega Chief",
+}
+
+NEW_60_FPS = {
+English: "the 60 FPS mod",
 }
 
 ROMEO_MAT = {
@@ -628,6 +684,10 @@ English: "Please choose a value between 0 and {0}.",
 
 NO_CHG = {
 English: "0 = No Change",
+}
+
+INST_SPEC_SET = {
+English: "Install {0}?",
 }
 
 CHC_NO = {

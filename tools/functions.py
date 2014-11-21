@@ -555,21 +555,26 @@ def find_setting(setting, type="find"): # gets parsable setting
         raise WrongParsingType(type)
 
     if type == "find":
-        parse = get.parser("find_" + setting.lower())
-        if not parse:
-            raise NoParserFound(setting)
-        msg = parse()
-        var.FINDING = setting
         getter = 1
         if setting in con.RANGE.keys():
             getter = con.RANGE[setting]
+        parse = get.parser("find_" + setting.lower())
+        if not parse:
+            if getter != 1:
+                raise NoParserFound(setting)
+            msg = "INST_SPEC_SET"
+        if parse:
+            msg = parse()
+            if getter == 1:
+                msg = msg[0]
+        var.FINDING = setting
         log.help("ENT_VALUE_BETWEEN", "", form=getter)
-        if con.RANGE[setting] > 1:
-            log.help(msg.pop(0), form=setting)
+        if getter > 1:
+            log.help(msg.pop(0))
             log.help("NO_CHG")
             log.help("\n".join(msg))
-        if con.RANGE[setting] == 1:
-            log.help(msg.pop(0), form=setting)
+        if getter == 1:
+            log.help(msg, form=setting)
             log.help("CHC_NO")
             log.help("CHC_YES")
         log.help("", "DEF_TO_USE", form=getattr(var, setting))
