@@ -8,6 +8,7 @@ from tools import git as _git
 from tools import links
 
 import webbrowser
+import subprocess
 import shutil
 import os
 
@@ -26,11 +27,31 @@ def exit(*args):
     var.ALLOW_RUN = False
 
 def restart(*args):
-    var.RETRY = True
+    var.ALLOW_RUN = False
+    args = [os.getcwd() + "/" + con.PROGRAM_NAME + ".exe", "--retry"]
+    if var.SILENT_RUN:
+        args.append("--silent")
+    if var.DEV_LOG:
+        args.append("--dump")
+    if var.DISPLAY_EVERYTHING:
+        args.append("--verbose")
+    if var.DEBUG_MODE:
+        args.append("--debug")
+    if var.LOG_EVERYTHING:
+        args.append("--logall")
+    if var.WRITE_EVERYTHING:
+        args.append("--writeall")
+    if var.PREVIOUS_PRESET:
+        args.append("--preset " + var.PRESET)
+    if var.LADMIN:
+        subprocess.Popen(args)
+    else:
+        var.ALLOW_RUN = True
+        var.RETRY = True
 
 def clean(*args):
     for x, y in con.LOGGERS.items():
-        if args[0] == "keeplog":
+        if "keeplog" in args:
             break
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
@@ -145,7 +166,7 @@ def git(inp, params=[]):
     if params:
         args.extend(params)
         if hasattr(_git, params[0]) and params[0] not in ("con", "var", "log", "subprocess", "parse"):
-            getattr(_git, " ".join(params))(args)
+            getattr(_git, params[0])(args)
             return
     _git.do(args)
 

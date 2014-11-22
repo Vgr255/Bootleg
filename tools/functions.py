@@ -24,15 +24,14 @@ def initialize(): # initialize variables on startup and/or retry
     log.multiple(begin, form=[con.PROGRAM_NAME], types=["all"], display=False)
     var.INITIALIZED = True
     var.RETRY = False
+    log.logger("LNCH_PAR", form=var.LAUNCH_PARAMS, type="debug", display=False)
     log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
     log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
     log.multiple("Python", sys.version, display=False, splitter=" ", types=["normal", "debug"])
-    var.USED_HELP = False
     var.FATAL_ERROR = []
     var.SYS_ERROR = []
-    var.EMPTY_SETTINGS = []
-    var.NONEXISTANT_FILE = False
     var.PARSING = None
+    var.FINDING = None
     var.ERROR = False
 
     os.system("cls") # clear the screen off everything.

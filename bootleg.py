@@ -19,6 +19,7 @@
 # otherwise, arising from the use of the present Software.
 
 import traceback
+import msvcrt
 import sys
 
 from tools import constants as con
@@ -67,15 +68,17 @@ def main():
         if var.SILENT_RUN:
             cmd.run("silent")
             return
+    if var.NEED_RESTART:
+        while True:
+            if msvcrt.getwch():
+                cmd.restart()
+                return
     inp = input(con.INPUT_PREFIX).strip()
     if not inp:
         if var.FINDING:
             parsed = var.FINDING
             log.logger("NO_USR_INP", form=[getattr(var, parsed), parsed], display=False)
             var.FINDING = None
-            return
-        if var.NEED_RESTART:
-            var.ALLOW_RUN = False
             return
     log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="", checker=False)
     if var.FINDING:
@@ -91,14 +94,11 @@ def main():
         if get.bool(inp):
             log.logger("", "WAIT_UPD", "")
             if git.pull(var.GIT_LOCATION, silent=True):
-                log.logger("SUCCESS_UPD", "REST_FOR_CHG", form=con.PROGRAM_NAME)
+                log.logger("SUCCESS_UPD", "REST_FOR_CHG")
                 var.NEED_RESTART = True
             else:
                 log.logger("FAILED_UPD", "DIS_AUTO_UPD", form=con.PROGRAM_NAME)
         var.UPDATE_READY = False
-        return
-    if var.NEED_RESTART:
-        var.ALLOW_RUN = False
         return
     inp1 = inp.lower().split()
     if not inp:

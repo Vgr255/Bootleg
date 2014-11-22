@@ -11,6 +11,7 @@ import os
 from tools import variables as var
 from tools import constants as con
 from tools import parsables as par
+from tools import functions as fn
 from tools import commands as cmd
 from tools import logger as log
 from tools import help
@@ -117,6 +118,7 @@ launcher.add_argument("--debug", action="store_true")
 launcher.add_argument("--logall", action="store_true")
 launcher.add_argument("--writeall", action="store_true")
 launcher.add_argument("--gethelp", action="store_true")
+launcher.add_argument("--retry", action="store_true")
 launcher.add_argument("--preset")
 
 if launcher.parse_args().silent:
@@ -133,11 +135,15 @@ if launcher.parse_args().writeall:
     var.WRITE_EVERYTHING = True
 if launcher.parse_args().gethelp:
     var.GET_HELP = True
+if launcher.parse_args().retry:
+    var.RETRY = True
 if launcher.parse_args().preset:
     var.PREVIOUS_PRESET = var.PRESET
     var.PRESET = launcher.parse_args().preset
     if not var.PRESET.endswith("." + var.PRESET_EXT):
         var.PRESET += "." + var.PRESET_EXT
+
+var.LAUNCH_PARAMS = str(launcher.parse_args())[10:-1]
 
 # Bring translators and coders in a single place
 
@@ -313,8 +319,6 @@ if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
     log.logger("CFG_DIS_OVR", display=False)
 elif var.FORCE_CONFIG:
     log.logger("CFG_FORCED", display=False)
-
-log.logger("LNCH_PAR", form=[str(launcher.parse_args())[10:-1]], type="debug", display=False, write=var.ALLOW_RUN)
 
 if var.GET_HELP:
     var.SILENT_RUN = False

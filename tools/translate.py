@@ -200,9 +200,9 @@ English: "Files successfully updated.",
 French: "Fichiers mis à jour avec succès.",
 }
 
-REST_FOR_CHG = { # 0 = Program name
-English: "Please restart {0} for the changes to take effect.",
-French: "Veuillez relancer {0} pour que les changements prennent effet.",
+REST_FOR_CHG = {
+English: "Press any key to restart.",
+French: "Appuyez sur une touche pour redémarrer.",
 }
 
 FAILED_UPD = {
