@@ -25,7 +25,6 @@ from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
 from tools import commands as cmd
-from tools import process as pro
 from tools import logger as log
 from tools import get
 from tools import git
@@ -51,8 +50,6 @@ def main():
         commands.extend(con.DEBUG_COMMANDS)
     totype = "ENT_CMD"
     form = []
-    if var.FINDING:
-        totype = "ENT_VAL"
     if var.PARSING:
         totype = "ENT_CHC"
     if var.NEED_RESTART or var.SILENT_RUN:
@@ -74,10 +71,6 @@ def main():
         return
     inp = input(con.INPUT_PREFIX).strip()
     log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="", checker=False)
-    if var.FINDING:
-        get.setting(inp)
-        if not var.FINDING:
-            pro.goto_point()
         return
     if var.PARSING:
         fn.parser(inp)

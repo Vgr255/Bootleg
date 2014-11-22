@@ -61,22 +61,23 @@ def random_small(length): # similar as above, except for other stuff
         if len(msg) >= length:
             return msg
 
-def setting(inp): # sets variables
+def setting(inp, finder): # sets variables
     if inp and not inp.isdigit():
         log.logger("ENTER_ONLY_NUMS")
-        return
+        return 1
     if not inp:
-        log.logger("NO_USR_INP", form=[getattr(var, var.FINDING), var.FINDING], display=False)
-        var.FINDING = None
-        return
+        log.logger("NO_USR_INP", form=[getattr(var, finder), finder], display=False)
+        return 0
     inp = int(inp)
     getter = 2
-    if var.FINDING in con.RANGE.keys():
-        getter = con.RANGE[var.FINDING] + 1
+    if finder in con.RANGE.keys():
+        getter = con.RANGE[finder] + 1
     if inp in range(0, getter):
-        setattr(var, var.FINDING, inp)
-        log.logger("SET_DEF_NO_INP_USED", form=[var.FINDING, inp], display=False)
-        var.FINDING = None
+        setattr(var, finder, inp)
+        log.logger("SET_DEF_NO_INP_USED", form=[finder, inp], display=False)
+        return 0
+    log.logger("INT_OUTBOUNDS", "ENT_VALUE_BETWEEN", form=getter-1)
+    return 1
 
 def pause(): # Generates a pause until the user presses a key
     while True:

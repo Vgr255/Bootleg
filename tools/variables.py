@@ -18,7 +18,6 @@ REG_SOUND = None
 REG_GRAPH = None
 REG_MIDI = None
 
-FINDING = None
 PARSING = None
 
 USERS = None
@@ -46,8 +45,6 @@ RAR_LOCATION = None
 CD_DRIVE = None
 
 PRESET_IMPORTED = False
-
-GOTO_POINT = None
 
 # defaults
 
