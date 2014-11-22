@@ -67,8 +67,7 @@ if platform.system() == "Windows":
         reg = winreg.OpenKey(reg, "Wow6432Node")
         liner = "Wow6432Node\\"
     try: # 1998 original
-        reg = winreg.OpenKey(reg, "Square Soft, Inc.")
-        var.REGISTRY = winreg.OpenKey(reg, "Final Fantasy VII")
+        reg = winreg.OpenKey(reg, "Square Soft, Inc.\\Final Fantasy VII")
         var.GAME_VERSION = 1998
         var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(liner)
     except OSError: # does not exist
@@ -77,12 +76,12 @@ if platform.system() == "Windows":
             reg = winreg.OpenKey(reg, "Windows")
             reg = winreg.OpenKey(reg, "CurrentVersion")
             reg = winreg.OpenKey(reg, "Uninstall")
-            var.REGISTRY = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
+            reg = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
             var.GAME_VERSION = 2012
             var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1".format(liner)
         except OSError:
             try: # 2013 Steam
-                var.REGISTRY = winreg.OpenKey(reg, "Steam App 39140")
+                reg = winreg.OpenKey(reg, "Steam App 39140")
                 var.GAME_VERSION = 2013
                 var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 39140".format(liner)
             except OSError:

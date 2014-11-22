@@ -13,7 +13,6 @@ FATAL_ERROR = []
 SYS_ERROR = []
 
 ARCHITECTURE = None # '32bit' or '64bit'
-REGISTRY = None # location of the registry
 REG_ENTRY = None
 REG_SOUND = None
 REG_GRAPH = None
@@ -47,6 +46,8 @@ RAR_LOCATION = None
 CD_DRIVE = None
 
 PRESET_IMPORTED = False
+
+GOTO_POINT = None
 
 # defaults
 
@@ -98,9 +99,8 @@ GIT_EXT = "log"
 PRESET_FILE = "bootleg"
 PRESET_EXT = "bp"
 
-PRESET_FILE = ""
+PRESET = ""
 PREVIOUS_PRESET = ""
-PRESET_EXT = "bp"
 
 IGNORE_LOCAL_CHANGES = False
 SILENT_UPDATE = False

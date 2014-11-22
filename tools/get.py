@@ -7,6 +7,7 @@ from tools import logger as log
 
 import datetime
 import hashlib
+import msvcrt
 import random
 import os
 
@@ -61,28 +62,26 @@ def random_small(length): # similar as above, except for other stuff
             return msg
 
 def setting(inp): # sets variables
-    if not inp.isdigit():
+    if inp and not inp.isdigit():
         log.logger("ENTER_ONLY_NUMS")
         return
-    inp2 = int(inp)
-    if con.RANGE[var.FINDING] < 0:
-        rng = str(con.RANGE[var.FINDING])[1:]
-        if len(str(inp2)) == len(rng):
-            for x in range(0, int(len(rng))):
-                if int(str(inp2)[x]) in range(0, int(rng[x]) + 1):
-                    continue
-                else:
-                    log.logger("ERR_VALUE_OUTBOUNDS", form=[x + 1, str(inp2)[x], rng[x]])
-                    return
-            setattr(var, var.FINDING, inp2)
-            log.logger("USR_INP_SET_USING", form=[inp2, var.FINDING], display=False)
-            var.FINDING = None
-        else:
-            log.logger("ENT_EXACT_DIG", form=len(rng))
-    elif inp2 in range(0, con.RANGE[var.FINDING] + 1):
-        setattr(var, var.FINDING, inp2)
-        log.logger("SET_DEF_NO_INP_USED", form=[var.FINDING, inp2], display=False)
+    if not inp:
+        log.logger("NO_USR_INP", form=[getattr(var, var.FINDING), var.FINDING], display=False)
         var.FINDING = None
+        return
+    inp = int(inp)
+    getter = 2
+    if var.FINDING in con.RANGE.keys():
+        getter = con.RANGE[var.FINDING] + 1
+    if inp in range(0, getter):
+        setattr(var, var.FINDING, inp)
+        log.logger("SET_DEF_NO_INP_USED", form=[var.FINDING, inp], display=False)
+        var.FINDING = None
+
+def pause(): # Generates a pause until the user presses a key
+    while True:
+        if msvcrt.getwch():
+            return
 
 def preset(): # makes a preset file with current settings
     lines = []
