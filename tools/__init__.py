@@ -55,11 +55,20 @@ if platform.system() == "Windows":
     import winreg
     var.ON_WINDOWS = True
 
-    try:
-        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1".format("Wow6432Node\\" if var.ARCHITECTURE == "64bit" else ""))
+    try: # Checks for 64-bit version if exists
+        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1")
         var.GIT_LOCATION = winreg.QueryValueEx(reg, "InstallLocation")[0] + "bin\\git.exe"
     except OSError:
-        pass
+        try: # Checks for 32-bit version if exists
+            reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1")
+            var.GIT_LOCATION = winreg.QueryValueEx(reg, "InstallLocation")[0] + "bin\\git.exe"
+        except OSError:
+            if "git" in os.getenv("PATH").lower(): # It's in the path variable
+                paths = os.getenv("PATH").lower().split(";")
+                for path in paths:
+                    if "git" in path:
+                        var.GIT_LOCATION = path
+                        break
 
     reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
     liner = ""

@@ -49,10 +49,12 @@ def restart(*args):
         var.ALLOW_RUN = True
         var.RETRY = True
 
-def clean(*args):
+# The following commands may or may not require additional parameters
+
+def clean(inp="", params=[]):
     for x, y in con.LOGGERS.items():
-        if "keeplog" in args:
-            break
+        if "keeplog" in inp and not x == "temp":
+            continue
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
         if x == "temp":
@@ -69,13 +71,13 @@ def clean(*args):
                     shutil.rmtree(line)
                 except OSError:
                     notdone.append(line)
+            f.close()
             if notdone:
                 ft = open(file, "w")
                 ft.write("\n".join(notdone))
                 ft.write("\n")
                 ft.close()
                 continue # prevent temp file from being deleted if it fails
-            f.close()
         file = logfile + "." + log_ext
         if fn.IsFile.cur(file):
             os.remove(os.getcwd() + "\\" + file)
@@ -94,8 +96,6 @@ def clean(*args):
         if file[:4:3] == "__" and (file[1:3]+file[4:]).isalnum() and file.islower() and fn.IsFile.cur(file) and len(file) == 15:
             os.remove(os.getcwd() + "/" + file)
     var.ALLOW_RUN = False
-
-# The following commands may or may not require additional parameters
 
 def help(inp, params=[]):
     if helper.get_help(" ".join(params)):
