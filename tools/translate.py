@@ -738,6 +738,10 @@ SET_DEF_NO_INP_USED = { # 0 = Setting; 1 = Value
 English: "Setting used for {0}: {1}.",
 }
 
+PRESET_SAVED = { # 0 = Current directory; 1 = Filename; 2 = File extension
+English: "Preset saved as '{0}/presets/{1}.{2}'",
+}
+
 # End of the 'get.py' lines
 
 # The following lines are contained in 'help.py'
@@ -931,4 +935,16 @@ English: "Use this command to run the Bootleg process.",
 
 PARS_EXEC_FILE = { # 0 = File; 1 = Folder
 English: "Currently exexcuting '{0}' from '{1}'.",
+}
+
+SET_LOCATION = {
+English: "Set the destination location to:",
+}
+
+PICK_1997_2012 = {
+English: "Select 'Original (1997)' even if using the 2012 Square Enix Store version.",
+}
+
+PICK_1997_2013 = {
+English: "Select 'Original (1997)' even if using the 2013 Steam version.",
 }

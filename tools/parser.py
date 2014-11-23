@@ -28,6 +28,7 @@ def ExecuteFile(seeker):
                 return # We got it
 
     raise ModFileNotFound(seeker) # Exit out if the mod could not be found
+    # Todo: use a try-except statement in the process to catch this
 
 # The following are for finding the settings
 
@@ -352,7 +353,6 @@ def find_ultima_weapon():
 
 # From this point are the installer functions for each of the above parameters
 
-# Return the mod name defined in the translate file
 # Use the ExecuteFile() method to launch a mod directly
 # It will automatically stop the execution if the mod can't be found
 
@@ -371,4 +371,13 @@ def install_romeo_mat():
         shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent\\" + file, fl.MODS_FINAL + "menu\\" + file)
 
 def install_hardcore_gjoerulv():
+    log.help("SET_LOCATION", "'{0}data'".format(var.FFVII_PATH), "")
+    if var.GAME_VERSION in (2012, 2013):
+        log.help("PICK_1997_" + str(var.GAME_VERSION))
     subprocess.Popen([var.BOOTLEG_TEMP + "Gjoerulv.exe"])
+
+    for file in ("kernel\\KERNEL.BIN", "kernel\\kernel2.bin", "battle\\scene.bin"):
+        shutil.copy(var.FFVII_PATH + "data\\" + file, var.BOOTLEG_TEMP + "hardcore_backup\\" + file)
+
+def install_aerith_revival():
+    pass
