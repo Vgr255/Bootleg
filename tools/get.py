@@ -80,9 +80,7 @@ def setting(inp, finder): # sets variables
     return 1
 
 def pause(): # Generates a pause until the user presses a key
-    while True:
-        if msvcrt.getwch():
-            return
+    msvcrt.getwch()
 
 def preset(): # makes a preset file with current settings
     lines = []
@@ -93,4 +91,6 @@ def preset(): # makes a preset file with current settings
     log.logger(lines, display=False, type="preset")
     logfile = getattr(var, con.LOGGERS["preset"] + "_FILE")
     log_ext = getattr(var, con.LOGGERS["preset"] + "_EXT")
-    os.rename("{0}/{1}.{2}".format(os.getcwd(), logfile, log_ext), "{0}/presets/{1}.{2}".format(os.getcwd(), random_small(12), log_ext))
+    name = random_small(12)
+    os.rename("{0}/{1}.{2}".format(os.getcwd(), logfile, log_ext), "{0}/presets/{1}.{2}".format(os.getcwd(), name, log_ext))
+    log.logger("PRESET_SAVED", form=[os.getcwd(), name, log_ext])

@@ -71,7 +71,6 @@ def main():
         return
     inp = input(con.INPUT_PREFIX).strip()
     log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="", checker=False)
-        return
     if var.PARSING:
         fn.parser(inp)
         return
@@ -106,7 +105,7 @@ while var.ALLOW_RUN:
     try:
         main()
     except CustomBootException as Catcher:
-        log.multiple(":".join(Catcher.args), display=False, checker=False, types=["normal", "error", "debug"])
+        log.multiple("Exception: {0}".format(Catcher.__class__.__name__), ":".join(Catcher.args), display=False, checker=False, types=["normal", "error", "debug"])
         raise # We're catching and logging custom exceptions, but we want them to be handled if needed
     except KeyboardInterrupt:
         if var.ERROR:
@@ -115,8 +114,6 @@ while var.ALLOW_RUN:
         else:
             log.logger("SIGTERM_WARN")
             var.ERROR = True
-    except ModFileNotFound as e:
-        log.logger("MOD_NOT_FOUND", form=[e.args[0], "ONE_IN" if len(var.MOD_LOCATION) == 1 else "MULT_IN_ONE", "', '".join(var.MOD_LOCATION)])
     except PresetAlreadyImported:
         log.logger("PRESET_ALIMPORTED", form=[var.PRESET, con.PROGRAM_NAME])
     except Exception: # Don't want to catch everything
