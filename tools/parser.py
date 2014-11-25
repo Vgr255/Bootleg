@@ -19,16 +19,64 @@ import os
 
 from tools.exceptions import *
 
-def ExecuteFile(seeker):
+# Various methods for file manipulation
+
+def FindFile(seeker): # Finds a mod in all the mods folders; returns a tuple of (folder, file)
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
             if file.lower() == seeker.lower():
-                log.logger("PARS_EXEC_FILE", form=[file, folder[:-1]])
-                subprocess.Popen([folder + file])
-                return # We got it
+                if not folder[-1:] in ("/", "\\"):
+                    folder = folder + "\\"
+                return folder, file
 
     raise ModFileNotFound(seeker) # Exit out if the mod could not be found
     # Todo: use a try-except statement in the process to catch this
+
+def ExecuteFile(file): # Runs an executable file
+    folder, file = FindFile(file)
+
+    log.logger("PARS_EXEC_FILE", form=[file, folder[:-1]])
+    subprocess.Popen([folder + file])
+
+def ExtractFile(file, pw="none"): # Extracts an archive into the temp folder
+    path, file = FindFile(file)
+
+    if file.endswith(".rar"):
+        type = "rar"
+    elif file.endswith((".zip", ".7z")):
+        type = "zip"
+    else:
+        raise UnsupportedFileType(file)
+
+    if type == "rar": # Rar file
+        subprocess.Popen([var.RAR_LOCATION, "x", "-y", "-p" + pw, path+file, var.BOOTLEG_TEMP + file])
+    if type == "zip": # Zip file
+        subprocess.Popen([var.SEVENZ_LOCATION, "x", "-p" + pw, "-y", "-o" + var.BOOTLEG_TEMP + file, path + file])
+
+    log.logger("PARS_EXTR_FILE", form=[path + file])
+
+def LaunchFile(mod, file): # Runs a file found in the folder created by ExtractFile()
+    if not os.path.isdir(var.BOOTLEG_TEMP + mod):
+        raise InexistantFolderTemp(mod)
+    if not os.path.isfile(var.BOOTLEG_TEMP + mod + "\\" + file):
+        raise InexistantFileTemp(mod, file)
+
+    subprocess.Popen([var.BOOTLEG_TEMP + mod + "\\" + file])
+
+def CopyFolder(src, dst): # Copies the content of a folder in an existing location
+    if not src[-1:] in ("/", "\\"):
+        src = src + "\\"
+    if not dst[-1:] in ("/", "\\"):
+        dst = dst + "\\"
+
+    for file in os.listdir(src):
+        shutil.copy(src + file, dst + file)
+
+def CopyFile(path, file, new): # Copies a new file in the same directory with a new name
+    if not path[-1:] in ("/", "\\"):
+        path = path + "\\"
+
+    shutil.copy(path + file, path + new)
 
 # The following are for finding the settings
 
@@ -359,25 +407,33 @@ def find_ultima_weapon():
 def install_avalanche():
     ExecuteFile(fl.AVALANCHE)
 
-    for repair in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic"):
-        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic\\" + repair, fl.MAGIC_PATCH + repair)
-    shutil.copy(var.FFVII_PATH + "textures\\Summons\\leviathan\\water_00.png", var.FFVII_PATH + "textures\\Summons\\leviathan\\water_1_00.png")
+    CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic", fl.MAGIC_PATCH)
+
+    CopyFile(var.FFVII_PATH + "textures\\Summons\\leviathan", "water_00.png", "water_1_00.png")
 
 def install_avalanche_gui():
     ExecuteFile(fl.AVALANCHEGUI)
 
 def install_romeo_mat():
-    for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent"):
-        shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent\\" + file, fl.MODS_FINAL + "menu\\" + file)
+    CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent", fl.MODS_FINAL + "menu")
 
 def install_hardcore_gjoerulv():
+    ExtractFile(fl.HARDCORE)
+
     log.help("SET_LOCATION", "'{0}data'".format(var.FFVII_PATH), "")
     if var.GAME_VERSION in (2012, 2013):
         log.help("PICK_1997_" + str(var.GAME_VERSION))
-    subprocess.Popen([var.BOOTLEG_TEMP + "Gjoerulv.exe"])
+
+    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Patch102\\ff7.exe", var.FFVII_PATH + "ff7.exe")
+
+    LaunchFile(fl.HARDCORE, "Gjoerulv.exe")
 
     for file in ("kernel\\KERNEL.BIN", "kernel\\kernel2.bin", "battle\\scene.bin"):
         shutil.copy(var.FFVII_PATH + "data\\" + file, var.BOOTLEG_TEMP + "hardcore_backup\\" + file)
 
 def install_aerith_revival():
-    pass
+    ExtractFile(fl.AERISREVIVAL)
+
+    CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\Revival\\Flevel", var.BOOTLEG_TEMP + fl.AERISREVIVAL)
+
+    shutil.copy(var.FFVII_PATH + "data\\field\\flevel.lgp", fl.FLEVEL_REVIVAL + "flevel.lgp")

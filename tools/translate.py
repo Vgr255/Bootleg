@@ -937,6 +937,10 @@ PARS_EXEC_FILE = { # 0 = File; 1 = Folder
 English: "Currently exexcuting '{0}' from '{1}'.",
 }
 
+PARS_EXTR_FILE = { # 0 = File
+English: "Extracting '{0}' . . .",
+}
+
 SET_LOCATION = {
 English: "Set the destination location to:",
 }
