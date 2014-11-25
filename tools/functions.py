@@ -546,46 +546,45 @@ def end_bootleg_early():
                 log.multiple(errors.unhandled, types=["error", "normal"])
     log.logger("\n")
 
-def find_setting(setting, type="find"): # gets parsable setting
+def find_setting(setting): # gets parsable setting
     if not hasattr(var, setting):
         raise SettingNotFound(setting)
 
-    if type not in ("find", "install"):
-        raise WrongParsingType(type)
-
-    if type == "find":
-        getter = 1
-        if setting in con.RANGE.keys():
-            getter = con.RANGE[setting]
-        parse = get.parser("find_" + setting.lower())
-        if not parse:
-            if getter != 1:
-                raise NoParserFound(setting)
-            msg = "INST_SPEC_SET"
-        if parse:
-            msg = parse()
-            if getter == 1:
-                msg = msg[0]
-        var.FINDING = setting
-        log.help("ENT_VALUE_BETWEEN", "", form=getter)
-        if getter > 1:
-            log.help(msg.pop(0))
-            log.help("NO_CHG")
-            log.help("\n".join(msg))
+    getter = 1
+    if setting in con.RANGE.keys():
+        getter = con.RANGE[setting]
+    parse = get.parser("find_" + setting.lower())
+    if not parse:
+        if getter != 1:
+            raise NoParserFound(setting)
+        msg = "INST_SPEC_SET"
+    if parse:
+        msg = parse()
         if getter == 1:
-            log.help(msg, form=setting)
-            log.help("CHC_NO")
-            log.help("CHC_YES")
-        log.help("", "DEF_TO_USE", form=getattr(var, setting))
+            msg = msg[0]
+    var.FINDING = setting
+    log.help("ENT_VALUE_BETWEEN", "", form=getter)
+    if getter > 1:
+        log.help(msg.pop(0))
+        log.help("NO_CHG")
+        log.help("\n".join(msg))
+    if getter == 1:
+        log.help(msg, form=setting)
+        log.help("CHC_NO")
+        log.help("CHC_YES")
+    log.help("", "DEF_TO_USE", form=getattr(var, setting))
 
-    else: # Installer
-        parse = get.parser("install_" + setting.lower())
-        if not parse:
-            raise NoInstallerFound(setting)
+def install_setting(setting):
+    if not hasattr(var, setting):
+        raise SettingNotFound(setting)
 
-        log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
-        parse()
-        log.logger("PARS_COMPL_INST_SUCCESS", form=setting)
+    parse = get.parser("install_" + setting.lower())
+    if not parse:
+        raise NoInstallerFound(setting)
+
+    log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
+    parse()
+    log.logger("PARS_COMPL_INST_SUCCESS", form=setting)
 
 def no_such_command(command):
     log.logger("ERR_INVALID_COMMAND", form=command, write=False)
