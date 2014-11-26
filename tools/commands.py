@@ -170,6 +170,79 @@ def git(inp, params=[]):
             return
     _git.do(args)
 
+def read(inp, params=[]): # Reads a documentation file
+    if params:
+        docf = os.getcwd() + "/documentation/"
+        reader = ""
+        if os.path.isfile(docf + params[0]):
+            reader = docf + params[0]
+        if con.DOCFILES_EXTS:
+            for ext in con.DOCFILES_EXTS:
+                if os.path.isfile(docf + params[0] + "." + ext):
+                    reader = docf + params[0] + "." + ext
+                    break
+        if os.path.isdir(docf + var.LANGUAGE):
+            docl = docf + var.LANGUAGE + "/"
+            if os.path.isfile(docl + params[0]):
+                reader = docl + params[0]
+            if con.DOCFILES_EXTS:
+                for ext in con.DOCFILES_EXTS:
+                    if os.path.isfile(docl + params[0] + "." + ext):
+                        reader = docl + params[0] + "." + ext
+                        break
+        if reader:
+            digits = False
+            lister = False
+            sections = []
+            if len(params) > 1:
+                digits = True
+                if not params[1][0].isdigit():
+                    digits = False
+                for digit in params[1]:
+                    if digit not in "0123456789.":
+                        digits = False
+                        break
+                if digits:
+                    digits = params[1]
+                elif params[1].lower() in ("sections", "list"):
+                    lister = True
+            file = open(reader, "r")
+            remover = True
+            jumper = True if digits else False
+            log.help("")
+            for line in file.readlines():
+                if remover: # Some odd characters appear the beginning of the file
+                    line = line[3:]
+                    remover = False
+                line = line.replace("\n", "")
+                if digits:
+                    if line.startswith("Section " + digits) or digits[0] == "0":
+                        jumper = False
+                    if "." not in digits:
+                        if line.startswith("Section " + str(int(digits)+1)):
+                            break
+                    else:
+                        dot = digits.index(".")
+                        newdig = int(digits[dot+1:])
+                        if line.startswith("Section " + digits[:dot] + "." + str(newdig + 1)):
+                            break
+                        if line.startswith("Section " + str(int(digits[:dot]) + 1)):
+                            break
+                if lister:
+                    
+                    if not line.startswith("Section "):
+                        continue
+                    sections.append(line[8:])
+                    continue
+                if not jumper and not lister:
+                    log.help(line)
+                    continue
+            if sections:
+                log.help(sections)
+            file.close()
+        else:
+            log.logger("ERR_DOC_NOT_FOUND", form=params[0])
+
 def get(inp, params=[]):
     if params:
         if params[0] == "mod":

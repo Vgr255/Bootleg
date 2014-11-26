@@ -115,3 +115,6 @@ def help():
 
 def run():
     return "HELP_RUN"
+
+def read():
+    return "HELP_READ_CMD"

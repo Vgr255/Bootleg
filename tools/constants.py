@@ -19,7 +19,7 @@ PROCESS_CODE = "https://github.com/Vgr255/Bootleg" # This is used in many places
 
 PROGRAM_NAME = "Bootleg" # this is what appears everywhere (e.g. "Welcome to the Bootleg configurator")
 
-COMMANDS = ["help", "run"]
+COMMANDS = ["help", "run", "read"]
 HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these don't work. that's why they're hidden
 
 DEBUG_COMMANDS = ["remove", "copy"]
@@ -27,7 +27,7 @@ ERROR_COMMANDS = ["exit", "restart"]
 
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour
 
-DISALLOWED_COMMANDS = ["help", "run"] # commands to be disallowed during setting finding
+DISALLOWED_COMMANDS = ["help", "run", "read"] # commands to be disallowed during setting finding
 
 CURRENT_RELEASE = "041"
 BUILD_INFO = "Alpha"
@@ -45,6 +45,8 @@ IGNORE_MIXED = ["settings", "temp", "preset"] # will not write this one to the m
 IGNORE_NEWLINE = ["temp", "git", "preset"] # will not print two lines on new run
 
 DISALLOW_CARRYING = ["FORCE_CONFIG"]
+
+DOCFILES_EXTS = ["txt"]
 
 LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
 

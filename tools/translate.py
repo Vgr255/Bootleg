@@ -336,6 +336,10 @@ English: "Error: {0} is not defined.",
 French: "Erreur: {0} n'est pas défini.",
 }
 
+ERR_DOC_NOT_FOUND = { # 0 = File
+English: "Error: The documentation file '{0}' could not be found.",
+}
+
 GIT_NOT_INST = {
 English: "Error: Git is not installed. The operation cannot continue.",
 French: "Erreur: Git n'est pas installé. L'opération ne peut pas continuer.",
@@ -943,6 +947,15 @@ English: "The help command is used to display various information.\n" \
 
 HELP_RUN = {
 English: "Use this command to run the Bootleg process.",
+}
+
+HELP_READ_CMD = {
+English: "The 'read' command can be used to read various documentation.\n" \
+         "The syntax is 'read <file> [section]'\n" \
+         "The file can be any setting. It will attempt to find the matching file.\n" \
+         "The optional 'section' parameter can be used to read only a part of the file.\n" \
+         "You can use 'read <file> sections' to view all the available sections.\n" \
+         "You may specify a number in the form '5' or '4.3' for example.\n",
 }
 
 # End of the 'help.py' lines
