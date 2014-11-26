@@ -193,6 +193,7 @@ def read(inp, params=[]): # Reads a documentation file
         if reader:
             digits = False
             lister = False
+            viewer = False
             sections = []
             if len(params) > 1:
                 digits = True
@@ -229,10 +230,16 @@ def read(inp, params=[]): # Reads a documentation file
                         if line.startswith("Section " + str(int(digits[:dot]) + 1)):
                             break
                 if lister:
-                    
-                    if not line.startswith("Section "):
+                    if "index" in line.lower():
+                        viewer = True
                         continue
-                    sections.append(line[8:])
+                if viewer:
+                    if line.startswith("Section "):
+                        break
+                    if line[2:].startswith("Section "):
+                        sections.append("")
+                    if line:
+                        sections.append(line[2:].replace(":", " "))
                     continue
                 if not jumper and not lister:
                     log.help(line)
