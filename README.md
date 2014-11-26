@@ -30,6 +30,10 @@ You can make a temporary `cfg.py` file, with any setting present in `tools/varia
 
 If Auto-Update is enabled in the config, Bootleg will attempt, everytime it's ran, to check for updates and prompt the user to download it. On every run, it also checks if it's a clone of a repository or a fork. This is only useful the first time it's launched, as if it's not a clone, it will clone the repository in a temporary folder, copy over the .git folder and all files, overwriting everything already present in the folder by those files. This allows to keep one download, that will probably become obsolete soon enough, but still be able to give updates to everyone.
 
+### Reading documentation
+
+The documentation can be accessed directly from within the documentation folder, but it can also be viewed with the 'read' command, directly from within Bootleg. See 'help read' to get more information on that command.
+
 ### Adding new translations
 
 Bootleg's programming is done with translating in mind. As such, no line is hardcoded in the code, and everything is in the [translate.py][1] file.
