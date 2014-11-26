@@ -155,7 +155,9 @@ def line_splitter(output, toget):
         if iter < 80:
             iter2 = iter
             iter = output.index(" ", iter+1)
-    if iter2 >= 0:
+            if "\n" in output[:iter]:
+                break
+    if iter2 >= 0 and iter >= 80:
         toget = "  " + output[iter2+1:] + "\n" + toget
         output = output[:iter2]
     return output, toget
