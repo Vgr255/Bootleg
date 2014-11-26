@@ -57,7 +57,7 @@ The default value will be used if the argument is not specified.
 Section 2.2 - List of positional arguments
 
 'output'     :A string or strings to print and/or write, depending on the
-              positional named arguments.
+              positional named arguments. Can be a list.
 
 Default      :None - This parameter is required.
 
@@ -138,7 +138,9 @@ is True. Before printing however, it checks if the length of the line exceeds
 split the line in two at the latest space before the 80-characters limit, and
 prepend two spaces to the rest, which is stored in a variable for recursive
 iteration. If the line beings by two spaces, it will remove them before
-performing the checks, to prevent an endless loop on long lines.
+performing the checks, to prevent an endless loop on long lines. Should the
+lines fed have a newline (character '\n') in them, it will always split at
+this point regardless of the length. It may also split before if needed.
 
 Various checks are then done to clean up some variables. If the 'write'
 argument is True, it will open various log files to write the lines. If the
@@ -272,5 +274,6 @@ November 9th and 10th, 2014 - Initial writing of the documentation
 November 12th - Removed the lines() function and its matching documentation
               - Added notice regarding change to the way lines are split
 November 15th - Added the 'checker' parameter and its documentation
+November 26th - Tweaked the line splitting and added relevant information
 
 - End of documentation -
