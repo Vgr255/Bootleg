@@ -583,8 +583,11 @@ def install_setting(setting):
         raise NoInstallerFound(setting)
 
     log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
-    parse()
-    log.logger("PARS_COMPL_INST_SUCCESS", form=setting)
+    ret = parse()
+    formatt = setting
+    if ret:
+        formatt = ret
+    log.logger("PARS_COMPL_INST_SUCCESS", form=formatt)
 
 def no_such_command(command):
     log.logger("ERR_INVALID_COMMAND", form=command, write=False)

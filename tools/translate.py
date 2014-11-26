@@ -148,6 +148,22 @@ HARDCORE_GJOERULV = {
 English: "Gjoerulv's Hardcore mod",
 }
 
+RUMBAHSMOOTH1280 = {
+English: "Rumbah's FMV with Smooth Filter @ 1280p",
+}
+
+RUMBAHSMOOTH640 = {
+English: "Rumbah's FMV with Smooth Filter @ 640p",
+}
+
+RUMBAHSHARP1280 = {
+English: "Rumbah's FMV with Sharp Filter @ 1280p",
+}
+
+RUMBAHSHARP640 = {
+English: "Rumbah's FMV with Sharp Filter @ 640p",
+}
+
 # The following lines are contained in 'bootleg.py'
 
 RES_RET = { # 0 = Program name
@@ -933,8 +949,8 @@ English: "Use this command to run the Bootleg process.",
 
 # The following lines are contained within 'parser.py'
 
-PARS_EXEC_FILE = { # 0 = File; 1 = Folder
-English: "Currently exexcuting '{0}' from '{1}'.",
+PARS_EXEC_FILE = { # 0 = File; 1 = Folder; 2 = Parameters
+English: "Currently exexcuting '{0}' from '{1}' with parameters '{2}'.",
 }
 
 PARS_EXTR_FILE = { # 0 = File
@@ -951,4 +967,16 @@ English: "Select 'Original (1997)' even if using the 2012 Square Enix Store vers
 
 PICK_1997_2013 = {
 English: "Select 'Original (1997)' even if using the 2013 Steam version.",
+}
+
+PARS_SKIP_MOVIES = { # 0 = Filename; 1 = "in" or "in one of" (fill at the top); 2 = Mods location(s)
+English: "Error: '{0}' could not be found. Please add '{0}' {1} '{2}' and retry.",
+}
+
+PARS_INST_FMVRES = {
+English: "Installing the FMV Restoration cutscenes . . .",
+}
+
+PARS_COMPL_FMVRES = {
+English: "Completed installation of the FMV Restoration cutscenes.",
 }
