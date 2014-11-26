@@ -25,6 +25,8 @@ HIDDEN_COMMANDS = ["debug", "vgr", "do", "clean", "copy", "git"] # some of these
 DEBUG_COMMANDS = ["remove", "copy"]
 ERROR_COMMANDS = ["exit", "restart"]
 
+TRANSLATED_COMMANDS = {"help": {"French": "aide"}, "read": {"French": "lire"}}
+
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour
 
 DISALLOWED_COMMANDS = ["help", "run", "read"] # commands to be disallowed during setting finding

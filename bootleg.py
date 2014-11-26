@@ -48,6 +48,11 @@ def main():
         commands.extend(con.ERROR_COMMANDS)
     if var.DEBUG_MODE:
         commands.extend(con.DEBUG_COMMANDS)
+    if not var.LANGUAGE == "English":
+        for comm in commands:
+            if comm in con.TRANSLATED_COMMANDS.keys():
+                if var.LANGUAGE in con.TRANSLATED_COMMANDS[comm].keys():
+                    commands[commands.index(comm)] = con.TRANSLATED_COMMANDS[comm][var.LANGUAGE]
     totype = "ENT_CMD"
     form = []
     if var.PARSING:
@@ -98,6 +103,13 @@ def main():
     else:
         if hasattr(cmd, command) and command not in cmd.__ignore__:
             getattr(cmd, command)(inp, params)
+        elif var.LANGUAGE:
+            for orig, trans in con.TRANSLATED_COMMANDS.items():
+                for lang, comm in trans.items():
+                    if lang == var.LANGUAGE:
+                        if comm == command:
+                            if hasattr(cmd, orig) and orig not in cmd.__ignore__:
+                                getattr(cmd, orig)(inp, params)
         else: # no such command
             fn.no_such_command(command)
 
