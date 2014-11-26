@@ -281,8 +281,10 @@ if not var.ON_WINDOWS:
 # Auto-update checking via git
 
 if var.GIT_LOCATION and var.AUTO_UPDATE:
-    if git.check(var.GIT_LOCATION, silent=True):
-        if not git.diff(var.GIT_LOCATION, silent=True):
+    checker = git.check(var.GIT_LOCATION, silent=True)
+    diff = git.diff(var.GIT_LOCATION, silent=True)
+    if checker:
+        if not diff:
             if not var.SILENT_UPDATE:
                 log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
                 var.UPDATE_READY = True
@@ -290,7 +292,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
                 log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
                 git.pull(var.GIT_LOCATION, silent=True)
                 var.ALLOW_RUN = False
-    if git.check(var.GIT_LOCATION, silent=True) is None and var.FETCH_GIT: # not a git repo, make it so
+    if checker is None and var.FETCH_GIT: # not a git repo, make it so
         tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
@@ -311,7 +313,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         fn.attrib(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
-    if git.check(var.GIT_LOCATION, silent=True) and git.diff(var.GIT_LOCATION, silent=True) and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
+    if checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
