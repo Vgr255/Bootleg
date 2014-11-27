@@ -173,6 +173,10 @@ def git(inp, params=[]):
 def read(inp, params=[]): # Reads a documentation file
     if params:
         docf = os.getcwd() + "/documentation/"
+        if var.LANGUAGE in con.READ_SECTIONS.keys():
+            sect = con.READ_SECTIONS[var.LANGUAGE] + " "
+        else:
+            sect = con.READ_SECTIONS["English"] + " "
         reader = ""
         if os.path.isfile(docf + params[0]):
             reader = docf + params[0]
@@ -205,7 +209,7 @@ def read(inp, params=[]): # Reads a documentation file
                         break
                 if digits:
                     digits = params[1]
-                elif params[1].lower() in ("sections", "list"):
+                elif params[1].lower() in con.READ_GET_SECTIONS:
                     lister = True
             file = open(reader, "r")
             remover = True
@@ -217,26 +221,26 @@ def read(inp, params=[]): # Reads a documentation file
                     remover = False
                 line = line.replace("\n", "")
                 if digits:
-                    if line.startswith("Section " + digits) or digits[0] == "0":
+                    if line.startswith(sect + digits) or digits[0] == "0":
                         jumper = False
                     if "." not in digits:
-                        if line.startswith("Section " + str(int(digits)+1)):
+                        if line.startswith(sect + str(int(digits)+1)):
                             break
                     else:
                         dot = digits.index(".")
                         newdig = int(digits[dot+1:])
-                        if line.startswith("Section " + digits[:dot] + "." + str(newdig + 1)):
+                        if line.startswith(sect + digits[:dot] + "." + str(newdig + 1)):
                             break
-                        if line.startswith("Section " + str(int(digits[:dot]) + 1)):
+                        if line.startswith(sect + str(int(digits[:dot]) + 1)):
                             break
                 if lister:
                     if "index" in line.lower():
                         viewer = True
                         continue
                 if viewer:
-                    if line.startswith("Section "):
+                    if line.startswith(sect):
                         break
-                    if line[2:].startswith("Section "):
+                    if line[2:].startswith(sect):
                         sections.append("")
                     if line:
                         sections.append(line[2:].replace(":", " "))
