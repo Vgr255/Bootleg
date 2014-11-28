@@ -212,13 +212,9 @@ def read(inp, params=[]): # Reads a documentation file
                 elif params[1].lower() in con.READ_GET_SECTIONS:
                     lister = True
             file = open(reader, "r")
-            remover = True
             jumper = True if digits else False
             log.help("")
             for line in file.readlines():
-                if remover: # Some odd characters appear the beginning of the file
-                    line = line[3:]
-                    remover = False
                 line = line.replace("\n", "")
                 if digits:
                     if line.startswith(sect + digits) or digits[0] == "0":

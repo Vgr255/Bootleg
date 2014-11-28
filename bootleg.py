@@ -54,18 +54,18 @@ def main():
                 if var.LANGUAGE in con.TRANSLATED_COMMANDS[comm].keys():
                     commands[commands.index(comm)] = con.TRANSLATED_COMMANDS[comm][var.LANGUAGE]
     totype = "ENT_CMD"
-    form = []
+    formatter = []
     if var.PARSING:
         totype = "ENT_CHC"
     if var.NEED_RESTART or var.SILENT_RUN:
         totype = ""
     if var.UPDATE_READY:
         totype = "ENT_UPD"
-        form = ["YES", "NO"]
+        formatter = ["YES", "NO"]
     if totype == "ENT_CMD":
         log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
     if totype:
-        log.help("\n", totype, "", form=form)
+        log.help("\n", totype, "", form=formatter)
     else: # nothing to print, either restarting after Git or silently running
         if var.SILENT_RUN:
             cmd.run("silent")
