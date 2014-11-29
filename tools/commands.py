@@ -12,7 +12,7 @@ import subprocess
 import shutil
 import os
 
-__ignore__ = ["con", "var", "fn", "pro", "log", "helper", "_git", "links", "webbrowser", "shutil", "os"]
+__ignore__ = ["con", "var", "fn", "pro", "log", "helper", "links", "webbrowser", "shutil", "os"]
 
 # This holds all the commands
 # Must have (inp, params=[]) in the def,
@@ -182,6 +182,10 @@ def git(inp, params=[]):
     _git.do(args)
 
 def read(inp, params=[]): # Reads a documentation file
+    # Priority: 'documentation' folder with full name; same folder without file extension;
+    # 'English' subfolder with full name; same folder without file extension;
+    # Language's subfolder with full name; same folder without file extension;
+    # The first one to match gets taken; same for extensions
     if params:
         docf = os.getcwd() + "/documentation/"
         if var.LANGUAGE in con.READ_SECTIONS.keys():
@@ -191,12 +195,21 @@ def read(inp, params=[]): # Reads a documentation file
         reader = ""
         if os.path.isfile(docf + params[0]):
             reader = docf + params[0]
-        if con.DOCFILES_EXTS:
+        if not reader and con.DOCFILES_EXTS:
             for ext in con.DOCFILES_EXTS:
                 if os.path.isfile(docf + params[0] + "." + ext):
                     reader = docf + params[0] + "." + ext
                     break
-        if os.path.isdir(docf + var.LANGUAGE):
+        if not reader and os.path.isdir(docf + "English"):
+            docl = docf + "English/"
+            if os.path.isfile(docl + params[0]):
+                reader = docl + params[0]
+            if con.DOCFILES_EXTS:
+                for ext in con.DOCFILES_EXTS:
+                    if os.path.isfile(docl + params[0] + "." + ext):
+                        reader = docl + params[0] + "." + ext
+                        break
+        if not reader and os.path.isdir(docf + var.LANGUAGE):
             docl = docf + var.LANGUAGE + "/"
             if os.path.isfile(docl + params[0]):
                 reader = docl + params[0]
@@ -264,6 +277,8 @@ def read(inp, params=[]): # Reads a documentation file
             file.close()
         else:
             log.logger("ERR_DOC_NOT_FOUND", form=params[0])
+    else:
+        log.logger("HELP_READ_CMD")
 
 def get(inp, params=[]):
     if params:

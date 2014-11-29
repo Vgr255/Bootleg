@@ -101,7 +101,7 @@ def main():
     if var.ERROR and command not in con.ERROR_COMMANDS:
         log.help("NEED_RR")
     else:
-        if hasattr(cmd, command) and command not in cmd.__ignore__:
+        if hasattr(cmd, command) and command not in cmd.__ignore__ and "_" not in command:
             getattr(cmd, command)(inp, params)
         else:
             for orig, trans in con.TRANSLATED_COMMANDS.items():
