@@ -19,9 +19,9 @@ import os
 
 from tools.exceptions import *
 
-# Various methods for file manipulation
+# Various methods for file manipulation. There always return something
 
-def FindFile(seeker): # Finds a mod in all the mods folders; returns a tuple of (folder, file)
+def FindFile(seeker): # Finds a mod in all the mods folders. Returns a tuple of (folder, file) if successful, else raises an exception
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
             if file.lower() == seeker.lower():
@@ -32,13 +32,14 @@ def FindFile(seeker): # Finds a mod in all the mods folders; returns a tuple of 
     raise ModFileNotFound(seeker) # Exit out if the mod could not be found
     # Todo: use a try-except statement in the process to catch this
 
-def ExecuteFile(file, params=""): # Runs an executable file
+def ExecuteFile(file, params=""): # Runs an executable file. Always returns 0 if successful, else an exception is raised.
     folder, file = FindFile(file)
 
     log.logger("PARS_EXEC_FILE", form=[file, folder[:-1], params], display=False)
     subprocess.Popen([folder + file, params])
+    return 0
 
-def ExtractFile(file, pw="none", dst=None): # Extracts an archive into the temp folder
+def ExtractFile(file, pw="none", dst=None): # Extracts an archive into the temp folder. Returns the folder it was extracted in.
     path, file = FindFile(file)
 
     if file.endswith(".rar"):
@@ -46,19 +47,24 @@ def ExtractFile(file, pw="none", dst=None): # Extracts an archive into the temp 
     elif file.endswith((".zip", ".7z")):
         type = "zip"
     else:
-        raise UnsupportedFileType(file)
+        type = None
 
     if dst is None:
         dst = file
+    if not dst[-1:] in ("/", "\\"):
+        dst = dst + "\\"
 
     if type == "rar": # Rar file
         subprocess.Popen([var.RAR_LOCATION, "x", "-y", "-p" + pw, path+file, var.BOOTLEG_TEMP + dst])
     if type == "zip": # Zip file
         subprocess.Popen([var.SEVENZ_LOCATION, "x", "-p" + pw, "-y", "-o" + var.BOOTLEG_TEMP + dst, path + file])
+    else: # No type, just copy it over
+        shutil.copy(path + file, var.BOOTLEG_TEMP + dst + file)
 
-    log.logger("PARS_EXTR_FILE", form=[path + file])
+    log.logger("PARS_EXTR_FILE", form=[path + file], display=False)
+    return var.BOOTLEG_TEMP + dst
 
-def LaunchFile(mod, file): # Runs a file found in the folder created by ExtractFile()
+def LaunchFile(mod, file): # Runs a file found in the folder created by ExtractFile(). Returns 0 if successful.
     if not os.path.isdir(var.BOOTLEG_TEMP + mod):
         raise InexistantFolderTemp(mod)
     if not os.path.isfile(var.BOOTLEG_TEMP + mod + "\\" + file):
@@ -68,8 +74,9 @@ def LaunchFile(mod, file): # Runs a file found in the folder created by ExtractF
         mod = mod + "\\"
 
     subprocess.Popen([var.BOOTLEG_TEMP + mod + file])
+    return 0
 
-def CopyFolder(src, dst): # Copies the content of a folder in an existing location
+def CopyFolder(src, dst): # Copies the contents of a folder in an existing location. Returns 0.
     if not src[-1:] in ("/", "\\"):
         src = src + "\\"
     if not dst[-1:] in ("/", "\\"):
@@ -79,28 +86,60 @@ def CopyFolder(src, dst): # Copies the content of a folder in an existing locati
 
     for file in os.listdir(src):
         shutil.copy(src + file, dst + file)
+    return 0
 
-def CopyFile(path, file, new): # Copies a new file in the same directory with a new name
+def CopyFile(path, file, new): # Copies a new file in the same directory with a new name. Returns 0.
     if not path[-1:] in ("/", "\\"):
         path = path + "\\"
 
     shutil.copy(path + file, path + new)
+    return 0
 
-def DeleteFile(path): # Deletes files and folders
+    
+
+def DeleteFile(path): # Deletes files and folders. Always returns 0
     for line in path:
         if os.path.isdir(line):
             shutil.rmtree(line)
         if os.path.isfile(line):
             os.remove(line)
 
-def RenameFile(path, org, new): # Renames item x of org to item x of new
-    iter = 0
+    return 0
+
+def RenameFile(path, org, new): # Renames item x of org to item x of new. Always returns 0
+    cont = zip(org, new)
     if not path[-1:] in ("/", "\\"):
         path = path + "\\"
-    for file in org:
-        if os.path.isfile(path + file):
-            os.rename(path + file, path + new[iter])
-        iter += 1
+    for file in cont:
+        if os.path.isfile(path + file[0]):
+            os.rename(path + file[0], path + file[1])
+
+    return 0
+
+def StripFolder(path): # Brings all files of all subfolders in path. Returns all the folders that were checked.
+    if not path[-1:] in ("/", "\\"):
+        path = path + "\\"
+    folders = [path]
+    allf = []
+    while True:
+        if not folders:
+            return allf
+        folder = folders.pop(0)
+        allf.append(folder)
+        for lister in os.listdir(folder):
+            if os.path.isdir(lister):
+                folders.append(folder + lister + "\\")
+            elif not path == folder:
+                CopyFolder(folder, path)
+                shutil.rmtree(folder)
+
+def CallSkipMod(mod): # Prints a skip mod warning. Returns 0.
+    if len(var.MOD_LOCATION) == 1:
+        iner = "ONE_IN"
+    else:
+        iner = "MULT_IN_ONE"
+    log.logger("PARS_SKIP", form=[mod, iner, "', '".join(var.MOD_LOCATION)])
+    return 0
 
 # The following are for finding the settings
 
@@ -234,15 +273,21 @@ def find_movies():
     "1 = DLPB's HQ videos",
     "2 = Bootlegged - Trojak's Enhanced with DLBP and Xion999",
     "3 = Bootlegged Further Enhanced with Grimmy",
-    "4 = Bootlegged Further Enhanced with Rumbah",
+    "4 = Bootlegged Further Enhanced with Rumbah:",
     "5 = Rumbah Complete - 1280 Smooth",
     "6 = Rumbah Complete - 1280 Sharp",
     "7 = Rumbah Complete - 640 Smooth",
     "8 = Rumbah Complete - 640 Sharp",
     "9 = Grimmy's AC Style enhanced with Leonhart7413",
     "10 = Grimmy's AC Style enhanced with Leonhart7413 HD Alternate",
-    "11 = Bootlegged reworked with PH03N1XFURY",
-    "12 = The Remix version of Grimmy's Videos",    ]
+    "11 = Bootlegged reworked with PH03N1XFURY",    ]
+
+def find_rumbah_movies():
+    return [
+    "Choose which pick of Rumbah's opening videos to use:",
+    "You may pick a number from 1 to 5",
+    "Don't change anything if you don't know what to pick",
+    ]
 
 def find_field_textures():
     return [
@@ -470,33 +515,124 @@ def install_movies():
 
         for num in range(1, max):
             FindFile(filef.format(num))
-        ExtractFile(filef.format("1"), dst="RumbahFMVs")
+        ExtractFile(filef.format(1), dst="RumbahFMVs")
 
         # We got so far, so all the parts do exist and got successfully extracted
         CopyFolder(var.BOOTLEG_TEMP + "RumbahFMVs", var.FFVII_PATH + "movies")
-        for file in ("hit0", "hit1", "off"):
-            DeleteFile([var.FFVII_PATH + "movies\\rcket{0}.avi".format(file)])
+        for mov in ("hit0", "hit1", "off"):
+            DeleteFile([var.FFVII_PATH + "movies\\rcket{0}.avi".format(mov)])
         RenameFile(var.FFVII_PATH + "movies", ["rckthit0.avi", "rckthit1.avi", "rcktoff.avi"], ["rckethit0.avi", "rckethit1.avi", "rcketoff.avi"])
-
-        return file
+        return
 
     for num in range(0, 7): # Install DLPB's videos - add others on top if needed
-        try:
-            FindFile(getattr(fl, "FMVRES" + str(num)))
-        except ModFileNotFound:
-            log.logger("PARS_SKIP_MOVIES", form=[getattr(fl, "FMVRES" + str(num)), "ONE_IN" if len(var.MOD_LOCATION) == 1 else "MULT_IN_ONE", "', '".join(var.MOD_LOCATION)])
-            raise
+        FindFile(getattr(fl, "FMVRES" + str(num)))
 
-        # All the files do exist
-        log.logger("PARS_INST_FMVRES")
-        ExecuteFile(fl.FMVRES0, "/verysilent")
-        log.logger("PARS_COMPL_FMVRES")
-        # Not finished yet
-    # "1 = DLPB's HQ videos",
-    # "2 = Bootlegged - Trojak's Enhanced with DLBP and Xion999",
-    # "3 = Bootlegged Further Enhanced with Grimmy",
-    # "4 = Bootlegged Further Enhanced with Rumbah",
-    # "9 = Grimmy's AC Style enhanced with Leonhart7413",
-    # "10 = Grimmy's AC Style enhanced with Leonhart7413 HD Alternate",
-    # "11 = Bootlegged reworked with PH03N1XFURY",
-    # "12 = The Remix version of Grimmy's Videos",
+    # All the files do exist
+    log.logger("PARS_INSTALLING", form="FMVRES")
+    ExecuteFile(fl.FMVRES0, "/verysilent")
+    log.logger("PARS_COMPLETED", form="FMVRES")
+
+    if var.MOVIES == 1: # DLPB's HQ videos
+        return
+
+    for part in (1, 2): # Trojak's Enhanced movies
+        file = ""
+        try:
+            for num in range(1, 4):
+                FindFile(fl.ENHANCEDMOVIESPARTS.format(num, part))
+            if part == 2:
+                FindFile(fl.ENHANCEDMOVIESPARTS.format(4, 2))
+            file = fl.ENHANCEDMOVIESPARTS.format(1, part)
+        except ModFileNotFound:
+            try:
+                FindFile(fl.ENHANCEDMOVIES.format(part))
+                file = fl.ENHANCEDMOVIES.format(part)
+            except ModFileNotFound:
+                CallSkipMod(fl.ENHANCEDMOVIES.format(part)) # We want to go on and install the rest
+
+        if file:
+            log.logger("PARS_INST", form="ENHANCED_MOVIES" + str(part))
+            ExtractFile(file, dst="EnhancedMovies")
+
+    try: # Eidos Logo
+        log.logger("PARS_INSTALLING", form="LOGO")
+        logo, folder = FindFile(fl.LOGO)
+        shutil.copy(folder + logo, var.FFVII_PATH + "movies\\eidoslogo.avi")
+        log.logger("PARS_COMPLETED", form="LOGO")
+    except ModFileNotFound:
+        CallSkipMod(fl.LOGO)
+
+    if var.MOVIES in (3, 9): # Grimmy's movies
+        log.logger("PARS_INSTALLING", form="GRIMMY_MOVIES")
+        for num in range(1, 8):
+            try:
+                ExtractFile(getattr(fl, "GRIMMY" + str(num)), dst="GrimmyMovies")
+            except ModFileNotFound:
+                continue
+        if os.path.isdir(var.BOOTLEG_TEMP + "GrimmyMovies"):
+            StripFolder(var.BOOTLEG_TEMP + "GrimmyMovies")
+            CopyFolder(var.BOOTLEG_TEMP + "GrimmyMovies", var.FFVII_PATH + "movies")
+
+    if var.MOVIES == 4: # Rumbah's movies
+        try:
+            FindFile(fl.MOVIE)
+            log.logger("PARS_INSTALLING", form="RUMBAH_MOVIES")
+            ExtractFile(fl.MOVIE)
+            CopyFolder("{0}{1}\\{2}".format(var.BOOTLEG_TEMP, fl.MOVIE, var.RUMBAH_MOVIES), var.FFVII_PATH + "movies")
+            log.logger("PARS_COMPLETED", form="RUMBAH_MOVIES")
+        except ModFileNotFound:
+            CallSkipMod(fl.MOVIE)
+
+    if var.MOVIES in (9, 10): # Enhanced with Leonhart7413
+        exists = True
+        for num in range(1, 5):
+            try:
+                FindFile(fl.LEONHARTMOVIES.format(num))
+            except ModFileNotFound:
+                CallSkipMod(fl.LEONHARTMOVIES)
+                exists = False
+                break
+        if exists:
+            log.logger("PARS_INSTALLING", form="LEONHART_MOVIES")
+            ExtractFile(fl.LEONHARTMOVIES.format(1), dst="LeonhartMovies")
+            CopyFolder(var.BOOTLEG_TEMP + "LeonhartMovies", var.FFVII_PATH + "movies")
+            log.logger("PARS_COMPLETED", form="LEONHART_MOVIES")
+
+    if var.MOVIES == 10: # Enhanced with Leonhart7413 HD Alternate
+        try:
+            FindFile(fl.LEONHARTOPENING)
+            log.logger("PARS_INSTALLING", form="LEONHART_OPENING")
+            ExtractFile(fl.LEONHARTOPENING, dst="LeonhartOpening")
+            CopyFolder(var.BOOTLEG_TEMP + "LeonhartOpening", var.FFVII_PATH + "movies")
+            log.logger("PARS_COMPLETED", form="LEONHART_OPENING")
+        except ModFileNotFound:
+            CallSkipMod(fl.LEONHARTOPENING)
+
+        try:
+            for num in range(1, 4):
+                FindFile(fl.LEONHARTLOGO.format(num))
+            log.logger("PARS_INSTALLING", form="LEONHART_LOGO")
+            ExtractFile(fl.LEONHARTLOGO.format(1), dst="LeonhartLogo")
+            CopyFolder(var.BOOTLEG_TEMP + "LeonhartLogo", var.FFVII_PATH + "movies")
+            log.logger("PARS_COMPLETED", form="LEONHART_LOGO")
+        except ModFileNotFound:
+            CallSkipMod(fl.LEONHARTLOGO)
+
+    if var.MOVIES == 11: # Bootlegged reworked with PH03N1XFURY
+        try:
+            FindFile(fl.FMVSFMV)
+            log.logger("PARS_INSTALLING", form="FURY_FMVS")
+            ExtractFile(fl.FMVSFMV, dst="FuryFMVs")
+            CopyFolder(var.BOOTLEG_TEMP + "FuryFMVs", var.FFVII_PATH + "movies")
+            log.logger("PARS_COMPLETED", form="FURY_FMVS")
+        except ModFileNotFound:
+            CallSkipMod(fl.FMVSFMV)
+
+        try:
+            FindFile(fl.FUNERALFMV)
+            log.logger("PARS_INSTALLING", form="FUNERAL_FMVS")
+            ExtractFile(fl.FUNERALFMV, dst="FuneralFMV")
+            CopyFolder(var.BOOTLEG_TEMP + "FuneralFMV", var.FFVII_PATH + "movies")
+            log.logger("PARS_COMPLETED", form="FUNERAL_FMVS")
+        except ModFileNotFound:
+            CallSkipMod(fl.FUNERALFMV)

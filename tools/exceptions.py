@@ -43,11 +43,6 @@ class ModFileNotFound(CustomBootException):
 class PresetAlreadyImported(CustomBootException):
     pass
 
-# Called if a mod's file type is unsupported
-
-class UnsupportedFileType(CustomBootException):
-    pass
-
 # Called if a specific folder doesn't exist in the temp folder
 
 class InexistantFolderTemp(CustomBootException):

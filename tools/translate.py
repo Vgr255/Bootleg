@@ -43,7 +43,7 @@ French: "Non",
 
 # Small words that are part of larger sentences by format
 
-PLURAL = {
+PLURAL = { # Gets added if plural at the end of some words
 English: "s",
 French: "s",
 }
@@ -60,18 +60,22 @@ French: "sont",
 
 ONE_IN = {
 English: "in",
+French: "dans",
 }
 
 MULT_IN_ONE = {
 English: "in one of",
+French: "dans l'un de",
 }
 
 STATUS = {
 English: "status",
+French: "status",
 }
 
 SIGNAL = {
 English: "signal",
+French: "signal",
 }
 
 # Mods names
@@ -162,6 +166,50 @@ English: "Rumbah's FMV with Sharp Filter @ 1280p",
 
 RUMBAHSHARP640 = {
 English: "Rumbah's FMV with Sharp Filter @ 640p",
+}
+
+FMVRES = {
+English: "the FMV Restoration cutscenes",
+}
+
+LOGO = {
+English: "the Eidos logo",
+}
+
+ENHANCED_MOVIES1 = {
+English: "Enhanced Movies pack 1",
+}
+
+ENHANCED_MOVIES2 = {
+English: "Enhanced Movies pack 2",
+}
+
+GRIMMY_MOVIES = {
+English: "Grimmy's movies",
+}
+
+RUMBAH_MOVIES = {
+English: "Rumbah's Opening movies",
+}
+
+LEONHART_MOVIES = {
+English: "Leonhart7413's Intro movies",
+}
+
+LEONHART_OPENING = {
+English: "Leonhart7413's Alternate Opening movie",
+}
+
+LEONHART_LOG = {
+English: "Leonhart7413's Alternate Logo movie",
+}
+
+FURY_FMVS = {
+English: "PH03N1XFURY's Ending and Meteo FMVs",
+}
+
+FUNERAL_FMVS = {
+English: "PH03N1XFURY's Funeral and Nibelheim FMVs",
 }
 
 # The following lines are contained in 'bootleg.py'
@@ -982,14 +1030,14 @@ PICK_1997_2013 = {
 English: "Select 'Original (1997)' even if using the 2013 Steam version.",
 }
 
-PARS_SKIP_MOVIES = { # 0 = Filename; 1 = "in" or "in one of" (fill at the top); 2 = Mods location(s)
+PARS_SKIP = { # 0 = Filename; 1 = "in" or "in one of" (fill at the top); 2 = Mods location(s)
 English: "Error: '{0}' could not be found. Please add '{0}' {1} '{2}' and retry.",
 }
 
-PARS_INST_FMVRES = {
-English: "Installing the FMV Restoration cutscenes . . .",
+PARS_INSTALLING = { # 0 = Mod name
+English: "Installing {0} . . .",
 }
 
-PARS_COMPL_FMVRES = {
-English: "Completed installation of the FMV Restoration cutscenes.",
+PARS_COMPLETED = { # 0 = Mod name
+English: "Completed installation of {0}.",
 }

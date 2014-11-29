@@ -123,6 +123,7 @@ SOUNDTRACK         = "ST"
 AV_SOUND_FX        = "SX"
 FMV_NO_CAIT        = "NC"
 RETRANSLATED_FMV   = "FM"
+RUMBAH_MOVIES      = "RH"
 
 # Other
 

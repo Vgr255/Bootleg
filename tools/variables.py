@@ -217,6 +217,7 @@ CAIT_BATTLE        = 0
 GUARD_SCORPION     = 0
 SWEEPER            = 0
 MATERIAS_MODELS    = 0
+RUMBAH_MOVIES      = 4 # Only used if MOVIES is 4
 
 # System settings
 

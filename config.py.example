@@ -151,6 +151,7 @@ SOUNDTRACK         = ""
 AV_SOUND_FX        = ""
 FMV_NO_CAIT        = ""
 RETRANSLATED_FMV   = ""
+RUMBAH_MOVIES      = "" # Only used if MOVIES is 4
 
 # Other
 
