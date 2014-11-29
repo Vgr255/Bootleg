@@ -90,6 +90,7 @@ RANGE = { # The maximum value for each setting. If it's not there, it will assum
 "MENU_BACKGROUND":   12,
 "KERNEL_SELECT":     15,
 "MOVIES":            11,
+"RUMBAH_MOVIES":     5,
 "FIELD_TEXTURES":    4,
 "AVATARS":           23,
 "SOUNDTRACK":        9,

@@ -95,8 +95,6 @@ def CopyFile(path, file, new): # Copies a new file in the same directory with a 
     shutil.copy(path + file, path + new)
     return 0
 
-    
-
 def DeleteFile(path): # Deletes files and folders. Always returns 0
     for line in path:
         if os.path.isdir(line):
@@ -116,14 +114,14 @@ def RenameFile(path, org, new): # Renames item x of org to item x of new. Always
 
     return 0
 
-def StripFolder(path): # Brings all files of all subfolders in path. Returns all the folders that were checked.
+def StripFolder(path): # Brings all files of all subfolders in path. Returns a tuple of all the folders that were checked.
     if not path[-1:] in ("/", "\\"):
         path = path + "\\"
     folders = [path]
     allf = []
     while True:
         if not folders:
-            return allf
+            return tuple(allf)
         folder = folders.pop(0)
         allf.append(folder)
         for lister in os.listdir(folder):
@@ -273,7 +271,7 @@ def find_movies():
     "1 = DLPB's HQ videos",
     "2 = Bootlegged - Trojak's Enhanced with DLBP and Xion999",
     "3 = Bootlegged Further Enhanced with Grimmy",
-    "4 = Bootlegged Further Enhanced with Rumbah:",
+    "4 = Bootlegged Further Enhanced with Rumbah",
     "5 = Rumbah Complete - 1280 Smooth",
     "6 = Rumbah Complete - 1280 Sharp",
     "7 = Rumbah Complete - 640 Smooth",
@@ -515,6 +513,7 @@ def install_movies():
 
         for num in range(1, max):
             FindFile(filef.format(num))
+
         ExtractFile(filef.format(1), dst="RumbahFMVs")
 
         # We got so far, so all the parts do exist and got successfully extracted
