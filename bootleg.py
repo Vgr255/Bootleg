@@ -103,14 +103,15 @@ def main():
     else:
         if hasattr(cmd, command) and command not in cmd.__ignore__:
             getattr(cmd, command)(inp, params)
-        elif var.LANGUAGE:
+        else:
             for orig, trans in con.TRANSLATED_COMMANDS.items():
                 for lang, comm in trans.items():
                     if lang == var.LANGUAGE:
                         if comm == command:
                             if hasattr(cmd, orig) and orig not in cmd.__ignore__:
                                 getattr(cmd, orig)(inp, params)
-        else: # no such command
+                                return
+
             fn.no_such_command(command)
 
 while var.ALLOW_RUN:

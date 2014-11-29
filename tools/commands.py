@@ -104,6 +104,17 @@ def help(inp, params=[]):
         type = "help"
         if hasattr(helper, params[0]):
             helping = getattr(helper, params[0])()
+        else:
+            broke = False
+            for orig, trans in con.TRANSLATED_COMMANDS.items():
+                for lang, line in trans.items():
+                    if broke:
+                        break
+                    if lang == var.LANGUAGE:
+                        if line == params[0]:
+                            if hasattr(helper, orig):
+                                helping = getattr(helper, orig)()
+                                broke = True
         if helping == helper.unhandled:
             type = "error"
             var.ERROR = True
@@ -230,7 +241,11 @@ def read(inp, params=[]): # Reads a documentation file
                         if line.startswith(sect + str(int(digits[:dot]) + 1)):
                             break
                 if lister:
-                    if "index" in line.lower():
+                    if var.LANGUAGE in con.READ_INDEX:
+                        rind = con.READ_INDEX[var.LANGUAGE]
+                    else:
+                        rind = con.READ_INDEX["English"]
+                    if rind in line.lower():
                         viewer = True
                         continue
                 if viewer:

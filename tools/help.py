@@ -14,7 +14,7 @@ def get_help(helping=""):
     helping = helping.lower()
     log.help("", "HELP_FILE_BOOT_CONF", form=con.PROGRAM_NAME)
     log.help("HELP_FILE_NEW_HELP", "\n")
-    if helping and helping not in (var.HELPERS + var.USERS + var.COMMANDS):
+    if helping and helping not in (var.HELPERS + var.USERS + var.COMMANDS) and helping not in [list(cmd.values())[0] for cmd in [new for new in con.TRANSLATED_COMMANDS.values()]]:
         log.help("HELP_NOT_VALID_HELP", form=helping)
         if var.HELPERS:
             log.help("HELP_POS_HELP_TOPICS", form=[", ".join(var.HELPERS), "PLURAL" if len(var.HELPERS) > 1 else ""])

@@ -28,6 +28,8 @@ ERROR_COMMANDS = ["exit", "restart"]
 TRANSLATED_COMMANDS = {"help": {"French": "aide"}, "read": {"French": "lire"}}
 
 READ_SECTIONS = {"English": "Section", "French": "Section"}
+READ_INDEX = {"English": "index", "French": "index"}
+
 READ_GET_SECTIONS = ["sections", "list"]
 
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour
