@@ -134,6 +134,8 @@ def get(output, splitter):
     output = list(output)
     if len(output) == 1 and list(output[0]) == output[0]:
         output = output[0]
+    if not output: # Called without any argument
+        output = ['']
     msg = None
     for line in output:
         if msg is None:
