@@ -49,7 +49,8 @@ Depending on positional named arguments, it can perform a few things.
 
 Positional named arguments can be called with name=value in the function call.
 They can be called in any order, and any or all of them can be omitted without
-any issue, except for the first argument, output.
+any issue. Omitting any parameter will output a newline, using the function's
+default values.
 
 Each parameter has a default value.
 The default value will be used if the argument is not specified.
@@ -101,7 +102,7 @@ Default      :True
               those lines. The splitter argument can be "", which will simply
               concatenate the strings together.
 
-Default      :"\\n" - Newline
+Default      :"\n" - Newline
 
 'form'       :The form parameter is a derivation of the str.format() function.
               It is a list of strings to be added into the output, not unlike
@@ -127,7 +128,7 @@ Section 2.3 - In-depth description - Step-by-step explanation of the function
 When called, logger() performs a number of checks before printing or writing
 to a file. First, it formats the output using the 'splitter' argument to make
 one single string containing all the lines. It then initializes some variables,
-and checks for newlines ('\\n') to not print them at once, but in separate
+and checks for newlines ('\n') to not print them at once, but in separate
 instances. If the raw logging type is defined, it will override the 'type'
 setting with the first matching type in the 'LOGGERS' dictionary constant.
 
@@ -248,7 +249,7 @@ Default      :True
 
 'splitter'   :Identical to the logger() and multiple() counterparts.
 
-Default      :"\\n" - Newline
+Default      :"\n" - Newline
 
 'form'       :Identical to the logger() and multiple() counterparts.
 
