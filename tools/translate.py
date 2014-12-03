@@ -662,6 +662,26 @@ COMPL_AUDIO_DEVICES = {
 English: "Completed Audio devices.",
 }
 
+PREPARING_LGP_FILES = {
+English: "Preparing LGP Files . . .",
+}
+
+COMPLETED_LGP_FILES = {
+English: "Completed LGP Preparation.",
+}
+
+PREPARING_DATA_FILE = {
+English: "Preparing '{0}' . . .",
+}
+
+COMPLETED_DATA_FILE = {
+English: "Completed '{0}'.",
+}
+
+COPYING_DUMMY_TEX = {
+English: "Copying Dummy Textures . . .",
+}
+
 INV_PAR_FILE = { # 0 = File name; 1 = Setting
 English: "Invalid setting found in {0}: {1}",
 }

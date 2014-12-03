@@ -13,6 +13,7 @@ from tools import constants as con
 from tools import parsables as par
 from tools import functions as fn
 from tools import commands as cmd
+from tools import methods as met
 from tools import logger as log
 from tools import help
 from tools import get
@@ -198,6 +199,8 @@ for topic in help.__dict__.keys():
 # Mods location
 
 if var.MOD_LOCATION:
+    if var.MOD_LOCATION == list(var.MOD_LOCATION):
+        var.MOD_LOCATION = ";".join(var.MOD_LOCATION)
     mod_loc = var.MOD_LOCATION.split(";")
     moloc = []
     for semicolon in mod_loc:
@@ -232,6 +235,7 @@ if not var.FFVII_PATH[-1:] == "\\":
 
 if not var.BOOTLEG_TEMP:
     var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
+var.BOOTLEG_TEMP = var.BOOTLEG_TEMP.replace("/", "\\")
 if not var.BOOTLEG_TEMP[-1:] == "\\":
     var.BOOTLEG_TEMP += "\\"
 if not os.path.isdir(var.BOOTLEG_TEMP):
@@ -243,7 +247,7 @@ os.mkdir(var.BOOTLEG_TEMP)
 # Installation image
 
 if var.FFVII_IMAGE:
-    if not var.FFVII_IMAGE[-4:].lower() == ".zip":
+    if not var.FFVII_IMAGE.lower().endswith((".zip", ".7z", ".rar")):
         var.FFVII_IMAGE = None
 
 # System files
@@ -310,7 +314,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
             if fn.IsFile.cur(file):
                 os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
             shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
-        fn.attrib(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
+        met.AttribFile(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
     if checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:

@@ -31,8 +31,25 @@ def ExecuteFile(file, params=""): # Runs an executable file. Always returns 0 if
     subprocess.Popen([folder + file] + params)
     return 0
 
-def ExtractFile(file, pw="none", dst=None): # Extracts an archive into the temp folder. Returns the folder it was extracted in.
-    path, file = FindFile(file)
+def GetFile(file): # Splits the folder and file in a single path. Returns a tuple of (folder, file).
+    new = list(file)
+    new.reverse()
+    indx = len(new) + 1
+    for slash in ("/", "\\"):
+        if new.index(slash) < indx:
+            indx = new.index(slash)
+    if indx < len(new):
+        return file[:-indx], file[-indx:]
+    return None, file # Don't raise an error, but folder doesn't exist
+
+def ExtractFile(file, dst=None, pw="none"): # Extracts an archive into the temp folder. Returns the folder it was extracted in.
+    try:
+        path, file = FindFile(file)
+    except ModFileNotFound:
+        if True in [slash in file for slash in ("/", "\\")]:
+            path, file = GetFile(file)
+        else:
+            raise
 
     if file.endswith(".rar"):
         type = "rar"
@@ -56,16 +73,16 @@ def ExtractFile(file, pw="none", dst=None): # Extracts an archive into the temp 
     log.logger("PARS_EXTR_FILE", form=[path + file], display=False)
     return var.BOOTLEG_TEMP + dst
 
-def LaunchFile(mod, file): # Runs a file found in the folder created by ExtractFile(). Returns 0 if successful.
-    if not os.path.isdir(var.BOOTLEG_TEMP + mod):
-        raise InexistantFolderTemp(mod)
-    if not os.path.isfile(var.BOOTLEG_TEMP + mod + "\\" + file):
-        raise InexistantFileTemp(mod, file)
+def ExtractLGP(file, dir): # Extracts an LGP archive. Returns the destination.
+    subprocess.Popen([var.ULGP_LOCATION, "-x", file, "-C", dir])
+    return dir
 
-    if not mod[-1:] in ("/", "\\"):
-        mod = mod + "\\"
+def RepackLGP(dir, file): # Repacks a folder into an LGP archive. Returns the file.
+    subprocess.Popen([var.ULGP_LOCATION, "-c", file, "-C", dir])
+    return file
 
-    subprocess.Popen([var.BOOTLEG_TEMP + mod + file])
+def LaunchFile(*params): # Runs a raw file. Returns 0 if successful.
+    subprocess.Popen(params)
     return 0
 
 def CopyFolder(src, dst): # Copies the contents of a folder in an existing location. Returns 0.
@@ -105,6 +122,11 @@ def RenameFile(path, org, new): # Renames item x of org to item x of new. Always
             os.rename(path + file[0], path + file[1])
 
     return 0
+
+def AttribFile(file, attr="-R -S -H -I", params=""): # sets Windows file and folders attributes
+    # "-R -S -H -I" is the default attribute setting; removes all unwanted attributes
+    # Parameters are optional; it's mainly to effect folders as well
+    subprocess.Popen(["C:\\Windows\\System32\\attrib.exe"] + attr.split() + [file] + params.split())
 
 def StripFolder(path): # Brings all files of all subfolders in path. Returns a tuple of all the folders that were checked.
     if not path[-1:] in ("/", "\\"):

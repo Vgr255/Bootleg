@@ -42,13 +42,3 @@ class ModFileNotFound(CustomBootException):
 
 class PresetAlreadyImported(CustomBootException):
     pass
-
-# Called if a specific folder doesn't exist in the temp folder
-
-class InexistantFolderTemp(CustomBootException):
-    pass
-
-# Called if a specific file doesn't exist in a subfolder of the temp folder
-
-class InexistantFileTemp(CustomBootException):
-    pass

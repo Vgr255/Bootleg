@@ -7,7 +7,6 @@ from tools import errors
 from tools import get
 from tools import reg
 
-import subprocess
 import tempfile
 import shutil
 import sys
@@ -16,6 +15,10 @@ import os
 # Get the custom exception handlers
 
 from tools.exceptions import *
+
+# Get file manipulation methods
+
+from tools.methods import *
 
 def initialize(): # initialize variables on startup and/or retry
     begin = "BEGIN_BOOT"
@@ -54,38 +57,6 @@ class IsFile:
         return os.path.isfile(var.BOOTLEG_TEMP + inp)
     def get(inp):
         return os.path.isfile(inp)
-
-class ManipFile:
-    def _7zip(file, dir=os.getcwd()):
-        args = [var.SEVENZ_LOCATION, 'x', '-o"{0}"'.format(dir), '"{0}"'.format(file)]
-        handler(args)
-
-    def lgp(type, file, dir=os.getcwd()):
-        args = [var.UGLP_LOCATION, "-{0}".format(type), '"{0}{1}{2}.lgp"'.format(dir, "\\" if dir[:-1] not in ("/", "\\") else "", file), "-C", '"{0}{1}"'.format(var.BOOTLEG_TEMP, file)]
-        handler(args)
-
-    def rar(file, dir=os.getcwd()):
-        args = [var.RAR_LOCATION] # todo
-        handler(args)
-
-    def raw(*args): # Handler for any other process than above
-        args = list(args)
-        handler(args)
-
-    def handler(args):
-        child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (out, err) = child.communicate()
-        ret = child.returncode
-        for line in (out + err).splitlines():
-            log.logger(line.decode('utf-8'), type="debug")
-
-        if ret != 0:
-            if ret < 0:
-                cause = 'SIGNAL'
-            else:
-                cause = 'STATUS'
-
-            log.logger("PROCESS_EXITED", form=[args, cause, abs(ret)])
 
 def make_new_bootleg(): # to call after every setting is set, before starting to install
     usr_set = ["LOGGING_SETTINGS"]
@@ -126,14 +97,14 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
         _mkdir(getattr(fl, "AVALANCHE_" + a))
     _mkdir(var.BOOTLEG_TEMP + "Data_Working\\")
     for d in con.DATA_WORKING:
-        setattr(fl, "DATA_WORKING_" + d, var.BOOTLEG_TEMP + "Data_Working\\" + d.lower() + "\\")
-        _mkdir(getattr(fl, "DATA_WORKING_" + d))
+        setattr(fl, "WORKING_" + d, var.BOOTLEG_TEMP + "Data_Working\\" + d.lower() + "\\")
+        _mkdir(getattr(fl, "WORKING_" + d))
     for u in con.FILES_UNDO:
-        setattr(fl, "FILES_UNDO_" + u, var.BOOTLEG_TEMP + u.lower() + "_undo\\")
-        _mkdir(getattr(fl, "FILES_UNDO_" + u))
+        setattr(fl, u + "_UNDO", var.BOOTLEG_TEMP + u.lower() + "_undo\\")
+        _mkdir(getattr(fl, u + "_UNDO"))
     log.logger("INIT_CMPLT", "", "EXTR_SPRKL")
     _mkdir(var.BOOTLEG_TEMP + "Sprinkles")
-    ManipFile._7zip(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
+    ExtractFile(fl.SPRINKLES, var.BOOTLEG_TEMP + "Sprinkles")
     log.logger("SPRINKLES_READY")
 
 def chk_game_language(inp=None):
@@ -170,11 +141,10 @@ def chk_game_language(inp=None):
 def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game version=2012, Install code in (1, 4, 7))
     log.logger("FND_2012_CONVERTING")
     data = var.FFVII_PATH + "data\\"
-    attr = "-R -S -H -I" # not sure we need all those switches
 
     # Remove some attributes from the files to manipulate them
     for file in con.TRANSLATE_CHANGER:
-        attrib(data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp", attr)
+        AttribFile(data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp")
 
     shutil.copy(data + "movies\\moviecam.lgp", data + "cd")
 
@@ -202,13 +172,14 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
 def set_language_files(): # Converts any language to a working English version
     log.logger("VALIDATING_LANGUAGES")
     data = var.FFVII_PATH + "data\\"
+    tmp = var.BOOTLEG_TEMP + "lang_files\\"
+    _mkdir(tmp)
     for lang in con.GAME_LANGUAGES.keys():
         if var.GAME_LANGUAGE == con.GAME_LANGUAGES[lang][4]:
             log.logger("IDENT_LANG_VERS_" + con.GAME_LANGUAGES[lang][0].upper())
-            attr = "-R -S -H -I"
 
             for file in con.TRANSLATE_CHANGER:
-                attrib(data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp", attr)
+                AttribFile(data + file.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2]) + ".lgp")
 
             if var.GAME_LANGUAGE == 0:
                 break
@@ -219,9 +190,9 @@ def set_language_files(): # Converts any language to a working English version
 
             # Condor minigame translation
 
-            ManipFile.lgp("x", "condor", data + "minigame")
+            ExtractLGP(data + "minigame\\condor.lgp", tmp + "condor")
 
-            tempc = var.BOOTLEG_TEMP + "condor\\"
+            tempc = tmp + "condor\\"
 
             for file in os.listdir(tempc):
                 if file == "mes02.tex":
@@ -233,15 +204,14 @@ def set_language_files(): # Converts any language to a working English version
             for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Condor_Tran"):
                 shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Condor_Tran\\" + file, var.BOOTLEG_TEMP + "condor\\" + file)
 
-            ManipFile.lgp("c", "condor", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\condor.lgp")
-            shutil.copy(var.BOOTLEG_TEMP + "condor.lgp", data + "minigame\\condor.lgp")
+            RepackLGP(tempc, data + "minigame\\condor.lgp")
 
             # Snowboard minigame translation
 
-            ManipFile.lgp("x", "snowboard-us", data + "minigame")
+            ExtractLGP(data + "minigame\\snowboard-us.lgp", tmp + "snowboard")
 
-            tempc = var.BOOTLEG_TEMP + "snowboard-us\\"
+            tempc = tmp + "snowboard\\"
 
             for file in os.listdir(tempc):
                 for prefix in ("_k.tex", "stamp", "time"):
@@ -251,40 +221,35 @@ def set_language_files(): # Converts any language to a working English version
                             e = ""
                         os.rename(tempc + file, tempc + e + file[1:])
 
-            ManipFile.lgp("c", "snowboard-us", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\snowboard-us.lgp")
-            shutil.copy(var.BOOTLEG_TEMP + "snowboard-us.lgp", data + "minigame\\snowboard-us.lgp")
+            RepackLGP(tempc, data + "minigame\\snowboard-us.lgp")
 
             # Submarine minigame translation
 
-            ManipFile.lgp("x", "sub", data + "minigame")
+            ExtractLGP(data + "minigame\\sub.lgp", tmp + "sub")
 
-            tempc = var.BOOTLEG_TEMP + "sub\\"
+            tempc = tmp + "sub\\"
 
             for file in os.listdir(tempc):
                 os.rename(tempc + file, tempc + file[1:])
 
-            ManipFile.lgp("c", "sub", var.BOOTLEG_TEMP)
             os.remove(data + "minigame\\sub.lgp")
-            shutil.copy(var.BOOTLEG_TEMP + "sub.lgp", data + "minigame\\sub.lgp")
+            RepackLGP(tempc, data + "minigame\\sub.lgp")
 
             # Disc files translation
 
-            ManipFile.lgp("x", "disc-us", data + "cd")
+            ExtractLGP(data + "cd\\disc-us.lgp", tmp + "disc")
 
-            tempc = var.BOOTLEG_TEMP + "cd\\"
+            tempc = tmp + "disc\\"
 
             for file in os.listdir(tempc):
                 for prefix in ("disc", "over"):
                     if prefix in file:
-                        e = "e"
-                        if prefix == "disk":
-                            e = ""
+                        e = "e" if prefix == "over" else ""
                         os.rename(tempc + file, tempc + e + file[1:])
 
-            ManipFile.lgp("c", "disc-us", var.BOOTLEG_TEMP)
             os.remove(data + "cd\\disc-us.lgp")
-            shutil.copy(var.BOOTLEG_TEMP + "disc-us.lgp", data + "cd\\disc-us.lgp")
+            RepackLGP(tempc, data + "cd\\disc-us.lgp")
 
             # End of conversion, break out
             break
@@ -302,7 +267,7 @@ def convert_rerelease_flevel(): # Converts the Square Enix Store Flevel to a 199
     for flevel in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Tools\\NewToOld"):
         shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Tools\\NewToOld" + flevel, var.FFVII_PATH + flevel)
 
-    ManipFile.raw(var.FFVII_PATH + "patch.exe", "flevel.pat", "data\\field\\flevel.lgp", "data\\field\\conv_flevel.lgp")
+    LaunchFile(var.FFVII_PATH + "patch.exe", "flevel.pat", "data\\field\\flevel.lgp", "data\\field\\conv_flevel.lgp")
 
     os.rename(var.FFVII_PATH + "data\\field\\flevel.lgp", var.FFVII_PATH + "data\\field\\flevel.bak")
     os.remove(var.FFVII_PATH + "data\\field\\flevel.lgp")
@@ -327,31 +292,27 @@ def install_setup_files():
 
         log.logger("COMPL_BAT_MODELS_ADJ", "")
 
-    aali = False
     if IsFile.game("ff7_opengl.fgd"): # It was already installed
         log.logger("WARN_OLDER_AALI", "RUN_BOOT_CLEAN")
         var.FATAL_ERROR.append("old_opengl")
         return
-    for path in var.MOD_LOCATION:
-        for file in os.listdir(path):
-            if fl.OPENGL == file:
-                aali = True
-                log.logger("INST_AALIS_DRIVER")
-                ManipFile._7zip(path + "\\" if path[-1] not in ("/", "\\") else "" + file, var.BOOTLEG_TEMP + "OpenGL")
-                for gl in os.listdir(var.BOOTLEG_TEMP + "OpenGL"):
-                    shutil.copy(var.BOOTLEG_TEMP + "OpenGL\\" + gl, var.FFVII_PATH + gl)
+    try:
+        FindFile(fl.OPENGL)
+        log.logger("INST_AALIS_DRIVER")
+        ExtractFile(fl.OPENGL, var.BOOTLEG_TEMP + "OpenGL")
+        for gl in os.listdir(var.BOOTLEG_TEMP + "OpenGL"):
+            shutil.copy(var.BOOTLEG_TEMP + "OpenGL\\" + gl, var.FFVII_PATH + gl)
 
-                for shader in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Shaders"):
-                    if shader == "nolight":
-                        continue # That's a folder
-                    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\" + shader, var.FFVII_PATH + "shaders\\" + shader)
+        for shader in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Shaders"):
+            if shader == "nolight":
+                continue # That's a folder
+            shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\" + shader, var.FFVII_PATH + "shaders\\" + shader)
 
-                for shader in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight"):
-                    shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight\\" + shader, var.FFVII_PATH + "shaders\\nolight\\" + shader)
+        for shader in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight"):
+            shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight\\" + shader, var.FFVII_PATH + "shaders\\nolight\\" + shader)
 
-    if aali: # Aali's driver installed properly
         log.logger("AALI_INSTALLED")
-    else:
+    except ModFileNotFound:
         log.logger("WARN_NO_AALI", "ADD_AALI_TO_MOD", form=[fl.OPENGL, "MULT_IN_ONE" if len(var.MOD_LOCATION) > 1 else "ONE_IN", "', '".join(var.MOD_LOCATION)])
         var.FATAL_ERROR.append("no_opengl")
         return
@@ -390,18 +351,69 @@ def find_data_drive(inp=None):
     log.logger("REGISTERING_AUDIO_DEVICES")
     if IsFile.game("FF7Config.exe"):
         log.logger("CONFIG_SND_MIDI_DEVICES")
-        ManipFile.raw(var.FFVII_PATH + "FF7Config.exe")
+        LaunchFile(var.FFVII_PATH + "FF7Config.exe")
     else:
         var.FATAL_ERROR.append("ff7config")
 
     log.logger("COMPL_AUDIO_DEVICES", "")
 
+def prepare_data_files():
+    log.logger("PREPARING_LGP_FILES")
+
+    # Battle LGP
+    log.logger("PREPARING_DATA_FILE", "COPYING_DUMMY_TEX", form="battle.lgp")
+    CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Battle\\Battle.lgp\\Bootleg\\Dummy_Textures", fl.BATTLE_UNDO)
+    AttribFile(var.FFVII_PATH + "data\\battle\\battle.lgp")
+    ExtractLGP(var.FFVII_PATH + "data\\battle\\battle.lgp", fl.BATTLE_UNDO)
+    log.logger("COMPLETED_DATA_FILE", form="battle.lgp")
+
+    log.help()
+
+    # Magic LGP
+    log.logger("PREPARING_DATA_FILE", form="magic.lgp")
+    AttribFile(var.FFVII_PATH + "data\\battle\\magic.lgp")
+    ExtractLGP(var.FFVII_PATH + "data\\battle\\magic.lgp", fl.MAGIC_UNDO)
+    log.logger("COMPLETED_DATA_FILE", form="magic.lgp")
+
+    log.help()
+
+    # Char LGP
+    log.logger("PREPARING_DATA_FILE", form="char.lgp")
+    AttribFile(var.FFVII_PATH + "data\\field\\char.lgp")
+    ExtractLGP(var.FFVII_PATH + "data\\field\\char.lgp", fl.CHAR_UNDO)
+    log.logger("COMPLETED_DATA_FILE", form="char.lgp")
+
+    log.help()
+
+    # High LGP
+    log.logger("PREPARING_DATA_FILE", form="high-us.lgp")
+    AttribFile(var.FFVII_PATH + "data\\minigame\\high-us.lgp")
+    ExtractLGP(var.FFVII_PATH + "data\\minigame\\high-us.lgp", fl.HIGH_UNDO)
+    log.logger("COMPLETED_DATA_FILE", form-"high-us.lgp")
+
+    log.help()
+
+    # Chocobo LGP
+    log.logger("PREPARING_DATA_FILE", form="chocobo.lgp")
+    AttribFile(var.FFVII_PATH + "data\\minigame\\chocobo.lgp")
+    ExtractLGP(var.FFVII_PATH + "data\\minigame\\chocobo.lgp", fl.CHOCOBO_UNDO)
+    log.logger("COMPLETED_DATA_FILE", form="chocobo.lgp")
+
+    log.help()
+
+    # World LGP
+    log.logger("PREPARING_DATA_FILE", form="world_us.lgp")
+    AttribFile(var.FFVII_PATH + "data\\wm\\world_us.lgp")
+    ExtractLGP(var.FFVII_PATH + "data\\wm\\world_us.lgp", fl.WORLD_UNDO)
+    log.logger("COMPLETED_DATA_FILE", form="world_us.lgp")
+
+    log.logger("COMPLETED_LGP_FILES")
+
+    log.help()
+
 def _mkdir(inp):
     if not os.path.isdir(inp):
         os.mkdir(inp)
-
-def attrib(file, attr, params=""): # sets Windows file and folders attributes
-    os.system("C:\\Windows\\System32\\attrib.exe " + attr + ' "' + file + '" ' + params)
 
 def parser(inp):
     if var.PARSING == "Language":
@@ -457,7 +469,7 @@ def extract_image():
         log.logger("NO_INST_FND")
 
     log.logger("EXTR_IMG")
-    ManipFile.Z7.extract(dir=var.FFVII_PATH, file=var.FFVII_IMAGE)
+    ExtractFile(var.FFVII_IMAGE, var.FFVII_PATH)
     if os.path.isdir(var.BOOTLEG_TEMP + "IMAGE"):
         shutil.copy(var.BOOTLEG_TEMP + "IMAGE", var.FFVII_PATH)
         shutil.rmtree(var.BOOTLEG_TEMP + "IMAGE")
@@ -546,7 +558,7 @@ def end_bootleg_early():
                 log.multiple(errors.unhandled, types=["error", "normal"])
     log.logger("\n")
 
-def find_setting(setting): # gets parsable setting
+def find(setting): # Prompts the user for settings
     if not hasattr(var, setting):
         raise SettingNotFound(setting)
 
@@ -574,7 +586,7 @@ def find_setting(setting): # gets parsable setting
         log.help("CHC_YES")
     log.help("", "DEF_TO_USE", form=getattr(var, setting))
 
-def install_setting(setting):
+def install(setting): # Installs each setting
     if not hasattr(var, setting):
         raise SettingNotFound(setting)
 

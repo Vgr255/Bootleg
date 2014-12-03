@@ -395,7 +395,7 @@ def install_movies():
         for num in range(1, max):
             FindFile(filef.format(num))
 
-        ExtractFile(filef.format(1), dst="RumbahFMVs")
+        ExtractFile(filef.format(1), "RumbahFMVs")
 
         # We got so far, so all the parts do exist and got successfully extracted
         CopyFolder(var.BOOTLEG_TEMP + "RumbahFMVs", var.FFVII_PATH + "movies")
@@ -432,7 +432,7 @@ def install_movies():
 
         if file:
             log.logger("PARS_INST", form="ENHANCED_MOVIES" + str(part))
-            ExtractFile(file, dst="EnhancedMovies")
+            ExtractFile(file, "EnhancedMovies")
 
     try: # Eidos Logo
         log.logger("PARS_INSTALLING", form="LOGO")
@@ -446,7 +446,7 @@ def install_movies():
         log.logger("PARS_INSTALLING", form="GRIMMY_MOVIES")
         for num in range(1, 8):
             try:
-                ExtractFile(getattr(fl, "GRIMMY" + str(num)), dst="GrimmyMovies")
+                ExtractFile(getattr(fl, "GRIMMY" + str(num)), "GrimmyMovies")
             except ModFileNotFound:
                 continue
         if os.path.isdir(var.BOOTLEG_TEMP + "GrimmyMovies"):
@@ -474,7 +474,7 @@ def install_movies():
                 break
         if exists:
             log.logger("PARS_INSTALLING", form="LEONHART_MOVIES")
-            ExtractFile(fl.LEONHARTMOVIES.format(1), dst="LeonhartMovies")
+            ExtractFile(fl.LEONHARTMOVIES.format(1), "LeonhartMovies")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartMovies", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="LEONHART_MOVIES")
 
@@ -482,7 +482,7 @@ def install_movies():
         try:
             FindFile(fl.LEONHARTOPENING)
             log.logger("PARS_INSTALLING", form="LEONHART_OPENING")
-            ExtractFile(fl.LEONHARTOPENING, dst="LeonhartOpening")
+            ExtractFile(fl.LEONHARTOPENING, "LeonhartOpening")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartOpening", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="LEONHART_OPENING")
         except ModFileNotFound:
@@ -492,7 +492,7 @@ def install_movies():
             for num in range(1, 4):
                 FindFile(fl.LEONHARTLOGO.format(num))
             log.logger("PARS_INSTALLING", form="LEONHART_LOGO")
-            ExtractFile(fl.LEONHARTLOGO.format(1), dst="LeonhartLogo")
+            ExtractFile(fl.LEONHARTLOGO.format(1), "LeonhartLogo")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartLogo", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="LEONHART_LOGO")
         except ModFileNotFound:
@@ -502,7 +502,7 @@ def install_movies():
         try:
             FindFile(fl.FMVSFMV)
             log.logger("PARS_INSTALLING", form="FURY_FMVS")
-            ExtractFile(fl.FMVSFMV, dst="FuryFMVs")
+            ExtractFile(fl.FMVSFMV, "FuryFMVs")
             CopyFolder(var.BOOTLEG_TEMP + "FuryFMVs", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="FURY_FMVS")
         except ModFileNotFound:
@@ -511,7 +511,7 @@ def install_movies():
         try:
             FindFile(fl.FUNERALFMV)
             log.logger("PARS_INSTALLING", form="FUNERAL_FMVS")
-            ExtractFile(fl.FUNERALFMV, dst="FuneralFMV")
+            ExtractFile(fl.FUNERALFMV, "FuneralFMV")
             CopyFolder(var.BOOTLEG_TEMP + "FuneralFMV", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="FUNERAL_FMVS")
         except ModFileNotFound:
