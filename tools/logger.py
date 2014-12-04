@@ -13,6 +13,8 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
     timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
     logall = None
     toget = ""
+    if form is None:
+        form = []
     if form and not form == list(form):
         form = [form]
     toform = list(form)
