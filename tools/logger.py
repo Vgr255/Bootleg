@@ -53,12 +53,12 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
     if display:
         print(pout)
     if write:
-        f = open(os.getcwd() + "/" + file, "w" if newfile else "r+")
+        f = open(os.getcwd() + "/" + file, "w" if newfile else "r+", encoding="utf-8")
         f.seek(0, 2)
         if not var.LANGUAGE == "English" and type not in con.IGNORE_TRANSLATE:
             filel = con.LANGUAGES[var.LANGUAGE][0] + "_" + file
             newfilel = not os.path.isfile(os.getcwd() + "/" + filel)
-            fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+")
+            fl = open(os.getcwd() + "/" + filel, "w" if newfilel else "r+", encoding="utf-8")
             fl.seek(0, 2)
         if type in con.IGNORE_NEWLINE:
             newfile = True
@@ -70,7 +70,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
         if logall:
             outputa = "type.{0} - {1}".format(type, output)
             filea = getattr(var, logall + "_FILE") + "." + getattr(var, logall + "_EXT")
-            fa = open(os.getcwd() + "/" + filea, "w" if var.NEWFILE_ALL else "r+")
+            fa = open(os.getcwd() + "/" + filea, "w" if var.NEWFILE_ALL else "r+", encoding="utf-8")
             var.NEWFILE_ALL = False
             fa.seek(0, 2)
             alines = list(con.LOGGERS)
@@ -87,7 +87,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
             if not var.LANGUAGE == "English" and type not in con.IGNORE_MIXED:
                 trouta = "type.{0} - {1}".format(type, trout)
                 filet = con.LANGUAGES[var.LANGUAGE][0] + "_" + filea
-                ft = open(os.getcwd() + "/" + filet, "w" if var.NEWFILE_TRA else "r+")
+                ft = open(os.getcwd() + "/" + filet, "w" if var.NEWFILE_TRA else "r+", encoding="utf-8")
                 var.NEWFILE_TRA = False
                 ft.seek(0, 2)
                 if var.RETRY:
