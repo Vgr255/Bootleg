@@ -6,7 +6,7 @@ from tools import translate as tr
 import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[]):
+def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[], **params):
     """Logs everything to console and/or file. Always use this."""
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
@@ -17,6 +17,9 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
         form = [form]
     toform = list(form)
     toforml = list(form)
+    if formo and formt:
+        toform = list(formo)
+        toforml = list(formt)
     if "\n" in output:
         indx = output.index("\n")
         toget = output[indx+1:]
@@ -47,7 +50,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
     write, display, file = getfile(write, display, logtype)
 
     if len(pout) > 80 and display and type not in con.IGNORE_SPLITTER:
-        pout, toget = line_splitter(pout, toget)
+        pout = line_splitter(pout)
 
     newfile = not os.path.isfile(os.getcwd() + "/" + file)
     if display:
@@ -146,23 +149,28 @@ def get(output, splitter):
             msg += splitter + line
     return msg
 
-def line_splitter(output, toget):
+def line_splitter(output):
     iter = 0
     iter2 = -1
-    if output[:2] == "  ": # already iterated
-        output = output[2:]
+    newout = ""
     while " " in output[81:]:
         if iter >= 80:
+            newout = newout + output[:iter2] + "\n"
+            output = output[iter2+1:]
+            iter = 0
+            iter2 = -1
+        if not output:
             break
         if iter < 80:
             iter2 = iter
             iter = output.index(" ", iter+1)
             if "\n" in output[:iter]:
-                break
+                if output.index("\n") < 81:
+                    iter2 = output.index("\n")
     if iter2 >= 0 and iter >= 80:
         toget = "  " + output[iter2+1:] + "\n" + toget
         output = output[:iter2]
-    return output, toget
+    return newout
 
 def getfile(write, display, logtype):
     if var.DEBUG_MODE or var.DEV_LOG or var.WRITE_EVERYTHING: # if there's an error I'll want every possible information. that's the way to go
@@ -199,10 +207,9 @@ def translater(output, type, form, formo, formt):
             foring = 0
             iter += 1
         else:
-            if "{0}" in output and form:
-                trout = trout.format(*forml)
-                output = output.format(*form)
-                forml = forml[iter:]
-                form = form[iter:]
+            trout = trout.format(*forml)
+            output = output.format(*form)
+            forml = forml[iter:]
+            form = form[iter:]
             break
     return trout, output, list(form), list(forml)
