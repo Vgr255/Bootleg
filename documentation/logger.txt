@@ -1,4 +1,4 @@
-- Beginning of documentation - 
+﻿- Beginning of documentation - 
 
 Section 1 - Introduction
 
@@ -123,6 +123,14 @@ Default      :[] - Empty list
 
 Default      :[] - Empty lists
 
+'params'     :This parameter is a special case. It cannot be called directly,
+              but will catch any other parameter that are not valid. This can
+              be used to prevents exceptions, or as special treament. To add
+              another parameter, it is recommended to use a default with a
+              defined parameter instead.
+
+Default      :None
+
 Section 2.3 - In-depth description - Step-by-step explanation of the function
 
 When called, logger() performs a number of checks before printing or writing
@@ -134,21 +142,21 @@ setting with the first matching type in the 'LOGGERS' dictionary constant.
 
 The function will then perform translation according to the settings. The
 translated line is the only one that will be printed, if the 'display' argument
-is True. Before printing however, it checks if the length of the line exceeds
+is True. Before printing, however, it checks if the length of the line exceeds
 80 characters, which is the width of the python console. If it does, it will
 split the line in two at the latest space before the 80-characters limit, and
-prepend two spaces to the rest, which is stored in a variable for recursive
-iteration. If the line beings by two spaces, it will remove them before
-performing the checks, to prevent an endless loop on long lines. Should the
-lines fed have a newline (character '\n') in them, it will always split at
-this point regardless of the length. It may also split before if needed.
+prepend two spaces to the rest. It will loop through the whole line and then
+eventually return it, to print it all at once. This splitting only matters
+for printing to screen and is never reflected in the files. Should the lines
+fed have a newline (character '\n') in them, it will also split at this point
+regardless of the length. It may also split before if needed.
 
 Various checks are then done to clean up some variables. If the 'write'
 argument is True, it will open various log files to write the lines. If the
 process is being initialized or restarted, and if the log file already exists,
 it will print two newlines in the file before starting to write the contents.
 This is to make an easier distinction between each run; search the file for two
-blank lines. It will also write to more than one files if the proper conditions
+blank lines. It will also write to more than one file if the proper conditions
 are met, such as: There is more than one language (translated output), one of
 the variables 'DEV_LOG' or 'LOG_EVERYTHING' is True (logging everything in a
 single file as well as their normal file), and if both those conditions are
@@ -276,5 +284,6 @@ November 12th - Removed the lines() function and its matching documentation
               - Added notice regarding change to the way lines are split
 November 15th - Added the 'checker' parameter and its documentation
 November 26th - Tweaked the line splitting and added relevant information
+December 4th - Fixed a few errors in the logger and updated documentation
 
 - End of documentation -
