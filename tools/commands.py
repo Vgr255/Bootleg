@@ -287,8 +287,8 @@ def get(inp, params=[]):
             for lnk in links.__dict__.keys():
                 if not lnk.isupper():
                     continue
-                getter = lnk.replace("_", "")
-                if "".join(params[1:]) in getter or getter in "".join(params[1:]):
+                getter = lnk.replace("_", "").lower()
+                if "".join(params[1:]).lower() in getter or getter in "".join(params[1:]).lower():
                     lines.append(lnk)
             if lines:
                 for line in lines:
