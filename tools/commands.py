@@ -204,7 +204,7 @@ def read(inp, params=[]): # Reads a documentation file
             docl = docf + "English/"
             if os.path.isfile(docl + params[0]):
                 reader = docl + params[0]
-            if con.DOCFILES_EXTS:
+            if not reader and con.DOCFILES_EXTS:
                 for ext in con.DOCFILES_EXTS:
                     if os.path.isfile(docl + params[0] + "." + ext):
                         reader = docl + params[0] + "." + ext
@@ -213,7 +213,7 @@ def read(inp, params=[]): # Reads a documentation file
             docl = docf + var.LANGUAGE + "/"
             if os.path.isfile(docl + params[0]):
                 reader = docl + params[0]
-            if con.DOCFILES_EXTS:
+            if not reader and con.DOCFILES_EXTS:
                 for ext in con.DOCFILES_EXTS:
                     if os.path.isfile(docl + params[0] + "." + ext):
                         reader = docl + params[0] + "." + ext
