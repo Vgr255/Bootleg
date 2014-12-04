@@ -76,9 +76,9 @@ def do(args, silent=False, needout=False):
 
     if ret != 0 and len(args) > 1:
         if ret < 0:
-            cause = 'signal'
+            cause = 'SIGNAL'
         else:
-            cause = 'status'
+            cause = 'STATUS'
 
         log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
     else:

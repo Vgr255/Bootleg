@@ -414,7 +414,7 @@ def install_movies():
         # We got so far, so all the parts do exist and got successfully extracted
         CopyFolder(var.BOOTLEG_TEMP + "RumbahFMVs", var.FFVII_PATH + "movies")
         for mov in ("hit0", "hit1", "off"):
-            DeleteFile([var.FFVII_PATH + "movies\\rcket{0}.avi".format(mov)])
+            DeleteFile(var.FFVII_PATH + "movies\\rcket{0}.avi".format(mov))
         RenameFile(var.FFVII_PATH + "movies", ["rckthit0.avi", "rckthit1.avi", "rcktoff.avi"], ["rckethit0.avi", "rckethit1.avi", "rcketoff.avi"])
         return
 
