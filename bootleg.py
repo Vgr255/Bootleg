@@ -117,9 +117,8 @@ def main():
 while var.ALLOW_RUN:
     try:
         main()
-    except CustomBootException as Catcher:
-        log.multiple("Exception: {0}".format(Catcher.__class__.__name__), ":".join(Catcher.args), display=False, checker=False, types=["normal", "error", "debug"])
-        raise # We're catching and logging custom exceptions, but we want them to be handled if needed
+    except CustomBootException as exc:
+        log.multiple("Exception: " + exc.name, "Error: '{0}'".format(exc.arguments()), exc.name.replace(" ", "_").upper(), display=False, checker=False, types=["normal", "error", "debug"], form=exc.formatter())
     except KeyboardInterrupt:
         if var.ERROR:
             var.ALLOW_RUN = False
@@ -127,8 +126,6 @@ while var.ALLOW_RUN:
         else:
             log.logger("SIGTERM_WARN")
             var.ERROR = True
-    except PresetAlreadyImported:
-        log.logger("PRESET_ALIMPORTED", form=[var.PRESET, con.PROGRAM_NAME])
     except Exception: # Don't want to catch everything
         if traceback.format_exc(): # if there's a traceback, let's have it
             log.logger("", type="traceback", write=False)

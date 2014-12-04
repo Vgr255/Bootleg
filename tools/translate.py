@@ -453,6 +453,42 @@ English: "Aali's OpenGL driver was not detected.",
 
 # End of the 'errors.py' lines
 
+# The following lines are contained in 'exceptions.py'
+
+CUSTOM_BOOT_EXCEPTION = { # This should never be called
+English: "Default Exception. No action taken.",
+}
+
+SETTING_NOT_FOUND = { # 0 = Setting
+English: "Error: '{0}' is not a valid setting.",
+}
+
+NO_PARSER_FOUND = { # 0 = Setting
+English: "Error: No parser was found for '{0}'.",
+}
+
+NO_INSTALLER_FOUND = { # 0 = Setting
+English: "Error: No installer was found for '{0}'.",
+}
+
+INVALID_ERROR = { # 0 = Invalid error
+English: "Error: '{0}' cannot be used as an error.",
+}
+
+MOD_FILE_NOT_FOUND = { # 0 = Mod file; 1 = "in" or "in one of" (fill at the top); 2 = MOD_LOCATION variable
+English: "Error: '{0}' could not be found {1} '{2}'.",
+}
+
+PRESET_ALREADY_IMPORTED = { # 0 = Preset file
+English: "Error: The preset '{0}' is already loaded.\nYou may not load more than one preset at once.\nPlease restart to load another preset.",
+}
+
+INVALID_PARAMETER = { # 0 = Module; 1 = Function; 2 = Parameter; 3 = Value
+English: "Invalid value: {0}.{1}(*params, {2}=\"{3}\")",
+}
+
+# End of the 'exceptions.py' lines
+
 # The following lines are contained in 'functions.py'
 
 BEGIN_BOOT = { # 0 = Program name

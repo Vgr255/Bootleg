@@ -423,7 +423,7 @@ def parser(inp):
 
 def parse_settings():
     if var.PRESET_IMPORTED:
-        raise PresetAlreadyImported
+        raise PresetAlreadyImported(var.PRESET)
     shutil.copy(os.getcwd() + "/presets/" + var.PRESET, os.getcwd() + "/preset.py")
     import preset
     var.PRESET_IMPORTED = True
