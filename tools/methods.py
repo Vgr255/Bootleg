@@ -71,7 +71,7 @@ def GetFile(file):
         return file[:-indx], file[-indx:] # Full path and file name
     return None, file # Don't raise an error, but there isn't any folder
 
-def ExtractFile(file, **kwargs):
+def ExtractFile(file, dst=None, pw=None):
     """ExtractFile(file, dst=None, pw=None)
 
     Extracts an archive into the temp folder.
@@ -89,20 +89,12 @@ def ExtractFile(file, **kwargs):
     else:
         type = None
 
-    if "dst" in kwargs:
-        dst = kwargs["dst"]
-        if str(dst).lower() in ("", "none"):
-            raise InvalidParameter("tools.methods", "ExtractFile", "dst", dst)
-    else:
+    if dst is None:
         dst = file
     if not dst[-1:] in ("/", "\\"):
         dst = dst + "\\"
 
-    if "pw" in kwargs:
-        pw = kwargs["pw"]
-        if str(pw).lower() in ("", "none"):
-            raise InvalidParameter("tools.methods", "ExtractFile", "pw", pw)
-    else:
+    if pw is None:
         pw = "none"
 
     if type == "rar": # Rar file
