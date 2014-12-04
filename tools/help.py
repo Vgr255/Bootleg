@@ -1,4 +1,4 @@
-# Whenever typing 'help [stuff]', this is called
+﻿# Whenever typing 'help [stuff]', this is called
 # If there are no arguments, get_help() is called
 # If there are arguments, the according function is called
 # If no function matches, 'unhandled' is used

@@ -1,4 +1,4 @@
-# User settings
+﻿# User settings
 
 # Battle models
 

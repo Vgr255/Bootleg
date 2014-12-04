@@ -1,4 +1,4 @@
-# Startup initialization
+﻿# Startup initialization
 
 import tempfile
 import platform

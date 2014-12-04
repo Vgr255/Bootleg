@@ -1,4 +1,4 @@
-# Bootleg (2014) by Emanuel 'Vgr' Barry
+﻿# Bootleg (2014) by Emanuel 'Vgr' Barry
 # The developper of this software (hereafter refered to as "The Developper")
 # allows for the use and redistribution of the present software and all its
 # associated files (hereafter refered to as "The Software") free of charge. The

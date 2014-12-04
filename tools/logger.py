@@ -1,4 +1,4 @@
-__all__ = ["logger", "multiple", "help"]
+﻿__all__ = ["logger", "multiple", "help"]
 
 from tools import variables as var
 from tools import constants as con

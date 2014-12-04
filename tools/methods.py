@@ -1,4 +1,4 @@
-# Various file manipulation methods. All the functions return a value;
+﻿# Various file manipulation methods. All the functions return a value;
 # something meaningful if it can, else 0. A function returning 'None' means
 # something unexpected happened. An exception is usually raised in that case.
 

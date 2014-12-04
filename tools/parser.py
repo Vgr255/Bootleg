@@ -1,4 +1,4 @@
-# Finding each variable's parameter if unset
+﻿# Finding each variable's parameter if unset
 # If a setting has only a yes/no choice, do NOT put it here
 # It will be automatically added
 # Do not add the '0' choice, it will be added automatically
@@ -49,7 +49,8 @@ def find_cloud_field():
     "22 = Dahfa's Chibi",
     "23 = APZ Adjusted",
     "24 = Team Avalanche Chibi",
-    "25 = Bloodshot's Edited TA",    ]
+    "25 = Bloodshot's Edited TA",
+    ]
 
 def find_cloud_battle():
     return [
@@ -65,7 +66,8 @@ def find_cloud_battle():
     "9 = New APZ Dark",
     "10 = New APZ Mature",
     "11 = Team Avalanche",
-    "12 = Bloodshot's Edited TA",    ]
+    "12 = Bloodshot's Edited TA",
+    ]
 
 def find_trish_save():
     return [
@@ -74,27 +76,31 @@ def find_trish_save():
     "2 = Crisis Core Save Point Model",
     "3 = Cloud's Memories Memories Save Point Model",
     "4 = Team Avalanche Save Point Model",
-    "5 = Save Point with Balls",    ]
+    "5 = Save Point with Balls",
+    ]
 
 def find_trish_phoenix():
     return [
     "Pick the style of Mike's summons:",
     "1 = New Style Flaming Phoenix",
     "2 = Old Style Shaded Phoenix",
-    "3 = Old Style Phoenix with Custom Brighter Texture",    ]
+    "3 = Old Style Phoenix with Custom Brighter Texture",
+    ]
 
 def find_new_aerith():
     return [
     "Choose the new Aerith model:",
     "1 = HQ Aerith",
     "2 = Sailor Jupiter Aerith",
-    "3 = Whiteraven HQ Aerith",    ]
+    "3 = Whiteraven HQ Aerith",
+    ]
 
 def find_vincent_battle():
     return [
     "Choose Vincent's appearance in battle:",
     "1 = ReModel with new Handgun",
-    "2 = New boots and Rifle",    ]
+    "2 = New boots and Rifle",
+    ]
 
 def find_limit_break():
     return [
@@ -108,7 +114,8 @@ def find_limit_break():
     "7 = Jinkazama2k7's Green Limit",
     "8 = Mike's Blue Flame Limit Texture",
     "9 = Mike's Flame Limit V2 Texture",
-    "10 = JLOUTLAW's Hypersonic Limit",    ]
+    "10 = JLOUTLAW's Hypersonic Limit",
+    ]
 
 def find_menu_background():
     return [
@@ -124,7 +131,8 @@ def find_menu_background():
     "9 = Standoff",
     "10 = Standoff with logo",
     "11 = Zendar's AC Buster Sword",
-    "12 = Recko's Gold Hilt Buster Sword",    ]
+    "12 = Recko's Gold Hilt Buster Sword",
+    ]
 
 def find_kernel_select():
     return [
@@ -144,7 +152,8 @@ def find_kernel_select():
     "13 = Reasonable Difficulty",
     "14 = Reasonable Difficulty + Harder Items Easy",
     "15 = Reasonable Difficulty + Harder Items Normal",
-    "16 = Reasonable Difficulty + Harder Items Difficult",    ]
+    "16 = Reasonable Difficulty + Harder Items Difficult",
+    ]
 
 def find_movies():
     return [
@@ -159,7 +168,8 @@ def find_movies():
     "8 = Rumbah Complete - 640 Sharp",
     "9 = Grimmy's AC Style enhanced with Leonhart7413",
     "10 = Grimmy's AC Style enhanced with Leonhart7413 HD Alternate",
-    "11 = Bootlegged reworked with PH03N1XFURY",    ]
+    "11 = Bootlegged reworked with PH03N1XFURY",
+    ]
 
 def find_rumbah_movies():
     return [
@@ -174,7 +184,8 @@ def find_field_textures():
     "1 = Bootlegged: BlackFan and SL1982 Field Art",
     "2 = BlackFan and SL1982 Field Art as Primary over FacePalmer",
     "3 = FacePalmer Field Art Only",
-    "4 = BlackFan and SL1982 without FacePalmer",    ]
+    "4 = BlackFan and SL1982 without FacePalmer",
+    ]
 
 def find_avatars():
     return [
@@ -201,7 +212,8 @@ def find_avatars():
     "20 = Nikfrozty's AC Style Avatars",
     "21 = Aff7iction's Beautified Avatars",
     "22 = MinMin's Avatars",
-    "23 = Recko's Transparent Avatars",    ]
+    "23 = Recko's Transparent Avatars",
+    ]
 
 def find_soundtrack():
     return [
@@ -214,7 +226,8 @@ def find_soundtrack():
     "6 = Anxious Heart - Original Selection",
     "7 = Anxious Heart - DLPB Selection",
     "8 = Anxious Heart - Fan Selection",
-    "9 = Anxious Heart - Professional Selection",    ]
+    "9 = Anxious Heart - Professional Selection",
+    ]
 
 def find_opening_credits():
     return [
@@ -224,7 +237,8 @@ def find_opening_credits():
     "3 = JordieBo's Dark Prelude Credits",
     "4 = JordieBo's Glowing Prelude Credits",
     "5 = Strayoff's Prelude Credits",
-    "6 = Grimmy's Cloud and Tifa Prelude Credits",    ]
+    "6 = Grimmy's Cloud and Tifa Prelude Credits",
+    ]
 
 def find_buster_sword():
     return [

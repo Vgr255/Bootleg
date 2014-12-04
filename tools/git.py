@@ -1,4 +1,4 @@
-# This is the handler for all git-related commands
+﻿# This is the handler for all git-related commands
 # Automatic checker and update also use this
 
 from tools import constants as con

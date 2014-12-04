@@ -1,4 +1,4 @@
-# Exceptions for some random things
+﻿# Exceptions for some random things
 
 # These exceptions should never be called due to user input
 # They should only be called for programming errors or forgetting stuff

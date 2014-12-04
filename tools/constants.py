@@ -1,4 +1,4 @@
-FIRST_DEV = ["PitBrat"]
+﻿FIRST_DEV = ["PitBrat"]
 USER_HELP = ["Vgr", "EQ2Alyza"]
 CODERS = ["Vgr", "Insight"]
 GUI_CODERS = ["Insight"]
