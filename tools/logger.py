@@ -199,9 +199,10 @@ def translater(output, type, form, formo, formt):
             foring = 0
             iter += 1
         else:
-            trout = trout.format(*forml)
-            output = output.format(*form)
-            forml = forml[iter:]
-            form = form[iter:]
+            if "{0}" in output and form:
+                trout = trout.format(*forml)
+                output = output.format(*form)
+                forml = forml[iter:]
+                form = form[iter:]
             break
     return trout, output, list(form), list(forml)
