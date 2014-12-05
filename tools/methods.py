@@ -71,6 +71,19 @@ def GetFile(file):
         return file[:-indx], file[-indx:] # Full path and file name
     return None, file # Don't raise an error, but there isn't any folder
 
+def GetName(file):
+    """GetName(file)
+
+    Removes the extension from a file.
+    Returns a tuple of (file, extension)."""
+
+    new = list(file)
+    new.reverse()
+    if not "." in new:
+        return file, None
+    indx = new.index(".")
+    return file[:indx], file[indx+1:]
+
 def ExtractFile(file, dst=None, pw=None):
     """ExtractFile(file, dst=None, pw=None)
 
@@ -93,6 +106,8 @@ def ExtractFile(file, dst=None, pw=None):
         dst = file
     if not dst[-1:] in ("/", "\\"):
         dst = dst + "\\"
+    if not path[-1:] in ("/", "\\"):
+        path = path + "\\"
 
     if pw is None:
         pw = "none"
@@ -106,6 +121,25 @@ def ExtractFile(file, dst=None, pw=None):
 
     log.logger("PARS_EXTR_FILE", form=[path + file], display=False)
     return var.BOOTLEG_TEMP + dst
+
+def ExtractFolder(path):
+    """ExtractFolder(path)
+
+    Extracts all the archives from a folder into that same folder.
+    Returns a tuple of all the resulting folders' names."""
+
+    if not path[-1:] in ("/", "\\"):
+        path = path + "\\"
+    folders = []
+    files = []
+    for file in os.listdir(path):
+        files.append(file)
+        _file, ext = GetName(file)
+        folder = ExtractFile(path + file)
+        CopyFolder(folder, path + _file)
+
+    DeleteFile(*files)
+    return tuple(folders)
 
 def ExtractLGP(file, dir=None):
     """ExtractLGP(file, dir=None)
@@ -166,8 +200,7 @@ def CopyFile(path, file, new):
     """CopyFile(path, file, new)
 
     Creates of copy of 'file' with name 'new' in 'path'.
-    Always returns 0.
-    """
+    Always returns 0."""
 
     if not path[-1:] in ("/", "\\"):
         path = path + "\\"
