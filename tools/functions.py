@@ -436,10 +436,22 @@ def parse_settings():
         elif hasattr(preset, short):
             getter = short
         if getter:
+            number = 1
+            toset = getattr(preset, getter)
+            if setting in con.RANGE:
+                number = con.RANGE[setting]
+            if setting not in con.NON_INT_SETTINGS:
+                if toset.isdigit():
+                    if int(toset) in range(0, number+1):
+                        toset = int(toset)
+                    else: # Not in the range
+                        raise IntOutOfBounds(setting, toset, number)
+                else: # Not a digit
+                    raise NeedInteger(setting, toset)
             file = open(os.getcwd() + "/_{0}_{1}".format(short.lower(), get.random_small(11)), "w")
             file.write(getattr(var, setting))
             file.close()
-            setattr(var, setting, getattr(preset, getter))
+            setattr(var, setting, toset)
 
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):

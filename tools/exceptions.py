@@ -113,3 +113,30 @@ class InvalidParameter(CustomBootException):
 
     def formatter(self):
         return [self.module, self.func, self.param, self.value]
+
+# Called if the setting is not in the range
+class IntOutOfBounds(CustomBootException):
+    def __init__(self, setting, value, max):
+        self.name = "Int Out Of Bounds"
+        self.setting = setting
+        self.value = value
+        self.max = max
+
+    def arguments(self):
+        return "{0}.value={1}; max={2}".format(self.setting, self.value, self.max)
+
+    def formatter(self):
+        return [self.setting, self.value, self.max]
+
+# Called if the setting needs to be an integer but isn't
+class NeedInteger(CustomBootException):
+    def __init__(self, setting, value):
+        self.name = "Need Integer"
+        self.setting = setting
+        self.value = value
+
+    def arguments(self):
+        return "{0}: '{1}'".format(self.setting, self.value)
+
+    def formatter(self):
+        return [self.setting, self.value]

@@ -484,7 +484,15 @@ English: "Error: The preset '{0}' is already loaded.\nYou may not load more than
 }
 
 INVALID_PARAMETER = { # 0 = Module; 1 = Function; 2 = Parameter; 3 = Value
-English: "Invalid value: {0}.{1}(*params, {2}=\"{3}\")",
+English: "Invalid value: {0}.{1}(*params, {2}=\"{3}\").",
+}
+
+INT_OUT_OF_BOUNDS = { # 0 = Setting; 1 = Value; 2 = Max
+English: "Error: Value out of bounds for {0}: {1} (Max: {2}).",
+}
+
+NEED_INTEGER = { # 0 = Setting; 1 = Value
+English: "Error: Need a number for {0} (Got {1}).",
 }
 
 # End of the 'exceptions.py' lines
