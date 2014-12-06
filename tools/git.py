@@ -62,7 +62,7 @@ def clone(args, silent=False): # use only if not a git repo
 
 def do(args, silent=False, needout=False):
     child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (out, err) = child.communicate()
+    out, err = child.communicate()
     ret = child.returncode
 
     lines = []

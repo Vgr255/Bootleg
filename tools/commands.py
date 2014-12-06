@@ -175,10 +175,41 @@ def git(inp, params=[]):
         return
     args = [var.GIT_LOCATION]
     if params:
-        args.extend(params)
-        if hasattr(_git, params[0]) and params[0] not in ("con", "var", "log", "subprocess", "parse"):
-            getattr(_git, params[0])(args)
-            return
+        line = ""
+        larges = False
+        larged = False
+        escaper = False
+        for char in inp[4:]:
+            if char == "'":
+                if larged or escaper:
+                    line += char
+                    escaper = False
+                    continue
+                larges = not larges
+                continue
+            if char == '"':
+                if larges or escaper:
+                    line += char
+                    escaper = False
+                    continue
+                larged = not larged
+                continue
+            if char == "\\":
+                if escaper:
+                    line += char
+                    escaper = False
+                    continue
+                escaper = True
+                continue
+            if escaper:
+                escaper = False
+                continue
+            if char == " " and not (larged or larges):
+                args.append(line)
+                line = ""
+                continue
+            line += char
+        args.append(line)
     _git.do(args)
 
 def read(inp, params=[]): # Reads a documentation file
