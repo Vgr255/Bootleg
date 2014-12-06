@@ -209,13 +209,19 @@ def git(inp, params=[]):
                 line = ""
                 continue
             line += char
+        if escaper:
+            raise EOFError("Escape character at the end of sequence")
+        if larges:
+            raise EOFError("No closing single quote")
+        if larged:
+            raise EOFError("No closing double quote")
         args.append(line)
     _git.do(args)
 
 def read(inp, params=[]): # Reads a documentation file
     # Priority: 'documentation' folder with full name; same folder without file extension;
-    # 'English' subfolder with full name; same folder without file extension;
     # Language's subfolder with full name; same folder without file extension;
+    # 'English' subfolder with full name; same folder without file extension;
     # The first one to match gets taken; same for extensions
     if params:
         docf = os.getcwd() + "/documentation/"
@@ -231,8 +237,8 @@ def read(inp, params=[]): # Reads a documentation file
                 if os.path.isfile(docf + params[0] + "." + ext):
                     reader = docf + params[0] + "." + ext
                     break
-        if not reader and os.path.isdir(docf + "English"):
-            docl = docf + "English/"
+        if not reader and os.path.isdir(docf + var.LANGUAGE):
+            docl = docf + var.LANGUAGE + "/"
             if os.path.isfile(docl + params[0]):
                 reader = docl + params[0]
             if not reader and con.DOCFILES_EXTS:
@@ -240,8 +246,8 @@ def read(inp, params=[]): # Reads a documentation file
                     if os.path.isfile(docl + params[0] + "." + ext):
                         reader = docl + params[0] + "." + ext
                         break
-        if not reader and os.path.isdir(docf + var.LANGUAGE):
-            docl = docf + var.LANGUAGE + "/"
+        if not reader and os.path.isdir(docf + "English"):
+            docl = docf + "English/"
             if os.path.isfile(docl + params[0]):
                 reader = docl + params[0]
             if not reader and con.DOCFILES_EXTS:
