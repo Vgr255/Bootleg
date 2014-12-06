@@ -133,10 +133,11 @@ def ExtractFolder(path):
     folders = []
     files = []
     for file in os.listdir(path):
-        files.append(file)
+        files.append(path + file)
         _file, ext = GetName(file)
         folder = ExtractFile(path + file)
         CopyFolder(folder, path + _file)
+        folders.append(path + _file)
 
     DeleteFile(*files)
     return tuple(folders)
