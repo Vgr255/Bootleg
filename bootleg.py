@@ -21,17 +21,23 @@
 import traceback
 import sys
 
-from tools import constants as con
-from tools import variables as var
-from tools import functions as fn
-from tools import commands as cmd
-from tools import logger as log
-from tools import get
-from tools import git
+try:
+    from tools import constants as con
+    from tools import variables as var
+    from tools import functions as fn
+    from tools import commands as cmd
+    from tools import logger as log
+    from tools import get
+    from tools import git
 
-# Get custom exceptions for handling
+    # Get custom exceptions for handling
 
-from tools.exceptions import *
+    from tools.exceptions import *
+except:
+    print(traceback.format_exc())
+    successful = False
+else:
+    successful = True
 
 def main():
     if not var.INITIALIZED or var.RETRY:
@@ -113,6 +119,11 @@ def main():
                                 return
 
             fn.no_such_command(command)
+
+if not successful:
+    import msvcrt
+    msvcrt.getwch() # Create a pause
+    quit()
 
 while var.ALLOW_RUN:
     try:
