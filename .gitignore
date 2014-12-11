@@ -11,20 +11,14 @@ config.py
 # Preset files
 *.bp
 
-# Batch files
-*.bat
-
 # Binary files
 *.exe
-
-# Image files
-*.ico
 
 # Temporary files
 *.tmp
 
-# Extensions
-*.dll
-
 # Settings file
 *.ini
+
+# Various files
+utils/
