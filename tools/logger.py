@@ -79,17 +79,17 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
                 else: # Normal
                     f.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
                         type not in con.IGNORE_NEWLINE and newfile else "", timestamp, output))
-                if trans:
-                    with open(filel, "a", encoding="utf-8") as fl:
-                        fl.seek(0, 2)
-                        if x == logall:
-                            if type in alines:
-                                fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and type not in
-                                    con.IGNORE_NEWLINE and newfilel and var.NEWFILE_TRA else "", timestamp, atypes(trout)))
-                                var.NEWFILE_TRA = False
-                        else:
-                            fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
-                                type not in con.IGNORE_NEWLINE and newfilel else "", timestamp, trout))
+            if trans:
+                with open(filel, "a", encoding="utf-8") as fl:
+                    fl.seek(0, 2)
+                    if x == logall:
+                        if type in alines:
+                            fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and type not in
+                                con.IGNORE_NEWLINE and newfilel and var.NEWFILE_TRA else "", timestamp, atypes(trout)))
+                            var.NEWFILE_TRA = False
+                    else:
+                        fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
+                            type not in con.IGNORE_NEWLINE and newfilel else "", timestamp, trout))
     if toget:
         logger(toget, logtype=logtype, display=display, write=write, checker=checker, formo=toform, formt=toforml) # don't iterate again if already translated
 
