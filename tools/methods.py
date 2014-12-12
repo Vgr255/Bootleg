@@ -114,7 +114,7 @@ def ExtractFile(file, dst=None, pw=None):
 
     if type == "rar": # Rar file
         subprocess.Popen([var.RAR_LOCATION, "x", "-y", "-p" + pw, path+file, var.BOOTLEG_TEMP + dst])
-    if type == "zip": # Zip file
+    elif type == "zip": # Zip file
         subprocess.Popen([var.SEVENZ_LOCATION, "x", "-p" + pw, "-y", "-o" + var.BOOTLEG_TEMP + dst, path + file])
     else: # No type, just copy it over
         shutil.copy(path + file, var.BOOTLEG_TEMP + dst + file)
@@ -215,14 +215,11 @@ def DeleteFile(*path):
     Deletes all files and folders given.
     Always returns 0."""
 
-    if not path[-1:] in ("/", "\\"):
-        path = path + "\\"
-
     for line in path:
-        if os.path.isdir(path + line):
-            shutil.rmtree(path + line)
-        if os.path.isfile(path + line):
-            os.remove(path + line)
+        if os.path.isdir(line):
+            shutil.rmtree(line)
+        if os.path.isfile(line):
+            os.remove(line)
 
     return 0
 

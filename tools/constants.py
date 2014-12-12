@@ -4,7 +4,7 @@ CODERS = ["Vgr", "Insight"]
 GUI_CODERS = ["Insight"]
 PROCESS_CODERS = ["Vgr"]
 OTHER_SUPPORT = ["UGerstl", "Kompass63"]
-BETA_TESTERS = ["Iceboundphoenix", "Vgr", "EQ2Alyza"]
+BETA_TESTERS = ["Iceboundphoenix", "blueknavish", "Vgr", "EQ2Alyza"]
 SPECIAL_THANKS = ["Kranmer", "Aali", "ficedula", "Covarr", "Qhimm"]
 EXT_HELP = ["nasonfish"]
 
@@ -46,7 +46,7 @@ LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TR
 IGNORE_ALL = ["all", "settings", "temp", "git", "preset"] # will not write to these files when calling log-to-all
 IGNORE_TRANSLATE = ["settings", "temp", "git", "preset"] # will not attempt to translate
 IGNORE_CHECK = ["settings", "temp", "git", "preset"] # will print as-is without attempting to check in translate.py
-IGNORE_SPLITTER = ["temp", "git"]
+IGNORE_SPLITTER = ["temp", "git"] # will not attempt to split the line when (if) printing
 IGNORE_TIMESTAMP = ["settings", "temp", "preset"] # will not write timestamps when logging
 IGNORE_MIXED = ["settings", "temp", "preset"] # will not write this one to the mixed file
 IGNORE_NEWLINE = ["temp", "git", "preset"] # will not print two lines on new run

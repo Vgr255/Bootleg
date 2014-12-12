@@ -19,7 +19,6 @@
 # otherwise, arising from the use of the present Software.
 
 import traceback
-import sys
 
 try:
     from tools import constants as con
@@ -121,8 +120,8 @@ def main():
             fn.no_such_command(command)
 
 if not successful:
-    import msvcrt
-    msvcrt.getwch() # Create a pause
+    while True:
+        pass # Make an endless loop
     quit()
 
 while var.ALLOW_RUN:
@@ -138,15 +137,11 @@ while var.ALLOW_RUN:
             log.logger("SIGTERM_WARN")
             var.ERROR = True
     except Exception: # Don't want to catch everything
-        if traceback.format_exc(): # if there's a traceback, let's have it
-            log.logger("", type="traceback", write=False)
-            log.logger(traceback.format_exc(), type="traceback", display=False)
-            logname = con.LOGGERS["traceback"]
-            if var.DEV_LOG or var.LOG_EVERYTHING:
-                logname = con.LOGGERS["all"]
-            logfile = getattr(var, logname + "_FILE")
-            log_ext = getattr(var, logname + "_EXT")
-            log.logger("ERR_TO_REPORT", "PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
-        if str(sys.exc_info()):
-            log.logger(str(sys.exc_info()), type="error", display=False) # log which exception occured
+        log.logger(traceback.format_exc(), type="traceback", display=False)
+        logname = con.LOGGERS["traceback"]
+        if var.DEV_LOG or var.LOG_EVERYTHING:
+            logname = con.LOGGERS["all"]
+        logfile = getattr(var, logname + "_FILE")
+        log_ext = getattr(var, logname + "_EXT")
+        log.logger("", "ERR_TO_REPORT", "PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
         var.ERROR = True
