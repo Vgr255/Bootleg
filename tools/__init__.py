@@ -230,6 +230,24 @@ if not var.FFVII_PATH:
 var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
 if not var.FFVII_PATH[-1:] == "\\":
     var.FFVII_PATH = var.FFVII_PATH + "\\"
+    
+# Language
+
+if var.LANGUAGE is not None:
+    var.LANGUAGE = var.LANGUAGE.capitalize()
+    if var.LANGUAGE in ("Default", "Current", "System"):
+        syslng = locale.getdefaultlocale()[0]
+        if locale.getlocale()[0]:
+            syslng = locale.getlocale()[0]
+        var.LANGUAGE = syslng[:2]
+    for lang, lng in con.LANGUAGES.items():
+        if var.LANGUAGE.lower() == lng[0]:
+            var.LANGUAGE = lang
+            break
+    if var.LANGUAGE not in con.LANGUAGES.keys():
+        var.LANGUAGE = None
+if var.LANGUAGE is None:
+    var.LANGUAGE = "English"
 
 # Temporary files
 
@@ -258,24 +276,6 @@ if os.path.isfile(var.SYS_FOLDER + "UnRAR.exe"):
     var.RAR_LOCATION = var.SYS_FOLDER + "UnRAR.exe"
 if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
     var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
-
-# Language
-
-if var.LANGUAGE is not None:
-    var.LANGUAGE = var.LANGUAGE.capitalize()
-    if var.LANGUAGE in ("Default", "Current", "System"):
-        syslng = locale.getdefaultlocale()[0]
-        if locale.getlocale()[0]:
-            syslng = locale.getlocale()[0]
-        var.LANGUAGE = syslng[:2]
-    for lang, lng in con.LANGUAGES.items():
-        if var.LANGUAGE.lower() == lng[0]:
-            var.LANGUAGE = lang
-            break
-    if var.LANGUAGE not in con.LANGUAGES.keys():
-        var.LANGUAGE = None
-if var.LANGUAGE is None:
-    var.LANGUAGE = "English"
 
 # Warn if not on Windows
 
