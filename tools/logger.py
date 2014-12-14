@@ -69,27 +69,35 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
             newfile = os.path.isfile(file)
             newfilel = os.path.isfile(filel)
             atypes = lambda out: "type.{0} - {1}".format(type, out)
+            output = output + "\n"
+            trout = trout + "\n"
             with open(file, "a", encoding="utf-8") as f:
                 f.seek(0, 2)
-                if x == logall:
-                    if type in alines:
-                        f.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and type not in
-                            con.IGNORE_NEWLINE and newfile and var.NEWFILE_ALL else "", timestamp, atypes(output)))
-                        var.NEWFILE_ALL = False
-                else: # Normal
-                    f.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
-                        type not in con.IGNORE_NEWLINE and newfile else "", timestamp, output))
+                while "\n" in output:
+                    writer = output[:output.index("\n")]
+                    if x == logall:
+                        if type in alines:
+                            f.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and type not in
+                                con.IGNORE_NEWLINE and newfile and var.NEWFILE_ALL else "", timestamp, atypes(writer)))
+                            var.NEWFILE_ALL = False
+                    else: # Normal
+                        f.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
+                            type not in con.IGNORE_NEWLINE and newfile else "", timestamp, writer))
+                    output = output[output.index("\n")+1:]
             if trans:
                 with open(filel, "a", encoding="utf-8") as fl:
                     fl.seek(0, 2)
-                    if x == logall:
-                        if type in alines:
-                            fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and type not in
-                                con.IGNORE_NEWLINE and newfilel and var.NEWFILE_TRA else "", timestamp, atypes(trout)))
-                            var.NEWFILE_TRA = False
-                    else:
-                        fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
-                            type not in con.IGNORE_NEWLINE and newfilel else "", timestamp, trout))
+                    while "\n" in trout:
+                        writer = trout[:trout.index("\n")]
+                        if x == logall:
+                            if type in alines:
+                                fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and type not in
+                                    con.IGNORE_NEWLINE and newfilel and var.NEWFILE_TRA else "", timestamp, atypes(writer)))
+                                var.NEWFILE_TRA = False
+                        else:
+                            fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
+                                type not in con.IGNORE_NEWLINE and newfilel else "", timestamp, writer))
+                        trout = trout[trout.index("\n")+1:]
     if toget:
         logger(toget, logtype=logtype, display=display, write=write, checker=checker, formo=toform, formt=toforml) # don't iterate again if already translated
 
@@ -138,23 +146,29 @@ def line_splitter(output):
     iter = 0
     iter2 = -1
     newout = ""
-    while " " in output[81:]:
-        if iter >= 80:
-            newout = newout + output[:iter2] + "\n"
-            output = output[iter2+1:]
-            iter = 0
-            iter2 = -1
-        if not output:
+    while True:
+        if len(output) <= 80:
+            newout = newout + output
             break
-        if iter < 80:
-            iter2 = iter
-            iter = output.index(" ", iter+1)
-            if "\n" in output[:iter]:
-                if output.index("\n") < 81:
-                    iter2 = output.index("\n")
-    if iter2 >= 0 and iter >= 80:
-        toget = "  " + output[iter2+1:] + "\n" + toget
-        output = output[:iter2]
+        while " " in output[81:]:
+            if iter >= 80:
+                newout = newout + output[:iter2] + "\n"
+                output = output[iter2+1:]
+                iter = 0
+                iter2 = -1
+            if not output:
+                break
+            if iter < 80:
+                iter2 = iter
+                iter = output.index(" ", iter+1)
+                if "\n" in output[:iter]:
+                    if output.index("\n") < 81:
+                        iter2 = output.index("\n")
+        if iter2 >= 0 and iter >= 80:
+            if newout:
+                newout = newout + "\n"
+            newout = newout + output[:iter2]
+            output = output[iter2+1:]
     return newout
 
 def getview(write, display):
