@@ -46,18 +46,15 @@ def main():
     if var.FATAL_ERROR or var.SYS_ERROR:
         fn.end_bootleg_early()
         return
-    commands = []
-    commands.extend(con.COMMANDS)
-    if var.SHOW_HIDDEN_COMMANDS:
-        commands.extend(con.HIDDEN_COMMANDS)
-        commands.extend(con.ERROR_COMMANDS)
-    if var.DEBUG_MODE:
-        commands.extend(con.DEBUG_COMMANDS)
-    if not var.LANGUAGE == "English":
-        for comm in commands:
-            if comm in con.TRANSLATED_COMMANDS.keys():
-                if var.LANGUAGE in con.TRANSLATED_COMMANDS[comm].keys():
-                    commands[commands.index(comm)] = con.TRANSLATED_COMMANDS[comm][var.LANGUAGE]
+    comm = var.COMMANDS[var.LANGUAGE]
+    commands = [x for x in comm if not comm[x][0].hidden and not comm[x][0].error and not x in comm[x][0].aliases]
+    errcomms = [x for x in comm if comm[x][0].error and not x in comm[x][0].aliases]
+    hidcomms = [x for x in comm if comm[x][0].hidden and not x in comm[x][0].aliases]
+    allcomms = [x for x in comm if comm[x][0].parse and not x in comm[x][0].aliases]
+    if var.ERROR:
+        commands = errcomms
+    if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
+        commands.extend(hidcomms)
     totype = "ENT_CMD"
     formatter = []
     if var.PARSING:
@@ -103,20 +100,12 @@ def main():
         return
     command = inp1[0]
     params = inp1[1:]
-    if var.ERROR and command not in con.ERROR_COMMANDS:
+    if var.ERROR and not command in errcomm:
         log.help("NEED_RR")
     else:
-        if hasattr(cmd, command) and command not in cmd.__ignore__ and "_" not in command:
-            getattr(cmd, command)(inp, params)
+        if command in comm.keys():
+            getattr(cmd, "cmd_"+con.LANGUAGES[var.LANGUAGE][0])(command)(comm[command][0])(inp, params)
         else:
-            for orig, trans in con.TRANSLATED_COMMANDS.items():
-                for lang, comm in trans.items():
-                    if lang == var.LANGUAGE:
-                        if comm == command:
-                            if hasattr(cmd, orig) and orig not in cmd.__ignore__:
-                                getattr(cmd, orig)(inp, params)
-                                return
-
             fn.no_such_command(command)
 
 if not successful:

@@ -167,7 +167,7 @@ for coder in con.GUI_CODERS + con.PROCESS_CODERS:
     if coder not in con.CODERS:
         con.CODERS.append(coder)
 
-# Fetch users and commands lists for help
+# Fetch userlist for help
 
 var.USERS = []
 
@@ -177,20 +177,12 @@ for user in usr:
         continue
     var.USERS.append(user.lower())
 
-var.COMMANDS = []
-
-cmds = con.COMMANDS + con.ERROR_COMMANDS + con.DEBUG_COMMANDS + con.HIDDEN_COMMANDS
-for comm in cmds:
-    if comm.lower() in var.COMMANDS:
-        continue
-    var.COMMANDS.append(comm.lower())
-
 # Get actual possibilities for helping
 
 var.HELPERS = []
 
 for topic in help.__dict__.keys():
-    if "_" in topic or topic in (var.USERS + var.COMMANDS) or topic in ("var", "con", "log", "unhandled"):
+    if "_" in topic or topic in var.USERS or topic in ("var", "con", "log", "unhandled"):
         continue
     var.HELPERS.append(topic.lower())
 

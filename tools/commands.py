@@ -1,18 +1,23 @@
-﻿from tools import constants as con
+﻿from tools import decorators as dec
+from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
 from tools import process as pro
 from tools import logger as log
 from tools import help as helper
-from tools import git as _git
 from tools import links
+from tools import git
 
 import webbrowser
 import subprocess
 import shutil
 import os
 
-__ignore__ = ["con", "var", "fn", "pro", "log", "helper", "links", "webbrowser", "shutil", "os"]
+for lang in con.LANGUAGES.keys():
+    var.COMMANDS[lang] = {}
+
+cmd_en = dec.generate(var.COMMANDS["English"], hidden=False, error=False, parse=False)
+cmd_fr = dec.generate(var.COMMANDS["French"], hidden=False, error=False, parse=False)
 
 # This holds all the commands
 # Must have (inp, params=[]) in the def,
@@ -23,10 +28,14 @@ __ignore__ = ["con", "var", "fn", "pro", "log", "helper", "links", "webbrowser",
 
 # The following commands don't require any parameter
 
-def exit(*args):
+@cmd_en("exit", error=True, arguments=False)
+@cmd_fr("quitter", error=True, arguments=False)
+def exit():
     var.ALLOW_RUN = False
 
-def restart(*args):
+@cmd_en("restart", "res", error=True, arguments=False)
+@cmd_fr("redémarrer", "red", error=True, arguments=False)
+def restart():
     var.ALLOW_RUN = False
     args = [os.getcwd() + "/" + con.PROGRAM_NAME + ".exe", "--retry"]
     if var.SILENT_RUN:
@@ -51,9 +60,11 @@ def restart(*args):
 
 # The following commands may or may not require additional parameters
 
-def clean(inp="", params=[]):
+@cmd_en("clean", hidden=True, arguments=False)
+@cmd_fr("clean", hidden=True, arguments=False)
+def clean(*args):
     for x, y in con.LOGGERS.items():
-        if "keeplog" in inp and not x == "temp":
+        if "keeplog" in args and not x == "temp":
             continue
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
@@ -97,6 +108,8 @@ def clean(inp="", params=[]):
             os.remove(os.getcwd() + "/" + file)
     var.ALLOW_RUN = False
 
+@cmd_en("help", parse=True)
+@cmd_fr("aide", parse=True)
 def help(inp, params=[]):
     if helper.get_help(" ".join(params)):
         formatter = params[0]
@@ -125,10 +138,14 @@ def help(inp, params=[]):
             helping = helping[0]
         log.help(helping, type=type, form=formatter)
 
+@cmd_en("copy", hidden=True)
+@cmd_fr("copy", hidden=True)
 def copy(inp, params=[]):
     if params and " ".join(params) == "config":
         shutil.copy(os.getcwd() + "/config.py", os.getcwd() + "/config.py.example")
 
+@cmd_en("run", parse=True)
+@cmd_fr("run", parse=True)
 def run(inp, params=[]):
     if params:
         if params[0] == "silent":
@@ -142,6 +159,8 @@ def run(inp, params=[]):
     else:
         pro.run()
 
+@cmd_en("do", hidden=True)
+@cmd_fr("do", hidden=True)
 def do(inp, params=[]):
     done = False
     if params:
@@ -169,7 +188,9 @@ def do(inp, params=[]):
     if not done:
         fn.no_such_command("do")
 
-def git(inp, params=[]):
+@cmd_en("git", hidden=True)
+@cmd_fr("git", hidden=True)
+def _git(inp, params=[]):
     if not var.GIT_LOCATION:
         log.logger("GIT_NOT_INST")
         return
@@ -216,8 +237,10 @@ def git(inp, params=[]):
         if larged:
             raise EOFError("No closing double quote")
         args.append(line)
-    _git.do(args)
+    git.do(args)
 
+@cmd_en("read", parse=True)
+@cmd_fr("lire", parse=True)
 def read(inp, params=[]): # Reads a documentation file
     # Priority: 'documentation' folder with full name; same folder without file extension;
     # Language's subfolder with full name; same folder without file extension;
@@ -317,6 +340,8 @@ def read(inp, params=[]): # Reads a documentation file
     else:
         log.logger("HELP_READ_CMD")
 
+@cmd_en("get", hidden=True)
+@cmd_fr("get", hidden=True)
 def get(inp, params=[]):
     if params:
         if params[0] == "mod":
