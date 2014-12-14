@@ -34,9 +34,8 @@ try:
     from tools.exceptions import *
 except:
     print(traceback.format_exc())
-    successful = False
-else:
-    successful = True
+    while True: pass
+    quit()
 
 def main():
     if not var.INITIALIZED or var.RETRY:
@@ -107,11 +106,6 @@ def main():
             getattr(cmd, "cmd_"+con.LANGUAGES[var.LANGUAGE][0])(command)(comm[command][0])(inp, params)
         else:
             fn.no_such_command(command)
-
-if not successful:
-    while True:
-        pass # Make an endless loop
-    quit()
 
 while var.ALLOW_RUN:
     try:

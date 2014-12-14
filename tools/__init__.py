@@ -1,20 +1,80 @@
 ﻿# Startup initialization
 
+import shutil
+import locale
+import os
+
+from tools import constants as con
+from tools import variables as var
+from tools import logger as log
+
+# Copy or create config file if it doesn't exist
+
+if not os.path.isfile("config.py"): # user did not rename their config file, let's silently copy it
+    if os.path.isfile("config.py.example"):
+        shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+    else: # if it can't use default, create a blank config
+        with open("config.py", "w") as new:
+            new.write("# New blank config created by {0}".format(con.PROGRAM_NAME))
+
+import config
+
+# Check for overriding config file
+
+if os.path.isfile("cfg.py"):
+    import cfg
+    for x in cfg.__dict__.keys():
+        y = getattr(cfg, x)
+        setattr(config, x, y)
+    var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
+
+# Convert settings into standalone variables
+
+for x, y in config.__dict__.items():
+    if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
+        break # don't carry config over if disallowed
+    if not x.isupper() or y == "":
+        continue
+    if x in con.DISALLOW_CARRYING:
+        continue # forcing config cannot be manually set
+    if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or (isinstance(y, str) and y.isdigit())):
+        setattr(var, x, int(y))
+        continue
+    setattr(var, x, y)
+
+# Set language
+
+if var.LANGUAGE is not None:
+    var.LANGUAGE = var.LANGUAGE.capitalize()
+    if var.LANGUAGE in ("Default", "Current", "System"):
+        syslng = locale.getdefaultlocale()[0]
+        if locale.getlocale()[0]:
+            syslng = locale.getlocale()[0]
+        var.LANGUAGE = syslng[:2]
+    for lang, lng in con.LANGUAGES.items():
+        if var.LANGUAGE.lower() == lng[0]:
+            var.LANGUAGE = lang
+            break
+    if var.LANGUAGE not in con.LANGUAGES.keys():
+        var.LANGUAGE = None
+
+if var.LANGUAGE is None:
+    var.LANGUAGE = "English"
+
+# Warn about the time the initialization may take
+# Generating decorators takes a long time
+
+log.help("GENERATING_DECORATORS")
+
 import tempfile
 import platform
 import argparse
-import shutil
-import locale
 import ctypes
-import os
 
-from tools import variables as var
-from tools import constants as con
 from tools import parsables as par
 from tools import functions as fn
 from tools import commands as cmd
 from tools import methods as met
-from tools import logger as log
 from tools import help
 from tools import get
 from tools import git
@@ -22,27 +82,6 @@ from tools import git
 # Check for admin privileges
 
 var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())
-
-# Copy or create config file if it doesn't exist
-
-if not os.path.isfile(os.getcwd() + "/config.py"): # user did not rename their config file, let's silently copy it
-    if os.path.isfile(os.getcwd() + "/config.py.example"):
-        shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
-    else: # if it can't use default, create a blank config
-        newconf = open(os.getcwd() + "/config.py", "w")
-        newconf.write("# New blank config created by {0}".format(con.PROGRAM_NAME))
-        newconf.close()
-
-import config
-
-# Check for overriding config file
-
-if os.path.isfile(os.getcwd() + "/cfg.py"):
-    import cfg
-    for x in cfg.__dict__.keys():
-        y = getattr(cfg, x)
-        setattr(config, x, y)
-    var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
 
 # Get processor architecture
 
@@ -103,20 +142,6 @@ if platform.system() == "Windows":
         var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
         var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
 
-# Convert settings into standalone variables
-
-for x, y in config.__dict__.items():
-    if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
-        break # don't carry config over if disallowed
-    if not x.isupper() or y == "":
-        continue
-    if x in con.DISALLOW_CARRYING:
-        continue # forcing config cannot be manually set
-    if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or (isinstance(y, str) and y.isdigit())):
-        setattr(var, x, int(y))
-        continue
-    setattr(var, x, y)
-
 # Check launch parameters
 
 launcher = argparse.ArgumentParser(description="{0} Final Fantasy VII Mod Configurator {1}".format(con.PROGRAM_NAME, con.CURRENT_RELEASE))
@@ -167,25 +192,6 @@ for coder in con.GUI_CODERS + con.PROCESS_CODERS:
     if coder not in con.CODERS:
         con.CODERS.append(coder)
 
-# Fetch userlist for help
-
-var.USERS = []
-
-usr = con.FIRST_DEV + con.USER_HELP + con.CODERS + con.OTHER_SUPPORT + con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.TRANSLATORS + con.DEVELOPERS
-for user in usr:
-    if user.lower() in var.USERS:
-        continue
-    var.USERS.append(user.lower())
-
-# Get actual possibilities for helping
-
-var.HELPERS = []
-
-for topic in help.__dict__.keys():
-    if "_" in topic or topic in var.USERS or topic in ("var", "con", "log", "unhandled"):
-        continue
-    var.HELPERS.append(topic.lower())
-
 # Variables formatting
 
 # Mods location
@@ -222,24 +228,6 @@ if not var.FFVII_PATH:
 var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
 if not var.FFVII_PATH[-1:] == "\\":
     var.FFVII_PATH = var.FFVII_PATH + "\\"
-    
-# Language
-
-if var.LANGUAGE is not None:
-    var.LANGUAGE = var.LANGUAGE.capitalize()
-    if var.LANGUAGE in ("Default", "Current", "System"):
-        syslng = locale.getdefaultlocale()[0]
-        if locale.getlocale()[0]:
-            syslng = locale.getlocale()[0]
-        var.LANGUAGE = syslng[:2]
-    for lang, lng in con.LANGUAGES.items():
-        if var.LANGUAGE.lower() == lng[0]:
-            var.LANGUAGE = lang
-            break
-    if var.LANGUAGE not in con.LANGUAGES.keys():
-        var.LANGUAGE = None
-if var.LANGUAGE is None:
-    var.LANGUAGE = "English"
 
 # Temporary files
 
