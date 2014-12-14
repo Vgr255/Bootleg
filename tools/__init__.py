@@ -79,6 +79,13 @@ from tools import help
 from tools import get
 from tools import git
 
+# Remove useless decorators
+
+for lang in con.LANGUAGES:
+    if lang != var.LANGUAGE:
+        for dict_ in con.DECORATORS:
+            del getattr(var, dict_)[lang]
+
 # Check for admin privileges
 
 var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())

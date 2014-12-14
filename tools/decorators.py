@@ -1,8 +1,8 @@
 # Decorators generator for various purposes
 
 def generate(arguments=True, **defargs):
-    def create(generator):
-        def parse(*cmds, id=-1, arguments=arguments, **kwargs):
+    def create(generator, id=-1):
+        def parse(*cmds, arguments=arguments, id=id, **kwargs):
             def decorate(dec):
                 def fetch(*nargs):
                     if not arguments:
@@ -19,6 +19,7 @@ def generate(arguments=True, **defargs):
                     alias = True
                 for arg, value in kwargs.items():
                     setattr(fetch, arg, value)
+                fetch.id = id
 
                 return fetch
 
@@ -38,7 +39,7 @@ def generate(arguments=True, **defargs):
 
 def delete(generator, id):
     for cmd in list(generator.keys()):
-        for x in generator[cmd]:
+        for x in list(generator[cmd]):
             if x.id == id:
                 generator[cmd].remove(x)
         if not generator[cmd]:

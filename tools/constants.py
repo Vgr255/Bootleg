@@ -24,6 +24,8 @@ READ_INDEX = {"English": "index", "French": "index"}
 
 READ_GET_SECTIONS = ["sections", "list"]
 
+DECORATORS = ["COMMANDS", "HELPERS"]
+
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour
 
 CURRENT_RELEASE = "041"
