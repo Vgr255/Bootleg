@@ -212,6 +212,24 @@ FUNERAL_FMVS = {
 English: "PH03N1XFURY's Funeral and Nibelheim FMVs",
 }
 
+FIELD_TEXTURES = {
+English: "Field Art as PNG to Mods folder",
+}
+
+FACEPALMERV2 = {
+English: "FacePalmer V2 Field Textures",
+}
+
+FACEPALMER = {
+English: "FacePalmer Field Textures",
+}
+
+FACEPALMERPART = {
+English: "FacePalmer Field Textures in parts",
+}
+
+# End of the mods names
+
 # The following lines are contained in 'bootleg.py'
 
 RES_RET = { # 0 = Program name
@@ -317,6 +335,10 @@ French: "Suppliez votre fichier '{0}.{1}'.",
 # All the following entries are lines contained within files inside the 'tools' folder
 
 # The following lines are contained in '__init__.py'
+
+GENERATING_DECORATORS = {
+English: "Performing startup initialization . . .\nThis may take a while.",
+}
 
 NOT_ON_WINDOWS = { # 0 = Program name
 English: "{0} will not work properly on a different operating system than Windows.",
@@ -895,10 +917,6 @@ HELP_NOT_VALID_HELP = { # 0 = Invalid help topic
 English: "'{0}' is not a valid help topic.",
 }
 
-HELP_POS_HELP_TOPICS = { # 0 = Possible helps; 1 = Plural (fill at the top)
-English: "Possible help topic{1}: {0}.",
-}
-
 HELP_USE_ITEM_SPEC = {
 English: "Use 'help <item>' to view a specific help topic.",
 }
@@ -959,8 +977,8 @@ HELP_DEVELOPERS = { # 0 = Plural (fill at the top); 1 = DEVELOPERS constant
 English: "Current active programmer{0} and developer{0}: {1}.",
 }
 
-HELP_POSSIBLE_HELP = { # 0 = HELPERS variable; 1 = Plural (fill at the top)
-English: "Possible help topic{1}: {0}.",
+HELP_POSSIBLE_HELP = {
+English: "Possible help topics: topics, commands, users.",
 }
 
 HELP_VIEW_SPEC_TOP = {
@@ -1011,24 +1029,24 @@ HELP_SUPPORT_NONE = {
 English: "You can go on the forums to ask for help.",
 }
 
-HELP_COMM = { # 0 = PLURAL (fill at the top); 1 = COMMANDS constant
+HELP_COMM = { # 0 = PLURAL (fill at the top); 1 = Commands
 English: "Available command{0}: {1}",
-}
-
-HELP_HID_COMM = { # 0 = PLURAL (fill at the top); 1 = HIDDEN_COMMANDS constant
-English: "Hidden command{0}: {1}",
 }
 
 HELP_NO_AVAIL_CMD = {
 English: "There are no available commands.",
 }
 
-HELP_USERS = { # 0 = Program name; 1 = USERS variable
-English: "Users with or without a direct link to {0}: {1}",
+HELP_USERS = { # 0 = Program name; 1 = Users; 2 = PLURAL (fill at the top)
+English: "User{2} with or without a direct link to {0}: {1}",
 }
 
 HELP_NO_USERS = {
 English: "There are no users.",
+}
+
+HELP_NO_TOPICS = {
+English: "There are no topics.",
 }
 
 HELP_PITBRAT = { # The backslashes are needed to ignore the line change and concatenate the strings
@@ -1104,4 +1122,12 @@ English: "Installing {0} . . .",
 
 PARS_COMPLETED = { # 0 = Mod name
 English: "Completed installation of {0}.",
+}
+
+FP_EXTR_TEXTURES = {
+English: "Extracting Textures . . .\nThis will take a few minutes.",
+}
+
+MIS_ALL_FP = {
+English: "Missing FacePalmer files. Skipping FacePalmer.",
 }

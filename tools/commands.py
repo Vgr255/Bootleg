@@ -1,10 +1,10 @@
-﻿from tools import decorators as dec
-from tools import constants as con
+﻿from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
 from tools import process as pro
 from tools import logger as log
 from tools import help as helper
+from tools import decorators
 from tools import links
 from tools import git
 
@@ -16,8 +16,10 @@ import os
 for lang in con.LANGUAGES.keys():
     var.COMMANDS[lang] = {}
 
-cmd_en = dec.generate(var.COMMANDS["English"], hidden=False, error=False, parse=False)
-cmd_fr = dec.generate(var.COMMANDS["French"], hidden=False, error=False, parse=False)
+generator = decorators.generate(hidden=False, error=False, parse=False)
+
+cmd_en = generator(var.COMMANDS["English"])
+cmd_fr = generator(var.COMMANDS["French"])
 
 # This holds all the commands
 # Must have (inp, params=[]) in the def,
@@ -68,26 +70,23 @@ def clean(*args):
             continue
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
+        file = logfile + "." + log_ext
         if x == "temp":
             notdone = []
-            file = "{0}\\{1}.{2}".format(os.getcwd(), logfile, log_ext)
-            f = open(file, "r")
-            for line in f.readlines():
-                line = line.replace("\n", "")
-                if not line:
-                    continue
-                if not os.path.isdir(line):
-                    continue
-                try:
-                    shutil.rmtree(line)
-                except OSError:
-                    notdone.append(line)
-            f.close()
+            with open(file) as f:
+                for line in f.readlines():
+                    line = line.replace("\n", "")
+                    if not line:
+                        continue
+                    if not os.path.isdir(line):
+                        continue
+                    try:
+                        shutil.rmtree(line)
+                    except OSError:
+                        notdone.append(line)
             if notdone:
-                ft = open(file, "w")
-                ft.write("\n".join(notdone))
-                ft.write("\n")
-                ft.close()
+                with open(file, "w") as ft:
+                    ft.write("\n".join(notdone) + "\n")
                 continue # prevent temp file from being deleted if it fails
         file = logfile + "." + log_ext
         if fn.IsFile.cur(file):
@@ -111,32 +110,22 @@ def clean(*args):
 @cmd_en("help", parse=True)
 @cmd_fr("aide", parse=True)
 def help(inp, params=[]):
-    if helper.get_help(" ".join(params)):
-        formatter = params[0]
-        helping = helper.unhandled
+    if not params:
+        helper.get_help()
+        return
+    topics = var.HELPERS[var.LANGUAGE]
+    poshelp = [x for x in topics]
+    if params[0] in poshelp:
+        helping = getattr(helper, "help_"+con.LANGUAGES[var.LANGUAGE][0])(params[0])(topics[params[0]][0])()
         type = "help"
-        if hasattr(helper, params[0]):
-            helping = getattr(helper, params[0])()
-        else:
-            broke = False
-            for orig, trans in con.TRANSLATED_COMMANDS.items():
-                for lang, line in trans.items():
-                    if broke:
-                        break
-                    if lang == var.LANGUAGE:
-                        if line == params[0]:
-                            if hasattr(helper, orig):
-                                helping = getattr(helper, orig)()
-                                broke = True
-        if helping == helper.unhandled:
-            type = "error"
-            var.ERROR = True
-        elif helping == list(helping):
-            helping = "\n".join(helping)
-        elif helping == tuple(helping):
-            formatter = list(helping[1:])
-            helping = helping[0]
-        log.help(helping, type=type, form=formatter)
+    else:
+        helper.get_help(params[0])
+        return
+    formatter = params[1:]
+    if helping == tuple(helping):
+        formatter = list(helping[1:])
+        helping = helping[0]
+    log.help("", helping, type=type, form=formatter)
 
 @cmd_en("copy", hidden=True)
 @cmd_fr("copy", hidden=True)
