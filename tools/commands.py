@@ -90,17 +90,17 @@ def clean(*args):
                 continue # prevent temp file from being deleted if it fails
         file = logfile + "." + log_ext
         if fn.IsFile.cur(file):
-            os.remove(os.getcwd() + "\\" + file)
+            os.remove(file)
         for s in con.LANGUAGES.values():
             filel = s[0] + "_" + file
             if fn.IsFile.cur(filel):
-                os.remove(os.getcwd() + "\\" + filel)
+                os.remove(filel)
     if fn.IsFile.cur("cfg.py"):
-        os.remove(os.getcwd() + "/cfg.py")
+        os.remove("cfg.py")
     if fn.IsFile.cur("preset.py"):
-        os.remove(os.getcwd() + "/preset.py")
+        os.remove("preset.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
-    if os.path.isdir(os.getcwd() + "/tools/__pycache__"):
+    if os.path.isdir("tools/__pycache__"):
         shutil.rmtree(os.getcwd() + '/tools/__pycache__')
     for file in os.listdir(os.getcwd()):
         if file[:4:3] == "__" and (file[1:3]+file[4:]).isalnum() and file.islower() and fn.IsFile.cur(file) and len(file) == 15:
@@ -116,8 +116,7 @@ def help(inp, params=[]):
     topics = var.HELPERS[var.LANGUAGE]
     poshelp = [x for x in topics]
     if params[0] in poshelp:
-        helping = getattr(helper, "help_"+con.LANGUAGES[var.LANGUAGE][0])(params[0])(topics[params[0]][0])()
-        type = "help"
+        helping = topics[params[0]][0]()
     else:
         helper.get_help(params[0])
         return

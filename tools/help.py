@@ -112,6 +112,12 @@ def commands():
 def see_users():
     usr = var.HELPERS[var.LANGUAGE]
     poshelp = [x for x in usr if usr[x][0].user]
+    for y in poshelp:
+        for z in set(con.FIRST_DEV + con.USER_HELP + con.CODERS + con.OTHER_SUPPORT +
+            con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.DEVELOPERS + con.TRANSLATORS):
+            if z.lower() == y:
+                poshelp[poshelp.index(y)] = z
+                break
     if poshelp:
         return "HELP_USERS", con.PROGRAM_NAME, ", ".join(poshelp), "PLURAL" if len(poshelp) > 1 else ""
     return "HELP_NO_USERS"

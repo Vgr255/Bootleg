@@ -101,11 +101,10 @@ def main():
     params = inp1[1:]
     if var.ERROR and not command in errcomm:
         log.help("NEED_RR")
+    elif command in comm:
+        comm[command][0](inp, params)
     else:
-        if command in comm.keys():
-            getattr(cmd, "cmd_"+con.LANGUAGES[var.LANGUAGE][0])(command)(comm[command][0])(inp, params)
-        else:
-            fn.no_such_command(command)
+        fn.no_such_command(command)
 
 while var.ALLOW_RUN:
     try:
