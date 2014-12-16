@@ -11,17 +11,19 @@ def generate(arguments=True, **defargs):
                 alias = False
                 fetch.aliases = []
                 for cmd in cmds:
-                    if not cmd in generator.keys():
-                        generator[cmd] = []
-                    generator[cmd].append(fetch)
+                    generator[cmd] = fetch
                     if alias:
                         fetch.aliases.append(cmd)
                     alias = True
                 for arg, value in kwargs.items():
                     setattr(fetch, arg, value)
                 fetch.id = id
+                fetch.__doc__ = dec.__doc__
 
                 return fetch
+
+            if not cmds:
+                raise ValueError("no commands were specified")
 
             for arg, value in defargs.items():
                 if not arg in kwargs.keys():
@@ -33,14 +35,16 @@ def generate(arguments=True, **defargs):
 
             return decorate
 
+        if not isinstance(generator, dict):
+            raise TypeError("generator object must be a dict")
+
         return parse
 
     return create
 
 def delete(generator, id):
+    if not isinstance(generator, dict):
+        raise TypeError("generator object must be a dict")
     for cmd in list(generator.keys()):
-        for x in list(generator[cmd]):
-            if x.id == id:
-                generator[cmd].remove(x)
-        if not generator[cmd]:
+        if generator[cmd].id == id:
             del generator[cmd]
