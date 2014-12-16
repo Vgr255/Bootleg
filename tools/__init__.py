@@ -75,6 +75,7 @@ from tools import parsables as par
 from tools import functions as fn
 from tools import commands as cmd
 from tools import methods as met
+from tools import decorators
 from tools import help
 from tools import get
 from tools import git
@@ -83,8 +84,8 @@ from tools import git
 
 for lang in con.LANGUAGES:
     if lang != var.LANGUAGE:
-        for dict_ in con.DECORATORS:
-            del getattr(var, dict_)[lang]
+        for decorator in con.DECORATORS:
+            decorators.delete(getattr(var, decorator), lang)
 
 # Check for admin privileges
 

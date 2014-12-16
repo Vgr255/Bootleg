@@ -9,24 +9,24 @@ from tools import constants as con
 from tools import logger as log
 from tools import decorators
 
-for lang in con.LANGUAGES.keys():
-    var.HELPERS[lang] = {}
-
 generator = decorators.generate(arguments=False, command=False, topic=False, user=False)
 
-help_en = generator(var.HELPERS["English"])
-help_fr = generator(var.HELPERS["French"])
+help_en = generator(var.HELPERS, "English")
+help_fr = generator(var.HELPERS, "French")
 
 unhandled = "HELP_NOT_FOUND"
 
 def get_help(helping=""):
+    topics = var.HELPERS
+    poshelp = [x for x in topics if topics[x].topic and not x in topics[x].aliases]
+    poshelp.sort()
     helping = helping.lower()
     log.help("", "HELP_FILE_BOOT_CONF", form=con.PROGRAM_NAME)
     log.help("HELP_FILE_NEW_HELP", "\n")
     if helping:
         log.help("HELP_NOT_VALID_HELP", form=helping)
         if var.HELPERS:
-            log.help("HELP_POSSIBLE_HELP")
+            log.help("HELP_POSSIBLE_HELP", form=[", ".join(poshelp)])
             log.help("HELP_USE_ITEM_SPEC")
             return False
     elif not helping:
@@ -60,8 +60,7 @@ def get_help(helping=""):
             log.help("HELP_EMAIL", form=[con.EMAIL, con.PROGRAM_NAME])
         if con.DEVELOPERS:
             log.help("", "HELP_DEVELOPERS", form=["PLURAL" if len(con.DEVELOPERS) > 1 else "", ", ".join(con.DEVELOPERS)])
-        topics = var.HELPERS[var.LANGUAGE]
-        log.help("", "HELP_POSSIBLE_HELP", "HELP_VIEW_SPEC_TOP")
+        log.help("", "HELP_POSSIBLE_HELP", "HELP_VIEW_SPEC_TOP", form=[", ".join(poshelp)])
         log.help("HELP_VIEW_SPEC_USR")
         log.help("HELP_VIEW_SPEC_CMD")
         return False
@@ -101,8 +100,9 @@ def support():
 @help_en("commands", topic=True)
 @help_fr("commandes", topic=True)
 def commands():
-    topics = var.HELPERS[var.LANGUAGE]
-    poshelp = [x for x in topics if topics[x][0].command]
+    topics = var.HELPERS
+    poshelp = [x for x in topics if topics[x].command]
+    poshelp.sort()
     if poshelp:
         return "HELP_COMM", "PLURAL" if len(poshelp) > 1 else "", ", ".join(poshelp)
     return "HELP_NO_AVAIL_CMD"
@@ -110,8 +110,9 @@ def commands():
 @help_en("users", topic=True)
 @help_fr("utilisateurs", topic=True)
 def see_users():
-    usr = var.HELPERS[var.LANGUAGE]
-    poshelp = [x for x in usr if usr[x][0].user]
+    usr = var.HELPERS
+    poshelp = [x for x in usr if usr[x].user]
+    poshelp.sort()
     for y in poshelp:
         for z in set(con.FIRST_DEV + con.USER_HELP + con.CODERS + con.OTHER_SUPPORT +
             con.BETA_TESTERS + con.SPECIAL_THANKS + con.EXT_HELP + con.DEVELOPERS + con.TRANSLATORS):
@@ -125,8 +126,9 @@ def see_users():
 @help_en("topics", topic=True)
 @help_fr("topics", topic=True)
 def view_topics():
-    top = var.HELPERS[var.LANGUAGE]
-    poshelp = [x for x in top if top[x][0].topic]
+    top = var.HELPERS
+    poshelp = [x for x in top if top[x].topic]
+    poshelp.sort()
     if poshelp:
         return "HELP_POSSIBLE_HELP", ", ".join(poshelp), "PLURAL" if len(poshelp) > 1 else ""
     return "HELP_NO_TOPIC"

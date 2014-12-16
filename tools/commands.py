@@ -13,13 +13,10 @@ import subprocess
 import shutil
 import os
 
-for lang in con.LANGUAGES.keys():
-    var.COMMANDS[lang] = {}
-
 generator = decorators.generate(hidden=False, error=False, parse=False)
 
-cmd_en = generator(var.COMMANDS["English"])
-cmd_fr = generator(var.COMMANDS["French"])
+cmd_en = generator(var.COMMANDS, "English")
+cmd_fr = generator(var.COMMANDS, "French")
 
 # This holds all the commands
 # Must have (inp, params=[]) in the def,
@@ -113,10 +110,10 @@ def help(inp, params=[]):
     if not params:
         helper.get_help()
         return
-    topics = var.HELPERS[var.LANGUAGE]
+    topics = var.HELPERS
     poshelp = [x for x in topics]
     if params[0] in poshelp:
-        helping = topics[params[0]][0]()
+        helping = topics[params[0]]()
     else:
         helper.get_help(params[0])
         return

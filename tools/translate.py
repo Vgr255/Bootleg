@@ -978,7 +978,7 @@ English: "Current active programmer{0} and developer{0}: {1}.",
 }
 
 HELP_POSSIBLE_HELP = {
-English: "Possible help topics: topics, commands, users.",
+English: "Possible help topics: {0}.",
 }
 
 HELP_VIEW_SPEC_TOP = {
