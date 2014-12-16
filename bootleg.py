@@ -45,11 +45,11 @@ def main():
     if var.FATAL_ERROR or var.SYS_ERROR:
         fn.end_bootleg_early()
         return
-    comm = var.COMMANDS[var.LANGUAGE]
-    commands = [x for x in comm if not comm[x][0].hidden and not comm[x][0].error and not x in comm[x][0].aliases]
-    errcomms = [x for x in comm if comm[x][0].error and not x in comm[x][0].aliases]
-    hidcomms = [x for x in comm if comm[x][0].hidden and not x in comm[x][0].aliases]
-    allcomms = [x for x in comm if comm[x][0].parse and not x in comm[x][0].aliases]
+    comm = var.COMMANDS
+    commands = [x for x in comm if not comm[x].hidden and not comm[x].error and not x in comm[x].aliases]
+    errcomms = [x for x in comm if comm[x].error and not x in comm[x].aliases]
+    hidcomms = [x for x in comm if comm[x].hidden and not x in comm[x].aliases]
+    allcomms = [x for x in comm if comm[x].parse and not x in comm[x].aliases]
     if var.ERROR:
         commands = errcomms
     if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
@@ -64,6 +64,7 @@ def main():
         totype = "ENT_UPD"
         formatter = ["YES", "NO"]
     if totype == "ENT_CMD":
+        commands.sort()
         log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
     if totype:
         log.help("\n", totype, "", form=formatter)
@@ -99,10 +100,10 @@ def main():
         return
     command = inp1[0]
     params = inp1[1:]
-    if var.ERROR and not command in errcomm:
+    if var.ERROR and not command in errcomms:
         log.help("NEED_RR")
     elif command in comm:
-        comm[command][0](inp, params)
+        comm[command](inp, params)
     else:
         fn.no_such_command(command)
 
@@ -119,11 +120,12 @@ while var.ALLOW_RUN:
             log.logger("SIGTERM_WARN")
             var.ERROR = True
     except Exception: # Don't want to catch everything
-        log.logger(traceback.format_exc(), type="traceback", display=False)
+        log.logger(traceback.format_exc(), type="traceback", display=var.DISPLAY_TRACEBACK)
         logname = con.LOGGERS["traceback"]
         if var.DEV_LOG or var.LOG_EVERYTHING:
             logname = con.LOGGERS["all"]
         logfile = getattr(var, logname + "_FILE")
         log_ext = getattr(var, logname + "_EXT")
-        log.logger("", "ERR_TO_REPORT", "PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
+        if not var.DISPLAY_TRACEBACK:
+            log.logger("", "ERR_TO_REPORT", "PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
         var.ERROR = True

@@ -53,6 +53,8 @@ LOG_EVERYTHING = False # puts everything in a single file as well
 DISPLAY_EVERYTHING = False # displays everything to screen
 WRITE_EVERYTHING = False # writes every occurence to file
 
+DISPLAY_TRACEBACK = False # if True, will print traceback to screen
+
 SHOW_HIDDEN_COMMANDS = False
 
 IGNORE_FATAL_ERROR = False
