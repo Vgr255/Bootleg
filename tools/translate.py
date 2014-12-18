@@ -53,8 +53,8 @@ English: "index",
 French: "index",
 }
 
-READ_GET_SECTIONS = { # This needs to be a list
-English: ["sections", "list"],
+READ_GET_SECTIONS = { # This needs to be a list/tuple
+English: ("sections", "list"),
 }
 
 # Small words that are part of larger sentences by format

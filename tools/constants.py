@@ -1,17 +1,17 @@
-﻿FIRST_DEV = ["PitBrat"]
-USER_HELP = ["Vgr", "EQ2Alyza"]
-CODERS = ["Vgr", "Insight"]
-GUI_CODERS = ["Insight"]
-PROCESS_CODERS = ["Vgr"]
-OTHER_SUPPORT = ["UGerstl", "Kompass63"]
-BETA_TESTERS = ["Iceboundphoenix", "blueknavish", "Vgr", "EQ2Alyza"]
-SPECIAL_THANKS = ["Kranmer", "Aali", "ficedula", "Covarr", "Qhimm"]
-EXT_HELP = ["nasonfish"]
+﻿FIRST_DEV = ("PitBrat",)
+USER_HELP = ("Vgr", "EQ2Alyza")
+CODERS = ("Vgr", "Insight")
+GUI_CODERS = ("Insight",)
+PROCESS_CODERS = ("Vgr",)
+OTHER_SUPPORT = ("UGerstl", "Kompass63")
+BETA_TESTERS = ("Iceboundphoenix", "blueknavish", "Vgr", "EQ2Alyza")
+SPECIAL_THANKS = ("Kranmer", "Aali", "ficedula", "Covarr", "Qhimm")
+EXT_HELP = ("nasonfish",)
 
-DEVELOPERS = ["Vgr"]
+DEVELOPERS = ("Vgr",)
 
-TRANSLATORS = ["Vgr"]
-FRENCH_TRANSLATORS = ["Vgr"]
+TRANSLATORS = ("Vgr",)
+FRENCH_TRANSLATORS = ("Vgr",)
 
 EMAIL = "Bootleg@DadaData.net"
 
@@ -19,7 +19,7 @@ PROCESS_CODE = "https://github.com/Vgr255/Bootleg" # This is used in many places
 
 PROGRAM_NAME = "Bootleg" # this is what appears everywhere (e.g. "Welcome to the Bootleg configurator")
 
-DECORATORS = ["COMMANDS", "HELPERS"]
+DECORATORS = ("COMMANDS", "HELPERS")
 
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour
 
@@ -30,17 +30,17 @@ VERSION_INFO = "build" # Build, Release, Version, etc
 
 LOGGERS = {"normal": "LOG", "error": "ERROR", "debug": "DEBUG", "traceback": "TRACE", "input": "INPUT", "help": "LOG", "all": "MIXED", "settings": "SETTINGS", "temp": "TEMP", "git": "GIT", "preset": "PRESET"}
 
-IGNORE_ALL = ["all", "settings", "temp", "git", "preset"] # will not write to these files when calling log-to-all
-IGNORE_TRANSLATE = ["settings", "temp", "git", "preset"] # will not attempt to translate
-IGNORE_CHECK = ["settings", "temp", "git", "preset"] # will print as-is without attempting to check in translate.py
-IGNORE_SPLITTER = ["temp", "git"] # will not attempt to split the line when (if) printing
-IGNORE_TIMESTAMP = ["settings", "temp", "preset"] # will not write timestamps when logging
-IGNORE_MIXED = ["settings", "temp", "preset"] # will not write this one to the mixed file
-IGNORE_NEWLINE = ["temp", "git", "preset"] # will not print two lines on new run
+IGNORE_ALL = ("all", "settings", "temp", "git", "preset") # will not write to these files when calling log-to-all
+IGNORE_TRANSLATE = ("settings", "temp", "git", "preset") # will not attempt to translate
+IGNORE_CHECK = ("settings", "temp", "git", "preset") # will print as-is without attempting to check in translate.py
+IGNORE_SPLITTER = ("temp", "git") # will not attempt to split the line when (if) printing
+IGNORE_TIMESTAMP = ("settings", "temp", "preset") # will not write timestamps when logging
+IGNORE_MIXED = ("settings", "temp", "preset") # will not write this one to the mixed file
+IGNORE_NEWLINE = ("temp", "git", "preset") # will not print two lines on new run
 
-DISALLOW_CARRYING = ["FORCE_CONFIG"]
+DISALLOW_CARRYING = ("FORCE_CONFIG",)
 
-DOCFILES_EXTS = ["txt"]
+DOCFILES_EXTS = ("txt",)
 
 LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
 
@@ -48,22 +48,22 @@ GAME_LANGUAGES = {"English": ["en", "us", "us", "", 0], "French": ["fr", "fr", "
 
 # filenames to set variables
 
-FFVII_PATH = ["MODS_AVALANCHE", "MODS_OVERHAUL", "MODS_FINAL"]
-LGP_TEMP = ["CHAR", "MINI", "FLEVEL", "FLEVEL_HC", "BATTLE", "MAGIC", "WORLD", "CHOCOBO", "FINAL"]
-ADD_PROG_NAME = ["MODS_FINAL"]
+FFVII_PATH = ("MODS_AVALANCHE", "MODS_OVERHAUL", "MODS_FINAL")
+LGP_TEMP = ("CHAR", "MINI", "FLEVEL", "FLEVEL_HC", "BATTLE", "MAGIC", "WORLD", "CHOCOBO", "FINAL")
+ADD_PROG_NAME = ("MODS_FINAL",)
 
-TEMP_FOLDERS = ["KERNEL_VANILLA", "KERNEL_REMIX", "KERNEL_HREMIX", "BATTLE", "WORLD_VANILLA", "WORLD", "SCENE_VANILLA", "SCENE_REMIX", "SCENE_HREMIX", "SUB", "MAGIC",
-                "FLEVEL", "FLEVEL_HARDCORE", "FLEVEL_REVIVAL", "CHAR", "MINI", "KERNEL_HARDCORE", "KERNEL_REVIVAL", "SCENE_HARDCORE", "SCENE_REVIVAL", "CONDOR", "SNOWBOARD"]
+TEMP_FOLDERS = ("KERNEL_VANILLA", "KERNEL_REMIX", "KERNEL_HREMIX", "BATTLE", "WORLD_VANILLA", "WORLD", "SCENE_VANILLA", "SCENE_REMIX", "SCENE_HREMIX", "SUB", "MAGIC",
+                "FLEVEL", "FLEVEL_HARDCORE", "FLEVEL_REVIVAL", "CHAR", "MINI", "KERNEL_HARDCORE", "KERNEL_REVIVAL", "SCENE_HARDCORE", "SCENE_REVIVAL", "CONDOR", "SNOWBOARD")
 
-FINAL_PATCH = ["BATTLE", "FIELD", "MINIGAME", "WM", "KERNEL", "SOUND"]
+FINAL_PATCH = ("BATTLE", "FIELD", "MINIGAME", "WM", "KERNEL", "SOUND")
 
-MODS_FINAL = ["BATTLE", "WORLD", "FIELD"]
-MODS_AVALANCHE = ["FIELD"]
+MODS_FINAL = ("BATTLE", "WORLD", "FIELD")
+MODS_AVALANCHE = ("FIELD",)
 
-DATA_WORKING = ["BATTLE", "FIELD", "MINIGAME", "WM"]
-FILES_UNDO = ["BATTLE", "MAGIC", "CHAR", "HIGH", "CHOCOBO", "WORLD"]
+DATA_WORKING = ("BATTLE", "FIELD", "MINIGAME", "WM")
+FILES_UNDO = ("BATTLE", "MAGIC", "CHAR", "HIGH", "CHOCOBO", "WORLD")
 
-TRANSLATE_CHANGER = ["cd\\cr_{0}", "cd\\disc_{0}", "menu\\menu_{0}", "wm\\world_{0}", "field\\{1}flevel", "minigame\\{1}chocobo", "minigame\\{1}condor", "minigame\\{1}sub", "minigame\\high-{2}", "minigame\\snowboard-{2}"]
+TRANSLATE_CHANGER = ("cd\\cr_{0}", "cd\\disc_{0}", "menu\\menu_{0}", "wm\\world_{0}", "field\\{1}flevel", "minigame\\{1}chocobo", "minigame\\{1}condor", "minigame\\{1}sub", "minigame\\high-{2}", "minigame\\snowboard-{2}")
 
 RANGE = { # The maximum value for each setting. If it's not there, it will assume 1.
 
@@ -100,11 +100,11 @@ RANGE = { # The maximum value for each setting. If it's not there, it will assum
 
 }
 
-NON_INT_SETTINGS = ["FFVII_PATH", "FFVII_IMAGE", "BOOTLEG_TEMP", "MOD_LOCATION", "CD_DRIVE", "SYS_FOLDER"]
+NON_INT_SETTINGS = ("FFVII_PATH", "FFVII_IMAGE", "BOOTLEG_TEMP", "MOD_LOCATION", "CD_DRIVE", "SYS_FOLDER")
 
 # Random stuff
 
-BOOT_ASCII1 = [
+BOOT_ASCII1 = (
 "          ____     ____     ____    _______   _        ______    _____",
 "         |  _ \   / __ \   / __ \  |__   __| | |      |  ____|  / ____|",
 "         | |_) | | |  | | | |  | |    | |    | |      | |__    | |  __",
@@ -118,12 +118,12 @@ BOOT_ASCII1 = [
 " | |    | | | | | (_| | | | | (_| | | | | || (_| \__ \ |_| |\  /   _| |_ _| |_",
 " |_|    |_|_| |_|\__,_|_|_|  \__,_|_| |_|\__\__,_|___/\__, | \/   |_____|_____|",
 "          __      _______ _____                        __/ |",
-]
+)
 
 
 BOOT_ASCII2 = "           \ \  / / |  __| |__) |"
 
-BOOT_ASCII3 = [
+BOOT_ASCII3 = (
 "             \  / | |__| | | \ \\",
 "              \/   \_____|_|  \_\\  {0} {2}{3}{1}".format(BUILD_INFO, RELEASE_INFO, VERSION_INFO, " - " if RELEASE_INFO else ""),
-]
+)
