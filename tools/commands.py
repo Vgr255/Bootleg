@@ -1,11 +1,12 @@
 ﻿from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
+from ttols import translate as tr
 from tools import process as pro
 from tools import logger as log
-from tools import help as helper
 from tools import decorators
 from tools import links
+from tools import help
 from tools import git
 
 import webbrowser
@@ -19,11 +20,11 @@ cmd_en = generator(var.COMMANDS, "English")
 cmd_fr = generator(var.COMMANDS, "French")
 
 # This holds all the commands
-# Must have (inp, params=[]) in the def,
-# Or (*stuff) if parameters don't matter
+# Have arguments=False in the command definition if parameters don't matter
+# Otherwise, it'll be two arguments; input and a list of parameters
 
 # To add a new command, simply make a new def block
-# The name of the definition is the command
+# Add decorators in the same fashion for the command's name
 
 # The following commands don't require any parameter
 
@@ -106,16 +107,16 @@ def clean(*args):
 
 @cmd_en("help", parse=True)
 @cmd_fr("aide", parse=True)
-def help(inp, params=[]):
+def helper(inp, params=[]):
     if not params:
-        helper.get_help()
+        help.get_help()
         return
     topics = var.HELPERS
     poshelp = [x for x in topics]
     if params[0] in poshelp:
         helping = topics[params[0]]()
     else:
-        helper.get_help(params[0])
+        help.get_help(params[0])
         return
     formatter = params[1:]
     if helping == tuple(helping):
@@ -233,10 +234,10 @@ def read(inp, params=[]): # Reads a documentation file
     # The first one to match gets taken; same for extensions
     if params:
         docf = os.getcwd() + "/documentation/"
-        if var.LANGUAGE in con.READ_SECTIONS.keys():
-            sect = con.READ_SECTIONS[var.LANGUAGE] + " "
+        if var.LANGUAGE in tr.READ_SECTIONS.keys():
+            sect = tr.READ_SECTIONS[var.LANGUAGE] + " "
         else:
-            sect = con.READ_SECTIONS["English"] + " "
+            sect = tr.READ_SECTIONS["English"] + " "
         reader = ""
         if os.path.isfile(docf + params[0]):
             reader = docf + params[0]
@@ -278,7 +279,9 @@ def read(inp, params=[]): # Reads a documentation file
                         break
                 if digits:
                     digits = params[1]
-                elif params[1].lower() in con.READ_GET_SECTIONS:
+                elif var.LANGUAGE in tr.READ_GET_SECTIONS and params[1].lower() in tr.READ_GET_SECTIONS[var.LANGUAGE]:
+                    lister = True
+                elif params[1].lower() in tr.READ_GET_SECTIONS["English"]:
                     lister = True
             file = open(reader, "r")
             jumper = True if digits else False
@@ -299,10 +302,10 @@ def read(inp, params=[]): # Reads a documentation file
                         if line.startswith(sect + str(int(digits[:dot]) + 1)):
                             break
                 if lister:
-                    if var.LANGUAGE in con.READ_INDEX:
-                        rind = con.READ_INDEX[var.LANGUAGE]
+                    if var.LANGUAGE in tr.READ_INDEX:
+                        rind = tr.READ_INDEX[var.LANGUAGE]
                     else:
-                        rind = con.READ_INDEX["English"]
+                        rind = tr.READ_INDEX["English"]
                     if rind in line.lower():
                         viewer = True
                         continue

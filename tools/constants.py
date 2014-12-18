@@ -19,11 +19,6 @@ PROCESS_CODE = "https://github.com/Vgr255/Bootleg" # This is used in many places
 
 PROGRAM_NAME = "Bootleg" # this is what appears everywhere (e.g. "Welcome to the Bootleg configurator")
 
-READ_SECTIONS = {"English": "Section", "French": "Section"}
-READ_INDEX = {"English": "index", "French": "index"}
-
-READ_GET_SECTIONS = ["sections", "list"]
-
 DECORATORS = ["COMMANDS", "HELPERS"]
 
 INPUT_PREFIX = "" # what will appear in front of the text to input. ">>> " will mimic normal Python behaviour

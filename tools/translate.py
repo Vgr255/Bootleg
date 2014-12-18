@@ -41,6 +41,22 @@ English: "No",
 French: "Non",
 }
 
+# Read values
+
+READ_SECTIONS = {
+English: "Section",
+French: "Section",
+}
+
+READ_INDEX = {
+English: "index",
+French: "index",
+}
+
+READ_GET_SECTIONS = { # This needs to be a list
+English: ["sections", "list"],
+}
+
 # Small words that are part of larger sentences by format
 
 PLURAL = { # Gets added if plural at the end of some words
