@@ -1,46 +1,54 @@
 # Decorators generator for various purposes
 
-def generate(arguments=True, **defargs):
-    def create(generator, id=-1):
-        def parse(*cmds, arguments=arguments, id=id, **kwargs):
-            def decorate(dec):
-                def fetch(*nargs):
+class DecoratorsGenerator:
+    def __init__(self, arguments=True, **defargs):
+        self.arguments = arguments
+        self.defargs = {}
+        for arg, value in defargs.items():
+            self.defargs[arg] = value
+
+    def __call__(self, generator, id=-1, **secargs):
+        def generate(*cmds, arguments=self.arguments, id=id, **kwargs):
+            def create(dec):
+                def decorate(*nargs):
                     if not arguments:
                         return dec()
                     return dec(*nargs)
                 alias = False
-                fetch.aliases = []
+                decorate.aliases = []
                 for cmd in cmds:
-                    generator[cmd] = fetch
+                    generator[cmd] = decorate
                     if alias:
-                        fetch.aliases.append(cmd)
+                        decorate.aliases.append(cmd)
                     alias = True
                 for arg, value in kwargs.items():
-                    setattr(fetch, arg, value)
-                fetch.id = id
-                fetch.__doc__ = dec.__doc__
+                    setattr(decorate, arg, value)
+                decorate.id = id
+                decorate.__doc__ = dec.__doc__
 
-                return fetch
+                return decorate
 
             if not cmds:
                 raise ValueError("no commands were specified")
 
-            for arg, value in defargs.items():
+            for arg, value in secargs.items():
                 if not arg in kwargs.keys():
                     kwargs.update({arg:value})
 
             for kw in kwargs:
-                if not kw in defargs:
+                if not kw in self.defargs:
                     raise ValueError(kw)
 
-            return decorate
+            return create
 
         if not isinstance(generator, dict):
             raise TypeError("generator object must be a dict")
 
-        return parse
+        for arg, value in self.defargs.items():
+            if not arg in secargs.keys():
+                secargs.update({arg:value})
 
-    return create
+        return generate
 
 def delete(generator, id):
     if not isinstance(generator, dict):
