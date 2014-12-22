@@ -20,5 +20,8 @@ config.py
 # Settings file
 *.ini
 
-# Various files
+# Utility folder
 utils/
+
+# Temporary folder
+temp/
