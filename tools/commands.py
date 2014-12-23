@@ -1,7 +1,7 @@
 ﻿from tools import constants as con
 from tools import variables as var
 from tools import functions as fn
-from ttols import translate as tr
+from tools import translate as tr
 from tools import process as pro
 from tools import logger as log
 from tools import decorators
@@ -11,10 +11,13 @@ from tools import git
 
 import webbrowser
 import subprocess
+import fnmatch
 import shutil
 import os
 
-generator = decorators.generate(hidden=False, error=False, parse=False)
+generator = decorators.DecoratorsGenerator(hidden=False, error=False, parse=False)
+
+cmd_all = generator(var.COMMANDS, hidden=True)
 
 cmd_en = generator(var.COMMANDS, "English")
 cmd_fr = generator(var.COMMANDS, "French")
@@ -60,8 +63,8 @@ def restart():
 
 # The following commands may or may not require additional parameters
 
-@cmd_en("clean", hidden=True, arguments=False)
-@cmd_fr("clean", hidden=True, arguments=False)
+@cmd_en("clean", hidden=True)
+@cmd_fr("clean", hidden=True)
 def clean(*args):
     for x, y in con.LOGGERS.items():
         if "keeplog" in args and not x == "temp":
@@ -93,16 +96,11 @@ def clean(*args):
             filel = s[0] + "_" + file
             if fn.IsFile.cur(filel):
                 os.remove(filel)
-    if fn.IsFile.cur("cfg.py"):
-        os.remove("cfg.py")
-    if fn.IsFile.cur("preset.py"):
-        os.remove("preset.py")
     shutil.rmtree(os.getcwd() + '/__pycache__')
     if os.path.isdir("tools/__pycache__"):
         shutil.rmtree(os.getcwd() + '/tools/__pycache__')
-    for file in os.listdir(os.getcwd()):
-        if file[:4:3] == "__" and (file[1:3]+file[4:]).isalnum() and file.islower() and fn.IsFile.cur(file) and len(file) == 15:
-            os.remove(os.getcwd() + "/" + file)
+    if os.path.isdir("temp"):
+        shutil.rmtree(os.getcwd() + '/temp')
     var.ALLOW_RUN = False
 
 @cmd_en("help", parse=True)
@@ -111,10 +109,9 @@ def helper(inp, params=[]):
     if not params:
         help.get_help()
         return
-    topics = var.HELPERS
-    poshelp = [x for x in topics]
+    poshelp = [x for x in var.HELPERS]
     if params[0] in poshelp:
-        helping = topics[params[0]]()
+        helping = var.HELPERS[params[0]][0]()
     else:
         help.get_help(params[0])
         return
@@ -142,11 +139,14 @@ def run(inp, params=[]):
             pro.run(params=" ".join(params))
     elif inp == "silent": # Ran directly from the command line
         pro.run(silent=True)
+    elif inp == "reinstall":
+        pro.reinstall(silent=True)
+    elif inp == "uninstall":
+        pro.uninstall(silent=True)
     else:
         pro.run()
 
-@cmd_en("do", hidden=True)
-@cmd_fr("do", hidden=True)
+@cmd_all("do")
 def do(inp, params=[]):
     done = False
     if params:
@@ -174,8 +174,7 @@ def do(inp, params=[]):
     if not done:
         fn.no_such_command("do")
 
-@cmd_en("git", hidden=True)
-@cmd_fr("git", hidden=True)
+@cmd_all("git")
 def _git(inp, params=[]):
     if not var.GIT_LOCATION:
         log.logger("GIT_NOT_INST")
@@ -324,9 +323,9 @@ def read(inp, params=[]): # Reads a documentation file
                 log.help(sections)
             file.close()
         else:
-            log.logger("ERR_DOC_NOT_FOUND", form=params[0])
+            log.help("ERR_DOC_NOT_FOUND", form=params[0])
     else:
-        log.logger("HELP_READ_CMD")
+        log.help("HELP_READ_CMD")
 
 @cmd_en("get", hidden=True)
 @cmd_fr("get", hidden=True)
@@ -338,8 +337,31 @@ def get(inp, params=[]):
                 if not lnk.isupper():
                     continue
                 getter = lnk.replace("_", "").lower()
-                if "".join(params[1:]).lower() in getter or getter in "".join(params[1:]).lower():
+                if fnmatch.fnmatch(getter, "".join(params[1:]).lower()):
                     lines.append(lnk)
             if lines:
                 for line in lines:
                     webbrowser.open(line)
+
+@cmd_all("doc")
+def view_docstring(inp, params=[]):
+    """Prints a docstring to the screen."""
+    if params:
+        gotten = False
+        for num in range(len(params)):
+            for name, func in var.LOGGER.items():
+                if params[num] == name:
+                    for call in func:
+                        if call.__doc__:
+                            if gotten:
+                                log.help("", "- "*39 + "-", "")
+                            log.help("", str(call), "", split=False)
+                            log.doc(call.__doc__)
+                            gotten = True
+                    break
+            else:
+                log.help("", "COMM_NOT_EXIST", form=params[num])
+        if not gotten:
+            log.help("", "NO_DOC_AVAIL")
+    else:
+        log.help("PLEASE_ENT_CMD")

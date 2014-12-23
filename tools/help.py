@@ -9,7 +9,7 @@ from tools import constants as con
 from tools import logger as log
 from tools import decorators
 
-generator = decorators.generate(arguments=False, command=False, topic=False, user=False)
+generator = decorators.DecoratorsGenerator(arguments=False, command=False, topic=False, user=False)
 
 help_en = generator(var.HELPERS, "English")
 help_fr = generator(var.HELPERS, "French")
@@ -18,7 +18,7 @@ unhandled = "HELP_NOT_FOUND"
 
 def get_help(helping=""):
     topics = var.HELPERS
-    poshelp = [x for x in topics if topics[x].topic and not x in topics[x].aliases]
+    poshelp = [x for x in topics if topics[x][0].topic and not x in topics[x][0].aliases]
     poshelp.sort()
     helping = helping.lower()
     log.help("", "HELP_FILE_BOOT_CONF", form=con.PROGRAM_NAME)
@@ -101,7 +101,7 @@ def support():
 @help_fr("commandes", topic=True)
 def commands():
     topics = var.HELPERS
-    poshelp = [x for x in topics if topics[x].command]
+    poshelp = [x for x in topics if topics[x][0].command]
     poshelp.sort()
     if poshelp:
         return "HELP_COMM", "PLURAL" if len(poshelp) > 1 else "", ", ".join(poshelp)
@@ -111,7 +111,7 @@ def commands():
 @help_fr("utilisateurs", topic=True)
 def see_users():
     usr = var.HELPERS
-    poshelp = [x for x in usr if usr[x].user]
+    poshelp = [x for x in usr if usr[x][0].user]
     poshelp.sort()
     for y in poshelp:
         for z in set(con.FIRST_DEV + con.USER_HELP + con.CODERS + con.OTHER_SUPPORT +
@@ -127,7 +127,7 @@ def see_users():
 @help_fr("topics", topic=True)
 def view_topics():
     top = var.HELPERS
-    poshelp = [x for x in top if top[x].topic]
+    poshelp = [x for x in top if top[x][0].topic]
     poshelp.sort()
     if poshelp:
         return "HELP_POSSIBLE_HELP", ", ".join(poshelp), "PLURAL" if len(poshelp) > 1 else ""

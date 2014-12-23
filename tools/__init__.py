@@ -66,6 +66,11 @@ if var.LANGUAGE is None:
 
 log.help("GENERATING_DECORATORS")
 
+# Create the decorators dictionaries
+
+for decorator in con.DECORATORS:
+    setattr(var, decorator, {})
+
 import tempfile
 import platform
 import argparse
@@ -87,6 +92,36 @@ for lang in con.LANGUAGES:
         for decorator in con.DECORATORS:
             decorators.delete(getattr(var, decorator), lang)
 
+# Carry functions for docstring handling
+
+for decorator in con.DECORATORS:
+    for cmd, value in getattr(var, decorator).items():
+        if not cmd in var.LOGGER:
+            var.LOGGER[cmd] = []
+        var.LOGGER[cmd].extend(value)
+
+# Make various phantom logging decorators
+
+for func in log.__all__:
+    if not func in var.LOGGER:
+        var.LOGGER[func] = []
+    var.LOGGER[func].append(getattr(log, func))
+
+for name in met.__dict__:
+    if name[0].isupper(): # It's an actual method
+        if not name in var.LOGGER:
+            var.LOGGER[name] = []
+        var.LOGGER[name].append(getattr(met, name))
+
+# Sanitize the docstring logging
+
+newlog = {}
+
+for name, rest in var.LOGGER.items():
+    newlog[name.lower()] = rest
+
+var.LOGGER = newlog
+
 # Check for admin privileges
 
 var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())
@@ -99,7 +134,7 @@ var.ARCHITECTURE = platform.architecture()[0]
 
 var.ON_WINDOWS = False
 
-if platform.system() == "Windows":
+def registry_handler():
     import winreg
     var.ON_WINDOWS = True
 
@@ -149,6 +184,8 @@ if platform.system() == "Windows":
         var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
         var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
         var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
+
+if platform.system() == "Windows": registry_handler()
 
 # Check launch parameters
 
@@ -272,7 +309,7 @@ if not var.ON_WINDOWS:
 
 # Auto-update checking via git
 
-if var.GIT_LOCATION and var.AUTO_UPDATE:
+def git_checking():
     checker = git.check(var.GIT_LOCATION, silent=True)
     diff = git.diff(var.GIT_LOCATION, silent=True)
     if checker:
@@ -309,6 +346,8 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
+
+if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
 
 # Warn if not ran as admin
 

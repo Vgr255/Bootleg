@@ -1,4 +1,4 @@
-﻿__all__ = ["logger", "multiple", "help"]
+﻿__all__ = ["logger", "multiple", "help", "doc"]
 
 from tools import variables as var
 from tools import constants as con
@@ -6,7 +6,7 @@ from tools import translate as tr
 import datetime
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[], **params):
+def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[], split=True, **params):
     """Logs everything to console and/or file. Always use this."""
     output = get(output, splitter)
     timestamp = str(datetime.datetime.now())
@@ -51,7 +51,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
 
     write, display = getview(write, display)
 
-    if len(pout) > 80 and display and type not in con.IGNORE_SPLITTER:
+    if len(pout) > 80 and display and type not in con.IGNORE_SPLITTER and split:
         pout = line_splitter(pout)
 
     if display:
@@ -82,7 +82,8 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
                             var.NEWFILE_ALL = False
                     else: # Normal
                         f.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
-                            type not in con.IGNORE_NEWLINE and newfile else "", timestamp, writer))
+                            type not in con.IGNORE_NEWLINE and newfile and var.NEWFILE_NOR else "", timestamp, writer))
+                        var.NEWFILE_NOR = False
                     output = output[output.index("\n")+1:]
             if trans:
                 with open(filel, "a", encoding="utf-8") as fl:
@@ -96,12 +97,13 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
                                 var.NEWFILE_TRA = False
                         else:
                             fl.write("{0}{1}{2}\n".format("\n\n" if (not var.INITIALIZED or var.RETRY) and
-                                type not in con.IGNORE_NEWLINE and newfilel else "", timestamp, writer))
+                                type not in con.IGNORE_NEWLINE and newfilel and var.NEWFILE_TRO else "", timestamp, writer))
+                            var.NEWFILE_TRO = False
                         trout = trout[trout.index("\n")+1:]
     if toget:
-        logger(toget, logtype=logtype, display=display, write=write, checker=checker, formo=toform, formt=toforml) # don't iterate again if already translated
+        logger(toget, logtype=logtype, display=display, write=write, checker=checker, formo=toform, formt=toforml, split=split) # don't iterate again if already translated
 
-def multiple(*output, types=[], display=True, write=True, checker=True, splitter="\n", form=[]):
+def multiple(*output, types=[], display=True, write=True, checker=True, splitter="\n", form=[], split=True):
     """Logs one or more lines to multiple files."""
     output = get(output, splitter)
     if "all" in types:
@@ -112,22 +114,51 @@ def multiple(*output, types=[], display=True, write=True, checker=True, splitter
             if con.LOGGERS[logged] not in log_it:
                 log_it.append(con.LOGGERS[logged])
         for l in log_it:
-            logger(output, logtype=l, display=display, write=write, checker=checker, splitter=splitter, form=form)
+            logger(output, logtype=l, display=display, write=write, checker=checker, splitter=splitter, form=form, split=split)
             display = False # Don't want to needlessly display the same message multiple times
     elif types:
         for t in types:
-            logger(output, type=t, display=display, write=write, checker=checker, splitter=splitter, form=form)
+            logger(output, type=t, display=display, write=write, checker=checker, splitter=splitter, form=form, split=split)
             display = False
     else: # no type
-        logger(output, display=display, write=write, checker=checker, splitter=splitter, form=form)
+        logger(output, display=display, write=write, checker=checker, splitter=splitter, form=form, split=split)
 
-def help(*output, type="help", write=False, display=True, checker=True, splitter="\n", form=[]):
+def help(*output, type="help", write=False, display=True, checker=True, splitter="\n", form=[], split=True):
     """Explicit way to only print to screen."""
     output = get(output, splitter)
-    logger(output, type=type, write=write, display=display, checker=checker, splitter=splitter, form=form)
+    logger(output, type=type, write=write, display=display, checker=checker, splitter=splitter, form=form, split=split)
+
+def doc(output, type="docstring", write=False, display=True, form=[], split=True):
+    """Prints a docstring using proper formatting."""
+    newlined = False
+    newdone = False
+    indent = 0
+    lines = output.split("\n")
+    newlines = []
+    for line in lines:
+        if not newlined and not line.replace(" ", ""): # First empty line
+            newlined = True
+        if newlined and not newdone and line.replace(" ", ""):
+            newdone = True
+            for char in line:
+                if char == " ":
+                    indent += 1
+                else:
+                    break
+        if indent:
+            if line and line[:indent+1] == " " * indent:
+                line = line[indent:]
+            elif line: # Not proper formatting, proper handling
+                for char in line[:]:
+                    if line[0] == " ":
+                        line = line[1:]
+                    else:
+                        break
+        newlines.append(line)
+
+    logger(newlines, type=type, write=write, display=display, form=form, split=split)
 
 def get(output, splitter):
-    output = list(output)
     if len(output) == 1 and list(output[0]) == output[0]:
         output = output[0]
     if not output: # Called without any argument
@@ -146,6 +177,12 @@ def line_splitter(output):
     iter = 0
     iter2 = -1
     newout = ""
+    while True:
+        if output[-1] == " ":
+            output = output[-1:]
+        else:
+            output = output + " "
+            break
     while True:
         if len(output) <= 80:
             newout = newout + output
@@ -169,6 +206,8 @@ def line_splitter(output):
                 newout = newout + "\n"
             newout = newout + output[:iter2]
             output = output[iter2+1:]
+    if not newout:
+        return output
     return newout
 
 def getview(write, display):

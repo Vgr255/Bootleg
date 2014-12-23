@@ -17,7 +17,9 @@ class DecoratorsGenerator:
                 alias = False
                 decorate.aliases = []
                 for cmd in cmds:
-                    generator[cmd] = decorate
+                    if not cmd in generator:
+                        generator[cmd] = []
+                    generator[cmd].append(decorate)
                     if alias:
                         decorate.aliases.append(cmd)
                     alias = True
@@ -33,7 +35,7 @@ class DecoratorsGenerator:
 
             for arg, value in secargs.items():
                 if not arg in kwargs.keys():
-                    kwargs.update({arg:value})
+                    kwargs[arg] = value
 
             for kw in kwargs:
                 if not kw in self.defargs:
@@ -46,7 +48,7 @@ class DecoratorsGenerator:
 
         for arg, value in self.defargs.items():
             if not arg in secargs.keys():
-                secargs.update({arg:value})
+                secargs[arg] = value
 
         return generate
 
@@ -54,5 +56,8 @@ def delete(generator, id):
     if not isinstance(generator, dict):
         raise TypeError("generator object must be a dict")
     for cmd in list(generator.keys()):
-        if generator[cmd].id == id:
-            del generator[cmd]
+        for item in list(generator[cmd]):
+            if item.id == id:
+                generator[cmd].remove(item)
+            if not generator[cmd]:
+                del generator[cmd]
