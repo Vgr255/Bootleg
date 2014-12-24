@@ -27,7 +27,7 @@ def initialize(): # initialize variables on startup and/or retry
     log.multiple(begin, form=[con.PROGRAM_NAME], types=["all"], display=False)
     var.INITIALIZED = True
     var.RETRY = False
-    log.logger("LNCH_PAR", form=var.LAUNCH_PARAMS, type="debug", display=False)
+    log.logger("LNCH_PAR", form=", ".join(["=".join(x) for x in var.LAUNCH_PARAMS]), type="debug", display=False)
     log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
     log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
     log.multiple("Python", sys.version, display=False, splitter=" ", types=["normal", "debug"])
@@ -448,9 +448,8 @@ def parse_settings():
                         raise IntOutOfBounds(setting, toset, number)
                 else: # Not a digit
                     raise NeedInteger(setting, toset)
-            file = open(os.getcwd() + "/_{0}_{1}".format(short.lower(), get.random_small(11)), "w")
-            file.write(getattr(var, setting))
-            file.close()
+            with open(os.getcwd() + "/temp//_{0}_{1}".format(short.lower(), get.random_small(11)), "w") as file:
+                file.write(getattr(var, setting))
             setattr(var, setting, toset)
 
 def chk_missing_run_files():
@@ -548,11 +547,9 @@ def end_bootleg_early():
         var.ERROR = True
         for reason in var.FATAL_ERROR + var.SYS_ERROR:
             reason = reason.capitalize()
-            if reason in ("Message", "Format"):
-                raise InvalidError(reason)
             log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
-            if hasattr(errors, reason):
-                why = getattr(errors, reason)
+            if reason in errors:
+                why = errors[reason]
                 formlist = []
                 if "Format" in why:
                     toformat = why["Format"]
@@ -567,7 +564,7 @@ def end_bootleg_early():
 
                 log.multiple(why["Message"], types=["error", "normal"], form=formlist)
             else:
-                log.multiple(errors.unhandled, types=["error", "normal"])
+                log.multiple("UNH_ERR_TOREP", types=["error", "normal"])
     log.logger("\n")
 
 def find(setting): # Prompts the user for settings
