@@ -2,6 +2,8 @@
 
 Hello and welcome to the Bootleg 041 code. Please note that, while the code currently runs, it cannot currently install anything and is unsupported.
 
+***Note: The documentation is not constantly updated, and neither is this Readme file, as this project is not released yet.***
+
 See [CONTRIBUTING.md][0] if you want to contribute to this repository.
 
 Release date: None. This being a one-man job, it takes a long time to do.
@@ -20,7 +22,7 @@ You can use the Bootleg Configurator UI to pick your settings without needing to
 
 ### Choosing your own default settings
 
-You may pick your own settings in the `config.py` file (You need to rename it from `config.py.example` before). Those settings will get overridden by any preset setting you're loading.
+You may pick your own settings in the `config.ini` file (You need to rename it from `config.ini.example` before). Those settings will get overridden by any preset setting you're loading.
 
 ### Adding temporary config (for debugging)
 
