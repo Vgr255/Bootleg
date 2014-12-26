@@ -1,9 +1,6 @@
 # Python compiled files
 *.py[cod]
 
-# Config file
-config.py
-
 # Log files
 *.log
 *.dmp
