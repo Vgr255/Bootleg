@@ -72,7 +72,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
             output = output + "\n"
             trout = trout + "\n"
             with open(file, "a", encoding="utf-8") as f:
-                f.seek(0, 2)
                 while "\n" in output:
                     writer = output[:output.index("\n")]
                     if x == logall:
@@ -87,7 +86,6 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
                     output = output[output.index("\n")+1:]
             if trans:
                 with open(filel, "a", encoding="utf-8") as fl:
-                    fl.seek(0, 2)
                     while "\n" in trout:
                         writer = trout[:trout.index("\n")]
                         if x == logall:
