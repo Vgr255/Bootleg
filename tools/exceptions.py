@@ -63,18 +63,6 @@ class NoInstallerFound(CustomBootException):
     def formatter(self):
         return self.setting
 
-# Called if a system or fatal error is not valid
-class InvalidError(CustomBootException):
-    def __init__(self, reason):
-        self.name = "Invalid Error"
-        self.reason = reason
-
-    def arguments(self):
-        return self.reason
-
-    def formatter(self):
-        return self.reason
-
 # Called if the given mod could not be found in any of the mods folders
 class ModFileNotFound(CustomBootException):
     def __init__(self, mod):
