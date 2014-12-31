@@ -1,0 +1,191 @@
+Language = default
+
+dev log = false
+
+silent run = true
+
+reinstall = false
+
+uninstall = false
+
+auto update = yes
+
+silent update = yes
+
+# battle models
+
+cloud battle       =
+barret battle      =
+tifa battle        =
+yuffie battle      =
+red xiii battle    =
+cait battle        =
+vincent battle     =
+sephiroth battle   =
+
+# field models
+
+cloud field        =
+sephiroth field    =
+yuffie field       =
+tifa field         =
+aerith field       =
+vincent field      =
+barret field       =
+red xiii field     =
+cid field          =
+
+# textures
+
+trish save         =
+trish phoenix      =
+trish masamune     =
+avalanche          =
+menu background    =
+limit break        =
+opening credits    =
+avalanche gui      =
+battle scenes lgp  =
+battle scenes png  =
+field textures     =
+romeo mat          =
+condor minigame    =
+coin skill         =
+blue counter       =
+glitched field     =
+grimmy magic       =
+cait weapons       =
+
+# models
+
+tank pirate ship   =
+new aerith         =
+base models        =
+guard scorpion     =
+sweeper            =
+materias models    =
+ruby weapon        =
+field potions      =
+grimmy huge mat    =
+buggy costa        =
+submarine costa    =
+highwind costa     =
+custom models      =
+
+# cloud's swords
+
+buster sword       =
+mythril saber      =
+hardedge           =
+butterfly edge     =
+enhance sword      =
+organics           =
+crystal sword      =
+force stealer      =
+rune blade         =
+murasame           =
+nail bat           =
+yoshiyuki          =
+apocalypse         =
+heavens cloud      =
+ragnarok           =
+ultima weapon      =
+
+# assault team
+
+assault biggs      =
+assault jessie     =
+assault wedge      =
+
+# new hair
+
+cloud hair         =
+tifa hair          =
+yuffie hair        =
+
+# gameplay modifications
+
+nightmare seven    =
+aerith revival     =
+reunion            =
+spell patch        =
+kernel select      =
+new threat mod     =
+hardcore gjoerulv  =
+
+# avatars
+
+cloud avatars      =
+barret avatars     =
+tifa avatars       =
+aerith avatars     =
+red xiii avatars   =
+yuffie avatars     =
+cait avatars       =
+vincent avatars    =
+cid avatars        =
+young avatars      =
+sephiroth avatars  =
+chocobo avatars    =
+
+# media
+
+movies             =
+soundtrack         =
+av sound fx        =
+fmv no cait        =
+retranslated fmv   =
+# the following one is only used if movies is 4
+rumbah movies      =
+
+# other
+
+any cd             =
+laptop keypatch    =
+style switcher     =
+game language      =
+always run toggle  =
+kranmer master     =
+re animations      =
+new 60 fps         =
+
+# system settings
+
+debug code         =
+create image       =
+
+# path settings
+
+ffvii image        =
+ffvii path         =
+bootleg temp       =
+mod location       =
+cd drive           =
+sys folder         =
+
+# kernel settings
+
+reasonable diff    =
+remastered ai      =
+scene redux        =
+items easy         =
+items normal       =
+items difficult    =
+lost wings         =
+mode switching     =
+aerith installed   =
+aerith hardcore    =
+hardmod installed  =
+
+# do not edit past here if you don't know what you're doing
+
+disallow config = no
+
+ignore local changes = false
+
+fetch git = true
+
+# debug mode options. edit at your own risk
+
+debug mode = false
+delete temp = true
