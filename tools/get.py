@@ -12,30 +12,29 @@ import random
 import os
 
 def parser(setting): # get function xyz() in parser.py for variable XYZ
-    if hasattr(pars, setting):
-        return getattr(pars, setting)
+    return getattr(pars, setting, None)
 
 def bool(inp):
     if tr.YES[var.LANGUAGE].lower() == inp.lower():
-        return 1
+        return True
     if tr.YES[var.LANGUAGE].lower()[0] == inp.lower():
-        return 1
+        return True
     if tr.TRUE[var.LANGUAGE].lower() == inp.lower():
-        return 1
+        return True
     if tr.TRUE[var.LANGUAGE].lower()[0] == inp.lower():
-        return 1
+        return True
     if inp.isdigit() and int(inp) == 1:
-        return 1
+        return True
     if tr.NO[var.LANGUAGE].lower() == inp.lower():
-        return 0
+        return False
     if tr.NO[var.LANGUAGE].lower()[0] == inp.lower():
-        return 0
+        return False
     if tr.FALSE[var.LANGUAGE].lower() == inp.lower():
-        return 0
+        return False
     if tr.FALSE[var.LANGUAGE].lower()[0] == inp.lower():
-        return 0
+        return False
     if inp.isdigit() and int(inp) == 0:
-        return 0
+        return False
 
 def random_string(): # generates a random string of numbers for temporary folders
     iter = random.randrange(1, 10)
