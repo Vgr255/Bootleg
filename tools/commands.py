@@ -31,6 +31,11 @@ cmd_fr = generator(var.COMMANDS, "French")
 
 # The following commands don't require any parameter
 
+@cmd_en("cancel", error=True, hidden=True, arguments=False)
+@cmd_fr("annuler", error=True, hidden=True, arguments=False)
+def cancel_err():
+    var.ERROR = False
+
 @cmd_en("exit", error=True, arguments=False)
 @cmd_fr("quitter", error=True, arguments=False)
 def exit():
@@ -63,11 +68,11 @@ def restart():
 
 # The following commands may or may not require additional parameters
 
-@cmd_en("clean", hidden=True)
-@cmd_fr("clean", hidden=True)
-def clean(*args):
+@cmd_en("clean", error=True, hidden=True)
+@cmd_fr("clean", error=True, hidden=True)
+def clean(*args, keeplog=False):
     for x, y in con.LOGGERS.items():
-        if "keeplog" in args and not x == "temp":
+        if ("keeplog" in args or keeplog) and x != "temp":
             continue
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
@@ -96,11 +101,18 @@ def clean(*args):
             filel = s[0] + "_" + file
             if fn.IsFile.cur(filel):
                 os.remove(filel)
-    shutil.rmtree(os.getcwd() + '/__pycache__')
-    if os.path.isdir("tools/__pycache__"):
-        shutil.rmtree(os.getcwd() + '/tools/__pycache__')
-    if os.path.isdir("temp"):
-        shutil.rmtree(os.getcwd() + '/temp')
+    for tree in (con.CLEAN_FOLDERS):
+        if os.path.isdir(tree):
+            shutil.rmtree(os.path.join(os.getcwd(), tree))
+    folders = [os.getcwd()]
+    while folders:
+        tree = folders.pop(0)
+        for file in os.listdir(tree):
+            if file == "__pycache__":
+                shutil.rmtree(os.path.join(tree, file))
+            elif os.path.isdir(os.path.join(tree, file)):
+                folders.append(os.path.join(tree, file))
+
     var.ALLOW_RUN = False
 
 @cmd_en("help", parse=True)
@@ -331,6 +343,8 @@ def read(inp, params=[]): # Reads a documentation file
 @cmd_fr("get", hidden=True)
 def get(inp, params=[]):
     if params:
+        if params[0] == "code":
+            webbrowser.open(con.PROCESS_CODE)
         if params[0] == "mod":
             lines = []
             for lnk in links.__dict__.keys():
