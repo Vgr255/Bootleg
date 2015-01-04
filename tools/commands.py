@@ -15,7 +15,7 @@ import fnmatch
 import shutil
 import os
 
-generator = decorators.DecoratorsGenerator(hidden=False, error=False, parse=False)
+generator = decorators.generate(hidden=False, error=False, parse=False)
 
 cmd_all = generator(var.COMMANDS, hidden=True)
 
