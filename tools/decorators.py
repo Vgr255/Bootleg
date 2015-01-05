@@ -50,8 +50,5 @@ def delete(generator, id):
     if not isinstance(generator, dict):
         raise TypeError("generator object must be a dict")
     for cmd in list(generator.keys()):
-        for item in list(generator[cmd]):
-            if item.id == id:
-                generator[cmd].remove(item)
-            if not generator[cmd]:
-                del generator[cmd]
+        if generator[cmd].id == id:
+            del generator[cmd]
