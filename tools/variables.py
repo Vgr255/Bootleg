@@ -25,7 +25,6 @@ LANGUAGE = None
 PROGRAM_FILES = None
 GAME_VERSION = None
 GIT_LOCATION = None
-LAUNCH_PARAMS = None
 
 NEWFILE_ALL = True
 NEWFILE_TRA = True
@@ -63,8 +62,6 @@ IGNORE_FATAL_ERROR = False
 IGNORE_SYSTEM_ERROR = False
 
 ON_WINDOWS = False
-
-FORCE_CONFIG = False # forces config to be carried over no matter what. do NOT manually set.
 
 LOG_FILE = "bootleg"
 LOG_EXT = "log"
@@ -108,7 +105,12 @@ FETCH_GIT = True
 
 IGNORE_NON_ADMIN = False # Ignores running not as admin
 
-SILENT_RUN = True
+USE_UTC = False
+TIMESTAMP_FORMAT = "[%Y-%m-%d] (%H:%M:%S) {tzname} {tzoffset}"
+
+SILENT_RUN = False
+REINSTALL = False
+UNINSTALL = False
 
 GIT_BRANCH = "master"
 USE_GIT_LINK = True # if set to False, only "git pull" will be sent

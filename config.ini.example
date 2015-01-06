@@ -179,8 +179,6 @@ hardmod installed  =
 
 # do not edit past here if you don't know what you're doing
 
-disallow config = no
-
 ignore local changes = false
 
 fetch git = true
