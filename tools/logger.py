@@ -4,13 +4,13 @@ from tools import variables as var
 from tools import constants as con
 from tools import translate as tr
 import datetime
+import time
 import os
 
 def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[], split=True, **params):
     """Logs everything to console and/or file. Always use this."""
     output = get(output, splitter)
-    timestamp = str(datetime.datetime.now())
-    timestamp = "[{0}] ({1}) ".format(timestamp[:10], timestamp[11:19])
+    timestamp = get_timestamp()
     logall = None
     toget = ""
     if form is None:
@@ -246,3 +246,20 @@ def translater(output, type, form, formo, formt):
             form = form[iter:]
             break
     return trout, output, list(form), list(forml)
+
+def get_timestamp():
+    """Returns a timestamp with timezone + offset from UTC."""
+    if var.USE_UTC:
+        tmf = datetime.datetime.utcnow().strftime(var.TIMESTAMP_FORMAT)
+        if tmf[-1] != " ":
+            tmf += " "
+        return tmf.format(tzname="UTC", tzoffset="+0000")
+    tmf = time.strftime(var.TIMESTAMP_FORMAT)
+    if tmf[-1] != " ":
+        tmf += " "
+    tz = time.strftime("%Z")
+    utctime = datetime.datetime.utcnow().strftime("%H")
+    nowtime = datetime.datetime.now().strftime("%H")
+    offset = "-" if int(utctime) > int(nowtime) else "+"
+    offset += str(time.timezone // 36).zfill(4)
+    return tmf.format(tzname=tz, tzoffset=offset).upper()
