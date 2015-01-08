@@ -1,5 +1,6 @@
 ﻿# Startup initialization
 
+import configparser
 import shutil
 import locale
 import os
@@ -10,33 +11,66 @@ from tools import logger as log
 
 # Copy or create config file if it doesn't exist
 
-if not os.path.isfile("config.py"): # user did not rename their config file, let's silently copy it
-    if os.path.isfile("config.py.example"):
-        shutil.copy(os.getcwd() + "/config.py.example", os.getcwd() + "/config.py")
+if not os.path.isfile(con.CONFIG_FILES[0]): # user did not rename their config file, let's silently copy it
+    if os.path.isfile(con.CONFIG_FILES[0] + ".example"):
+        shutil.copy(os.path.join(os.getcwd(), con.CONFIG_FILES[0] + ".example"),
+            os.path.join(os.getcwd(), con.CONFIG_FILES[0]))
     else: # if it can't use default, create a blank config
-        with open("config.py", "w") as new:
-            new.write("# New blank config created by {0}".format(con.PROGRAM_NAME))
+        with open(con.CONFIG_FILES[0], "w") as new:
+            new.write("# New blank config created by {0}\n".format(con.PROGRAM_NAME))
 
-import config
+# Initialize temp folders
+
+for folder in con.CLEAN_FOLDERS:
+    if os.path.isdir(folder):
+        shutil.rmtree(os.path.join(os.getcwd(), folder))
+    os.mkdir(folder)
+
+# Copy existing config file to use
+
+with open(con.CONFIG_FILES[0]) as f, open("temp/" + con.CONFIG_FILES[0], "x") as w:
+    lines = f.readlines()
+    if lines[0] != "[config]\n":
+        w.write("[config]\n")
+    for line in lines:
+        w.write(line)
+
+# Parse config into a dict
+
+cfgparser = configparser.ConfigParser()
+cfgparser.read("temp/" + con.CONFIG_FILES[0])
+
+config = {}
+
+for setting, value in cfgparser["config"].items():
+    setting = setting.replace(" ", "_").upper()
+    if value == "":
+        continue # no need to assign it
+    if value.lower() in ("false", "no", "off", "0"):
+        config[setting] = False
+    elif value.lower() in ("true", "yes", "on", "1"):
+        config[setting] = True
+    else: # Fallback in case it wasn't true/false (int or string)
+        config[setting] = value
 
 # Check for overriding config file
 
-if os.path.isfile("cfg.py"):
-    import cfg
-    for x in cfg.__dict__.keys():
-        y = getattr(cfg, x)
-        setattr(config, x, y)
-    var.FORCE_CONFIG = True # we want config to carry over, overrides DISALLOW_CONFIG
+if os.path.isfile(con.CONFIG_FILES[1]):
+    with open(con.CONFIG_FILES[1]) as f, open("temp/" + con.CONFIG_FILES[1], "x") as w:
+        lines = f.readlines()
+        if lines[0] != "[config-override]\n":
+            w.write("[config-override]\n")
+        for line in lines:
+            w.write(line)
+
+    cfgparser.read("temp/" + con.CONFIG_FILES[1])
+    config.update(cfgparser["config-override"])
 
 # Convert settings into standalone variables
 
-for x, y in config.__dict__.items():
-    if config.DISALLOW_CONFIG and not var.FORCE_CONFIG:
-        break # don't carry config over if disallowed
+for x, y in config.items():
     if not x.isupper() or y == "":
         continue
-    if x in con.DISALLOW_CARRYING:
-        continue # forcing config cannot be manually set
     if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or (isinstance(y, str) and y.isdigit())):
         setattr(var, x, int(y))
         continue
@@ -65,6 +99,17 @@ if var.LANGUAGE is None:
 # Generating decorators takes a long time
 
 log.help("GENERATING_DECORATORS")
+
+# Define the errors
+
+from tools import filenames as fl
+
+errors = {
+"Sprinkles"  : {"Message": "MIS_FILE_FROM_SYS", "Format" : ((fl, "SPRINKLES"), (var, "SYS_FOLDER"))},
+"Sevenz"     : {"Message": "MIS_FILE_FROM_SYS", "Format" : ((fl, "SEVENZ"), (var, "SYS_FOLDER"))},
+"Ff7config"  : {"Message": "MIS_FILE_FROM_SYS", "Format" : ("FF7Config.exe", (var, "FFVII_PATH"))},
+"Old_opengl" : {"Message": "OLD_OPENGL_INST"},  "No_opengl": {"Message": "NO_OPENGL_ABORTING"},
+}
 
 # Create the decorators dictionaries
 
@@ -95,10 +140,10 @@ for lang in con.LANGUAGES:
 # Carry functions for docstring handling
 
 for decorator in con.DECORATORS:
-    for cmd, value in getattr(var, decorator).items():
-        if not cmd in var.LOGGER:
-            var.LOGGER[cmd] = []
-        var.LOGGER[cmd].extend(value)
+    for comm, value in getattr(var, decorator).items():
+        if not comm in var.LOGGER:
+            var.LOGGER[comm] = []
+        var.LOGGER[comm].append(value)
 
 # Make various phantom logging decorators
 
@@ -108,7 +153,7 @@ for func in log.__all__:
     var.LOGGER[func].append(getattr(log, func))
 
 for name in met.__dict__:
-    if name[0].isupper(): # It's an actual method
+    if not name.startswith("__"): # It's an actual method
         if not name in var.LOGGER:
             var.LOGGER[name] = []
         var.LOGGER[name].append(getattr(met, name))
@@ -222,7 +267,10 @@ if launcher.parse_args().preset:
     if not var.PRESET.endswith("." + var.PRESET_EXT):
         var.PRESET += "." + var.PRESET_EXT
 
-var.LAUNCH_PARAMS = str(launcher.parse_args())[10:-1]
+parms = str(launcher.parse_args())[10:-1]
+parms = parms.split(", ")
+
+var.LAUNCH_PARAMS = [x.split("=") for x in parms]
 
 # Bring translators and coders in a single place
 
@@ -307,6 +355,47 @@ if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
 if not var.ON_WINDOWS:
     log.logger("NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
 
+# Clean command
+
+def clean(keeplog=False):
+    for x, y in con.LOGGERS.items():
+        if keeplog and not x == "temp":
+            continue
+        logfile = getattr(var, y + "_FILE")
+        log_ext = getattr(var, y + "_EXT")
+        file = logfile + "." + log_ext
+        if x == "temp":
+            notdone = []
+            with open(file) as f:
+                for line in f.readlines():
+                    line = line.replace("\n", "")
+                    if not line:
+                        continue
+                    if not os.path.isdir(line):
+                        continue
+                    try:
+                        shutil.rmtree(line)
+                    except OSError:
+                        notdone.append(line)
+            if notdone:
+                with open(file, "w") as ft:
+                    ft.write("\n".join(notdone) + "\n")
+                continue # prevent temp file from being deleted if it fails
+        file = logfile + "." + log_ext
+        if fn.IsFile.cur(file):
+            os.remove(file)
+        for s in con.LANGUAGES.values():
+            filel = s[0] + "_" + file
+            if fn.IsFile.cur(filel):
+                os.remove(filel)
+    for tree in ("temp", "config"):
+        if os.path.isdir(tree):
+            shutil.rmtree(os.path.join(os.getcwd(), tree))
+    for cache in ("", "tools/", "temp/", "config/", "presets/", "parser/"):
+        if os.path.isdir(cache + '__pycache__'):
+            shutil.rmtree(os.path.join(os.getcwd(), cache + '__pycache__'))
+    var.ALLOW_RUN = False
+
 # Auto-update checking via git
 
 def git_checking():
@@ -353,13 +442,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
 
 if not var.LADMIN and not var.IGNORE_NON_ADMIN:
     log.logger("", "WARN_NOT_RUN_ADMIN", "RUN_BOOT_ELEVATED", form=[con.PROGRAM_NAME, con.PROGRAM_NAME], display=var.ALLOW_RUN)
-
-# Check for forced config
-
-if var.DISALLOW_CONFIG and var.FORCE_CONFIG:
-    log.logger("CFG_DIS_OVR", display=False)
-elif var.FORCE_CONFIG:
-    log.logger("CFG_FORCED", display=False)
+    get.pause()
 
 if var.GET_HELP:
     var.SILENT_RUN = False
