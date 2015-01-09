@@ -38,9 +38,11 @@ IGNORE_TIMESTAMP = ("settings", "temp", "preset") # will not write timestamps wh
 IGNORE_MIXED = ("settings", "temp", "preset") # will not write this one to the mixed file
 IGNORE_NEWLINE = ("temp", "git", "preset") # will not print two lines on new run
 
-DISALLOW_CARRYING = ("FORCE_CONFIG",)
-
 DOCFILES_EXTS = ("txt",)
+
+CLEAN_FOLDERS = ("temp",)
+
+CONFIG_FILES = ("config.ini", "cfg.ini")
 
 LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
 
