@@ -166,6 +166,8 @@ def RepackLGP(dir, file=None):
         if dir[-1:] in ("/", "\\"):
             dir = dir[:-1]
         p, f = GetFile(dir)
+        if f[-1:] in ("/", "\\"):
+            f = f[:-1]
         file = var.BOOTLEG_TEMP + f + ".lgp"
     subprocess.Popen([var.ULGP_LOCATION, "-c", file, "-C", dir])
     return file
@@ -265,17 +267,17 @@ def StripFolder(path):
         path = path + "\\"
     folders = [path]
     allf = []
-    while True:
-        if not folders:
-            return tuple(allf)
+    while folders:
         folder = folders.pop(0)
         allf.append(folder)
         for lister in os.listdir(folder):
-            if os.path.isdir(lister):
+            if os.path.isdir(folder + lister):
                 folders.append(folder + lister + "\\")
             elif not path == folder:
                 CopyFolder(folder, path)
                 shutil.rmtree(folder)
+
+    return tuple(allf)
 
 def CallSkipMod(mod):
     """CallSkipMod(mod)
