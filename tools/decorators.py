@@ -11,7 +11,9 @@ def generate(arguments=True, **defargs):
                 alias = False
                 fetch.aliases = []
                 for cmd in cmds:
-                    generator[cmd] = fetch
+                    if cmd not in generator:
+                        generator[cmd] = []
+                    generator[cmd].append(fetch)
                     if alias:
                         fetch.aliases.append(cmd)
                     alias = True
@@ -50,5 +52,8 @@ def delete(generator, id):
     if not isinstance(generator, dict):
         raise TypeError("generator object must be a dict")
     for cmd in list(generator.keys()):
-        if generator[cmd].id == id:
-            del generator[cmd]
+        for item in list(generator[cmd]):
+            if item.id == id:
+                generator[cmd].remove(item)
+            if not generator[cmd]:
+                del generator[cmd]

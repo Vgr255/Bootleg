@@ -137,35 +137,23 @@ for lang in con.LANGUAGES:
         for decorator in con.DECORATORS:
             decorators.delete(getattr(var, decorator), lang)
 
-# Carry functions for docstring handling
+# Remove lists from decorators
 
 for decorator in con.DECORATORS:
-    for comm, value in getattr(var, decorator).items():
-        if not comm in var.LOGGER:
-            var.LOGGER[comm] = []
-        var.LOGGER[comm].append(value)
+    for comm, lst in getattr(var, decorator).items():
+        if len(lst) == 1:
+            getattr(var, decorator)[comm] = lst[0]
+        else:
+            raise ValueError("unhandled multi-item decorator")
 
 # Make various phantom logging decorators
 
-for func in log.__all__:
-    if not func in var.LOGGER:
-        var.LOGGER[func] = []
-    var.LOGGER[func].append(getattr(log, func))
-
-for name in met.__dict__:
-    if not name.startswith("__"): # It's an actual method
-        if not name in var.LOGGER:
-            var.LOGGER[name] = []
-        var.LOGGER[name].append(getattr(met, name))
-
-# Sanitize the docstring logging
-
-newlog = {}
-
-for name, rest in var.LOGGER.items():
-    newlog[name.lower()] = rest
-
-var.LOGGER = newlog
+for module in (log, met, cmd):
+    for name in getattr(module, "__all__", module.__dict__):
+        if not name.startswith("__"):
+            if not name in var.LOGGER:
+                var.LOGGER[name] = []
+            var.LOGGER[name].append(getattr(module, name))
 
 # Check for admin privileges
 
@@ -177,11 +165,10 @@ var.ARCHITECTURE = platform.architecture()[0]
 
 # Perform various registry initialization operations
 
-var.ON_WINDOWS = False
+var.ON_WINDOWS = platform.system() == "Windows"
 
-def registry_handler():
+if var.ON_WINDOWS:
     import winreg
-    var.ON_WINDOWS = True
 
     try: # Checks for 64-bit version if exists
         reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1")
@@ -229,8 +216,6 @@ def registry_handler():
         var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
         var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
         var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
-
-if platform.system() == "Windows": registry_handler()
 
 # Check launch parameters
 
@@ -350,55 +335,9 @@ if os.path.isfile(var.SYS_FOLDER + "UnRAR.exe"):
 if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
     var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
 
-# Warn if not on Windows
-
-if not var.ON_WINDOWS:
-    log.logger("NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
-
-# Clean command
-
-def clean(keeplog=False):
-    for x, y in con.LOGGERS.items():
-        if keeplog and not x == "temp":
-            continue
-        logfile = getattr(var, y + "_FILE")
-        log_ext = getattr(var, y + "_EXT")
-        file = logfile + "." + log_ext
-        if x == "temp":
-            notdone = []
-            with open(file) as f:
-                for line in f.readlines():
-                    line = line.replace("\n", "")
-                    if not line:
-                        continue
-                    if not os.path.isdir(line):
-                        continue
-                    try:
-                        shutil.rmtree(line)
-                    except OSError:
-                        notdone.append(line)
-            if notdone:
-                with open(file, "w") as ft:
-                    ft.write("\n".join(notdone) + "\n")
-                continue # prevent temp file from being deleted if it fails
-        file = logfile + "." + log_ext
-        if fn.IsFile.cur(file):
-            os.remove(file)
-        for s in con.LANGUAGES.values():
-            filel = s[0] + "_" + file
-            if fn.IsFile.cur(filel):
-                os.remove(filel)
-    for tree in ("temp", "config"):
-        if os.path.isdir(tree):
-            shutil.rmtree(os.path.join(os.getcwd(), tree))
-    for cache in ("", "tools/", "temp/", "config/", "presets/", "parser/"):
-        if os.path.isdir(cache + '__pycache__'):
-            shutil.rmtree(os.path.join(os.getcwd(), cache + '__pycache__'))
-    var.ALLOW_RUN = False
-
 # Auto-update checking via git
 
-def git_checking():
+if var.GIT_LOCATION and var.AUTO_UPDATE:
     checker = git.check(var.GIT_LOCATION, silent=True)
     diff = git.diff(var.GIT_LOCATION, silent=True)
     if checker:
@@ -435,8 +374,6 @@ def git_checking():
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
-
-if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
 
 # Warn if not ran as admin
 
