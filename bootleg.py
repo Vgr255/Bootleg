@@ -19,6 +19,8 @@
 # otherwise, arising from the use of the present Software.
 
 import traceback
+import shutil
+import os
 
 try:
     from tools import constants as con
@@ -47,9 +49,10 @@ def main():
         return
     comm = var.COMMANDS
     commands = [x for x in comm if not comm[x].hidden and not comm[x].error and not x in comm[x].aliases]
-    errcomms = [x for x in comm if comm[x].error and not x in comm[x].aliases]
+    errcomms = [x for x in comm if comm[x].error and not comm[x].hidden and not x in comm[x].aliases]
+    errcomm_ = [x for x in comm if comm[x].error]
     hidcomms = [x for x in comm if comm[x].hidden and not x in comm[x].aliases]
-    allcomms = [x for x in comm if comm[x].parse and not x in comm[x].aliases]
+    allcomms = [x for x in comm if comm[x].parse]
     if var.ERROR:
         commands = errcomms
     if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
@@ -58,7 +61,7 @@ def main():
     formatter = []
     if var.PARSING:
         totype = "ENT_CHC"
-    if var.NEED_RESTART or var.SILENT_RUN:
+    if var.NEED_RESTART or var.SILENT_RUN or var.REINSTALL or var.UNINSTALL:
         totype = ""
     if var.UPDATE_READY:
         totype = "ENT_UPD"
@@ -71,10 +74,13 @@ def main():
     else: # nothing to print, either restarting after Git or silently running
         if var.SILENT_RUN:
             cmd.run("silent")
-            return
-    if var.NEED_RESTART:
-        get.pause()
-        cmd.restart()
+        if var.REINSTALL:
+            cmd.run("reinstall")
+        if var.UNINSTALL:
+            cmd.run("uninstall")
+        if var.NEED_RESTART:
+            get.pause()
+            cmd.restart()
         return
     inp = input(con.INPUT_PREFIX).strip()
     log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="", checker=False)
@@ -100,7 +106,7 @@ def main():
         return
     command = inp1[0]
     params = inp1[1:]
-    if var.ERROR and not command in errcomms:
+    if var.ERROR and not command in errcomm_:
         log.help("NEED_RR")
     elif command in comm:
         comm[command](inp, params)
@@ -119,7 +125,7 @@ while var.ALLOW_RUN:
         else:
             log.logger("SIGTERM_WARN")
             var.ERROR = True
-    except Exception: # Don't want to catch everything
+    except: # fallback catcher
         log.logger(traceback.format_exc(), type="traceback", display=var.DISPLAY_TRACEBACK)
         logname = con.LOGGERS["traceback"]
         if var.DEV_LOG or var.LOG_EVERYTHING:
