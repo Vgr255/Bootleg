@@ -6,7 +6,7 @@
 * Config file (Redone!)
 * Parsable settings easy modification
 * Most functions are done
-* Preset file parsing (To re-do)
+* Preset file parsing (To re-do - see below)
 * Git integration, automatic updates
 * Creating of a clone instance if it wasn't (first-time setup)
 * Full translatability in any language
@@ -23,6 +23,7 @@
 * Shrink the number of modules
 * Shrink parser finder in a single variable used directly (instead of indirectly)
 * Move parser installers in a different package (or, at least, improve it)
+* Split modules over multiple packages
 * Re-Do presets like config
 * Reduce cluster in tools/__init__.py
 * Get rid of tools/get.py
