@@ -364,7 +364,7 @@ def view_docstring(inp, params=[]):
         gotten = False
         for num in range(len(params)):
             for name, func in var.LOGGER.items():
-                if params[num] == name:
+                if params[num] == name.lower():
                     for call in func:
                         if call.__doc__:
                             if gotten:
