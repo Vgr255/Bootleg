@@ -44,6 +44,9 @@ def initialize(): # initialize variables on startup and/or retry
     log.help("BOOT_STARTUP", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
     log.help("\n".join(con.BOOT_ASCII3))
 
+    if not var.ON_WINDOWS:
+        log.logger("", "NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
+
 class IsFile:
     def cur(inp):
         return os.path.isfile(os.getcwd() + "/" + inp)
