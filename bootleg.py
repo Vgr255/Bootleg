@@ -30,10 +30,6 @@ try:
     from tools import logger as log
     from tools import get
     from tools import git
-
-    # Get custom exceptions for handling
-
-    from tools.exceptions import *
 except:
     print(traceback.format_exc())
     while True: pass
@@ -116,8 +112,6 @@ def main():
 while var.ALLOW_RUN:
     try:
         main()
-    except CustomBootException as exc:
-        log.multiple("Exception: " + exc.name, "Error: '{0}'".format(exc.arguments()), exc.name.replace(" ", "_").upper(), display=False, checker=False, types=["normal", "error", "debug"], form=exc.formatter())
     except KeyboardInterrupt:
         if var.ERROR:
             var.ALLOW_RUN = False
