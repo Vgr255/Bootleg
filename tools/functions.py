@@ -12,10 +12,6 @@ import shutil
 import sys
 import os
 
-# Get the custom exception handlers
-
-from tools.exceptions import *
-
 # Get file manipulation methods
 
 from tools.methods import *
@@ -315,7 +311,7 @@ def install_setup_files():
             shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Shaders\\nolight\\" + shader, var.FFVII_PATH + "shaders\\nolight\\" + shader)
 
         log.logger("AALI_INSTALLED")
-    except ModFileNotFound:
+    except FileNotFoundError:
         log.logger("WARN_NO_AALI", "ADD_AALI_TO_MOD", form=[fl.OPENGL, "MULT_IN_ONE" if len(var.MOD_LOCATION) > 1 else "ONE_IN", "', '".join(var.MOD_LOCATION)])
         var.FATAL_ERROR.append("no_opengl")
         return
@@ -424,9 +420,7 @@ def parser(inp):
     if var.PARSING == "DataDrive":
         find_data_drive(inp)
 
-def parse_settings():
-    if var.PRESET_IMPORTED:
-        raise PresetAlreadyImported(var.PRESET)
+def parse_settings(): # to re-do properly like config
     shutil.copy(os.getcwd() + "/presets/" + var.PRESET, os.getcwd() + "/preset.py")
     import preset
     var.PRESET_IMPORTED = True
@@ -448,9 +442,9 @@ def parse_settings():
                     if int(toset) in range(0, number+1):
                         toset = int(toset)
                     else: # Not in the range
-                        raise IntOutOfBounds(setting, toset, number)
-                else: # Not a digit
-                    raise NeedInteger(setting, toset)
+                        raise ValueError("value out of bounds",setting, toset, number) # this'll go away eventually
+                else: # Not a digit 
+                    raise NameError(setting, toset) # blah, we'll need to re-do it anyway
             with open(os.getcwd() + "/temp//_{0}_{1}".format(short.lower(), get.random_small(11)), "w") as file:
                 file.write(getattr(var, setting))
             setattr(var, setting, toset)
@@ -600,11 +594,9 @@ def find(setting): # Prompts the user for settings
 
 def install(setting): # Installs each setting
     if not hasattr(var, setting):
-        raise SettingNotFound(setting)
+        raise ValueError(setting)
 
     parse = get.parser("install_" + setting.lower())
-    if not parse:
-        raise NoInstallerFound(setting)
 
     log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
     ret = parse()
