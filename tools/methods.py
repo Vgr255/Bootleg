@@ -10,10 +10,6 @@ import subprocess
 import shutil
 import os
 
-# Get the custom exceptions
-
-from tools.exceptions import *
-
 # Actual methods
 
 def FindFile(seeker):
@@ -27,7 +23,7 @@ def FindFile(seeker):
     Returns a tuple of (folder, file) in either case.
 
     If the file is not a full path and can't be found, it will raise
-    ModFileNotFound, giving the file as argument."""
+    FileNotFoundError, giving the file as argument."""
 
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
@@ -39,7 +35,7 @@ def FindFile(seeker):
     if True in [slash in seeker for slash in ("/", "\\")]:
         return GetFile(seeker) # Full path
 
-    raise ModFileNotFound(seeker) # Exit out if the mod could not be found
+    raise FileNotFoundError(seeker) # Exit out if the mod could not be found
 
 def ExecuteFile(*args):
     """ExecuteFile(file, *params)
