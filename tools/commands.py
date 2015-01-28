@@ -238,11 +238,13 @@ def _git(inp, params=[]):
 
 @cmd_en("read", parse=True)
 @cmd_fr("lire", parse=True)
-def read(inp, params=[]): # Reads a documentation file
-    # Priority: 'documentation' folder with full name; same folder without file extension;
-    # Language's subfolder with full name; same folder without file extension;
-    # 'English' subfolder with full name; same folder without file extension;
-    # The first one to match gets taken; same for extensions
+def read(inp, params=[]):
+    """Reads a documentation file
+
+    Priority: 'documentation' folder with full name; same folder without file extension;
+    Language's subfolder with full name; same folder without file extension;
+    'English' subfolder with full name; same folder without file extension;
+    The first one to match gets taken; same for extensions"""
     if params:
         docf = os.getcwd() + "/documentation/"
         if var.LANGUAGE in tr.READ_SECTIONS.keys():
