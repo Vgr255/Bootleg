@@ -327,18 +327,10 @@ if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
 
 # Auto-update checking via git
 
-if var.GIT_LOCATION and var.AUTO_UPDATE:
+def git_checking():
     checker = git.check(var.GIT_LOCATION, silent=True)
     diff = git.diff(var.GIT_LOCATION, silent=True)
-    if checker:
-        if not diff:
-            if not var.SILENT_UPDATE:
-                log.logger("", "UPDATE_AVAIL", form=con.PROGRAM_NAME)
-                var.UPDATE_READY = True
-            else:
-                log.logger("", "SILENT_UPD", "REST_AFT_UPD", form=con.PROGRAM_NAME)
-                git.pull(var.GIT_LOCATION, silent=True)
-                var.ALLOW_RUN = False
+
     if checker is None and var.FETCH_GIT: # not a git repo, make it so
         tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
@@ -350,7 +342,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
         shutil.rmtree(os.getcwd() + "\\tools")
         shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
-        os.remove("config.py")
+        os.remove("config.ini")
         for file in os.listdir(tmpfold):
             if not fn.IsFile.get(tmpfold + "\\" + file): # Not a file, let's not copy it
                 continue
@@ -360,10 +352,42 @@ if var.GIT_LOCATION and var.AUTO_UPDATE:
         met.AttribFile(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
+        return
+
+    import urllib.request
+
+    rev = git.rev(var.GIT_LOCATION, silent=True)[0].decode("utf-8")
+    data = urllib.request.urlopen(con.RELEASE_POINT).read().decode("utf-8").split("\n")
+    if data[0] != rev: # update ready! yay!
+        if not checker:
+            return # rev ID is different but there aren't any changess
+        if not diff:
+            new = False
+            if not fn.IsFile.cur(con.CHANGELOG):
+                new = True
+            with open(con.CHANGELOG, "a") as f:
+                if not new:
+                    f.write("\n\n")
+                f.write(log.get_timestamp(False, "[%Y-%m-%d] (%H:%M:%S)"))
+                f.write("Update received - Version {0}\n".format(data[1]))
+                f.write("Commit reference point: {0}\n\n".format(data[0]))
+                f.write("Changelog:\n\n" + "\n".join(data[2:]))
+            if not var.SILENT_UPDATE:
+                log.logger("", "UPDATE_AVAIL", form=[con.PROGRAM_NAME, data[1]])
+                var.UPDATE_READY = True
+            else:
+                log.logger("", "SILENT_UPD")
+                if not var.LADMIN:
+                    log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
+                git.pull(var.GIT_LOCATION, silent=True)
+                cmd.restart(force=True)
+
     if checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
+
+if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
 
 # Warn if not ran as admin
 
