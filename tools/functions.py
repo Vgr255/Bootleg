@@ -2,11 +2,13 @@
 from tools import variables as var
 from tools import parsables as par
 from tools import filenames as fl
+from tools import parser as pars
 from tools import logger as log
 from tools import errors
 from tools import get
 from tools import reg
 
+import configparser
 import tempfile
 import shutil
 import sys
@@ -420,34 +422,42 @@ def parser(inp):
     if var.PARSING == "DataDrive":
         find_data_drive(inp)
 
-def parse_settings(): # to re-do properly like config
-    shutil.copy(os.getcwd() + "/presets/" + var.PRESET, os.getcwd() + "/preset.py")
-    import preset
-    var.PRESET_IMPORTED = True
-    for setting, short in par.__dict__.items():
-        if not setting.isupper():
+def parse_settings(preset=None):
+    if preset is None:
+        preset = var.PRESET
+    newpre = "temp/preset_{0}.tmp".format(get.random_small(4))
+    with open(os.getcwd() + "/presets/" + preset) as p, open(newpre, "x") as n:
+        if lines[0] != "[preset]\n":
+            n.write("[preset]\n")
+        lines = p.readlines()
+        while lines:
+            n.write(lines.pop(0))
+
+    preset_parser = configparser.ConfigParser()
+    preset_parser.read(newpre)
+
+    for setting, value in preset_parser["preset"].items():
+        setting = setting.replace(" ", "_").upper()
+        if not hasattr(var, setting):
             continue
-        getter = None
-        if hasattr(preset, setting):
-            getter = setting
-        elif hasattr(preset, short):
-            getter = short
-        if getter:
-            number = 1
-            toset = getattr(preset, getter)
-            if setting in con.RANGE:
-                number = con.RANGE[setting]
-            if setting not in con.NON_INT_SETTINGS:
-                if toset.isdigit():
-                    if int(toset) in range(0, number+1):
-                        toset = int(toset)
-                    else: # Not in the range
-                        raise ValueError("value out of bounds",setting, toset, number) # this'll go away eventually
-                else: # Not a digit 
-                    raise NameError(setting, toset) # blah, we'll need to re-do it anyway
-            with open(os.getcwd() + "/temp//_{0}_{1}".format(short.lower(), get.random_small(11)), "w") as file:
-                file.write(getattr(var, setting))
-            setattr(var, setting, toset)
+        num = 1
+        if setting in con.RANGE.keys():
+            num = con.RANGE[setting]
+        if setting not in con.NON_INT_SETTINGS:
+            if value.isdigit():
+                if int(value) in range(num+1):
+                    value = int(value)
+                else: # not in range
+                    raise ValueError("value out of bound for " + setting +
+                          " (value: " + value + " - max: " + num + ")")
+            else: # not a digit
+                raise TypeError(setting + " needs to be an integer (value: " + value + ")")
+        if value.lower() in ("no", "off", "0", "false"):
+            value = False
+        if value.lower() in ("yes", "on", "1", "true"):
+            value = True
+        var.OLD_SETTINGS[setting] = getattr(var, setting)
+        setattr(var, setting, value)
 
 def chk_missing_run_files():
     if not IsFile.sys(fl.SPRINKLES):
