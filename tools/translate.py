@@ -361,9 +361,9 @@ NOT_ON_WINDOWS = { # 0 = Program name
 English: "{0} will not work properly on a different operating system than Windows.",
 }
 
-UPDATE_AVAIL = { # 0 = Program name
-English: "A {0} update is available!",
-French: "Une mise à jour de {0} est disponible!",
+UPDATE_AVAIL = { # 0 = Program name; 1 = Version number
+English: "A {0} update is available! Version {1} available.",
+French: "Une mise à jour de {0} est disponible! Version {1} disponible.",
 }
 
 SILENT_UPD = {
