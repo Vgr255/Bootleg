@@ -329,7 +329,6 @@ if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
 
 def git_checking():
     checker = git.check(var.GIT_LOCATION, silent=True)
-    diff = git.diff(var.GIT_LOCATION, silent=True)
 
     if checker is None and var.FETCH_GIT: # not a git repo, make it so
         tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
@@ -355,6 +354,8 @@ def git_checking():
         return
 
     import urllib.request
+
+    diff = git.diff(var.GIT_LOCATION, silent=True)
 
     rev = git.rev(var.GIT_LOCATION, silent=True)[0].decode("utf-8")
     data = urllib.request.urlopen(con.RELEASE_POINT).read().decode("utf-8").split("\n")

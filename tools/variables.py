@@ -32,7 +32,6 @@ NEWFILE_NOR = True
 NEWFILE_TRO = True
 
 UPDATE_READY = False
-AUTO_UPDATE = False
 NEED_RESTART = False
 
 SEVENZ_LOCATION = None
@@ -102,6 +101,7 @@ PREVIOUS_PRESET = ""
 IGNORE_LOCAL_CHANGES = False
 SILENT_UPDATE = False
 FETCH_GIT = True
+AUTO_UPDATE = True
 
 IGNORE_NON_ADMIN = False # Ignores running not as admin
 
