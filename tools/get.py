@@ -48,8 +48,10 @@ def random_string(): # generates a random string of numbers for temporary folder
     tmpnum = tmpnum[:31] + "}"
     return tmpnum
 
-def random_small(length): # similar as above, except for other stuff
+def random_small(length, allow_upper=False): # similar as above, except for other stuff
     chars = list("abcdefghijklmnopqrstuvwxyz0123456789")
+    if allow_upper:
+        chars.extend("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     msg = ""
     while True:
         msg += random.choice(chars)
