@@ -1,4 +1,4 @@
-﻿__all__ = ["logger", "multiple", "help", "doc"]
+﻿__all__ = ["logger", "multiple", "help", "doc", "parser"]
 
 from tools import variables as var
 from tools import constants as con
@@ -155,6 +155,28 @@ def doc(output, type="docstring", write=False, display=True, form=[], split=True
         newlines.append(line)
 
     logger(newlines, type=type, write=write, display=display, form=form, split=split)
+
+def parser(setting):
+    """Prints a setting prompt properly."""
+    if not hasattr(var, setting) or not hasattr(tr, setting):
+        raise ValueError(setting)
+    trout, output, form, forml = translater("PARS_FIND_" + setting, "normal", (), (), ())
+    getter = 1
+    if setting in con.RANGE.keys():
+        getter = con.RANGE[setting]
+    var.FINDING = setting
+    help("ENT_VALUE_BETWEEN", "", form=getter)
+    msg = trout.split("\n")
+    logger(output.split("\n"), type="normal", display=False)
+    if getter > 1:
+        help(msg.pop(0))
+        help("NO_CHG")
+        help("\n".join(msg))
+    if getter == 1:
+        help(msg[0], form=setting)
+        help("CHC_NO")
+        help("CHC_YES")
+    help("", "DEF_TO_USE", form=getattr(var, setting))
 
 def get(output, splitter):
     if len(output) == 1 and list(output[0]) == output[0]:
