@@ -170,47 +170,37 @@ var.ON_WINDOWS = platform.system() == "Windows"
 if var.ON_WINDOWS:
     import winreg
 
-    try: # Checks for 64-bit version if exists
-        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1")
+    arch = "Wow6432Node\\" if var.ARCHITECTURE == "64bit" else ""
+
+    try:
+        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\" + arch +
+            "Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1")
         var.GIT_LOCATION = winreg.QueryValueEx(reg, "InstallLocation")[0] + "bin\\git.exe"
     except OSError:
-        try: # Checks for 32-bit version if exists
-            reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1")
-            var.GIT_LOCATION = winreg.QueryValueEx(reg, "InstallLocation")[0] + "bin\\git.exe"
-        except OSError:
-            if "git" in os.getenv("PATH").lower(): # It's in the path variable
-                paths = os.getenv("PATH").lower().split(";")
-                for path in paths:
-                    if "git" in path:
-                        var.GIT_LOCATION = path
-                        break
+        if "git" in os.getenv("PATH").lower(): # It's in the path variable
+            paths = os.getenv("PATH").lower().split(";")
+            for path in paths:
+                if "git" in path:
+                    var.GIT_LOCATION = path
+                    break
 
-    reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE")
-    liner = ""
-    if var.ARCHITECTURE == "64bit":
-        reg = winreg.OpenKey(reg, "Wow6432Node")
-        liner = "Wow6432Node\\"
     try: # 1998 original
-        reg = winreg.OpenKey(reg, "Square Soft, Inc.\\Final Fantasy VII")
         var.GAME_VERSION = 1998
-        var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(liner)
+        var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(arch)
+        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
     except OSError: # does not exist
         try: # 2012 Square Enix store
-            reg = winreg.OpenKey(reg, "Microsoft")
-            reg = winreg.OpenKey(reg, "Windows")
-            reg = winreg.OpenKey(reg, "CurrentVersion")
-            reg = winreg.OpenKey(reg, "Uninstall")
-            reg = winreg.OpenKey(reg, "{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1")
             var.GAME_VERSION = 2012
-            var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1".format(liner)
+            var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1".format(arch)
+            reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
         except OSError:
             try: # 2013 Steam
-                reg = winreg.OpenKey(reg, "Steam App 39140")
                 var.GAME_VERSION = 2013
-                var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 39140".format(liner)
+                var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 39140".format(arch)
+                reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
             except OSError:
                 var.GAME_VERSION = 1999
-                var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(liner)
+                var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(arch)
 
     if var.GAME_VERSION != 1999:
         var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
