@@ -111,6 +111,8 @@ def clean(*args, keeplog=False):
             if file == "__pycache__":
                 shutil.rmtree(os.path.join(tree, file))
             elif os.path.isdir(os.path.join(tree, file)):
+                if file == ".git" and tree == os.getcwd():
+                    continue # this fucked me over a few times. careful
                 folders.append(os.path.join(tree, file))
 
     var.ALLOW_RUN = False
