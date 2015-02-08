@@ -34,6 +34,13 @@ def diff(args, silent=False):
         return do(args, silent)
     do(args)
 
+def rev(args, silent=False):
+    args = parse(args, "rev-parse")
+    args.append("HEAD")
+    if silent:
+        return do(args, silent, needout=True)
+    do(args)
+
 def check(args, silent=False):
     args = parse(args, "status")
     checker = do(args, silent, needout=True)

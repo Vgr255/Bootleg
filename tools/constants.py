@@ -16,8 +16,11 @@ FRENCH_TRANSLATORS = ("Vgr",)
 EMAIL = "Bootleg@DadaData.net"
 
 PROCESS_CODE = "https://github.com/Vgr255/Bootleg" # This is used in many places, including auto-update. Do not edit lightly.
+RELEASE_POINT = "http://FF7Bootleg.github.io/release-point" # used for release tracking
 
 PROGRAM_NAME = "Bootleg" # this is what appears everywhere (e.g. "Welcome to the Bootleg configurator")
+
+CHANGELOG = "change.log"
 
 DECORATORS = ("COMMANDS", "HELPERS")
 
