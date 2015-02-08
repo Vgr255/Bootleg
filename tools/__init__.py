@@ -368,7 +368,7 @@ def git_checking():
     if data[0] != rev: # update ready! yay!
         if not checker:
             return # rev ID is different but there aren't any changess
-        if diff:
+        if not diff:
             new = False
             if not fn.IsFile.cur(con.CHANGELOG):
                 new = True
