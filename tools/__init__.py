@@ -212,7 +212,7 @@ if var.ON_WINDOWS:
                 var.GAME_VERSION = 1999
                 var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(liner)
 
-    if not var.GAME_VERSION == 1999:
+    if var.GAME_VERSION != 1999:
         var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
         var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
         var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
@@ -283,7 +283,7 @@ if var.MOD_LOCATION:
         if semicolon == "":
             continue
         semicolon = semicolon.replace("/", "\\")
-        if not semicolon[-1:] == "\\":
+        if semicolon[-1] != "\\":
             semicolon = semicolon + "\\"
         moloc.append(semicolon)
     if moloc:
@@ -296,7 +296,7 @@ else:
 if not var.SYS_FOLDER:
     var.SYS_FOLDER = os.getcwd() + "/utils"
 var.SYS_FOLDER = var.SYS_FOLDER.replace("/", "\\")
-if not var.SYS_FOLDER[-1:] == "\\":
+if var.SYS_FOLDER[-1] != "\\":
     var.SYS_FOLDER += "\\"
 
 # FFVII installation
@@ -304,7 +304,7 @@ if not var.SYS_FOLDER[-1:] == "\\":
 if not var.FFVII_PATH:
     var.FFVII_PATH = os.getcwd() + "/Final Fantasy VII"
 var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
-if not var.FFVII_PATH[-1:] == "\\":
+if var.FFVII_PATH[-1] != "\\":
     var.FFVII_PATH = var.FFVII_PATH + "\\"
 
 # Temporary files
@@ -312,7 +312,7 @@ if not var.FFVII_PATH[-1:] == "\\":
 if not var.BOOTLEG_TEMP:
     var.BOOTLEG_TEMP = tempfile.gettempdir() + "\\"
 var.BOOTLEG_TEMP = var.BOOTLEG_TEMP.replace("/", "\\")
-if not var.BOOTLEG_TEMP[-1:] == "\\":
+if var.BOOTLEG_TEMP[-1] != "\\":
     var.BOOTLEG_TEMP += "\\"
 if not os.path.isdir(var.BOOTLEG_TEMP):
     os.mkdir(var.BOOTLEG_TEMP)
