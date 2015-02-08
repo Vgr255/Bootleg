@@ -29,3 +29,7 @@
 * Get rid of tools/get.py
 * Possibly move translate in another package
 * Overhaul of a lot of things basically
+
+Most of what I did isn't as good and could be redone in an object-oriented way.
+However, the main goal is to get it in a working state for release.
+Once that's done, then improving can be considered.
