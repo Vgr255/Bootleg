@@ -43,6 +43,7 @@ def rev(args, silent=False):
 
 def check(args, silent=False):
     args = parse(args, "status")
+    do([args[0], "fetch", "origin"], silent=True)
     checker = do(args, silent, needout=True)
     if checker:
         if checker[-1:] == b"nothing to commit (working directory clean)":
