@@ -43,7 +43,7 @@ def rev(args, silent=False):
 
 def check(args, silent=False):
     args = parse(args, "status")
-    do([args[0], "fetch", "origin"], silent=True)
+    do([args[0], "fetch", "origin"], silent=True, quiet=True)
     checker = do(args, silent, needout=True)
     if checker:
         if checker[-1:] == b"nothing to commit (working directory clean)":
@@ -68,7 +68,7 @@ def clone(args, silent=False): # use only if not a git repo
     args = parse(args, "clone")
     do(args, silent)
 
-def do(args, silent=False, needout=False):
+def do(args, silent=False, quiet=False, needout=False):
     child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = child.communicate()
     ret = child.returncode
@@ -88,7 +88,8 @@ def do(args, silent=False, needout=False):
         else:
             cause = 'STATUS'
 
-        log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
+        if not quiet:
+            log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
     else:
         return True
     return ret
