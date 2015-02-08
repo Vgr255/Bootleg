@@ -149,7 +149,7 @@ for decorator in con.DECORATORS:
 # Make various phantom logging decorators
 
 for module in (log, met, cmd):
-    for name in getattr(module, "__all__", module.__dict__):
+    for name in module.__dict__.keys():
         if not name.startswith("__"):
             if not name in var.LOGGER:
                 var.LOGGER[name] = []
@@ -250,8 +250,8 @@ var.LAUNCH_PARAMS = [x.split("=") for x in parms]
 # Bring translators and coders in a single place
 
 for lang in con.LANGUAGES.keys():
-    if hasattr(con, lang.upper() + "_TRANSLATORS"):
-        lng = getattr(con, lang.upper() + "_TRANSLATORS")
+    lng = getattr(con, lang.upper() + "_TRANSLATORS", None)
+    if lng:
         for trnl in lng:
             if trnl not in con.TRANSLATORS:
                 con.TRANSLATORS.append(trnl)
@@ -265,7 +265,7 @@ for coder in con.GUI_CODERS + con.PROCESS_CODERS:
 # Mods location
 
 if var.MOD_LOCATION:
-    if var.MOD_LOCATION == list(var.MOD_LOCATION):
+    if isinstance(var.MOD_LOCATION, (list, tuple, set)):
         var.MOD_LOCATION = ";".join(var.MOD_LOCATION)
     mod_loc = var.MOD_LOCATION.split(";")
     moloc = []

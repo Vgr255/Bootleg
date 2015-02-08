@@ -62,7 +62,7 @@ def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There
     # 3 = HKEY_PERFORMANCE_DATA
     # 4 = HKEY_CURRENT_CONFIG
 
-    path_ints = {0: var.REG_ENTRY, 1: var.REG_GRAPH, 2: var.REG_SOUND, 3: var.REG_MIDI}
+    path_ints = (var.REG_ENTRY, var.REG_GRAPH, var.REG_SOUND, var.REG_MIDI)
 
     if not (key and value and create):
         return # Not allowed
@@ -70,7 +70,7 @@ def write(key=None, value=None, type=1, path=0, opener=2, create=False): # There
     if isinstance(path, int) or path.isdigit():
         path = path_ints[int(path)]
 
-    reg = winreg.OpenKey(18446744071562067968+opener, path, 0, 131078) # Do not alter these numbers
+    reg = winreg.OpenKey(0xFFFFFFFF80000000+opener, path, 0, 0x20006) # Do not alter these numbers
     if create:
         winreg.CreateKey(reg, path)
     else:
@@ -83,7 +83,7 @@ def get_key(value, path=0, opener=2):
     if isinstance(path, int) or path.isdigit():
         path = path_ints[int(path)]
     try:
-        entry = winreg.OpenKey(18446744071562067968+opener, path)
+        entry = winreg.OpenKey(0xFFFFFFFF80000000+opener, path)
         return winreg.QueryValueEx(entry, value)
     except OSError:
         pass

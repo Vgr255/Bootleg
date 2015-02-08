@@ -2,7 +2,6 @@
 from tools import variables as var
 from tools import parsables as par
 from tools import translate as tr
-from tools import parser as pars
 from tools import logger as log
 
 import datetime
@@ -10,9 +9,6 @@ import hashlib
 import msvcrt
 import random
 import os
-
-def parser(setting): # get function xyz() in parser.py for variable XYZ
-    return getattr(pars, setting, None)
 
 def bool(inp):
     if tr.YES[var.LANGUAGE].lower() == inp.lower():
@@ -66,7 +62,7 @@ def setting(inp, finder): # sets variables
         return 1
     if not inp:
         log.logger("NO_USR_INP", form=[getattr(var, finder), finder], display=False)
-        return 0
+        return 1
     inp = int(inp)
     getter = 2
     if finder in con.RANGE.keys():

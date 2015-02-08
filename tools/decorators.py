@@ -1,4 +1,5 @@
 # Decorators generator for various purposes
+# Code based on jcao219's decorator generator. Heavily modified
 
 def generate(arguments=True, **defargs):
     def create(generator, id=-1, **secargs):

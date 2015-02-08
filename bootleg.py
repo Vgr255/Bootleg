@@ -19,8 +19,6 @@
 # otherwise, arising from the use of the present Software.
 
 import traceback
-import shutil
-import os
 
 try:
     from tools import constants as con
