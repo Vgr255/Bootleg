@@ -47,7 +47,7 @@ def ExecuteFile(*args):
     params = args[1:]
 
     log.logger("PARS_EXEC_FILE", form=[file, folder[:-1], params], display=False)
-    process = subprocess.Popen([folder + file] + params)
+    process = subprocess.Popen([folder + file] + list(params))
     process.communicate()
     return process.returncode
 
@@ -57,13 +57,15 @@ def GetFile(file):
     Splits the folder and file from a full path.
     Returns a tuple of (folder, file)."""
 
+    if file.endswith(("/", "\\")):
+        file = file[:-1]
     new = list(file)
     new.reverse()
     indx = len(new) + 1
     for slash in ("/", "\\"):
         if not shash in new:
             continue
-        if new.index(slash[1:]) < indx:
+        if new.index(slash) < indx:
             indx = new.index(slash)
     if indx < len(new):
         return file[:-indx], file[-indx:] # Full path and file name
@@ -159,8 +161,6 @@ def RepackLGP(dir, file=None):
     Returns the resulting file."""
 
     if file is None:
-        if dir[-1:] in ("/", "\\"):
-            dir = dir[:-1]
         p, f = GetFile(dir)
         if f.endswith(("/", "\\")):
             f = f[:-1]
@@ -179,11 +179,13 @@ def LaunchFile(*params):
     file.communicate()
     return file.returncode
 
-def CopyFolder(src, dst):
-    """CopyFolder(src, dst)
+def CopyFolder(src, dst, overwrite=True):
+    """CopyFolder(src, dst, overwrite=True)
 
     Copies the content of 'src' into 'dst'.
     The destination may or may not exist.
+    The 'overwrite' parameter will tell the function whether to overwrite files.
+    This supports nested folders.
     Always returns 0."""
 
     if not src.endswith(("/", "\\")):
@@ -194,7 +196,12 @@ def CopyFolder(src, dst):
         os.mkdir(dst)
 
     for file in os.listdir(src):
-        shutil.copy(src + file, dst + file)
+        if not overwrite and os.path.exists(dst + file):
+            continue
+        if os.path.isfile(src + file):
+            shutil.copy(src + file, dst + file)
+        elif os.path.isdir(src + file):
+            CopyFolder(src + file, dst + file, overwrite=overwrite)
     return 0
 
 def CopyFile(path, file, new):
@@ -240,15 +247,17 @@ def RenameFile(path, org, new):
 
     return len(org) - len(new)
 
-def AttribFile(file, attr="-R -S -H -I", params=""):
-    """AttribFile(file, attr="-R -S -H -I", params="")
+def AttribFile(file, attr="-R -S -H -I", *params):
+    """AttribFile(file, attr="-R -S -H -I", *params)
 
     Sets Windows file and folders attributes.
     Default attribute change is to remove all unwanted attributes.
     Parameters are optional, it's mainly to touch folders as well.
     Returns 0 if it completed successfully."""
 
-    attrib = subprocess.Popen(["C:\\Windows\\System32\\attrib.exe"] + attr.split() + [file] + params.split())
+    params = " ".join(params).split() # handle tuples and multispaced items
+    lines = attr.split() + [file] + params
+    attrib = subprocess.Popen(["C:\\Windows\\System32\\attrib.exe"] + lines)
     attrib.communicate()
     return attrib.returncode
 
