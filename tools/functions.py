@@ -574,34 +574,6 @@ def end_bootleg_early():
                 log.multiple("UNH_ERR_TOREP", types=["error", "normal"])
     log.logger("\n")
 
-def find(setting): # Prompts the user for settings
-    if not hasattr(var, setting):
-        raise SettingNotFound(setting)
-
-    getter = 1
-    if setting in con.RANGE.keys():
-        getter = con.RANGE[setting]
-    parse = get.parser("find_" + setting.lower())
-    if not parse:
-        if getter != 1:
-            raise NoParserFound(setting)
-        msg = "INST_SPEC_SET"
-    if parse:
-        msg = parse()
-        if getter == 1:
-            msg = msg[0]
-    var.FINDING = setting
-    log.help("ENT_VALUE_BETWEEN", "", form=getter)
-    if getter > 1:
-        log.help(msg.pop(0))
-        log.help("NO_CHG")
-        log.help("\n".join(msg))
-    if getter == 1:
-        log.help(msg, form=setting)
-        log.help("CHC_NO")
-        log.help("CHC_YES")
-    log.help("", "DEF_TO_USE", form=getattr(var, setting))
-
 def install(setting): # Installs each setting
     if getattr(var, setting) == 0:
         return # 0 means to not install

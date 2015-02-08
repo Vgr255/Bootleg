@@ -1113,6 +1113,318 @@ English: "The 'read' command can be used to read various documentation.\n" \
 
 # End of the 'help.py' lines
 
+# These lines are for the settings (called dynamically on runtime)
+
+PARS_FIND_CLOUD_FIELD = {
+English: "Pick Cloud's appearance in the field:\n" \
+         "1 = WITHOUT sword\n" \
+         "2 = WITH Buster sword\n" \
+         "3 = Wielding Masamune\n" \
+         "4 = Omni Cloud\n" \
+         "5 = Squallff8's Rebuilded\n" \
+         "6 = Grimmy's AC Style\n" \
+         "7 = FMV with Sword (Weemus)\n" \
+         "8 = FMV Without Sword (Weemus)\n" \
+         "9 = Chibi Strife (NameSpoofer)\n" \
+         "10 = APZ with Sword\n" \
+         "11 = APZ without Sword\n" \
+         "12 = APZ Black with Sword\n" \
+         "13 = APZ Black without Sword\n" \
+         "14 = APZ Dark with Sword\n" \
+         "15 = APZ Dark without Sword\n" \
+         "16 = APZ Chibi\n" \
+         "17 = APZ Black Chibi\n" \
+         "18 = APZ Dark Chibi\n" \
+         "19 = BitzNCS New Chibi\n" \
+         "20 = PRP Classic\n" \
+         "21 = Chibi Reconstruction\n" \
+         "22 = Dahfa's Chibi\n" \
+         "23 = APZ Adjusted\n" \
+         "24 = Team Avalanche Chibi\n" \
+         "25 = Bloodshot's Edited TA",
+}
+
+PARS_FIND_CLOUD_BATTLE = {
+English: "Pick Cloud's appearance in battle:\n" \
+         "1 = Classic\n" \
+         "2 = The Remix APZ\n" \
+         "3 = Grimmy's Hi Res\n" \
+         "4 = Grimmy's AC Style\n" \
+         "5 = FMV Cloud (Weemus)\n" \
+         "6 = Strife\n" \
+         "7 = New APZ\n" \
+         "8 = New APZ Black\n" \
+         "9 = New APZ Dark\n" \
+         "10 = New APZ Mature\n" \
+         "11 = Team Avalanche\n" \
+         "12 = Bloodshot's Edited TA",
+}
+
+PARS_FIND_TRISH_SAVE = {
+English: "Pick the save point model:\n" \
+         "1 = FFX Save Point Model\n" \
+         "2 = Crisis Core Save Point Model\n" \
+         "3 = Cloud's Memories Memories Save Point Model\n" \
+         "4 = Team Avalanche Save Point Model\n" \
+         "5 = Save Point with Balls",
+}
+
+PARS_FIND_TRISH_PHOENIX = {
+English: "Pick the style of Mike's summons:\n" \
+         "1 = New Style Flaming Phoenix\n" \
+         "2 = Old Style Shaded Phoenix\n" \
+         "3 = Old Style Phoenix with Custom Brighter Texture",
+}
+
+PARS_FIND_NEW_AERITH = {
+English: "Choose the new Aerith model:\n" \
+         "1 = HQ Aerith\n" \
+         "2 = Sailor Jupiter Aerith\n" \
+         "3 = Whiteraven HQ Aerith",
+}
+
+PARS_FIND_VINCENT_BATTLE = {
+English: "Choose Vincent's appearance in battle:\n" \
+         "1 = ReModel with new Handgun\n" \
+         "2 = New boots and Rifle",
+}
+
+PARS_FIND_LIMIT_BREAK = {
+English: "Pick the Limit Break texture:\n" \
+         "1 = Kela's V3 Limit in Original Colors\n" \
+         "2 = Kela's V2 Limit in Blue\n" \
+         "3 = Kela's V3 Limit in Blue\n" \
+         "4 = Kela's V4 Limit in Blue\n" \
+         "5 = Kela's V4 Limit in Original Colors\n" \
+         "6 = Mike's Flame Limit Texture\n" \
+         "7 = Jinkazama2k7's Green Limit\n" \
+         "8 = Mike's Blue Flame Limit Texture\n" \
+         "9 = Mike's Flame Limit V2 Texture\n" \
+         "10 = JLOUTLAW's Hypersonic Limit",
+}
+
+PARS_FIND_MENU_BACKGROUND = {
+English: "Select the Start menu background:\n" \
+         "1 = Remix Art\n" \
+         "2 = Buster Sword in Red by Felix Leonhart\n" \
+         "3 = HD Buster Sword by Wren Jr.\n" \
+         "4 = Midgar\n" \
+         "5 = Friends by Nikfrozty\n" \
+         "6 = Cloud\n" \
+         "7 = Simple\n" \
+         "8 = Buster Sword\n" \
+         "9 = Standoff\n" \
+         "10 = Standoff with logo\n" \
+         "11 = Zendar's AC Buster Sword\n" \
+         "12 = Recko's Gold Hilt Buster Sword",
+}
+
+PARS_FIND_KERNEL_SELECT = {
+English: "Choose your game mode:\n" \
+         "1 = Remastered - Kernel AI, stats and equipment from The Remix\n" \
+         "2 = Scene Redux - Better Items to Steal\n" \
+         "3 = Harder Items Easy\n" \
+         "4 = Harder Items Normal\n" \
+         "5 = Harder Items Difficult\n" \
+         "6 = Harder Items Easy + Scene Redux\n" \
+         "7 = Harder Items Normal + Scene Redux\n" \
+         "8 = Harder Items Difficult + Scene Redux\n" \
+         "9 = Lost Wing - Complete overhaul with extensive modifications\n" \ 
+         "10 = Gjoerulv's Hardcore mod\n" \
+         "11 = Mode Switching - All Mods\n" \
+         "12 = Mode Switching - Without Hardcore\n" \
+         "13 = Reasonable Difficulty\n" \
+         "14 = Reasonable Difficulty + Harder Items Easy\n" \
+         "15 = Reasonable Difficulty + Harder Items Normal\n" \
+         "16 = Reasonable Difficulty + Harder Items Difficult",
+}
+
+PARS_FIND_MOVIES = {
+English: "Choose the videos to use:\n" \
+         "1 = DLPB's HQ videos\n" \
+         "2 = Bootlegged - Trojak's Enhanced with DLBP and Xion999\n" \
+         "3 = Bootlegged Further Enhanced with Grimmy\n" \
+         "4 = Bootlegged Further Enhanced with Rumbah\n" \
+         "5 = Rumbah Complete - 1280 Smooth\n" \
+         "6 = Rumbah Complete - 1280 Sharp\n" \
+         "7 = Rumbah Complete - 640 Smooth\n" \
+         "8 = Rumbah Complete - 640 Sharp\n" \
+         "9 = Grimmy's AC Style enhanced with Leonhart7413\n" \
+         "10 = Grimmy's AC Style enhanced with Leonhart7413 HD Alternate\n" \
+         "11 = Bootlegged reworked with PH03N1XFURY",
+}
+
+PARS_FIND_RUMBAH_MOVIES = {
+English: "Choose which pick of Rumbah's opening videos to use:\n" \
+         "You may pick a number from 0 to 5\n" \
+         "Don't change anything if you don't know what to pick.",
+}
+
+PARS_FIND_FIELD_TEXTURES = {
+English: "Pick which set of field textures to use:\n" \
+         "1 = Bootlegged: BlackFan and SL1982 Field Art\n" \
+         "2 = BlackFan and SL1982 Field Art as Primary over FacePalmer\n" \
+         "3 = FacePalmer Field Art Only\n" \
+         "4 = BlackFan and SL1982 without FacePalmer",
+}
+
+PARS_FIND_AVATARS = {
+English: "Select which set of avatars you want:\n" \
+         "1 = Bloodshot's Transparant Avatars Bootleg Combo\n" \
+         "2 = Nikfrozty's Transparent Crisis Core Avatars\n" \
+         "3 = Nikfrozty's Tranparent Alternative Avatars\n" \
+         "4 = Full Portrait Transparent Avatars\n" \
+         "5 = Milo Leonhart's 10th Anniversary Photographic Avatars\n" \
+         "6 = Milo Leonhart's Demi Face Avatars\n" \
+         "7 = Milo Leonhart's Demi Face Avatars V2\n" \
+         "8 = Milo Leonhart's Demi Face Avatars V3\n" \
+         "9 = Singular One's AC Transparent Avatars\n" \
+         "10 = Zendar's Round AC Avatars\n" \
+         "11 = Zendar's Round AC Avatars V2\n" \
+         "12 = Zendar's Round AC Avatars V3\n" \
+         "13 = Zendar's Round AC Avatars V4\n" \
+         "14 = Zendar's Round AC Avatars V5\n" \
+         "15 = Zendar's Round AC Avatars V5.1\n" \
+         "16 = Armorvil's Eye Avatars\n" \
+         "17 = Grimmy's AC Style Avatars\n" \
+         "18 = Kula Wende's AC Style Avatars\n" \
+         "19 = Nero's AC Style Avatars\n" \
+         "20 = Nikfrozty's AC Style Avatars\n" \
+         "21 = Aff7iction's Beautified Avatars\n" \
+         "22 = MinMin's Avatars\n" \
+         "23 = Recko's Transparent Avatars",
+}
+
+PARS_FIND_SOUNDTRACK = {
+English: "Pick which soundtrack to install:\n" \
+         "1 = FinalFanTim's OGG Soundtrack\n" \
+         "2 = PSF MIDI Soundtrack\n" \
+         "3 = OCRemix Soundtrack\n" \
+         "4 = Custom Soundtrack from the Remix\n" \
+         "5 = Bootleg Soundtrack\n" \
+         "6 = Anxious Heart - Original Selection\n" \
+         "7 = Anxious Heart - DLPB Selection\n" \
+         "8 = Anxious Heart - Fan Selection\n" \
+         "9 = Anxious Heart - Professional Selection",
+}
+
+PARS_FIND_OPENING_CREDITS = {
+English: "Pick which opening credits to use:\n" \
+         "1 = Grimmy's Cloud and Sephiroth Prelude Credits\n" \
+         "2 = JordieBo's Prelude Credits\n" \
+         "3 = JordieBo's Dark Prelude Credits\n" \
+         "4 = JordieBo's Glowing Prelude Credits\n" \
+         "5 = Strayoff's Prelude Credits\n" \
+         "6 = Grimmy's Cloud and Tifa Prelude Credits",
+}
+
+PARS_FIND_BUSTER_SWORD = {
+English: "Pick the Buster Sword replacement:\n" \
+         "1 = Millenia's Buster Sword\n" \
+         "2 = Slayernext's Buster Sword\n" \
+         "3 = Mike's Buster Sword\n" \
+         "4 = APZ's Buster Sword\n" \
+         "5 = Omni Buster Sword\n" \
+         "6 = Masamune as Buster Sword",
+}
+
+PARS_FIND_MYTHRIL_SABER = {
+English: "Pick the Mythril Saber replacement:\n" \
+         "1 = Millenia's Mythril Saber\n" \
+         "2 = Slayernext's Mythril Saber",
+}
+
+PARS_FIND_HARDEDGE = {
+English: "Pick the Hardedge replacement:\n" \
+         "1 = Millenia's Hardedge\n" \
+         "2 = Slayernext's Hardedge",
+}
+
+PARS_FIND_BUTTERFLY_EDGE = {
+English: "Pick the Butterfly Edge replacement:\n" \
+         "1 = Millenia's Butterfly Edge\n" \
+         "2 = Slayernext's Butterfly Edge",
+}
+
+PARS_FIND_ENHANCE_SWORD = {
+English: "Pick the Enhance Sword replacement:\n" \
+         "1 = Millenia's Butterfly Edge\n" \
+         "2 = Slayernext's Butterfly Edge",
+}
+
+PARS_FIND_ORGANICS = {
+English: "Pick the Organics replacement:\n" \
+         "1 = Millenia's Organics\n" \
+         "2 = Slayernext's Organics",
+}
+
+PARS_FIND_CRYSTAL_SWORD = {
+English: "Pick the Crystal Sword replacement:\n" \
+         "1 = Millenia's Crystal Sword\n" \
+         "2 = Slayernext's Crystal Sword",
+}
+
+PARS_FIND_FORCE_STEALER = {
+English: "Pick the Force Stealer replacement:\n" \
+         "1 = Millenia's Force Stealer\n" \
+         "2 = Slayernext's Force Stealer",
+}
+
+PARS_FIND_RUNE_BLADE = {
+English: "Pick the Rune Blade replacement:\n" \
+         "1 = Millenia's Rune Blade\n" \
+         "2 = Slayernext's Rune Blade",
+}
+
+PARS_FIND_MURASAME = {
+English: "Pick the Murasame replacement:\n" \
+         "1 = Millenia's Murasame\n" \
+         "2 = Slayernext's Murasame\n" \
+         "3 = Dragon Murasame\n" \
+         "4 = Oblivion Lovelace as Murasame",
+}
+
+PARS_FIND_NAIL_BAT = {
+English: "Pick the Nail Bat replacement:\n" \
+         "1 = Millenia's Nail Bat\n" \
+         "2 = Slayernext's Nail Bat",
+}
+
+PARS_FIND_YOSHIYUKI = {
+English: "Pick the Yoshiyuki replacement:\n" \
+         "1 = Millenia's Yoshiyuki\n" \
+         "2 = Slayernext's Yoshiyuki",
+}
+
+PARS_FIND_APOCALYPSE = {
+English: "Pick the Apocalypse replacement:\n" \
+         "1 = Millenia's Apocalypse\n" \
+         "2 = Slayernext's Apocalypse",
+}
+
+PARS_FIND_HEAVENS_CLOUD = {
+English: "Pick the Heaven's Cloud replacement:\n" \
+         "1 = Millenia's Heaven's Cloud\n" \
+         "2 = Slayernext's Heaven's Cloud",
+}
+
+PARS_FIND_RAGNAROK = {
+English: "Pick the Ragnarok replacement:\n" \
+         "1 = Millenia's Ragnarok\n" \
+         "2 = Slayernext's Ragnarok\n" \
+         "3 = APZ's Ragnarok",
+}
+
+PARS_FIND_ULTIMA_WEAPON = {
+English: "Pick the Ultima Weapon replacement:\n" \
+         "1 = Millenia's Ultima Weapon\n" \
+         "2 = Slayernext's Ultima Weapon\n" \
+         "3 = Mike's Ultima Weapon\n" \
+         "4 = Oblivion External Mod Ultima Weapon",
+}
+
+# End of the parsers
+
 # The following lines are contained within 'parser.py'
 
 PARS_EXEC_FILE = { # 0 = File; 1 = Folder; 2 = Parameters
