@@ -338,7 +338,10 @@ def git_checking():
         shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
         if os.path.isdir(os.getcwd() + "\\presets"):
             shutil.rmtree(os.getcwd() + "\\presets") # making sure to overwrite everything
+        if os.path.isdir(os.getcwd() + "\\documentation"):
+            shutil.rmtree(os.getcwd() + "\\documentation")
         shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
+        shutil.copytree(tmpfold + "\\documentation", os.getcwd() + "\\documentation")
         shutil.rmtree(os.getcwd() + "\\tools")
         shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
         os.remove("config.ini")
@@ -387,6 +390,7 @@ def git_checking():
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
+        get.pause()
 
 if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
 
