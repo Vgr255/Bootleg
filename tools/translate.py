@@ -1229,7 +1229,7 @@ English: "Choose your game mode:\n" \
          "6 = Harder Items Easy + Scene Redux\n" \
          "7 = Harder Items Normal + Scene Redux\n" \
          "8 = Harder Items Difficult + Scene Redux\n" \
-         "9 = Lost Wing - Complete overhaul with extensive modifications\n" \ 
+         "9 = Lost Wing - Complete overhaul with extensive modifications\n" \
          "10 = Gjoerulv's Hardcore mod\n" \
          "11 = Mode Switching - All Mods\n" \
          "12 = Mode Switching - Without Hardcore\n" \
