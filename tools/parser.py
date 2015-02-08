@@ -15,9 +15,8 @@ import subprocess
 import shutil
 import os
 
-# Import the various file manipulation methods (and the related exceptions)
+# Import the various file manipulation methods
 
-from tools.exceptions import *
 from tools.methods import *
 
 # The following are for finding the settings
@@ -437,11 +436,11 @@ def movies():
             if part == 2:
                 FindFile(fl.ENHANCEDMOVIESPARTS.format(4, 2))
             file = fl.ENHANCEDMOVIESPARTS.format(1, part)
-        except ModFileNotFound:
+        except FileNotFoundError:
             try:
                 FindFile(fl.ENHANCEDMOVIES.format(part))
                 file = fl.ENHANCEDMOVIES.format(part)
-            except ModFileNotFound:
+            except FileNotFoundError:
                 CallSkipMod(fl.ENHANCEDMOVIES.format(part)) # We want to go on and install the rest
 
         if file:
@@ -453,7 +452,7 @@ def movies():
         logo, folder = FindFile(fl.LOGO)
         shutil.copy(folder + logo, var.FFVII_PATH + "movies\\eidoslogo.avi")
         log.logger("PARS_COMPLETED", form="LOGO")
-    except ModFileNotFound:
+    except FileNotFoundError:
         CallSkipMod(fl.LOGO)
 
     if var.MOVIES in (3, 9): # Grimmy's movies
@@ -461,7 +460,7 @@ def movies():
         for num in range(1, 8):
             try:
                 ExtractFile(getattr(fl, "GRIMMY" + str(num)), "GrimmyMovies")
-            except ModFileNotFound:
+            except FileNotFoundError:
                 continue
         if os.path.isdir(var.BOOTLEG_TEMP + "GrimmyMovies"):
             StripFolder(var.BOOTLEG_TEMP + "GrimmyMovies")
@@ -474,7 +473,7 @@ def movies():
             ExtractFile(fl.MOVIE)
             CopyFolder("{0}{1}\\{2}".format(var.BOOTLEG_TEMP, fl.MOVIE, var.RUMBAH_MOVIES), var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="RUMBAH_MOVIES")
-        except ModFileNotFound:
+        except FileNotFoundError:
             CallSkipMod(fl.MOVIE)
 
     if var.MOVIES in (9, 10): # Enhanced with Leonhart7413
@@ -482,7 +481,7 @@ def movies():
         for num in range(1, 5):
             try:
                 FindFile(fl.LEONHARTMOVIES.format(num))
-            except ModFileNotFound:
+            except FileNotFoundError:
                 CallSkipMod(fl.LEONHARTMOVIES)
                 exists = False
                 break
@@ -499,7 +498,7 @@ def movies():
             ExtractFile(fl.LEONHARTOPENING, "LeonhartOpening")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartOpening", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="LEONHART_OPENING")
-        except ModFileNotFound:
+        except FileNotFoundError:
             CallSkipMod(fl.LEONHARTOPENING)
 
         try:
@@ -509,7 +508,7 @@ def movies():
             ExtractFile(fl.LEONHARTLOGO.format(1), "LeonhartLogo")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartLogo", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="LEONHART_LOGO")
-        except ModFileNotFound:
+        except FileNotFoundError:
             CallSkipMod(fl.LEONHARTLOGO)
 
     if var.MOVIES == 11: # Bootlegged reworked with PH03N1XFURY
@@ -519,7 +518,7 @@ def movies():
             ExtractFile(fl.FMVSFMV, "FuryFMVs")
             CopyFolder(var.BOOTLEG_TEMP + "FuryFMVs", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="FURY_FMVS")
-        except ModFileNotFound:
+        except FileNotFoundError:
             CallSkipMod(fl.FMVSFMV)
 
         try:
@@ -528,7 +527,7 @@ def movies():
             ExtractFile(fl.FUNERALFMV, "FuneralFMV")
             CopyFolder(var.BOOTLEG_TEMP + "FuneralFMV", var.FFVII_PATH + "movies")
             log.logger("PARS_COMPLETED", form="FUNERAL_FMVS")
-        except ModFileNotFound:
+        except FileNotFoundError:
             CallSkipMod(fl.FUNERALFMV)
 
 def fmv_no_cait():
