@@ -55,6 +55,7 @@ French: "index",
 
 READ_GET_SECTIONS = { # This needs to be a list/tuple
 English: ("sections", "list"),
+French: ("sections", "liste"),
 }
 
 # Small words that are part of larger sentences by format
@@ -398,16 +399,6 @@ RUN_BOOT_ELEVATED = { # 0 = Program name
 English: "Please run '{0}.exe' with elevated privileges.",
 }
 
-CFG_DIS_OVR = {
-English: "Config was disallowed. Overriding.",
-French: "La configuration était désactivée. Réactivation.",
-}
-
-CFG_FORCED = {
-English: "Forcing config into var.",
-French: "La configuration a été copiée de force.",
-}
-
 LNCH_PAR = { # 0 = Launch parameters
 English: "Launch parameters: {0}",
 French: "Paramètres de lancement : {0}",
@@ -429,6 +420,18 @@ English: "Error: The documentation file '{0}' could not be found.",
 GIT_NOT_INST = {
 English: "Error: Git is not installed. The operation cannot continue.",
 French: "Erreur: Git n'est pas installé. L'opération ne peut pas continuer.",
+}
+
+COMM_NOT_EXIST = { # 0 = Command
+English: "Error: Command {0} does not exist.",
+}
+
+NO_DOC_AVAIL = {
+English: "Documentation for this command is not available.",
+}
+
+PLEASE_ENT_CMD = {
+English: "Please input a command.",
 }
 
 # End of the 'commands.py' lines
@@ -872,6 +875,10 @@ DEF_TO_USE = { # 0 = Default value for settings
 English: "Default is '{0}'. It will be used if no value is given.",
 }
 
+PARSER_NOT_FOUND = { # 0 = setting (filled above)
+English: "Error: No installer for {0} was found.",
+}
+
 PARS_INSTALLING = {
 English: "Beginning installation of {0} . . .",
 }
@@ -1022,7 +1029,7 @@ English: "{0} is written in Python 3; the User Interface is in C#.",
 }
 
 HELP_CODE_PROCESS = { # 0 = Program name; 1 = Version number; 2 = Link to the code
-English: "The {1} {0} code is completely open-source, and can be viewed at:\n'{2}'",
+English: "The {1} {0} code is completely open-source, and can be viewed at:\n'{2}'\n\nType 'get code' to access the code.",
 }
 
 HELP_CODE_NONE = { # 0 = Program name; 1 = Version number
@@ -1130,6 +1137,10 @@ English: "Select 'Original (1997)' even if using the 2013 Steam version.",
 
 PARS_SKIP = { # 0 = Filename; 1 = "in" or "in one of" (fill at the top); 2 = Mods location(s)
 English: "Error: '{0}' could not be found. Please add '{0}' {1} '{2}' and retry.",
+}
+
+PARS_SKIP_MOD_DEFAULT = { # 0 = Mod name (filled above) - 'Set' is also past tense
+English: "Skipping {0} installation (Set to 0 in settings).",
 }
 
 PARS_INSTALLING = { # 0 = Mod name
