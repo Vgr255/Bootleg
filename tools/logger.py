@@ -269,16 +269,16 @@ def translater(output, type, form, formo, formt):
             break
     return trout, output, list(form), list(forml)
 
-def get_timestamp():
+def get_timestamp(use_utc=None, timestamp_format=None):
     """Returns a timestamp with timezone + offset from UTC."""
-    if var.USE_UTC:
-        tmf = datetime.datetime.utcnow().strftime(var.TIMESTAMP_FORMAT)
-        if tmf[-1] != " ":
-            tmf += " "
-        return tmf.format(tzname="UTC", tzoffset="+0000")
-    tmf = time.strftime(var.TIMESTAMP_FORMAT)
-    if tmf[-1] != " ":
-        tmf += " "
+    if timestamp_format is None:
+        timestamp_format = var.TIMESTAMP_FORMAT
+    if use_utc is None:
+        use_utc = var.USE_UTC
+    if use_utc:
+        tmf = datetime.datetime.utcnow().strftime(timestamp_format)
+        return tmf.format(tzname="UTC", tzoffset="+0000").strip() + " "
+    tmf = time.strftime(timestamp_format).strip() + " "
     tz = time.strftime("%Z")
     utctime = datetime.datetime.utcnow().strftime("%H")
     nowtime = datetime.datetime.now().strftime("%H")
