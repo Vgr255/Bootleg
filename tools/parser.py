@@ -366,20 +366,20 @@ def find_ultima_weapon():
 # Use the ExecuteFile() method to launch a mod directly
 # It will automatically stop the execution if the mod can't be found
 
-def install_avalanche():
+def avalanche():
     ExecuteFile(fl.AVALANCHE)
 
     CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\AvalancheRepair\\magic", fl.MAGIC_PATCH)
 
     CopyFile(var.FFVII_PATH + "textures\\Summons\\leviathan", "water_00.png", "water_1_00.png")
 
-def install_avalanche_gui():
+def avalanche_gui():
     ExecuteFile(fl.AVALANCHEGUI)
 
-def install_romeo_mat():
+def romeo_mat():
     CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Textures\\Menu\\Romeo14\\Materia_Advent", fl.MODS_FINAL + "menu")
 
-def install_hardcore_gjoerulv():
+def hardcore_gjoerulv():
     ExtractFile(fl.HARDCORE)
 
     log.help("SET_LOCATION", "'{0}data'".format(var.FFVII_PATH), "")
@@ -393,14 +393,14 @@ def install_hardcore_gjoerulv():
     for file in ("kernel\\KERNEL.BIN", "kernel\\kernel2.bin", "battle\\scene.bin"):
         shutil.copy(var.FFVII_PATH + "data\\" + file, var.BOOTLEG_TEMP + "hardcore_backup\\" + file)
 
-def install_aerith_revival():
+def aerith_revival():
     ExtractFile(fl.AERISREVIVAL)
 
     CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\Revival\\Flevel", var.BOOTLEG_TEMP + fl.AERISREVIVAL)
 
     shutil.copy(var.FFVII_PATH + "data\\field\\flevel.lgp", fl.FLEVEL_REVIVAL + "flevel.lgp")
 
-def install_movies():
+def movies():
     if var.MOVIES in range(5, 9): # Rumbah's FMVs
         movies = {5: (7, "RUMBAHSMOOTH1280"), 6: (10, "RUMBAHSHARP1280"), 7: (4, "RUMBAHSMOOTH640"), 8: (4, "RUMBAHSHARP640")}
         max, file = movies[var.MOVIES]
@@ -531,8 +531,8 @@ def install_movies():
         except ModFileNotFound:
             CallSkipMod(fl.FUNERALFMV)
 
-def install_fmv_no_cait():
+def fmv_no_cait():
     ExecuteFile(fl.FMVNOCAIT, "/verysilent")
 
-def install_retranslated_fmv():
+def retranslated_fmv():
     ExecuteFile(fl.FMVRETRANS, "/verysilent")

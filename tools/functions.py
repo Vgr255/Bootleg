@@ -603,10 +603,16 @@ def find(setting): # Prompts the user for settings
     log.help("", "DEF_TO_USE", form=getattr(var, setting))
 
 def install(setting): # Installs each setting
+    if getattr(var, setting) == 0:
+        return # 0 means to not install
     if not hasattr(var, setting):
         raise ValueError(setting)
 
-    parse = get.parser("install_" + setting.lower())
+    parse = getattr(pars, setting.lower(), None)
+
+    if parse is None:
+        log.logger("PARSER_NOT_FOUND", form=setting)
+        return 1
 
     log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
     ret = parse()
