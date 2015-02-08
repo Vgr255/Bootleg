@@ -365,7 +365,7 @@ def git_checking():
     if data[0] != rev: # update ready! yay!
         if not checker:
             return # rev ID is different but there aren't any changess
-        if not diff:
+        if diff:
             new = False
             if not fn.IsFile.cur(con.CHANGELOG):
                 new = True
@@ -386,7 +386,7 @@ def git_checking():
                 git.pull(var.GIT_LOCATION, silent=True)
                 cmd.restart(force=True)
 
-    if checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
+    elif checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
         line = git.diff_get(var.GIT_LOCATION, silent=True)
         log.logger(line, type="debug")
