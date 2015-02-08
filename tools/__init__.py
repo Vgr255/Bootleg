@@ -361,7 +361,7 @@ def git_checking():
     diff = git.diff(var.GIT_LOCATION, silent=True)
 
     rev = git.rev(var.GIT_LOCATION, silent=True)[0].decode("utf-8")
-    data = urllib.request.urlopen(con.RELEASE_POINT).read().decode("utf-8").split("\n")
+    data = urllib.request.urlopen(con.RELEASE_POINT).read().decode("utf-8").strip().split("\n")
     if data[0] != rev: # update ready! yay!
         if not checker:
             return # rev ID is different but there aren't any changess
@@ -375,7 +375,7 @@ def git_checking():
                 f.write(log.get_timestamp(False, "[%Y-%m-%d] (%H:%M:%S)"))
                 f.write("Update received - Version {0}\n".format(data[1]))
                 f.write("Commit reference point: {0}\n\n".format(data[0]))
-                f.write("Changelog:\n\n" + "\n".join(data[2:]))
+                f.write("Changelog:\n\n" + "\n".join(data[2:]) + "\n")
             if not var.SILENT_UPDATE:
                 log.logger("", "UPDATE_AVAIL", form=[con.PROGRAM_NAME, data[1]])
                 var.UPDATE_READY = True
