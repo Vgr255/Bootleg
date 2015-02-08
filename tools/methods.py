@@ -28,7 +28,7 @@ def FindFile(seeker):
     for folder in var.MOD_LOCATION:
         for file in os.listdir(folder):
             if file.lower() == seeker.lower():
-                if not folder[-1:] in ("/", "\\"):
+                if not folder.endswith(("/", "\\")):
                     folder = folder + "\\"
                 return folder, file
 
@@ -102,9 +102,9 @@ def ExtractFile(file, dst=None, pw=None):
 
     if dst is None:
         dst = file
-    if not dst[-1:] in ("/", "\\"):
+    if not dst.endswith(("/", "\\")):
         dst = dst + "\\"
-    if not path[-1:] in ("/", "\\"):
+    if not path.endswith(("/", "\\")):
         path = path + "\\"
 
     if pw is None:
@@ -126,7 +126,7 @@ def ExtractFolder(path):
     Extracts all the archives from a folder into that same folder.
     Returns a tuple of all the resulting folders' names."""
 
-    if not path[-1:] in ("/", "\\"):
+    if not path.endswith(("/", "\\")):
         path = path + "\\"
     folders = []
     files = []
@@ -162,7 +162,7 @@ def RepackLGP(dir, file=None):
         if dir[-1:] in ("/", "\\"):
             dir = dir[:-1]
         p, f = GetFile(dir)
-        if f[-1:] in ("/", "\\"):
+        if f.endswith(("/", "\\")):
             f = f[:-1]
         file = var.BOOTLEG_TEMP + f + ".lgp"
     subprocess.Popen([var.ULGP_LOCATION, "-c", file, "-C", dir])
@@ -186,9 +186,9 @@ def CopyFolder(src, dst):
     The destination may or may not exist.
     Always returns 0."""
 
-    if not src[-1:] in ("/", "\\"):
+    if not src.endswith(("/", "\\")):
         src = src + "\\"
-    if not dst[-1:] in ("/", "\\"):
+    if not dst.endswith(("/", "\\")):
         dst = dst + "\\"
     if not os.path.isdir(dst):
         os.mkdir(dst)
@@ -203,7 +203,7 @@ def CopyFile(path, file, new):
     Creates of copy of 'file' with name 'new' in 'path'.
     Always returns 0."""
 
-    if not path[-1:] in ("/", "\\"):
+    if not path.endswith(("/", "\\")):
         path = path + "\\"
 
     shutil.copy(path + file, path + new)
@@ -232,7 +232,7 @@ def RenameFile(path, org, new):
     Returns less than 0 if there were more items in 'new' than 'org'"""
 
     cont = zip(org, new)
-    if not path[-1:] in ("/", "\\"):
+    if not path.endswith(("/", "\\")):
         path = path + "\\"
     for file in cont:
         if os.path.isfile(path + file[0]):
@@ -259,7 +259,7 @@ def StripFolder(path):
     Deletes all subfolders of the main path.
     Returns a tuple of all the subfolders that were copied over."""
 
-    if not path[-1:] in ("/", "\\"):
+    if not path.endswith(("/", "\\")):
         path = path + "\\"
     folders = [path]
     allf = []
