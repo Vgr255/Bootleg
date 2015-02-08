@@ -332,7 +332,9 @@ def git_checking():
 
     if checker is None and var.FETCH_GIT: # not a git repo, make it so
         tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
-        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", "REST_AFT_UPD", form=[os.getcwd(), con.PROGRAM_NAME, con.PROGRAM_NAME])
+        log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", form=[os.getcwd(), con.PROGRAM_NAME])
+        if not var.LADMIN:
+            log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
         shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
@@ -354,6 +356,7 @@ def git_checking():
         met.AttribFile(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
+        cmd.restart(force=True)
         return
 
     import urllib.request
