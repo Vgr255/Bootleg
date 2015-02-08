@@ -44,9 +44,9 @@ CLEAN_FOLDERS = ("temp",)
 
 CONFIG_FILES = ("config.ini", "cfg.ini")
 
-LANGUAGES = {"English": ["en", 0], "French": ["fr", 1]}
+LANGUAGES = {"English": ("en", 0), "French": ("fr", 1)}
 
-GAME_LANGUAGES = {"English": ["en", "us", "us", "", 0], "French": ["fr", "fr", "fr", "f", 1], "German": ["de", "gm", "ge", "g", 2], "Spanish": ["es", "sp", "sp", "s", 3], "Italian": ["it", "it", "it", "i", 4]}
+GAME_LANGUAGES = {"English": ("en", "us", "us", "", 0), "French": ("fr", "fr", "fr", "f", 1), "German": ("de", "gm", "ge", "g", 2), "Spanish": ("es", "sp", "sp", "s", 3), "Italian": ("it", "it", "it", "i", 4)}
 
 # filenames to set variables
 
