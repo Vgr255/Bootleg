@@ -41,9 +41,9 @@ def cancel_err():
 def exit():
     var.ALLOW_RUN = False
 
-@cmd_en("restart", "res", error=True, arguments=False)
-@cmd_fr("redémarrer", "red", error=True, arguments=False)
-def restart():
+@cmd_en("restart", "res", error=True)
+@cmd_fr("redémarrer", "red", error=True)
+def restart(*args, force=False):
     var.ALLOW_RUN = False
     args = [os.getcwd() + "/" + con.PROGRAM_NAME + ".exe", "--retry"]
     if var.SILENT_RUN:
@@ -62,6 +62,8 @@ def restart():
         args.append("--preset " + var.PRESET)
     if var.LADMIN:
         subprocess.Popen(args)
+    elif "force" in args or force:
+        var.ALLOW_RUN = False
     else:
         var.ALLOW_RUN = True
         var.RETRY = True
