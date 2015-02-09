@@ -112,10 +112,6 @@ SILENT_RUN = False
 REINSTALL = False
 UNINSTALL = False
 
-GIT_BRANCH = "master"
-USE_GIT_LINK = True # if set to False, only "git pull" will be sent
-USE_GIT_ORIGIN = False # determines whether or not to use origin in the git pull. overrides above
-
 # The following settings are default. Do not alter.
 
 # User settings

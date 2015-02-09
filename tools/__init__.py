@@ -386,7 +386,7 @@ def git_checking():
                 log.logger("", "SILENT_UPD")
                 if not var.LADMIN:
                     log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
-                git.pull(var.GIT_LOCATION, silent=True)
+                git.get(var.GIT_LOCATION, data[0], silent=True)
                 cmd.restart(force=True)
 
     elif checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:

@@ -17,16 +17,16 @@ def parse(args, name):
         args = list(argsp)
     return args
 
+def get(args, sha, silent=False): # use this instead of pull
+    arf = parse(args, "fetch")
+    arm = parse(args, "merge")
+    arm.append(sha)
+    do(arf, silent)
+    return do(arm, silent)
+
 def pull(args, silent=False):
     args = parse(args, "pull")
-    if not len(args) == 4:
-        if var.USE_GIT_ORIGIN:
-            args = [args[0], "pull", "origin", var.GIT_BRANCH]
-        elif var.USE_GIT_LINK:
-            args = [args[0], "pull", con.PROCESS_CODE + ".git", var.GIT_BRANCH]
-    if silent:
-        return do(args, silent)
-    do(args)
+    do(args, silent)
 
 def diff(args, silent=False):
     args = parse(args, "diff")
@@ -46,8 +46,6 @@ def check(args, silent=False):
     do([args[0], "fetch", "origin"], silent=True, quiet=True)
     checker = do(args, silent, needout=True)
     if checker:
-        if checker[-1:] == b"nothing to commit (working directory clean)":
-            return False
         if len(checker) > 2:
             return True
         if len(checker) == 1: # fatal: not a git repo
