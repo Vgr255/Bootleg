@@ -10,7 +10,7 @@ Release date: None. This being a one-man job, it takes a long time to do.
 
 ### Running the code yourself
 
-You need python 3.2 or higher. Bootleg will copy over the example config file if it doesn't exist. You can do so yourself and edit the settings to your liking. You can use Insight's User Interface to configure your settings, but Bootleg can run perfectly fine by itself.
+You need python 3.3 or higher; 3.2 may work but I cannot guarantee it. 2.x will certainly not work. This was developped and tested with Python 3.4. Bootleg will copy over the example config file if it doesn't exist. You can do so yourself and edit the settings to your liking. You can use Insight's User Interface to configure your settings, but Bootleg can run perfectly fine by itself.
 
 ### Presets
 
