@@ -3,47 +3,33 @@
 
 from tools import constants as con
 from tools import variables as var
-from tools import logger as log
+from tools import logger as _log
 import subprocess
 
 def parse(args, name):
-    if not args == list(args):
+    if args != list(args):
         args = [args]
     if len(args) < 2:
         args.append(name)
-    if not args[1] == name:
+    if args[1] != name:
         argsp = [args[0], name]
         argsp.extend(args[1:])
         args = list(argsp)
     return args
 
-def get(args, sha, silent=False): # use this instead of pull
-    arf = parse(args, "fetch")
-    arm = parse(args, "merge")
-    arm.append(sha)
-    do(arf, silent)
-    return do(arm, silent)
-
 def pull(args, silent=False):
     args = parse(args, "pull")
-    do(args, silent)
+    args.append(con.PROCESS_CODE)
+    args.append(con.BRANCH_NAME)
+    return do(args, silent)
 
 def diff(args, silent=False):
     args = parse(args, "diff")
-    if silent:
-        return do(args, silent)
-    do(args)
-
-def rev(args, silent=False):
-    args = parse(args, "rev-parse")
-    args.append("HEAD")
-    if silent:
-        return do(args, silent, needout=True)
-    do(args)
+    return do(args, silent)
 
 def check(args, silent=False):
     args = parse(args, "status")
-    do([args[0], "fetch", "origin"], silent=True, quiet=True)
+    do([args[0], "fetch", con.PROCESS_CODE], silent=True, quiet=True)
     checker = do(args, silent, needout=True)
     if checker:
         if len(checker) > 2:
@@ -62,6 +48,16 @@ def diff_get(args, silent=False):
                 lines.append(line.decode("utf-8")[14:])
     return lines
 
+def log(args, sha, silent=False):
+    args = parse(args, "log")
+    args.extend(["--oneline", sha + ".."])
+    return do(args, silent, needout=True)
+
+def rev(args, silent=False):
+    args = parse(args, "rev-parse")[:2]
+    args.append("HEAD")
+    return do(args, silent, needout=True)[0].decode("utf-8")
+
 def clone(args, silent=False): # use only if not a git repo
     args = parse(args, "clone")
     do(args, silent)
@@ -73,7 +69,7 @@ def do(args, silent=False, quiet=False, needout=False):
 
     lines = []
     for line in (out + err).splitlines():
-        log.logger(line.decode('utf-8'), type="git", display=not silent, write=var.ALLOW_RUN, checker=False) # Make sure it doesn't write anything if it stops running to prevent orphan log file
+        _log.logger(line.decode('utf-8'), type="git", display=not silent, write=var.ALLOW_RUN, checker=False) # Make sure it doesn't write anything if it stops running to prevent orphan log file
         lines.append(line)
     if not (out + err):
         return False
@@ -87,7 +83,7 @@ def do(args, silent=False, quiet=False, needout=False):
             cause = 'STATUS'
 
         if not quiet:
-            log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
+            _log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
     else:
         return True
     return ret

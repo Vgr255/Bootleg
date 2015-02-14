@@ -337,57 +337,49 @@ def git_checking():
             log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
-        shutil.copytree(tmpfold + "\\.git", os.getcwd() + "\\.git") # moving everything in the current directory
-        if os.path.isdir(os.getcwd() + "\\presets"):
-            shutil.rmtree(os.getcwd() + "\\presets") # making sure to overwrite everything
-        if os.path.isdir(os.getcwd() + "\\documentation"):
-            shutil.rmtree(os.getcwd() + "\\documentation")
-        shutil.copytree(tmpfold + "\\presets", os.getcwd() + "\\presets")
-        shutil.copytree(tmpfold + "\\documentation", os.getcwd() + "\\documentation")
-        shutil.rmtree(os.getcwd() + "\\tools")
-        shutil.copytree(tmpfold + "\\tools", os.getcwd() + "\\tools")
-        os.remove("config.ini")
+        for folder in os.listdir(os.getcwd()):
+            if os.path.isdir(os.path.join(os.getcwd(), folder)):
+                shutil.rmtree(os.path.join(os.getcwd(), folder)) # making sure to overwrite everything
         for file in os.listdir(tmpfold):
-            if not fn.IsFile.get(tmpfold + "\\" + file): # Not a file, let's not copy it
-                continue
-            if fn.IsFile.cur(file):
-                os.remove(file) # makes sure that the cloned versions are kept, and not the possibly-outdated ones
-            shutil.copy(tmpfold + "\\" + file, os.getcwd() + "\\" + file)
+            if os.path.isdir(os.path.join(tmpfold, file)): # moving everything in the current directory
+                shutil.copytree(os.path.join(tmpfold, file), os.path.join(os.getcwd(), file))
+            if os.path.isfile(file):
+                os.remove(file)
+            if os.path.isfile(os.path.join(tmpfold, file)):
+                shutil.copy(os.path.join(tmpfold, file), os.path.join(os.getcwd(), file))
+        os.remove("config.ini") # this will have been created earlier
         met.AttribFile(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
         cmd.restart(force=True)
         return
 
-    import urllib.request
-
     diff = git.diff(var.GIT_LOCATION, silent=True)
 
-    rev = git.rev(var.GIT_LOCATION, silent=True)[0].decode("utf-8")
-    data = urllib.request.urlopen(con.RELEASE_POINT).read().decode("utf-8").strip().split("\n")
-    if data[0] != rev: # update ready! yay!
-        if not checker:
-            return # rev ID is different but there aren't any changess
-        if not diff:
-            new = False
-            if not fn.IsFile.cur(con.CHANGELOG):
-                new = True
+    rev = git.rev(var.GIT_LOCATION, silent=True)
+    oldhis = git.log(var.GIT_LOCATION, "HEAD^", silent=True)[0].decode("utf-8")
+
+    if checker and (not diff if not var.IGNORE_LOCAL_CHANGES else True):
+        if not var.SILENT_UPDATE:
+            log.logger("", "UPDATE_AVAIL", form=[con.PROGRAM_NAME, data[1]])
+            var.UPDATE_READY = True
+        else:
+            log.logger("", "SILENT_UPD")
+            if not var.LADMIN:
+                log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
+            git.pull(var.GIT_LOCATION, silent=True)
+            newrev = git.rev(var.GIT_LOCATION, silent=True)
+            history = git.log(var.GIT_LOCATION, rev, silent=True)
+            history.append(b"\n") # to have logs end by a newline
+            new = os.path.isfile(con.CHANGELOG)
             with open(con.CHANGELOG, "a") as f:
-                if not new:
+                if new:
                     f.write("\n\n")
                 f.write(log.get_timestamp(False, "[%Y-%m-%d] (%H:%M:%S)"))
-                f.write("Update received - Version {0}\n".format(data[1]))
-                f.write("Commit reference point: {0}\n\n".format(data[0]))
-                f.write("Changelog:\n\n" + "\n".join(data[2:]) + "\n")
-            if not var.SILENT_UPDATE:
-                log.logger("", "UPDATE_AVAIL", form=[con.PROGRAM_NAME, data[1]])
-                var.UPDATE_READY = True
-            else:
-                log.logger("", "SILENT_UPD")
-                if not var.LADMIN:
-                    log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
-                git.get(var.GIT_LOCATION, data[0], silent=True)
-                cmd.restart(force=True)
+                f.write("Update received\n\nOld version:\n")
+                f.write("\n".join((rev, oldhis, "Changelog:\n")))
+                f.write("\n".join([x.decode("utf-8") for x in history]))
+            cmd.restart(force=True)
 
     elif checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
