@@ -7,7 +7,7 @@ import datetime
 import time
 import os
 
-def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=[], formo=[], formt=[], split=True, **params):
+def logger(*output, logtype="", type="normal", display=True, write=True, checker=True, splitter="\n", form=None, formo=None, formt=None, split=True, **params):
     """Logs everything to console and/or file. Always use this."""
     output = get(output, splitter)
     timestamp = get_timestamp()
@@ -15,7 +15,7 @@ def logger(*output, logtype="", type="normal", display=True, write=True, checker
     toget = ""
     if form is None:
         form = []
-    if form and not form == list(form):
+    if form and form != list(form):
         form = [form]
     toform = list(form)
     toforml = list(form)
@@ -248,18 +248,15 @@ def translater(output, type, form, formo, formt):
     trout = newout[outlang]
     output = newout["English"]
     iter = 0
-    foring = 0
     if formo and formt:
         form = list(formo)
         forml = list(formt)
     while True:
         if "{" + str(iter) + "}" in output: # output and trout should have the same amount of formats
-            for writer in form:
+            for i, writer in enumerate(form):
                 if str(writer) == writer and writer.isupper() and hasattr(tr, writer): # to translate as well
-                    forml[foring] = getattr(tr, writer)[var.LANGUAGE]
-                    form[foring] = getattr(tr, writer)["English"]
-                foring += 1
-            foring = 0
+                    forml[i] = getattr(tr, writer)[var.LANGUAGE]
+                    form[i] = getattr(tr, writer)["English"]
             iter += 1
         else:
             trout = trout.format(*forml)
