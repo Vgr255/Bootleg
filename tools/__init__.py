@@ -351,7 +351,7 @@ def git_checking():
         met.AttribFile(os.getcwd() + "/.git", "+H", "/S /D") # sets the git folder as hidden
         git.pull(var.GIT_LOCATION, silent=True)
         cmd.clean() # cleans the folder to start anew, and takes care of the temp folder if possible
-        cmd.restart(force=True)
+        cmd.restart()
         return
 
     diff = git.diff(var.GIT_LOCATION, silent=True)
@@ -379,7 +379,7 @@ def git_checking():
                 f.write("Update received\n\nOld version:\n")
                 f.write("\n".join((rev, oldhis, "Changelog:\n")))
                 f.write("\n".join([x.decode("utf-8") for x in history]))
-            cmd.restart(force=True)
+            cmd.restart()
 
     elif checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")

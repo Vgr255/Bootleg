@@ -13,6 +13,7 @@ import webbrowser
 import subprocess
 import fnmatch
 import shutil
+import sys
 import os
 
 generator = decorators.generate(hidden=False, error=False, parse=False)
@@ -41,11 +42,12 @@ def cancel_err():
 def exit():
     var.ALLOW_RUN = False
 
-@cmd_en("restart", "res", error=True)
-@cmd_fr("redémarrer", "red", error=True)
-def restart(*args, force=False):
+@cmd_en("restart", "res", error=True, arguments=False)
+@cmd_fr("redémarrer", "red", error=True, arguments=False)
+def restart():
     var.ALLOW_RUN = False
-    args = [os.getcwd() + "/" + con.PROGRAM_NAME + ".exe", "--retry"]
+    python = sys.executable
+    args = [python, python, sys.argv[0], "--retry"]
     if var.SILENT_RUN:
         args.append("--silent")
     if var.DEV_LOG:
@@ -60,13 +62,8 @@ def restart(*args, force=False):
         args.append("--writeall")
     if var.PREVIOUS_PRESET:
         args.append("--preset " + var.PRESET)
-    if var.LADMIN:
-        subprocess.Popen(args)
-    elif "force" in args or force:
-        var.ALLOW_RUN = False
-    else:
-        var.ALLOW_RUN = True
-        var.RETRY = True
+    os.system("cls")
+    os.execl(*args)
 
 # The following commands may or may not require additional parameters
 
