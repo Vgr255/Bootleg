@@ -1,22 +1,18 @@
-﻿# Bootleg (2014) by Emanuel 'Vgr' Barry
-# The developper of this software (hereafter refered to as "The Developper")
-# allows for the use and redistribution of the present software and all its
-# associated files (hereafter refered to as "The Software") free of charge. The
-# user of the Software consents to the following if they use it in any way:
-# - The Developper is not to be help responsible for any sort of damage,
-#   physical, virtual or otherwise arising from the use of the Software.
-# - Modification and redistribution, partial or total, of the Software is
-#   allowed provided this notice is not altered in any way and the name of
-#   the Developper appears in the first line of the present file.
-# - The Developper is not entitled to anything towards any user of the Software.
-# - As well as the present notice, the user needs to acknowledge the following
-#   notice, contained in the following paragraph. Use of the present software
-#   is an implicit consent to both the current and aforementioned notices.
-
-# This software is provided "as is", in the hopes that it will be useful, but
-# without any warranty of any kind, explicit or implicit. In no event is the
-# Software Developper to be held accountable for any sort of damage, tort or
-# otherwise, arising from the use of the present Software.
+﻿# A Final Fantasy VII Mod Package and Installer
+# Copyright (C) 2014-2015 Emanuel 'Vgr' Barry
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import traceback
 
