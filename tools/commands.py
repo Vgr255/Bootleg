@@ -173,6 +173,11 @@ def do(inp, params=[]):
             done = True
             try:
                 prnt = str(eval(inp[9:-2]))
+                # eval is evil, and should be used with great care
+                # the only reason this is here is for developpers to access variables' values at runtime
+                # this is NOT user-faced, and for a good reason. this is a debugging tool
+                # if this blows up, it's on the end user. this is meant only for debugging
+                # this command does not appear to users, and should never be used by normal users
             except NameError:
                 prnt = "NOT_DEFINED"
             log.logger(prnt, type="debug", write=False, form=inp[9:-2])
