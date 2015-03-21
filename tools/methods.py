@@ -217,8 +217,7 @@ def CopyFolder(src, dst, overwrite=True):
         src = src + "\\"
     if not dst.endswith(("/", "\\")):
         dst = dst + "\\"
-    if not os.path.isdir(dst):
-        os.mkdir(dst)
+    os.makedirs(dst, exist_ok=True)
 
     for file in os.listdir(src):
         if not overwrite and os.path.exists(dst + file):
