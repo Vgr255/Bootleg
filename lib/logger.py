@@ -37,29 +37,33 @@ userbase, where there is a need to log what the program does, or even
 simply as a general logger to note down what the program did at some
 point, errors that occurred and so on.
 
-This module exposes four classes and one singleton.
+This module exposes three classes and one singleton.
 The two main classes and the singleton are described below.
 
 Logger:     Basic class to use for general logging purposes. See the
             Logger's documentation for a list and explanation of each
             argument. This class defines the following methods:
 
-            logger:     Basic logger, used for writing and printing to
+            logger:
+                        Basic logger, used for writing and printing to
                         screen based on settings defined on call,
                         defaulting to the class' default (defined when
                         instantiating).
 
-            multiple:   Small wrapper around the logger method, used to
+            multiple:
+                        Small wrapper around the logger method, used to
                         write to more than one file at a time. The
                         types given have to be an iterable, and passing
                         '*' means to write to all possible files.
 
-            show:       Small wrapper around the logger method, used
+            show:
+                        Small wrapper around the logger method, used
                         solely to not write to any file. This is a
                         shortcut of having to do write=False on many
                         calls.
 
-            docstring:  Wrapper around the logger method, used to print
+            docstring: 
+                        Wrapper around the logger method, used to print
                         documentation strings. It handles tabs and
                         spaces in a proper manner.
 
@@ -69,7 +73,8 @@ Translater: Advanced class used to translate lines matching a certain
             rules can be viewed by accessing the Translater's
             documentation itself. It defines the following methods:
 
-            translate:  A method used to translate the output using the
+            translate:
+                        A method used to translate the output using the
                         corresponding lines, and then formatting the
                         resulting output using the provided formatting
                         options. This method operates through side
@@ -78,7 +83,8 @@ Translater: Advanced class used to translate lines matching a certain
                         explanation, see the Translater class'
                         documentation.
 
-            logger:     Wrapper around the Logger's logger method,
+            logger:
+                        Wrapper around the Logger's logger method,
                         which will translate the lines using the
                         aforementioned translate method, then call
                         super().logger to do the logging operations.
@@ -95,15 +101,9 @@ NoValue:    This is the sole instance of the class with the same name.
             use the already-stored value. The Bypassers will never
             return this value.
 
-Here are the two other public classes available:
-
 The BaseLogger class can be used to make custom classes, useful for
 multiple inheritence. It defines a few private methods, that should
 only be ever used by itself or its subclasses, and not from outside.
-
-The Bypassers class is a five-item mapping, used by the Logger class
-(and, by extention, any of its subclasses). Documentation on the
-mapping can be viewed through its documentation.
 
 ------------
 
@@ -396,73 +396,97 @@ class Bypassers(Container):
 
     bypassers = Bypassers((setting, {types}, {pairs}, module, attr))
 
-    bypassers[setting]                  Access the internal mapping
+    bypassers[setting]
+                                        Access the internal mapping
 
-    del bypassers[setting]              Remove the setting's bindings
+    del bypassers[setting]
+                                        Remove the setting's bindings
 
-    str(bypassers) | repr(bypassers)    Show all the settings, types,
+    str(bypassers) | repr(bypassers)
+                                        Show all the settings, types,
                                         pairs, modules and attributes
                                         that are currently active
 
-    len(bypassers)                      Return the number of settings
+    len(bypassers)
+                                        Return the number of settings
 
-    x in bypassers                      Return True if x is a setting,
+    x in bypassers
+                                        Return True if x is a setting,
                                         False otherwise
 
-    for x in bypassers                  Iterate over all settings
+    for x in bypassers
+                                        Iterate over all settings
 
-    bool(bypassers)                     Return True if at least one 
+    bool(bypassers)
+                                        Return True if at least one 
                                         setting is bound, False
                                         otherwise
 
-    dir(bypassers)                      Return a list of all methods
+    dir(bypassers)
+                                        Return a list of all methods
 
-    bypassers.extend(iterable)          Add a new binding; need a
+    bypassers.extend(iterable)
+                                        Add a new binding; need a
                                         five-tuple
 
-    bypassers.update(iterable)          Update existing bindings with
+    bypassers.update(iterable)
+                                        Update existing bindings with
                                         five-tuples or add new bindings
 
-    bypassers.add(setting)              Add new unbound settings
+    bypassers.add(setting)
+                                        Add new unbound settings
 
-    bypassers.pop(setting)              Return the (types, pairs,
+    bypassers.pop(setting)
+                                        Return the (types, pairs,
                                         module, attr) iterable bound to
                                         the setting and remove all the
                                         setting's bindings
 
-    bypassers.popitem()                 Remove and return a random
+    bypassers.popitem()
+                                        Remove and return a random
                                         binding, five-tuple
 
-    bypassers.get(setting, fallback)    Return the (types, pairs,
+    bypassers.get(setting, fallback)
+                                        Return the (types, pairs,
                                         module, attr) iterable bound to
                                         the setting. If the setting
                                         does not exist, 'fallback' will
                                         be returned; defaults to None
 
-    bypassers.setdefault(item, fb)      Set the default fallback for
+    bypassers.setdefault(item, fb)
+                                        Set the default fallback for
                                         setting 'item' to 'fb'; this
                                         only affects .get
 
-    bypassers.count(iters)              Return the number of settings
+    bypassers.count(iters)
+                                        Return the number of settings
                                         which are set to use this
                                         (module, attr) pair
 
-    bypassers.keys()                    Return all existing settings
+    bypassers.keys()
+                                        Return all existing settings
 
-    bypassers.values()                  Return all (types, pairs,
+    bypassers.values()
+                                        Return all (types, pairs,
                                         module, attr) pairs
 
-    bypassers.items()                   Return all existing bindings
+    bypassers.items()
+                                        Return all existing bindings
 
-    bypassers.types()                   Return all types
+    bypassers.types()
+                                        Return all types
 
-    bypassers.pairs()                   Return all pairs
+    bypassers.pairs()
+                                        Return all pairs
 
-    bypassers.read()                    Return all (module, attr) pairs
+    bypassers.read()
+                                        Return all (module, attr) pairs
 
-    bypassers.copy()                    Return a deep copy
+    bypassers.copy()
+                                        Return a deep copy
 
-    bypassers.clear()                   Remove all settings and their
+    bypassers.clear()
+                                        Remove all settings and their
                                         bindings
 
     Equality testing (== and !=) can be used to compare two different
@@ -676,16 +700,19 @@ class BaseLogger:
     It is also recommended that any method defined under such classes
     follow this rule, although it is not strongly enforced.
 
-    sep:            String to be used to join the lines together.
+    sep:
+                    String to be used to join the lines together.
 
         Default:    " "
 
-    use_utc:        Boolean value to determine if the timestamps should
+    use_utc:
+                    Boolean value to determine if the timestamps should
                     use Universal Coordinated Time or the local time.
 
         Default:    False
 
-    ts_format:      Format string for timestamps. The parameters are
+    ts_format:
+                    Format string for timestamps. The parameters are
                     the same as the time module's 'strftime' function.
                     However, for the time zone name and offset, use
                     {tzname} and {tzoffset} respectively. This is done
@@ -699,6 +726,7 @@ class BaseLogger:
                     the digits being HHMM.
 
         Default:    "[%Y-%m-%-d] (%H:%M:%S UTC{tzoffset})"
+
     """
 
     def __init__(self, sep=None, use_utc=None, ts_format=None):
@@ -740,12 +768,11 @@ class BaseLogger:
             offset += str(time.timezone // 36).zfill(4)
         return tmf.format(tzname=tz, tzoffset=offset).strip().upper() + " "
 
-    def _split_lines(self, out, sep):
+    def _split_lines(self, out):
         """Split long lines at clever points."""
         col = shutil.get_terminal_size()[0]
-        out = out.strip(" ")
-        lines = out.splitlines()
-        splines = [line.split() for line in lines]
+        lines = [line.rstrip(" ") for line in out.splitlines()]
+        splines = [line.split(" ") for line in lines]
         newlines = [] # newline-separated lines
         for i, line in enumerate(lines):
             if len(line) <= col:
@@ -764,7 +791,7 @@ class BaseLogger:
                     newstr = new
             if newstr:
                 newlines.append(newstr)
-        return newlines
+        return "\n".join(newlines)
 
     def _print(self, *output, sep=None, split=True):
         """Print to screen and remove all invalid characters."""
@@ -773,29 +800,28 @@ class BaseLogger:
         output = self._get_output(output, sep)
 
         if split:
-            output = self._split_lines(output, sep)
+            output = self._split_lines(output)
 
         file = open(sys.stdout.fileno(), "w", errors="replace",
                     encoding="utf-8", closefd=False)
 
-        file.write(sep.join(output) + "\n")
+        file.write(output + "\n")
 
         file.flush()
         file.close()
 
-        return sep.join(output)
-
-    def _get_output(self, out, sep):
+    def _get_output(self, out, sep, ret_list=False):
         """Sanitize output and join iterables together."""
         out = out or [''] # called with no argument, support it anyway
-        msg = None
+        msg = [] if ret_list else None
         for line in out:
+            line = str(line)
             if msg is None:
                 msg = line
+            elif ret_list:
+                msg.append(line)
             else:
-                if line == "":
-                    line = "\n"
-                msg = msg + sep + str(line)
+                msg = sep.join((msg, line))
         return msg
 
 def check_bypass(func):
@@ -850,26 +876,30 @@ class Logger(BaseLogger):
 
     The options are the same as the base class, with these additions:
 
-    display:        Default parameter to determine if the loggers
+    display:
+                    Default parameter to determine if the loggers
                     should print to screen. This can be overriden when
                     calling the method, on a per-line basis.
 
         Default:    True
 
-    write:          Default parameter to determine if the loggers
+    write:
+                    Default parameter to determine if the loggers
                     should write to a file. This can be overriden when
                     calling the method, on a per-line basis.
 
         Default:    True
 
-    logfiles:       Dictionary of {type:file} pairs. The type is the
+    logfiles:
+                    Dictionary of {type:file} pairs. The type is the
                     logging type that the logger expects. The file is
                     the file that tells the logger to write to. This
                     can be used for dynamic file logging.
 
         Default:    {"normal": "logger.log", "all": "mixed.log"}
 
-    bypassers:      This is an iterable of (setting, types, pairs,
+    bypassers:
+                    This is an iterable of (setting, types, pairs,
                     module, attr) iterables. 'types' is an iterable of
                     all types that can match this bypasser. 'pairs' is
                     an iterable of two-tuples, the first argument is
@@ -903,7 +933,8 @@ class Logger(BaseLogger):
     default of all these settings is to not do anything, and must be
     explicitely set otherwise.
 
-    "timestamp":    Will be used to replace the standard timestamp when
+    "timestamp":
+                    Will be used to replace the standard timestamp when
                     writing to file. It will not use that value to
                     perform the timestamp getting operation. Rather, it
                     will use the string given directly. If a different
@@ -914,7 +945,8 @@ class Logger(BaseLogger):
                     pair of (None, ''), effectively removing the
                     timestamp.
 
-    "splitter":     This will be used to determine if clever splitting
+    "splitter":
+                    This will be used to determine if clever splitting
                     should occur when printing to screen. Clever
                     splitting splits the line at the latest space
                     before the line gets to the end of the terminal's
@@ -922,19 +954,22 @@ class Logger(BaseLogger):
                     changed when calling, on a per-line basis. This
                     bypasser overrides that.
 
-    "display":      This is used to override the per-line setting that
+    "display":
+                    This is used to override the per-line setting that
                     decides whether the line should be printed to the
                     screen. This is set to True by default, and can be
                     overriden when calling on a per-line basis. This
                     bypasser can be used to bypass this setting.
 
-    "write":        This is used to override the per-line setting that
+    "write":
+                    This is used to override the per-line setting that
                     decides whether the line should be written to the
                     file or not. This is set to True by default, and
                     can be overriden when calling on a per-line basis.
                     This bypasser can override that parameter.
 
-    "logall":       Defaulting to None, this setting's bypassed value
+    "logall":
+                    Defaulting to None, this setting's bypassed value
                     must be a string object, which, if the bypassing
                     occurs, will be the file to write everything to.
 
@@ -942,16 +977,19 @@ class Logger(BaseLogger):
     bound to the setting are of relevance. The pairs are ignored, and
     so are the module and attribute.
 
-    "files":        The types bound to this setting will be used to
+    "files":
+                    The types bound to this setting will be used to
                     determine when to write and not to write to certain
                     files. This is only used when using the
                     Logger.multiple method, which will write to all
                     files specified, except those bound to the types
                     of this bypasser.
 
-    "all":          The types bound to this setting will not be written
+    "all":
+                    The types bound to this setting will not be written
                     as when writing to the file defined through the
                     'logall' bypasser, if available.
+
     """
 
     def __init__(self, sep=None, use_utc=None, ts_format=None,
@@ -1003,19 +1041,20 @@ class Logger(BaseLogger):
         display = self.display if display is None else display
         write = self.write if write is None else write
 
-        output = self._get_output(output, sep)
         timestamp = self.bypassed.get("timestamp",
                     self._get_timestamp(use_utc, ts_format))
         # this is the file to write everything to
         logall = self.bypassed.get("logall")
-        output = output.splitlines()
 
         # check for settings to bypass, if applicable
         split = self.bypassed.get("splitter", split)
         display = self.bypassed.get("display", display)
         write = self.bypassed.get("write", write)
 
+        if display:
+            self._print(*output, sep=sep, split=split)
         if write:
+            output = self._get_output(output, sep).splitlines()
             alines = [x for x in self.logfiles if x in
                                  self.bypassers["all"][0]]
             getter = [file]
@@ -1029,46 +1068,37 @@ class Logger(BaseLogger):
                     for writer in output:
                         f.write(timestamp + atypes + writer + "\n")
 
-        if display:
-            return self._print(*output, sep=sep, split=split).splitlines()
-        return output
-
     def multiple(self, *output, types=None, display=None, write=None, **rest):
         """Log one or more line to multiple files."""
         if types is None:
             types = ["normal"]
 
-        if "*" in types and len(types) == 1:
+        if len(types) == 1 and types[0] == "*":
             for log in self.logfiles:
                 if log not in self.bypassers["files"][0]:
                     if display:
-                        line = self.logger(*output, type=log, display=True,
-                                            write=write, **rest)
+                        self.logger(*output, type=log, display=True,
+                                    write=write, **rest)
                         display = False # display only once
                     else:
                         self.logger(*output, type=log, display=False,
-                                     write=write, **rest)
-
-            return line
+                                    write=write, **rest)
 
         if types:
             for log in types:
                 if display:
-                    line = self.logger(*output, type=log, display=True,
-                                 write=write, **rest)
+                    self.logger(*output, type=log, display=True, write=write,
+                                **rest)
                     display = False
                 else:
-                    self.logger(*output, type=log, display=False, write=write,
-                                **rest)
+                    self.logger(*output, type=log, display=False,
+                                     write=write, **rest)
 
-            return line
-
-        return self.logger(*output, display=display, write=write, **rest)
+        self.logger(*output, display=display, write=write, **rest)
 
     def show(self, *output, type="show", display=True, write=False, **rest):
         """Explicit way to only print to screen."""
-        return self.logger(*output, type=type, display=display, write=write,
-                           **rest)
+        self.logger(*output, type=type, display=display, write=write, **rest)
 
     def docstring(self, *output, tabs=4, display=True, write=False, sep=None,
                         **rest):
@@ -1100,8 +1130,7 @@ class Logger(BaseLogger):
         while lines and not lines[0].strip():
             lines.pop(0)
 
-        return self.logger(*lines, display=display, write=write, sep=sep
-                           **rest)
+        self.logger(*lines, display=display, write=write, sep=sep, **rest)
 
 class Translater(Logger):
     """Logging class to use to translate lines.
@@ -1109,7 +1138,8 @@ class Translater(Logger):
     This is inherited from the Logger class.
     The parameters are the same as for the Logger class, plus these:
 
-    all_languages:  Dictionary of {language:short} pairs. The language
+    all_languages:
+                    Dictionary of {language:short} pairs. The language
                     is used for the standard lookup of the language.
                     The value is the 2-characters abbreviation of the
                     language. The default value is "English" for the
@@ -1119,7 +1149,8 @@ class Translater(Logger):
 
         Default:    {"English": "en"}
 
-    main:           The main language that will be used. This is
+    main:
+                    The main language that will be used. This is
                     considered the "default" language, and is the one
                     that will be used to write to the normal files. It
                     will always be written to the files, no matter what
@@ -1127,7 +1158,8 @@ class Translater(Logger):
 
         Default:    "English"
 
-    current:        The current language, used for translating and
+    current:
+                    The current language, used for translating and
                     printing to screen. When writing to one or more
                     files, the files that this language's lines are
                     written into will be prepended with the
@@ -1138,7 +1170,8 @@ class Translater(Logger):
 
         Default:    "English"
 
-    module:         The module or dictionary where the translations
+    module:
+                    The module or dictionary where the translations
                     will be looked up. This can be any arbitrary
                     object, as long as either the object has an
                     attribute corresponding to the line to translate
@@ -1155,7 +1188,8 @@ class Translater(Logger):
 
         Default:    None
 
-    modules:        If the above parameter is set to None or otherwise
+    modules:
+                    If the above parameter is set to None or otherwise
                     fails, it will use this parameter instead. It is a
                     mapping of {language:module} pairs that will be
                     used to search for each language. The keys must be
@@ -1167,7 +1201,16 @@ class Translater(Logger):
 
         Default:    None
 
-    first:          Determines which, of the line or the language, must
+    check:
+                    Boolean value that will determine if a line should
+                    be checked for translation or not. If False, the
+                    line will not be checked and will be printed or
+                    writen to the file as-is
+
+        Default:    True
+
+    first:
+                    Determines which, of the line or the language, must
                     be checked first when looking up the translations.
                     The only valid arguments are "line" and "language".
                     Using 'line', the translater will look into the
@@ -1187,7 +1230,8 @@ class Translater(Logger):
 
         Default:    "language"
 
-    pattern:        Regex pattern that determines when a line should be
+    pattern:
+                    Regex pattern that determines when a line should be
                     given to the translater for replacing. If a line
                     doesn't match, it will not be translated.
 
@@ -1261,12 +1305,16 @@ class Translater(Logger):
       the iterable should be; a list for 'format' and 'format_mod', and
       a dict for 'format_dict'; this is done to accept any object, not
       just built-in ones.
+
+    - It requires an iterable of strings to be passed in. Passing a single
+      string will not work as intended.
+
     """
 
     def __init__(self, sep=None, use_utc=None, ts_format=None, display=None,
                  write=None, logfiles=None, bypassers=None,
                  all_languages=None, main=None, current=None, module=None,
-                 modules=None, first=None, pattern=None):
+                 modules=None, check=None, first=None, pattern=None):
         """Create a new translater object."""
 
         super().__init__(sep, use_utc, ts_format, display, write,
@@ -1289,6 +1337,7 @@ class Translater(Logger):
         self.module = module
         self.modules = modules
 
+        self.check = True if check is None else check
         self.first = first or "language"
         self.pattern = pattern or "[A-Z0-9_]*"
 
@@ -1304,7 +1353,7 @@ class Translater(Logger):
 
         def enum(iterable):
             if hasattr(iterable, "items"):
-                return iterable.items()
+                return list(iterable.items())
             return enumerate(iterable)
 
         def get_line(module, other, fallback):
@@ -1355,38 +1404,37 @@ class Translater(Logger):
 
     @check_bypass
     def logger(self, *output, file=None, type=None, display=None, write=None,
-               sep=None, split=None, use_utc=None, ts_format=None,
+               sep=None, split=None, use_utc=None, ts_format=None, check=None,
                language=None, format=None, format_dict=None, format_mod=None):
         """Log a line after translating it."""
 
         sep = self.separator if sep is None else sep
 
         language = language or self.current
+        check = self.check if check is None else check
 
         format = format or ()
         format_dict = format_dict or {}
         format_mod = format_mod or ()
 
-        output = self._get_output(output, sep).split(sep)
+        output = self._get_output(output, sep, True)
 
-        trline = None
-
-        if self.bypassed.get("translate") is None and language != self.main:
+        if ("translate" not in self.bypassed and check and
+                               language != self.main):
             trout = output[:]
             self.translate(trout, language, format, format_dict, format_mod)
 
             trfile = self.all_languages[language] + "_" + file
 
-            trline = super().logger(*trout, file=trfile, type=type, sep=sep,
-                                    display=display, write=write, split=split,
-                                    use_utc=use_utc, ts_format=ts_format)
+            super().logger(*trout, file=trfile, type=type, sep=sep,
+                            display=display, write=write, split=split,
+                            use_utc=use_utc, ts_format=ts_format)
 
             display = False
 
-        self.translate(output, self.main, format, format_dict, format_mod)
+        if check:
+            self.translate(output, self.main, format, format_dict, format_mod)
 
-        line = super().logger(*output, file=file, type=type, display=display,
-                              write=write, sep=sep, split=split,
-                              use_utc=use_utc, ts_format=ts_format)
-
-        return trline if trline is not None else line
+        super().logger(*output, file=file, type=type, display=display,
+                        write=write, sep=sep, split=split,
+                        use_utc=use_utc, ts_format=ts_format)
