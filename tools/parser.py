@@ -169,3 +169,72 @@ def fmv_no_cait():
 
 def retranslated_fmv():
     ExecuteFile(fl.FMVRETRANS, "/verysilent")
+
+def field_textures():
+    if var.FIELD_TEXTURES == 0: # should probably just do that check in the caller itself
+        log.logger("PARS_SKIP_MOD_DEFAULT", format=["FIELD_TEXTURES"])
+    if var.FIELD_TEXTURES in (1, 2, 3):
+        try:
+            FindFile(fl.FACEPALMERV2)
+            log.logger("PARS_INSTALLING", format=["FACEPALMERV2"])
+            ExtractFile(fl.FACEPALMERV2, "FacePalmerV2")
+            CopyFolder(var.BOOTLEG_TEMP + "FacePalmerV2\\FacePalmer", fl.MODS_FINAL)
+            log.logger("PARS_COMPLETED", format=["FACEPALMERV2"])
+            fpdone = 1
+        except FileNotFoundError: # Use the normal one instead
+            try:
+                FindFile(fl.FACEPALMER)
+                log.logger("PARS_INSTALLING", format=["FACEPALMER"])
+                ExtractFile(fl.FACEPALMER, "FacePalmer")
+                log.logger("FP_EXTR_TEXTURES")
+                ExtractFolder(var.BOOTLEG_TEMP + "FacePalmer\\field")
+                CopyFolder(var.BOOTLEG_TEMP + "FacePalmer\\field", fl.MODS_FINAL)
+                log.logger("PARS_COMPLETED", format=["FACEPALMER"])
+                fpdone = 2
+            except FileNotFoundError:
+                try:
+                    for x in range(1, 21):
+                        FindFile(fl.FACEPALMERPART.format(str(x).zfill(2)))
+                    log.logger("PARS_INSTALLING", format=["FACEPALMERPART"])
+                    ExtractFile(fl.FACEPALMERPART.format("01"), "FacePalmerPart")
+                    CopyFolder(var.BOOTLEG_TEMP + "FacePalmerPart", fl.MODS_FINAL)
+                    log.logger("PARS_COMPLETED", format=["FACEPALMERPART"])
+                    fpdone = 3
+                except FileNotFoundError:
+                    fpdone = 0
+        if not fpdone:
+            log.logger("MIS_ALL_FP")
+
+    if var.FIELD_TEXTURES in (1, 2, 4):
+        ftdone = False
+        for num in range(1, 6):
+            try:
+                FindFile(fl.FIELDPACK.format(num))
+                log.logger("PARS_INSTALLING", format=["FIELDPACK"])
+                ExtractFile(fl.FIELDPACK.format(num), "sl1982FieldPack\\{0}".format("field" if num > 1 else ""))
+                ftdone = True
+            except FileNotFoundError:
+                CallSkipMod(fl.FIELDPACK.format(num))
+        if ftdone:
+            CopyFolder(var.BOOTLEG_TEMP + "sl1982FieldPack\\field", fl.MODS_FINAL, False) # make sure it doesn't overwrite FacePalmer
+            log.logger("PARS_COMPLETED", format=["FIELDPACK"])
+        else:
+            log.logger("SKIP_ALL_FP")
+
+    try:
+        FindFile(fl.YARLSON)
+        log.logger("PARS_INSTALLING", format=["YARLSON"])
+        ExtractFile(fl.YARLSON, "yarLson")
+    except FileNotFoundError:
+        CallSkipMod(fl.YARLSON)
+    else:
+        if var.FIELD_TEXTURES == 1:
+            log.logger("INTE_YARL")
+        else:
+            log.logger("INST_FULL_YARL")
+
+        CopyFolder(var.BOOTLEG_TEMP + "yarLson", fl.MODS_FINAL, False)
+        log.logger("PARS_COMPLETED", format=["YARLSON"])
+
+    if var.FIELD_TEXTURES in (1, 2, 3) and fpdone:
+        pass # todo
