@@ -220,12 +220,12 @@ def CopyFolder(src, dst, overwrite=True):
     os.makedirs(dst, exist_ok=True)
 
     for file in os.listdir(src):
-        if not overwrite and os.path.exists(dst + file):
+        if not overwrite and os.path.isfile(dst + file):
             continue
         if os.path.isfile(src + file):
             shutil.copy(src + file, dst + file)
         elif os.path.isdir(src + file):
-            CopyFolder(src + file, dst + file, overwrite=overwrite)
+            CopyFolder(src + file, dst + file, overwrite)
     return 0
 
 def CopyFile(path, file, new):

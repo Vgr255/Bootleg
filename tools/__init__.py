@@ -161,7 +161,7 @@ for module in (log, met, cmd):
 
 # Check for admin privileges
 
-var.LADMIN = bool(ctypes.windll.shell32.IsUserAnAdmin())
+var.LADMIN = ctypes.windll.shell32.IsUserAnAdmin()
 
 # Get processor architecture
 
@@ -188,28 +188,35 @@ if var.ON_WINDOWS:
                     var.GIT_LOCATION = path
                     break
 
-    try: # 1998 original
-        var.GAME_VERSION = 1998
-        var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(arch)
-        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
-    except OSError: # does not exist
-        try: # 2012 Square Enix store
-            var.GAME_VERSION = 2012
-            var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1".format(arch)
-            reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
-        except OSError:
-            try: # 2013 Steam
-                var.GAME_VERSION = 2013
-                var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 39140".format(arch)
-                reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
+    if not var.FFVII_PATH:
+        try: # 1998 original
+            var.GAME_VERSION = 1998
+            var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(arch)
+            winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
+        except OSError: # does not exist
+            try: # 2012 Square Enix store
+                var.GAME_VERSION = 2012
+                var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\{141B8BA9-BFFD-4635-AF64-078E31010EC3}_is1".format(arch)
+                winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
             except OSError:
-                var.GAME_VERSION = 1999
-                var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(arch)
+                try: # 2013 Steam
+                    var.GAME_VERSION = 2013
+                    var.REG_ENTRY = "SOFTWARE\\{0}Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 39140".format(arch)
+                    winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, var.REG_ENTRY)
+                except OSError:
+                    var.GAME_VERSION = 1999
+                    var.REG_ENTRY = "SOFTWARE\\{0}Square Soft, Inc.\\Final Fantasy VII".format(arch)
 
-    if var.GAME_VERSION != 1999:
-        var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
-        var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
-        var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
+        if var.GAME_VERSION != 1999:
+            var.REG_SOUND = var.REG_ENTRY + "\\1.00\\Sound"
+            var.REG_GRAPH = var.REG_ENTRY + "\\1.00\\Graphics"
+            var.REG_MIDI = var.REG_ENTRY + "\\1.00\\MIDI"
+        else:
+            var.REG_SOUND = var.REG_GRAPH = var.REG_MIDI = None
+
+    else:
+        for name in ("GAME_VERSION", "REG_ENTRY", "REG_SOUND", "REG_GRAPH", "REG_MIDI"):
+            setattr(var, name, None)
 
 # Check launch parameters
 
@@ -293,13 +300,36 @@ var.SYS_FOLDER = var.SYS_FOLDER.replace("/", "\\")
 if var.SYS_FOLDER[-1] != "\\":
     var.SYS_FOLDER += "\\"
 
+# System files
+
+if os.path.isfile(var.SYS_FOLDER + "7za.exe"):
+    var.SEVENZ_LOCATION = var.SYS_FOLDER + "7za.exe"
+else:
+    var.SEVENZ_LOCATION = getattr(var, "7ZIP")
+if os.path.isfile(var.SYS_FOLDER + "UnRAR.exe"):
+    var.RAR_LOCATION = var.SYS_FOLDER + "UnRAR.exe"
+else:
+    var.RAR_LOCATION = var.UNRAR
+if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
+    var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
+else:
+    var.ULGP_LOCATION = var.ULGP
+
+# Installation image
+
+if var.FFVII_IMAGE:
+    if not var.FFVII_IMAGE.lower().endswith((".zip", ".7z", ".rar")):
+        var.FFVII_IMAGE = None
+
 # FFVII installation
 
-if not var.FFVII_PATH:
-    var.FFVII_PATH = os.getcwd() + "/Final Fantasy VII"
-var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
-if var.FFVII_PATH[-1] != "\\":
-    var.FFVII_PATH = var.FFVII_PATH + "\\"
+if var.FFVII_PATH:
+    var.FFVII_PATH = var.FFVII_PATH.replace("/", "\\")
+    if not var.FFVII_PATH.endswith("\\"):
+        var.FFVII_PATH = var.FFVII_PATH + "\\"
+    os.makedirs(var.FFVII_PATH, exist_ok=True)
+    if not os.listdir(var.FFVII_PATH) and var.FFVII_IMAGE:
+        met.CopyFolder(met.ExtractFile(var.FFVII_IMAGE), var.FFVII_PATH)
 
 # Temporary files
 
@@ -313,21 +343,6 @@ if not os.path.isdir(var.BOOTLEG_TEMP):
 var.BOOTLEG_TEMP += get.random_string() + "\\"
 log.logger(var.BOOTLEG_TEMP, display=False, type="temp")
 os.mkdir(var.BOOTLEG_TEMP)
-
-# Installation image
-
-if var.FFVII_IMAGE:
-    if not var.FFVII_IMAGE.lower().endswith((".zip", ".7z", ".rar")):
-        var.FFVII_IMAGE = None
-
-# System files
-
-if os.path.isfile(var.SYS_FOLDER + "7za.exe"):
-    var.SEVENZ_LOCATION = var.SYS_FOLDER + "7za.exe"
-if os.path.isfile(var.SYS_FOLDER + "UnRAR.exe"):
-    var.RAR_LOCATION = var.SYS_FOLDER + "UnRAR.exe"
-if os.path.isfile(var.SYS_FOLDER + "ulgp.exe"):
-    var.ULGP_LOCATION = var.SYS_FOLDER + "ulgp.exe"
 
 # Auto-update checking via git
 
