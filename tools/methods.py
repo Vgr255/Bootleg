@@ -108,9 +108,9 @@ def ExtractFile(file, dst=None, pw=None):
         pw = "none"
 
     if type == "rar": # Rar file
-        subprocess.Popen([var.RAR_LOCATION, "x", "-y", "-p" + pw, path+file, var.BOOTLEG_TEMP + dst])
+        subprocess.Popen([var.RAR_LOCATION, "x", "-y", "-p" + pw, path+file, var.BOOTLEG_TEMP + dst]).wait()
     elif type == "zip": # Zip file
-        subprocess.Popen([var.SEVENZ_LOCATION, "x", "-p" + pw, "-y", "-o" + var.BOOTLEG_TEMP + dst, path + file])
+        subprocess.Popen([var.SEVENZ_LOCATION, "x", "-p" + pw, "-y", "-o" + var.BOOTLEG_TEMP + dst, path + file]).wait()
     else: # No type, just copy it over
         shutil.copy(path + file, var.BOOTLEG_TEMP + dst + file)
 
