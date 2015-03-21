@@ -38,9 +38,6 @@ def generate(arguments=True, **defargs):
 
             return parser
 
-        if not isinstance(generator, dict):
-            raise TypeError("generator object must be a dict")
-
         for arg, value in defargs.items():
             if not arg in secargs.keys():
                 secargs[arg] = value
@@ -50,8 +47,6 @@ def generate(arguments=True, **defargs):
     return create
 
 def delete(generator, id):
-    if not isinstance(generator, dict):
-        raise TypeError("generator object must be a dict")
     for cmd in list(generator.keys()):
         for item in list(generator[cmd]):
             if item.id == id:

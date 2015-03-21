@@ -37,7 +37,7 @@ def FindFile(seeker):
 
     raise FileNotFoundError(seeker) # Exit out if the mod could not be found
 
-def ExecuteFile(*args):
+def ExecuteFile(*args): # the docstring lies about parameters
     """ExecuteFile(file, *params)
 
     Runs an executable file located in (one of) the Mods location.
@@ -57,8 +57,7 @@ def GetFile(file):
     Splits the folder and file from a full path.
     Returns a tuple of (folder, file)."""
 
-    if file.endswith(("/", "\\")):
-        file = file[:-1]
+    file = file.replace("/", "\\").strip("\\")
     new = list(file)
     new.reverse()
     indx = len(new) + 1
@@ -294,5 +293,8 @@ def CallSkipMod(mod):
         iner = "ONE_IN"
     else:
         iner = "MULT_IN_ONE"
-    log.logger("PARS_SKIP", form=[mod, iner, "', '".join(var.MOD_LOCATION)])
+    file = getattr(fl, mod)
+    if "{0}" in file:
+        file = file.format(1) # make sure it does say *something*
+    log.logger("PARS_SKIP", format=[mod, file, iner, "', '".join(var.MOD_LOCATION)])
     return 0

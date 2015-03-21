@@ -87,7 +87,7 @@ def main():
     else:
         fn.no_such_command(command)
 
-while var.ALLOW_RUN:
+while var.ALLOW_RUN and __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:

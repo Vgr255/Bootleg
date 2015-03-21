@@ -3,10 +3,10 @@ from tools import variables as var
 from tools import parsables as par
 from tools import filenames as fl
 from tools import parser as pars
-from tools import log
 from tools import errors
 from tools import get
 from tools import reg
+from tools import log
 
 import configparser
 import tempfile
@@ -452,9 +452,9 @@ def parse_settings(preset=None):
                           " (value: " + value + " - max: " + num + ")")
             else: # not a digit
                 raise TypeError(setting + " needs to be an integer (value: " + value + ")")
-        if value.lower() in ("no", "off", "0", "false"):
+        if value.lower() in ("no", "off", "false"):
             value = False
-        if value.lower() in ("yes", "on", "1", "true"):
+        if value.lower() in ("yes", "on", "true"):
             value = True
         var.OLD_SETTINGS[setting] = getattr(var, setting)
         setattr(var, setting, value)

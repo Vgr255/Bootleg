@@ -362,8 +362,8 @@ English: "{0} will not work properly on a different operating system than Window
 }
 
 UPDATE_AVAIL = { # 0 = Program name; 1 = Version number
-English: "A {0} update is available! Version {1} available.",
-French: "Une mise à jour de {0} est disponible! Version {1} disponible.",
+English: "A {0} update is available!",
+French: "Une mise à jour de {0} est disponible!",
 }
 
 SILENT_UPD = {
