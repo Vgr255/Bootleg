@@ -159,7 +159,7 @@ def convert_se_release(): # conversion of the Square Enix Store Re-Release (Game
             shutil.move(data + "movies", var.FFVII_PATH + "movies")
             os.rename("FF7_{0}.exe".format(con.GAME_LANGUAGES[lang][0]), "FF7.exe")
             var.GAME_LANGUAGE = con.GAME_LANGUAGES[lang][4] # makes sure to set that back to 0 if it couldn't be found
-            if var.GAME_LANGUAGE is not 0: # Backup English files
+            if var.GAME_LANGUAGE != 0: # Backup English files
                 for lgp in con.TRANSLATE_CHANGER:
                     lgp = lgp.format(con.GAME_LANGUAGES["English"][1], con.GAME_LANGUAGES["English"][3], con.GAME_LANGUAGES["English"][2])
                     if os.path.isfile(var.FFVII_PATH + "data\\" + lgp + ".lgp"):

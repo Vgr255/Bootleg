@@ -71,7 +71,7 @@ def restart():
 @cmd_fr("clean", error=True, hidden=True)
 def clean(*args, keeplog=False):
     for x, y in con.LOGGERS.items():
-        if ("keeplog" in args or keeplog) and x != "temp":
+        if ("keeplog" in args[0] or keeplog) and x != "temp":
             continue
         logfile = getattr(var, y + "_FILE")
         log_ext = getattr(var, y + "_EXT")
@@ -93,14 +93,13 @@ def clean(*args, keeplog=False):
                 with open(file, "w") as ft:
                     ft.write("\n".join(notdone) + "\n")
                 continue # prevent temp file from being deleted if it fails
-        file = logfile + "." + log_ext
         if fn.IsFile.cur(file):
             os.remove(file)
         for s in con.LANGUAGES.values():
             filel = s[0] + "_" + file
             if fn.IsFile.cur(filel):
                 os.remove(filel)
-    for tree in (con.CLEAN_FOLDERS):
+    for tree in con.CLEAN_FOLDERS:
         if os.path.isdir(tree):
             shutil.rmtree(os.path.join(os.getcwd(), tree))
     folders = [os.getcwd()]
