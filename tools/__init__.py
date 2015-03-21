@@ -13,12 +13,12 @@ from lib import logger
 
 # Copy or create config file if it doesn't exist
 
-if not os.path.isfile(con.CONFIG_FILES[0]): # user did not rename their config file, let's silently copy it
-    if os.path.isfile(con.CONFIG_FILES[0] + ".example"):
-        shutil.copy(os.path.join(os.getcwd(), con.CONFIG_FILES[0] + ".example"),
-            os.path.join(os.getcwd(), con.CONFIG_FILES[0]))
+if not os.path.isfile(con.CONFIG_FILE): # user did not rename their config file, let's silently copy it
+    if os.path.isfile(con.CONFIG_FILE + ".example"):
+        shutil.copy(os.path.join(os.getcwd(), con.CONFIG_FILE + ".example"),
+            os.path.join(os.getcwd(), con.CONFIG_FILE))
     else: # if it can't use default, create a blank config
-        with open(con.CONFIG_FILES[0], "w") as new:
+        with open(con.CONFIG_FILE, "w") as new:
             new.write("# New blank config created by {0}\n".format(con.PROGRAM_NAME))
 
 # Initialize temp folders
@@ -39,7 +39,7 @@ with open(con.CONFIG_FILE) as f, open("temp/" + con.CONFIG_FILE, "x") as w:
 # Parse config into a dict
 
 cfgparser = configparser.ConfigParser()
-cfgparser.read("temp/" + con.CONFIG_FILES[0])
+cfgparser.read("temp/" + con.CONFIG_FILE)
 
 config = {}
 
