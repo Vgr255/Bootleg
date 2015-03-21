@@ -1,12 +1,12 @@
 # Decorators generator for various purposes
 # Code based on jcao219's decorator generator. Heavily modified
 
-def generate(arguments=True, **defargs):
-    def create(generator, id=-1, **secargs):
-        def decorate(*cmds, arguments=arguments, id=id, **kwargs):
+def generate(**defargs):
+    def create(generator, **secargs):
+        def decorate(*cmds, **kwargs):
             def parser(dec):
                 def fetch(*nargs, **kwnargs):
-                    if not arguments:
+                    if not kwargs["arguments"]:
                         return dec()
                     return dec(*nargs, **kwnargs)
                 alias = False
@@ -20,7 +20,6 @@ def generate(arguments=True, **defargs):
                     alias = True
                 for arg, value in kwargs.items():
                     setattr(fetch, arg, value)
-                fetch.id = id
                 fetch.__doc__ = dec.__doc__
 
                 return fetch
@@ -28,25 +27,28 @@ def generate(arguments=True, **defargs):
             if not cmds:
                 raise ValueError("no commands were specified")
 
-            for arg, value in secargs.items():
-                if not arg in kwargs.keys():
-                    kwargs[arg] = value
+            secargs["id"] = secargs.get("id")
 
-            for kw in kwargs:
-                if not kw in defargs:
-                    raise ValueError(kw)
+            for arg, value in secargs.items():
+                kwargs[arg] = kwargs.get(arg, value)
+
+            if not set(kwargs) ^ {"id"} <= set(defargs):
+                raise ValueError("arguments must be defined in default")
 
             return parser
 
+        defargs["arguments"] = defargs.get("arguments", True)
+
         for arg, value in defargs.items():
-            if not arg in secargs.keys():
-                secargs[arg] = value
+            secargs[arg] = secargs.get(arg, value)
 
         return decorate
 
     return create
 
 def delete(generator, id):
+    if id is None:
+        raise ValueError("cannot unassign permanent values")
     for cmd in list(generator.keys()):
         for item in list(generator[cmd]):
             if item.id == id:

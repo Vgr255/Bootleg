@@ -158,7 +158,7 @@ for lang in con.LANGUAGES:
 # Remove lists from decorators
 
 for decorator in con.DECORATORS:
-    for comm, lst in getattr(var, decorator).items():
+    for comm, lst in list(getattr(var, decorator).items()):
         if len(lst) == 1:
             getattr(var, decorator)[comm] = lst[0]
         else:

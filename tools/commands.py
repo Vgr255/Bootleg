@@ -20,8 +20,8 @@ generator = decorators.generate(hidden=False, error=False, parse=False)
 
 cmd_all = generator(var.COMMANDS, hidden=True)
 
-cmd_en = generator(var.COMMANDS, "English")
-cmd_fr = generator(var.COMMANDS, "French")
+cmd_en = generator(var.COMMANDS, id="English")
+cmd_fr = generator(var.COMMANDS, id="French")
 
 # This holds all the commands
 # Have arguments=False in the command definition if parameters don't matter

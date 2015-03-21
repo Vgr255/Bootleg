@@ -11,8 +11,8 @@ from tools import log
 
 generator = decorators.generate(arguments=False, command=False, topic=False, user=False)
 
-help_en = generator(var.HELPERS, "English")
-help_fr = generator(var.HELPERS, "French")
+help_en = generator(var.HELPERS, id="English")
+help_fr = generator(var.HELPERS, id="French")
 
 unhandled = "HELP_NOT_FOUND"
 
