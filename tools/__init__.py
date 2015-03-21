@@ -48,9 +48,9 @@ for setting, value in cfgparser["config"].items():
     setting = setting.replace(" ", "_").upper()
     if value == "":
         continue # no need to assign it
-    if value.lower() in ("false", "no", "off", "0"):
+    if value.lower() in ("false", "no", "off"):
         config[setting] = False
-    elif value.lower() in ("true", "yes", "on", "1"):
+    elif value.lower() in ("true", "yes", "on"):
         config[setting] = True
     else: # Fallback in case it wasn't true/false (int or string)
         config[setting] = value
