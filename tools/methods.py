@@ -4,6 +4,7 @@
 # If one of these functions return None, something unexpected happened.
 
 from tools import variables as var
+from tools import filenames as fl
 from tools import log
 
 import subprocess
@@ -60,15 +61,10 @@ def GetFile(file):
     file = file.replace("/", "\\").strip("\\")
     new = list(file)
     new.reverse()
-    indx = len(new) + 1
-    for slash in ("/", "\\"):
-        if not shash in new:
-            continue
-        if new.index(slash) < indx:
-            indx = new.index(slash)
-    if indx < len(new):
-        return file[:-indx], file[-indx:] # Full path and file name
-    return None, file # Don't raise an error, but there isn't any folder
+    if "\\" not in new:
+        return None, file # Don't raise an error, but there isn't any folder
+    indx = new.index("\\")
+    return file[:-indx], file[-indx:] # Full path and file name
 
 def GetName(file):
     """GetName(file)
@@ -120,6 +116,36 @@ def ExtractFile(file, dst=None, pw=None):
 
     log.logger("PARS_EXTR_FILE", format=[path + file], display=False)
     return var.BOOTLEG_TEMP + dst
+
+def ExtractMod(mod, dst=None, pw=None, range=None, overwrite=True):
+    """ExtractMod(mod, dst=None, pw=None, range=None, overwrite=True)
+
+    Checks for a mod's existence and installs it if it exists.
+
+    'dst' will be the final location. Defaults to the temp folder if unspecified.
+    'pw' will be fed as the password to the ExtractFile function.
+    'range' will be the range for which to check files; it's a two-tuple.
+    'overwrite' determines if it should overwrite currently existing files
+    in folders if filenames clash.
+    Returns the destination."""
+
+    file = getattr(fl, mod)
+    if dst is None:
+        dst = var.BOOTLEG_TEMP + mod
+
+    try:
+        if range is None:
+            FindFile(file)
+        else: # explicit override of the range function - yay __builtins__ :D
+            for num in __builtins__.range(*range):
+                FindFile(file.format(num))
+        log.logger("PARS_INSTALLING", format=[mod])
+        ExtractFile(file, None, pw)
+        CopyFolder(var.BOOTLEG_TEMP + file, dst, overwrite)
+        log.logger("PARS_COMPLETED", format=[mod])
+    except FileNotFoundError:
+        CallSkipMod(file)
+    return dst
 
 def ExtractFolder(path):
     """ExtractFolder(path)
@@ -255,6 +281,8 @@ def AttribFile(file, attr="-R -S -H -I", *params):
     Returns 0 if it completed successfully."""
 
     params = " ".join(params).split() # handle tuples and multispaced items
+    if isinstance(attr, (tuple, list, set)):
+        attr = " ".join(attr)
     lines = attr.split() + [file] + params
     attrib = subprocess.Popen(["C:\\Windows\\System32\\attrib.exe"] + lines)
     attrib.communicate()
