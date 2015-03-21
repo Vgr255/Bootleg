@@ -36,3 +36,16 @@ def run(params="", silent=False):
 # 2014 release is maybe possible, but doubtful
 # Also L&M-1Y yesterday. If I'm not drunk I'll know
 # what this means. Secret stuff. -Vgr
+# ***
+# UPDATE: March 21st, 2015
+# I decided to go in a wholly different direction than
+# I originall had in mind. instead of spending time
+# converting over the old code, I'll start from
+# scratch using the frame that's already been done.
+# obviously enough this wasn't released in time for 2015
+# the new logger has been added in, now time to try to
+# move forward and do this. my goal is to be able to
+# locate and handle the game, install a mod, then
+# another, and so on. many of the pre-defined
+# functions and parsers will probably be scrapped
+# time to stop being lazy and work more on this -Vgr
