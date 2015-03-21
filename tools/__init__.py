@@ -30,12 +30,11 @@ for folder in con.CLEAN_FOLDERS:
 
 # Copy existing config file to use
 
-with open(con.CONFIG_FILES[0]) as f, open("temp/" + con.CONFIG_FILES[0], "x") as w:
+with open(con.CONFIG_FILE) as f, open("temp/" + con.CONFIG_FILE, "x") as w:
     lines = f.readlines()
     if lines[0] != "[config]\n":
         w.write("[config]\n")
-    for line in lines:
-        w.write(line)
+    w.write("\n".join(lines))
 
 # Parse config into a dict
 
@@ -54,19 +53,6 @@ for setting, value in cfgparser["config"].items():
         config[setting] = True
     else: # Fallback in case it wasn't true/false (int or string)
         config[setting] = value
-
-# Check for overriding config file
-
-if os.path.isfile(con.CONFIG_FILES[1]):
-    with open(con.CONFIG_FILES[1]) as f, open("temp/" + con.CONFIG_FILES[1], "x") as w:
-        lines = f.readlines()
-        if lines[0] != "[config-override]\n":
-            w.write("[config-override]\n")
-        for line in lines:
-            w.write(line)
-
-    cfgparser.read("temp/" + con.CONFIG_FILES[1])
-    config.update(cfgparser["config-override"])
 
 # Convert settings into standalone variables
 

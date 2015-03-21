@@ -44,7 +44,7 @@ DOCFILES_EXTS = ("txt",)
 
 CLEAN_FOLDERS = ("temp",)
 
-CONFIG_FILES = ("config.ini", "cfg.ini")
+CONFIG_FILES = "config.ini"
 
 LANGUAGES = {"English": ("en", 0), "French": ("fr", 1)}
 
