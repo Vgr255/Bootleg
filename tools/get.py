@@ -2,7 +2,7 @@
 from tools import variables as var
 from tools import parsables as par
 from tools import translate as tr
-from tools import logger as log
+from tools import log
 
 import datetime
 import hashlib
@@ -63,7 +63,7 @@ def setting(inp, finder): # sets variables
         log.logger("ENTER_ONLY_NUMS")
         return 1
     if not inp:
-        log.logger("NO_USR_INP", form=[getattr(var, finder), finder], display=False)
+        log.logger("NO_USR_INP", format=[getattr(var, finder), finder], display=False)
         return 1
     inp = int(inp)
     getter = 2
@@ -71,9 +71,9 @@ def setting(inp, finder): # sets variables
         getter = con.RANGE[finder] + 1
     if inp in range(0, getter):
         setattr(var, finder, inp)
-        log.logger("SET_DEF_NO_INP_USED", form=[finder, inp], display=False)
+        log.logger("SET_DEF_NO_INP_USED", format=[finder, inp], display=False)
         return 0
-    log.logger("INT_OUTBOUNDS", "ENT_VALUE_BETWEEN", form=getter-1)
+    log.logger("INT_OUTBOUNDS", "ENT_VALUE_BETWEEN", format=[getter-1])
     return 1
 
 def pause(): # Generates a pause until the user presses a key
@@ -90,4 +90,4 @@ def preset(): # makes a preset file with current settings
     log_ext = getattr(var, con.LOGGERS["preset"] + "_EXT")
     name = random_small(12)
     os.rename("{0}/{1}.{2}".format(os.getcwd(), logfile, log_ext), "{0}/presets/{1}.{2}".format(os.getcwd(), name, log_ext))
-    log.logger("PRESET_SAVED", form=[os.getcwd(), name, log_ext])
+    log.logger("PRESET_SAVED", format=[os.getcwd(), name, log_ext])

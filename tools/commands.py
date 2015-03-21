@@ -3,11 +3,11 @@ from tools import variables as var
 from tools import functions as fn
 from tools import translate as tr
 from tools import process as pro
-from tools import logger as log
 from tools import decorators
 from tools import links
 from tools import help
 from tools import git
+from tools import log
 
 import webbrowser
 import subprocess
@@ -128,11 +128,11 @@ def helper(inp, params=[]):
     else:
         help.get_help(params[0])
         return
-    formatter = params[1:]
-    if helping == tuple(helping):
-        formatter = list(helping[1:])
+    format = params[1:]
+    if isinstance(helping, tuple):
+        format = list(helping[1:])
         helping = helping[0]
-    log.help("", helping, type=type, form=formatter)
+    log.show("", helping, type=type, format=format)
 
 @cmd_en("copy", hidden=True)
 @cmd_fr("copy", hidden=True)
@@ -180,10 +180,10 @@ def do(inp, params=[]):
                 # this command does not appear to users, and should never be used by normal users
             except NameError:
                 prnt = "NOT_DEFINED"
-            log.logger(prnt, type="debug", write=False, form=inp[9:-2])
+            log.logger(prnt, type="debug", write=False, format=[inp[9:-2]])
         elif inp == "do call help; get help;":
             done = True
-            log.help("",
+            log.show("",
                      "Developper commands:",
                      "",
                      "'do call python3; exec(\"command\");'",
@@ -304,7 +304,7 @@ def read(inp, params=[]):
                     lister = True
             file = open(reader, "r")
             jumper = True if digits else False
-            log.help("")
+            log.show("")
             for line in file.readlines():
                 line = line.replace("\n", "")
                 if digits:
@@ -337,15 +337,15 @@ def read(inp, params=[]):
                         sections.append(line[2:].replace(":", " "))
                     continue
                 if not jumper and not lister:
-                    log.help(line)
+                    log.show(line)
                     continue
             if sections:
-                log.help(sections)
+                log.show(sections)
             file.close()
         else:
-            log.help("ERR_DOC_NOT_FOUND", form=params[0])
+            log.show("ERR_DOC_NOT_FOUND", format=[params[0]])
     else:
-        log.help("HELP_READ_CMD")
+        log.show("HELP_READ_CMD")
 
 @cmd_en("get", hidden=True)
 @cmd_fr("get", hidden=True)
@@ -376,14 +376,14 @@ def view_docstring(inp, params=[]):
                     for call in func:
                         if call.__doc__:
                             if gotten:
-                                log.help("", "- "*39 + "-", "")
-                            log.help("", str(call), "", split=False)
-                            log.doc(call.__doc__)
+                                log.show("", "- "*39 + "-", "")
+                            log.show("", str(call), "", split=False)
+                            log.docstring(call.__doc__)
                             gotten = True
                     break
             else:
-                log.help("", "COMM_NOT_EXIST", form=params[num])
+                log.show("", "COMM_NOT_EXIST", format=[params[num]])
         if not gotten:
-            log.help("", "NO_DOC_AVAIL")
+            log.show("", "NO_DOC_AVAIL")
     else:
-        log.help("PLEASE_ENT_CMD")
+        log.show("PLEASE_ENT_CMD")

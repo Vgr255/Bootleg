@@ -4,7 +4,7 @@
 # If one of these functions return None, something unexpected happened.
 
 from tools import variables as var
-from tools import logger as log
+from tools import log
 
 import subprocess
 import shutil
@@ -46,7 +46,7 @@ def ExecuteFile(*args):
     folder, file = FindFile(args[0])
     params = args[1:]
 
-    log.logger("PARS_EXEC_FILE", form=[file, folder[:-1], params], display=False)
+    log.logger("PARS_EXEC_FILE", format=[file, folder[:-1], params], display=False)
     process = subprocess.Popen([folder + file] + list(params))
     process.communicate()
     return process.returncode
@@ -119,7 +119,7 @@ def ExtractFile(file, dst=None, pw=None):
     else: # No type, just copy it over
         shutil.copy(path + file, var.BOOTLEG_TEMP + dst + file)
 
-    log.logger("PARS_EXTR_FILE", form=[path + file], display=False)
+    log.logger("PARS_EXTR_FILE", format=[path + file], display=False)
     return var.BOOTLEG_TEMP + dst
 
 def ExtractFolder(path):

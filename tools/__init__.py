@@ -7,7 +7,9 @@ import os
 
 from tools import constants as con
 from tools import variables as var
-from tools import logger as log
+from tools import translate
+
+from lib import logger
 
 # Copy or create config file if it doesn't exist
 
@@ -95,10 +97,26 @@ if var.LANGUAGE is not None:
 if var.LANGUAGE is None:
     var.LANGUAGE = "English"
 
+# Prepare the logger
+
+LOGGERS = {type: getattr(var, file + "_FILE") + "." + getattr(var, file + "_EXT") for type, file in con.LOGGERS.items()}
+
+log = logger.Translater("\n", False, None, True, True, LOGGERS,
+    (("timestamp", set(con.IGNORE_TIMESTAMP), set(), None, ""),
+     ("splitter", set(con.IGNORE_SPLITTER), set(), None, False),
+     ("display", set(), {(var, "DEBUG_MODE"), (var, "DISPLAY_EVERYTHING")}, None, True),
+     ("write", set(), {(var, "DEBUG_MODE"), (var, "DEV_LOG"), (var, "WRITE_EVERYTHING")}, None, True),
+     ("logall", set(), {(var, "LOG_EVERYTHING"), (var, "DEV_LOG")}, LOGGERS, "all"),
+     ("files", set(con.IGNORE_ALL), set(), None, None),
+     ("all", set(con.IGNORE_MIXED), set(), None, None),
+     ("translate", set(con.IGNORE_TRANSLATE), set(), None, None)),
+    {lang: short[0] for lang, short in con.LANGUAGES.items()}, "English", var.LANGUAGE,
+    translate, None, True, "line", "[A-Z0-9_]*")
+
 # Warn about the time the initialization may take
 # Generating decorators takes a long time
 
-log.help("GENERATING_DECORATORS")
+log.show("GENERATING_DECORATORS")
 
 # Define the errors
 
@@ -334,7 +352,7 @@ def git_checking():
         tmpfold = tempfile.gettempdir() + "\\" + get.random_string()
         log.logger("", "CREATING_REPO", "FIRST_SETUP_WAIT", form=[os.getcwd(), con.PROGRAM_NAME])
         if not var.LADMIN:
-            log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
+            log.logger("REST_AFT_UPD", format=[con.PROGRAM_NAME])
         log.logger(tmpfold, type="temp", display=False)
         git.clone([var.GIT_LOCATION, "clone", con.PROCESS_CODE + ".git", tmpfold], silent=True)
         for folder in os.listdir(os.getcwd()):
@@ -361,12 +379,12 @@ def git_checking():
 
     if checker and (not diff if not var.IGNORE_LOCAL_CHANGES else True):
         if not var.SILENT_UPDATE:
-            log.logger("", "UPDATE_AVAIL", form=[con.PROGRAM_NAME, data[1]])
+            log.logger("", "UPDATE_AVAIL", format=[con.PROGRAM_NAME])
             var.UPDATE_READY = True
         else:
             log.logger("", "SILENT_UPD")
             if not var.LADMIN:
-                log.logger("REST_AFT_UPD", form=con.PROGRAM_NAME)
+                log.logger("REST_AFT_UPD", format=[con.PROGRAM_NAME])
             git.pull(var.GIT_LOCATION, silent=True)
             newrev = git.rev(var.GIT_LOCATION, silent=True)
             history = git.log(var.GIT_LOCATION, rev, silent=True)
@@ -375,7 +393,7 @@ def git_checking():
             with open(con.CHANGELOG, "a") as f:
                 if new:
                     f.write("\n\n")
-                f.write(log.get_timestamp(False, "[%Y-%m-%d] (%H:%M:%S)"))
+                f.write(log._get_timestamp(False, "[%Y-%m-%d] (%H:%M:%S)"))
                 f.write("Update received\n\nOld version:\n")
                 f.write("\n".join((rev, oldhis, "Changelog:\n")))
                 f.write("\n".join([x.decode("utf-8") for x in history]))
@@ -383,8 +401,7 @@ def git_checking():
 
     elif checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
-        line = git.diff_get(var.GIT_LOCATION, silent=True)
-        log.logger(line, type="debug")
+        log.logger("\n".join(diff), type="debug")
         get.pause()
 
 if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
@@ -392,7 +409,7 @@ if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
 # Warn if not ran as admin
 
 if not var.LADMIN and not var.IGNORE_NON_ADMIN:
-    log.logger("", "WARN_NOT_RUN_ADMIN", "RUN_BOOT_ELEVATED", form=[con.PROGRAM_NAME, con.PROGRAM_NAME], display=var.ALLOW_RUN)
+    log.logger("", "WARN_NOT_RUN_ADMIN", "RUN_BOOT_ELEVATED", format=[con.PROGRAM_NAME, con.PROGRAM_NAME], display=var.ALLOW_RUN)
     get.pause()
 
 if var.GET_HELP:

@@ -6,8 +6,8 @@
 
 from tools import variables as var
 from tools import constants as con
-from tools import logger as log
 from tools import decorators
+from tools import log
 
 generator = decorators.generate(arguments=False, command=False, topic=False, user=False)
 
@@ -21,48 +21,48 @@ def get_help(helping=""):
     poshelp = [x for x in topics if topics[x].topic and not x in topics[x].aliases]
     poshelp.sort()
     helping = helping.lower()
-    log.help("", "HELP_FILE_BOOT_CONF", form=con.PROGRAM_NAME)
-    log.help("HELP_FILE_NEW_HELP", "\n")
+    log.show("", "HELP_FILE_BOOT_CONF", format=[con.PROGRAM_NAME])
+    log.show("HELP_FILE_NEW_HELP", "\n")
     if helping:
-        log.help("HELP_NOT_VALID_HELP", form=helping)
+        log.show("HELP_NOT_VALID_HELP", format=[helping])
         if var.HELPERS:
-            log.help("HELP_POSSIBLE_HELP", form=[", ".join(poshelp)])
-            log.help("HELP_USE_ITEM_SPEC")
+            log.show("HELP_POSSIBLE_HELP", format=[", ".join(poshelp)])
+            log.show("HELP_USE_ITEM_SPEC")
             return False
     elif not helping:
         if con.CURRENT_RELEASE:
-            log.help("HELP_BOOT_CUR_REL", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
+            log.show("HELP_BOOT_CUR_REL", format=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
         if con.RELEASE_INFO and con.BUILD_INFO and con.VERSION_INFO:
-            log.help(con.BUILD_INFO, con.VERSION_INFO, con.RELEASE_INFO, splitter=" ")
+            log.show(con.BUILD_INFO, con.VERSION_INFO, con.RELEASE_INFO, sep=" ")
         if con.FIRST_DEV:
-            log.help("HELP_FIRST_DEV", form=[", ".join(con.FIRST_DEV), "PLURAL" if len(con.FIRST_DEV) > 1 else ""])
+            log.show("HELP_FIRST_DEV", format=[", ".join(con.FIRST_DEV), "PLURAL" if len(con.FIRST_DEV) > 1 else ""])
         if con.USER_HELP:
-            log.help("HELP_USER_HELPING", form=["PLURAL" if len(con.USER_HELP) > 1 else "", ", ".join(con.USER_HELP)])
+            log.show("HELP_USER_HELPING", format=["PLURAL" if len(con.USER_HELP) > 1 else "", ", ".join(con.USER_HELP)])
         if con.CODERS:
-            log.help("HELP_CODERS", form=["PLURAL" if len(con.CODERS) > 1 else "", ", ".join(con.CODERS)])
+            log.show("HELP_CODERS", format=["PLURAL" if len(con.CODERS) > 1 else "", ", ".join(con.CODERS)])
             if con.GUI_CODERS:
-                log.help("HELP_GUI_CODERS", form=", ".join(con.GUI_CODERS))
+                log.show("HELP_GUI_CODERS", format=[", ".join(con.GUI_CODERS)])
             if con.PROCESS_CODERS:
-                log.help("HELP_PROCESS_CODERS", form=[", ".join(con.PROCESS_CODERS), con.PROGRAM_NAME])
+                log.show("HELP_PROCESS_CODERS", format=[", ".join(con.PROCESS_CODERS), con.PROGRAM_NAME])
         if con.BETA_TESTERS:
-            log.help("HELP_BETA_TESTERS", form=["PLURAL" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)])
+            log.show("HELP_BETA_TESTERS", format=["PLURAL" if len(con.BETA_TESTERS) > 1 else "", ", ".join(con.BETA_TESTERS)])
         if con.TRANSLATORS:
-            log.help("HELP_TRANSLATORS", form=["PLURAL" if len(con.TRANSLATORS) > 1 else "", ", ".join(con.TRANSLATORS)])
+            log.show("HELP_TRANSLATORS", format=["PLURAL" if len(con.TRANSLATORS) > 1 else "", ", ".join(con.TRANSLATORS)])
             if con.FRENCH_TRANSLATORS:
-                log.help("HELP_FRENCH_TRANSLATORS", form=["PLURAL" if len(con.FRENCH_TRANSLATORS) > 1 else "", ", ".join(con.FRENCH_TRANSLATORS)])
+                log.show("HELP_FRENCH_TRANSLATORS", format=["PLURAL" if len(con.FRENCH_TRANSLATORS) > 1 else "", ", ".join(con.FRENCH_TRANSLATORS)])
         if con.OTHER_SUPPORT:
-            log.help("HELP_OTHER_SUPPORT", form=[con.PROGRAM_NAME, ", ".join(con.OTHER_SUPPORT)])
+            log.show("HELP_OTHER_SUPPORT", format=[con.PROGRAM_NAME, ", ".join(con.OTHER_SUPPORT)])
         if con.SPECIAL_THANKS:
-            log.help("HELP_SPECIAL_THANKS", form=", ".join(con.SPECIAL_THANKS))
+            log.show("HELP_SPECIAL_THANKS", format=[", ".join(con.SPECIAL_THANKS)])
         if con.EXT_HELP:
-            log.help("HELP_EXT_HELP", form=["PLURAL" if len(con.EXT_HELP) > 1 else "", ", ".join(con.EXT_HELP)])
+            log.show("HELP_EXT_HELP", format=["PLURAL" if len(con.EXT_HELP) > 1 else "", ", ".join(con.EXT_HELP)])
         if con.EMAIL:
-            log.help("HELP_EMAIL", form=[con.EMAIL, con.PROGRAM_NAME])
+            log.show("HELP_EMAIL", format=[con.EMAIL, con.PROGRAM_NAME])
         if con.DEVELOPERS:
-            log.help("", "HELP_DEVELOPERS", form=["PLURAL" if len(con.DEVELOPERS) > 1 else "", ", ".join(con.DEVELOPERS)])
-        log.help("", "HELP_POSSIBLE_HELP", "HELP_VIEW_SPEC_TOP", form=[", ".join(poshelp)])
-        log.help("HELP_VIEW_SPEC_USR")
-        log.help("HELP_VIEW_SPEC_CMD")
+            log.show("", "HELP_DEVELOPERS", format=["PLURAL" if len(con.DEVELOPERS) > 1 else "", ", ".join(con.DEVELOPERS)])
+        log.show("", "HELP_POSSIBLE_HELP", "HELP_VIEW_SPEC_TOP", format=[", ".join(poshelp)])
+        log.show("HELP_VIEW_SPEC_USR")
+        log.show("HELP_VIEW_SPEC_CMD")
         return False
     return True
 

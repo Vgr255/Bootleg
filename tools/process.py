@@ -2,8 +2,8 @@
 from tools import variables as var
 from tools import functions as fn
 from tools import filenames as fl
-from tools import logger as log
 from tools import parser
+from tools import log
 
 def run(params="", silent=False):
     pass # last thing to do, see below

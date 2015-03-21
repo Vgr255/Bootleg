@@ -5,7 +5,7 @@ try:
     from tools import variables as var
     from tools import functions as fn
     from tools import commands as cmd
-    from tools import logger as log
+    from tools import log
     from tools import get
     from tools import git
 except:
@@ -17,7 +17,7 @@ def main():
     if not var.INITIALIZED or var.RETRY:
         fn.initialize()
     if var.ERROR:
-        log.help("RES_RET", form=con.PROGRAM_NAME)
+        log.show("RES_RET", format=[con.PROGRAM_NAME])
     if var.FATAL_ERROR or var.SYS_ERROR:
         fn.end_bootleg_early()
         return
@@ -32,19 +32,19 @@ def main():
     if var.DEBUG_MODE or var.SHOW_HIDDEN_COMMANDS:
         commands.extend(hidcomms)
     totype = "ENT_CMD"
-    formatter = []
+    format = None
     if var.PARSING:
         totype = "ENT_CHC"
     if var.NEED_RESTART or var.SILENT_RUN or var.REINSTALL or var.UNINSTALL:
         totype = ""
     if var.UPDATE_READY:
         totype = "ENT_UPD"
-        formatter = ["YES", "NO"]
+        format = ["YES", "NO"]
     if totype == "ENT_CMD":
         commands.sort()
-        log.help("", "AVAIL_CMD", form=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
+        log.show("", "AVAIL_CMD", format=[", ".join(commands), "" if len(commands) == 1 else "PLURAL"])
     if totype:
-        log.help("\n", totype, "", form=formatter)
+        log.show("\n", totype, "\n", format=format)
     else: # nothing to print, either restarting after Git or silently running
         if var.SILENT_RUN:
             cmd.run("silent")
@@ -57,13 +57,13 @@ def main():
             cmd.restart()
         return
     inp = input(con.INPUT_PREFIX).strip()
-    log.logger(con.INPUT_PREFIX, inp, type="input", display=False, splitter="", checker=False)
+    log.logger(con.INPUT_PREFIX, inp, type="input", display=False, sep="", check=False)
     if var.PARSING:
         fn.parser(inp)
         return
     if var.UPDATE_READY:
         if get.bool(inp) is None:
-            log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
+            log.logger("ERR_INVALID_BOOL", format=["YES", "NO"])
             return
         if get.bool(inp):
             log.logger("", "WAIT_UPD", "")
@@ -71,17 +71,17 @@ def main():
                 log.logger("SUCCESS_UPD", "REST_FOR_CHG")
                 var.NEED_RESTART = True
             else:
-                log.logger("FAILED_UPD", "DIS_AUTO_UPD", form=con.PROGRAM_NAME)
+                log.logger("FAILED_UPD", "DIS_AUTO_UPD", format=[con.PROGRAM_NAME])
         var.UPDATE_READY = False
         return
     inp1 = inp.lower().split()
     if not inp:
-        log.help("NO_CMD_ENT")
+        log.show("NO_CMD_ENT")
         return
     command = inp1[0]
     params = inp1[1:]
     if var.ERROR and not command in errcomm_:
-        log.help("NEED_RR")
+        log.show("NEED_RR")
     elif command in comm:
         comm[command](inp, params)
     else:
@@ -105,5 +105,5 @@ while var.ALLOW_RUN:
         logfile = getattr(var, logname + "_FILE")
         log_ext = getattr(var, logname + "_EXT")
         if not var.DISPLAY_TRACEBACK:
-            log.logger("", "ERR_TO_REPORT", "PROVIDE_TRACE", form=[logfile, log_ext], type="error", write=False)
+            log.logger("", "ERR_TO_REPORT", "PROVIDE_TRACE", format=[logfile, log_ext], type="error", write=False)
         var.ERROR = True

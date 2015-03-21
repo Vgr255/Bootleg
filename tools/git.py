@@ -3,7 +3,7 @@
 
 from tools import constants as con
 from tools import variables as var
-from tools import logger as _log
+from tools import log as _log
 import subprocess
 
 def parse(args, name):
@@ -69,7 +69,7 @@ def do(args, silent=False, quiet=False, needout=False):
 
     lines = []
     for line in (out + err).splitlines():
-        _log.logger(line.decode('utf-8'), type="git", display=not silent, write=var.ALLOW_RUN, checker=False) # Make sure it doesn't write anything if it stops running to prevent orphan log file
+        _log.logger(line.decode('utf-8'), type="git", display=not silent, write=var.ALLOW_RUN, check=False) # Make sure it doesn't write anything if it stops running to prevent orphan log file
         lines.append(line)
     if not (out + err):
         return False
@@ -83,7 +83,7 @@ def do(args, silent=False, quiet=False, needout=False):
             cause = 'STATUS'
 
         if not quiet:
-            _log.logger("PROCESS_EXITED", form=[args[0], cause, abs(ret)])
+            _log.logger("PROCESS_EXITED", format=[args[0], cause, abs(ret)])
     else:
         return True
     return ret

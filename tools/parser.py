@@ -1,6 +1,6 @@
 ﻿from tools import variables as var
 from tools import filenames as fl
-from tools import logger as log
+from tools import log
 
 import subprocess
 import shutil
@@ -28,9 +28,9 @@ def romeo_mat():
 def hardcore_gjoerulv():
     ExtractFile(fl.HARDCORE)
 
-    log.help("SET_LOCATION", "'{0}data'".format(var.FFVII_PATH), "")
+    log.show("SET_LOCATION", "'{0}data'".format(var.FFVII_PATH), "")
     if var.GAME_VERSION in (2012, 2013):
-        log.help("PICK_1997_" + str(var.GAME_VERSION))
+        log.show("PICK_1997_" + str(var.GAME_VERSION))
 
     shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Patch102\\ff7.exe", var.FFVII_PATH + "ff7.exe")
 
@@ -68,9 +68,9 @@ def movies():
         FindFile(getattr(fl, "FMVRES" + str(num)))
 
     # All the files do exist
-    log.logger("PARS_INSTALLING", form="FMVRES")
-    ExecuteFile(fl.FMVRES0, "/verysilent")
-    log.logger("PARS_COMPLETED", form="FMVRES")
+    log.logger("PARS_INSTALLING", format=["FMVRES"])
+    ExecuteFile(fl.FMVRES, "/verysilent")
+    log.logger("PARS_COMPLETED", format=["FMVRES"])
 
     if var.MOVIES == 1: # DLPB's HQ videos
         return
@@ -91,19 +91,19 @@ def movies():
                 CallSkipMod(fl.ENHANCEDMOVIES.format(part)) # We want to go on and install the rest
 
         if file:
-            log.logger("PARS_INST", form="ENHANCED_MOVIES" + str(part))
+            log.logger("PARS_INSTALLING", format=["ENHANCED_MOVIES" + str(part)])
             ExtractFile(file, "EnhancedMovies")
 
     try: # Eidos Logo
-        log.logger("PARS_INSTALLING", form="LOGO")
         logo, folder = FindFile(fl.LOGO)
+        log.logger("PARS_INSTALLING", format=["LOGO"])
         shutil.copy(folder + logo, var.FFVII_PATH + "movies\\eidoslogo.avi")
-        log.logger("PARS_COMPLETED", form="LOGO")
+        log.logger("PARS_COMPLETED", format=["LOGO"])
     except FileNotFoundError:
         CallSkipMod(fl.LOGO)
 
     if var.MOVIES in (3, 9): # Grimmy's movies
-        log.logger("PARS_INSTALLING", form="GRIMMY_MOVIES")
+        log.logger("PARS_INSTALLING", format=["GRIMMY_MOVIES"])
         for num in range(1, 8):
             try:
                 ExtractFile(getattr(fl, "GRIMMY" + str(num)), "GrimmyMovies")
@@ -112,6 +112,7 @@ def movies():
         if os.path.isdir(var.BOOTLEG_TEMP + "GrimmyMovies"):
             StripFolder(var.BOOTLEG_TEMP + "GrimmyMovies")
             CopyFolder(var.BOOTLEG_TEMP + "GrimmyMovies", var.FFVII_PATH + "movies")
+        log.logger("PARS_COMPLETED", format=["GRIMMY_MOVIES"])
 
     if var.MOVIES == 4: # Rumbah's movies
         try:
@@ -132,11 +133,11 @@ def movies():
                 CallSkipMod(fl.LEONHARTMOVIES)
                 exists = False
                 break
-        if exists:
-            log.logger("PARS_INSTALLING", form="LEONHART_MOVIES")
-            ExtractFile(fl.LEONHARTMOVIES.format(1), "LeonhartMovies")
+        else:
+            log.logger("PARS_INSTALLING", format=["LEONHART_MOVIES"])
+            ExtractFile(fl.LEONHART_MOVIES.format(1), "LeonhartMovies")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartMovies", var.FFVII_PATH + "movies")
-            log.logger("PARS_COMPLETED", form="LEONHART_MOVIES")
+            log.logger("PARS_COMPLETED", format=["LEONHART_MOVIES"])
 
     if var.MOVIES == 10: # Enhanced with Leonhart7413 HD Alternate
         try:
@@ -150,30 +151,30 @@ def movies():
 
         try:
             for num in range(1, 4):
-                FindFile(fl.LEONHARTLOGO.format(num))
-            log.logger("PARS_INSTALLING", form="LEONHART_LOGO")
-            ExtractFile(fl.LEONHARTLOGO.format(1), "LeonhartLogo")
+                FindFile(fl.LEONHART_LOGO.format(num))
+            log.logger("PARS_INSTALLING", format=["LEONHART_LOGO"])
+            ExtractFile(fl.LEONHART_LOGO.format(1), "LeonhartLogo")
             CopyFolder(var.BOOTLEG_TEMP + "LeonhartLogo", var.FFVII_PATH + "movies")
-            log.logger("PARS_COMPLETED", form="LEONHART_LOGO")
+            log.logger("PARS_COMPLETED", format=["LEONHART_LOGO"])
         except FileNotFoundError:
             CallSkipMod(fl.LEONHARTLOGO)
 
     if var.MOVIES == 11: # Bootlegged reworked with PH03N1XFURY
         try:
-            FindFile(fl.FMVSFMV)
-            log.logger("PARS_INSTALLING", form="FURY_FMVS")
-            ExtractFile(fl.FMVSFMV, "FuryFMVs")
+            FindFile(fl.FURY_FMVS)
+            log.logger("PARS_INSTALLING", format=["FURY_FMVS"])
+            ExtractFile(fl.FURY_FMVS, "FuryFMVs")
             CopyFolder(var.BOOTLEG_TEMP + "FuryFMVs", var.FFVII_PATH + "movies")
-            log.logger("PARS_COMPLETED", form="FURY_FMVS")
+            log.logger("PARS_COMPLETED", format=["FURY_FMVS"])
         except FileNotFoundError:
             CallSkipMod(fl.FMVSFMV)
 
         try:
-            FindFile(fl.FUNERALFMV)
-            log.logger("PARS_INSTALLING", form="FUNERAL_FMVS")
-            ExtractFile(fl.FUNERALFMV, "FuneralFMV")
+            FindFile(fl.FUNERAL_FMVS)
+            log.logger("PARS_INSTALLING", format=["FUNERAL_FMVS"])
+            ExtractFile(fl.FUNERAL_FMVS, "FuneralFMV")
             CopyFolder(var.BOOTLEG_TEMP + "FuneralFMV", var.FFVII_PATH + "movies")
-            log.logger("PARS_COMPLETED", form="FUNERAL_FMVS")
+            log.logger("PARS_COMPLETED", format=["FUNERAL_FMVS"])
         except FileNotFoundError:
             CallSkipMod(fl.FUNERALFMV)
 

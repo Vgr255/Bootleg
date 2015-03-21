@@ -3,7 +3,7 @@ from tools import variables as var
 from tools import parsables as par
 from tools import filenames as fl
 from tools import parser as pars
-from tools import logger as log
+from tools import log
 from tools import errors
 from tools import get
 from tools import reg
@@ -22,13 +22,13 @@ def initialize(): # initialize variables on startup and/or retry
     begin = "BEGIN_BOOT"
     if var.RETRY:
         begin = "RESTART_BOOT"
-    log.multiple(begin, form=[con.PROGRAM_NAME], types=["all"], display=False)
+    log.multiple(begin, format=[con.PROGRAM_NAME], types="*", display=False)
     var.INITIALIZED = True
     var.RETRY = False
-    log.logger("LNCH_PAR", form=", ".join(["=".join(x) for x in var.LAUNCH_PARAMS]), type="debug", display=False)
-    log.logger("RUN_LANG", form=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
-    log.logger("RUN_OS", form=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
-    log.multiple("Python", sys.version, display=False, splitter=" ", types=["normal", "debug"])
+    log.logger("LNCH_PAR", format=[", ".join("=".join(x) for x in var.LAUNCH_PARAMS)], type="debug", display=False)
+    log.logger("RUN_LANG", format=[var.LANGUAGE.upper(), con.PROGRAM_NAME], display=False)
+    log.logger("RUN_OS", format=[var.ARCHITECTURE, con.PROGRAM_NAME, str(var.ON_WINDOWS).upper()], display=False)
+    log.multiple("Python", sys.version, display=False, sep=" ", types=["normal", "debug"])
     var.FATAL_ERROR = []
     var.SYS_ERROR = []
     var.PARSING = None
@@ -36,14 +36,14 @@ def initialize(): # initialize variables on startup and/or retry
     var.ERROR = False
 
     os.system("cls") # clear the screen off everything.
-    log.help("\n".join(con.BOOT_ASCII1))
-    log.help("BOOT_ARCH", form=[var.ARCHITECTURE])
-    log.help(con.BOOT_ASCII2)
-    log.help("BOOT_STARTUP", form=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
-    log.help("\n".join(con.BOOT_ASCII3))
+    log.show("\n".join(con.BOOT_ASCII1))
+    log.show("BOOT_ARCH", format=[var.ARCHITECTURE])
+    log.show(con.BOOT_ASCII2)
+    log.show("BOOT_STARTUP", format=[con.CURRENT_RELEASE, con.PROGRAM_NAME])
+    log.show("\n".join(con.BOOT_ASCII3))
 
     if not var.ON_WINDOWS:
-        log.logger("", "NOT_ON_WINDOWS", form=[con.PROGRAM_NAME], type="error")
+        log.logger("", "NOT_ON_WINDOWS", format=[con.PROGRAM_NAME], type="error")
 
 class IsFile:
     def cur(inp):
@@ -67,12 +67,12 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
         usr_set.append(prefix + getattr(var, setting))
     log.logger(usr_set, display=False, type="settings")
     log.logger("SYST_PATHS", display=False)
-    log.logger("DEST_LOCT", form=[var.FFVII_PATH], display=False)
+    log.logger("DEST_LOCT", format=[var.FFVII_PATH], display=False)
     if var.FFVII_IMAGE:
-        log.logger("INST_IMG", form=[var.FFVII_IMAGE], display=False)
-    log.logger("MOD_LOCT", form=[var.MOD_LOCATION])
-    log.logger("TMP_FILES", form=[var.BOOTLEG_TEMP])
-    log.logger("", "BOOT_INIT", form=[con.PROGRAM_NAME])
+        log.logger("INST_IMG", format=[var.FFVII_IMAGE], display=False)
+    log.logger("MOD_LOCT", format=[var.MOD_LOCATION])
+    log.logger("TMP_FILES", format=[var.BOOTLEG_TEMP])
+    log.logger("", "BOOT_INIT", format=[con.PROGRAM_NAME])
     for p in con.ADD_PROG_NAME:
         if hasattr(fl, p):
             setattr(fl, p, getattr(fl, p).format(con.PROGRAM_NAME))
@@ -110,7 +110,7 @@ def make_new_bootleg(): # to call after every setting is set, before starting to
 
 def chk_game_language(inp=None):
     if var.LANGUAGE and not inp:
-        log.help("INST_LANG", form=[var.LANGUAGE.upper(), "YES", "NO"])
+        log.show("INST_LANG", format=[var.LANGUAGE.upper(), "YES", "NO"])
         var.PARSING = "Language"
     elif inp:
         if var.LANGUAGE:
@@ -119,10 +119,10 @@ def chk_game_language(inp=None):
                 var.PARSING = None
                 return
             elif get.bool(inp) == 0:
-                log.help("TYPE_LANG")
+                log.show("TYPE_LANG")
                 return
             else:
-                log.logger("ERR_INVALID_BOOL", form=["YES", "NO"])
+                log.logger("ERR_INVALID_BOOL", format=["YES", "NO"])
                 return
         for lang, short in con.GAME_LANGUAGES.items():
             if lang.lower() == inp.lower():
@@ -135,7 +135,7 @@ def chk_game_language(inp=None):
                 var.GAME_LANGUAGE = int(inp)
     elif inp is None: # first check
         var.PARSING = "Language"
-        log.help("TYPE_LANG")
+        log.show("TYPE_LANG")
     else: # empty input
         pass # for now, maybe we'll add another check sometime
 
@@ -314,15 +314,15 @@ def install_setup_files():
 
         log.logger("AALI_INSTALLED")
     except FileNotFoundError:
-        log.logger("WARN_NO_AALI", "ADD_AALI_TO_MOD", form=[fl.OPENGL, "MULT_IN_ONE" if len(var.MOD_LOCATION) > 1 else "ONE_IN", "', '".join(var.MOD_LOCATION)])
+        log.logger("WARN_NO_AALI", "ADD_AALI_TO_MOD", format=[fl.OPENGL, "MULT_IN_ONE" if len(var.MOD_LOCATION) > 1 else "ONE_IN", "', '".join(var.MOD_LOCATION)])
         var.FATAL_ERROR.append("no_opengl")
         return
 
-    log.logger("", "INST_BOOT_SYS_FILES", form=con.PROGRAM_NAME)
+    log.logger("", "INST_BOOT_SYS_FILES", format=[con.PROGRAM_NAME])
     for file in os.listdir(var.BOOTLEG_TEMP + "Sprinkles\\Bootleg"):
         shutil.copy(var.BOOTLEG_TEMP + "Sprinkles\\Bootleg\\" + file, var.FFVII_PATH + file)
 
-    log.logger("COMPL_BOOT_SYS_FILES", form=con.PROGRAM_NAME)
+    log.logger("COMPL_BOOT_SYS_FILES", format=[con.PROGRAM_NAME])
 
 def find_data_drive(inp=None):
     if inp is None:
@@ -339,7 +339,7 @@ def find_data_drive(inp=None):
         log.logger("ERR_DRIVE_NOT_EXIST_READY", "ENTER_VALID_DRIVE_LETTER")
         return
 
-    log.logger("", "USING_DRIVE_FOR_CDS", form=cdrom)
+    log.logger("", "USING_DRIVE_FOR_CDS", format=[cdrom])
     var.CD_DRIVE = cdrom + ":"
     var.PARSING = None
 
@@ -362,55 +362,55 @@ def prepare_data_files():
     log.logger("PREPARING_LGP_FILES")
 
     # Battle LGP
-    log.logger("PREPARING_DATA_FILE", "COPYING_DUMMY_TEX", form="battle.lgp")
+    log.logger("PREPARING_DATA_FILE", "COPYING_DUMMY_TEX", format=["battle.lgp"])
     CopyFolder(var.BOOTLEG_TEMP + "Sprinkles\\Data\\Battle\\Battle.lgp\\Bootleg\\Dummy_Textures", fl.BATTLE_UNDO)
     AttribFile(var.FFVII_PATH + "data\\battle\\battle.lgp")
     ExtractLGP(var.FFVII_PATH + "data\\battle\\battle.lgp", fl.BATTLE_UNDO)
-    log.logger("COMPLETED_DATA_FILE", form="battle.lgp")
+    log.logger("COMPLETED_DATA_FILE", format=["battle.lgp"])
 
-    log.help()
+    log.show()
 
     # Magic LGP
-    log.logger("PREPARING_DATA_FILE", form="magic.lgp")
+    log.logger("PREPARING_DATA_FILE", format=["magic.lgp"])
     AttribFile(var.FFVII_PATH + "data\\battle\\magic.lgp")
     ExtractLGP(var.FFVII_PATH + "data\\battle\\magic.lgp", fl.MAGIC_UNDO)
-    log.logger("COMPLETED_DATA_FILE", form="magic.lgp")
+    log.logger("COMPLETED_DATA_FILE", format=["magic.lgp"])
 
-    log.help()
+    log.show()
 
     # Char LGP
-    log.logger("PREPARING_DATA_FILE", form="char.lgp")
+    log.logger("PREPARING_DATA_FILE", format=["char.lgp"])
     AttribFile(var.FFVII_PATH + "data\\field\\char.lgp")
     ExtractLGP(var.FFVII_PATH + "data\\field\\char.lgp", fl.CHAR_UNDO)
-    log.logger("COMPLETED_DATA_FILE", form="char.lgp")
+    log.logger("COMPLETED_DATA_FILE", format=["char.lgp"])
 
-    log.help()
+    log.show()
 
     # High LGP
-    log.logger("PREPARING_DATA_FILE", form="high-us.lgp")
+    log.logger("PREPARING_DATA_FILE", format=["high-us.lgp"])
     AttribFile(var.FFVII_PATH + "data\\minigame\\high-us.lgp")
     ExtractLGP(var.FFVII_PATH + "data\\minigame\\high-us.lgp", fl.HIGH_UNDO)
-    log.logger("COMPLETED_DATA_FILE", form-"high-us.lgp")
+    log.logger("COMPLETED_DATA_FILE", format=["high-us.lgp"])
 
-    log.help()
+    log.show()
 
     # Chocobo LGP
-    log.logger("PREPARING_DATA_FILE", form="chocobo.lgp")
+    log.logger("PREPARING_DATA_FILE", format=["chocobo.lgp"])
     AttribFile(var.FFVII_PATH + "data\\minigame\\chocobo.lgp")
     ExtractLGP(var.FFVII_PATH + "data\\minigame\\chocobo.lgp", fl.CHOCOBO_UNDO)
-    log.logger("COMPLETED_DATA_FILE", form="chocobo.lgp")
+    log.logger("COMPLETED_DATA_FILE", format=["chocobo.lgp"])
 
-    log.help()
+    log.show()
 
     # World LGP
-    log.logger("PREPARING_DATA_FILE", form="world_us.lgp")
+    log.logger("PREPARING_DATA_FILE", format=["world_us.lgp"])
     AttribFile(var.FFVII_PATH + "data\\wm\\world_us.lgp")
     ExtractLGP(var.FFVII_PATH + "data\\wm\\world_us.lgp", fl.WORLD_UNDO)
-    log.logger("COMPLETED_DATA_FILE", form="world_us.lgp")
+    log.logger("COMPLETED_DATA_FILE", format=["world_us.lgp"])
 
     log.logger("COMPLETED_LGP_FILES")
 
-    log.help()
+    log.show()
 
 def _mkdir(inp):
     if not os.path.isdir(inp):
@@ -531,7 +531,7 @@ def chk_existing_install():
         if IsFile.get(game + "FF7_Launcher.exe"):
             retcode = 8 if var.GAME_VERSION == 2013 else 7
     else: # nothing found
-        log.logger("COULD_NOT_FINST", "ABORT_BOOT", form=con.PROGRAM_NAME)
+        log.logger("COULD_NOT_FINST", "ABORT_BOOT", format=[con.PROGRAM_NAME])
         retcode = 1
     return retcode
 
@@ -549,12 +549,12 @@ def end_bootleg_early():
     if var.FATAL_ERROR:
         log.multiple("FATAL_ERROR", "ERR_TO_REPORT", types=["error", "normal"])
     elif var.SYS_ERROR:
-        log.multiple("ERR_ENC", "MAY_STILL_RUN", form=con.PROGRAM_NAME, types=["error", "normal"])
+        log.multiple("ERR_ENC", "MAY_STILL_RUN", format=[con.PROGRAM_NAME], types=["error", "normal"])
     if var.FATAL_ERROR or var.SYS_ERROR:
         var.ERROR = True
         for reason in var.FATAL_ERROR + var.SYS_ERROR:
             reason = reason.capitalize()
-            log.multiple("ERR_FOUND", types=["error", "normal"], form=reason, display=False)
+            log.multiple("ERR_FOUND", types=["error", "normal"], format=[reason], display=False)
             if reason in errors:
                 why = errors[reason]
                 formlist = []
@@ -569,7 +569,7 @@ def end_bootleg_early():
                         else:
                             formlist.append(toformat)
 
-                log.multiple(why["Message"], types=["error", "normal"], form=formlist)
+                log.multiple(why["Message"], types=["error", "normal"], format=formlist)
             else:
                 log.multiple("UNH_ERR_TOREP", types=["error", "normal"])
     log.logger("\n")
@@ -583,15 +583,15 @@ def install(setting): # Installs each setting
     parse = getattr(pars, setting.lower(), None)
 
     if parse is None:
-        log.logger("PARSER_NOT_FOUND", form=setting)
+        log.logger("PARSER_NOT_FOUND", format=[setting])
         return 1
 
-    log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", form=setting)
+    log.logger("PARS_INSTALLING", "PLEASE_REMAIN_PATIENT", format=[setting])
     ret = parse()
-    formatt = setting
+    format = setting
     if ret:
-        formatt = ret
-    log.logger("PARS_COMPL_INST_SUCCESS", form=formatt)
+        format = ret
+    log.logger("PARS_COMPL_INST_SUCCESS", format=[format])
 
 def no_such_command(command):
-    log.logger("ERR_INVALID_COMMAND", form=command, write=False)
+    log.logger("ERR_INVALID_COMMAND", format=[command], write=False)
