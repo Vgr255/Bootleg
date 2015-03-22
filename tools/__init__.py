@@ -420,7 +420,6 @@ def git_checking():
 
     elif checker and diff and not var.IGNORE_LOCAL_CHANGES and var.ALLOW_RUN:
         log.logger("", "UNCOMMITTED_FILES", "")
-        log.logger("\n".join(diff), type="debug")
         get.pause()
 
 if var.GIT_LOCATION and var.AUTO_UPDATE: git_checking()
