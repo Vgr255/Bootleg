@@ -4,8 +4,13 @@ from tools import functions as fn
 from tools import filenames as fl
 from tools import parser
 from tools import get
-from tools import log
 from tools import reg
+
+import tools
+
+log = tools.log
+config = tools.config
+backup = tools.backup_settings
 
 from tools.methods import *
 
