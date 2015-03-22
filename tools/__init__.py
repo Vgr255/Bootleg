@@ -85,9 +85,29 @@ if var.LANGUAGE is None:
 
 # Prepare the logger
 
+class BootlegLogger(logger.Translater):
+    def parser(self, setting):
+        output = [setting]
+        trout = [setting]
+        self.translate(trout, var.LANGUAGE, [], {}, [])
+        self.translate(output, "English", [], {}, [])
+        getter = con.RANGE.get(setting, 1)
+        var.FINDING = setting
+        self.show("ENT_VALUE_BETWEEN", "\n", format=[getter])
+        msg = trout.splitlines()
+        out = output.splitlines()
+        if getter > 1:
+            self.show(msg.pop(0), "NO_CHG", *msg)
+            self.logger(out.pop(0), "NO_CHG", *out, display=False)
+        if getter == 1:
+            self.show(msg[0], "CHC_NO", "CHC_YES", format=[setting])
+            self.logger(out[0], "CHC_NO", "CHC_YES", format=[setting], display=False)
+        self.show("", "DEF_TO_USE", format=[getattr(var, setting)])
+        self.logger("DEF_TO_USE", format=[getattr(var, setting)], display=False)
+
 LOGGERS = {type: getattr(var, file + "_FILE") + "." + getattr(var, file + "_EXT") for type, file in con.LOGGERS.items()}
 
-log = logger.Translater("\n", False, None, True, True, LOGGERS,
+log = BootlegLogger("\n", False, None, True, True, LOGGERS,
     (("timestamp", set(con.IGNORE_TIMESTAMP), set(), None, ""),
      ("splitter", set(con.IGNORE_SPLITTER), set(), None, False),
      ("display", set(), {(var, "DEBUG_MODE"), (var, "DISPLAY_EVERYTHING")}, None, True),
