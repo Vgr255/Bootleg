@@ -1,5 +1,4 @@
 ﻿from tools import variables as var
-import os
 
 import winreg
 
@@ -28,7 +27,6 @@ def add(drive=None, app=None):
     write("{0}FF7Config.exe".format(var.FFVII_PATH), "RUNASADMIN", 1, "Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", 1)
 
 def raw(key, value, path, type=1, opener=2, create=None):
-    print(key, value, path)
     reg = winreg.OpenKey(0xFFFFFFFF80000000+opener, path, 0, 0x20006)
     if create:
         winreg.CreateKey(reg, create)
