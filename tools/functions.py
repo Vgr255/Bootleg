@@ -466,17 +466,16 @@ def chk_missing_run_files():
         var.FATAL_ERROR.append("sevenz")
 
 def extract_image():
-    if var.FFVII_IMAGE is None:
-        return 1
+    _mkdir(var.BOOTLEG_TEMP + "IMAGE")
     if IsFile.game("ff7.exe"):
         log.logger("FND_EXIST_INST")
         if os.path.isdir(var.FFVII_PATH + "save"):
-            shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "IMAGE\save")
+            shutil.move(var.FFVII_PATH + "save", var.BOOTLEG_TEMP + "IMAGE\\save")
             log.logger("COPY_SAVE_FILES")
         else:
             log.logger("NO_SAVE_FND")
         if IsFile.game("ff7input.cfg"):
-            shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "IMAGE\ff7input.cfg")
+            shutil.copy(var.FFVII_PATH + "ff7input.cfg", var.BOOTLEG_TEMP + "IMAGE\\ff7input.cfg")
             log.logger("COPY_INP_SET")
         else:
             log.logger("NO_INP_SET_FND")
@@ -487,17 +486,14 @@ def extract_image():
         log.logger("NO_INST_FND")
 
     log.logger("EXTR_IMG")
-    ExtractFile(var.FFVII_IMAGE, var.FFVII_PATH)
-    if os.path.isdir(var.BOOTLEG_TEMP + "IMAGE"):
-        shutil.copy(var.BOOTLEG_TEMP + "IMAGE", var.FFVII_PATH)
-        shutil.rmtree(var.BOOTLEG_TEMP + "IMAGE")
+    ExtractFile(var.FFVII_IMAGE, "ImageExtracted")
+    CopyFolder(var.BOOTLEG_TEMP + "IMAGE", var.FFVII_PATH, True)
     log.logger("IMG_REST_CMPL")
-    return 0
 
 def chk_existing_install():
     # return codes:
-    # 0 = 1998 original port found by path
-    # 1 = no installation found, failure
+    # 0 = no installation found, failure
+    # 1 = 1998 original port found by path
     # 2 = found 1998 installation in default 32-bit program files
     # 3 = found 1998 installation in default 64-bit program files
     # 4 = 2012 re-release found by path
@@ -509,8 +505,8 @@ def chk_existing_install():
     # even if some go away, keep the current ones the same
     # so it doesn't mess up other stuff
     if IsFile.game("ff7.exe"): # 1998
-        log.logger("INST_FND_1998", var.FFVII_PATH)
-        retcode = 0
+        log.logger("INST_FND_1998", var.FFVII_PATH, "\n")
+        retcode = 1
     elif IsFile.game("FF7_Launcher.exe"): # 2012/2013
         if "\\SteamApps\\common\\FINAL FANTASY VII\\" in var.FFVII_PATH:
             log.logger("INST_FND_2013", var.FFVII_PATH)
@@ -527,12 +523,12 @@ def chk_existing_install():
         if IsFile.get(game + "ff7.exe"):
             retcode = 6
     elif var.GAME_VERSION in (2012, 2013):
-        game = reg.get_key("InstallLocation")
+        game = reg.get_key("InstallLocation")[0]
         if IsFile.get(game + "FF7_Launcher.exe"):
             retcode = 8 if var.GAME_VERSION == 2013 else 7
     else: # nothing found
         log.logger("COULD_NOT_FINST", "ABORT_BOOT", format=[con.PROGRAM_NAME])
-        retcode = 1
+        retcode = 0
     return retcode
 
 def end_bootleg_early():
