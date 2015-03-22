@@ -348,8 +348,6 @@ if var.FFVII_PATH:
     if not var.FFVII_PATH.endswith("\\"):
         var.FFVII_PATH = var.FFVII_PATH + "\\"
     os.makedirs(var.FFVII_PATH, exist_ok=True)
-    if not os.listdir(var.FFVII_PATH) and var.FFVII_IMAGE:
-        met.CopyFolder(met.ExtractFile(var.FFVII_IMAGE), var.FFVII_PATH)
 
 # Temporary files
 
