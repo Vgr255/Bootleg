@@ -387,8 +387,8 @@ French: "Veuillez patienter pendant que l'assistant installe les fichiers. . .",
 }
 
 UNCOMMITTED_FILES = {
-English: "Warning: You have local changes in:",
-French: "Attention: Vous avez des modifications locales dans :",
+English: "Warning: You have local changes.",
+French: "Attention: Vous avez des modifications locales.",
 }
 
 WARN_NOT_RUN_ADMIN = { # 0 = Program name
