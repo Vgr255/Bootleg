@@ -27,7 +27,11 @@ def run(params="", silent=False):
     inst = fn.chk_existing_install()
     if not inst:
         exit()
-    if var.FFVII_IMAGE:
+    if not os.listdir(var.FFVII_PATH) and var.FFVII_IMAGE:
+        log.logger("EXTR_IMG")
+        met.CopyFolder(met.ExtractFile(var.FFVII_IMAGE), var.FFVII_PATH)
+        log.logger("IMG_REST_CMPL")
+    elif var.FFVII_IMAGE:
         fn.extract_image()
     log.logger("INST_AALIS_DRIVER")
     ExtractFile(sprinkles + fl.AALI_OPENGL, "OpenGL")
