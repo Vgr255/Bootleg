@@ -51,17 +51,17 @@ for setting, value in cfgparser["config"].items():
         config[setting] = False
     elif value.lower() in ("true", "yes", "on"):
         config[setting] = True
-    else: # Fallback in case it wasn't true/false (int or string)
+    elif value.isdigit() and setting not in con.NON_INT_SETTINGS:
+        config[setting] = int(value)
+    else: # fallback
         config[setting] = value
 
-# Convert settings into standalone variables
+backup_settings = {}
 
 for x, y in config.items():
-    if not x.isupper() or y == "":
+    if not hasattr(var, x) or y == "" or not x.isupper():
         continue
-    if x not in con.NON_INT_SETTINGS and (isinstance(y, int) or (isinstance(y, str) and y.isdigit())):
-        setattr(var, x, int(y))
-        continue
+    backup_settings[x] = getattr(var, x)
     setattr(var, x, y)
 
 # Set language
