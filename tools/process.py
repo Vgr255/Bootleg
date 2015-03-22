@@ -3,10 +3,33 @@ from tools import variables as var
 from tools import functions as fn
 from tools import filenames as fl
 from tools import parser
+from tools import get
 from tools import log
+from tools import reg
+
+from tools.methods import *
+
+def exit():
+    get.pause()
+    sys.exit(1)
 
 def run(params="", silent=False):
-    pass # last thing to do, see below
+    #sprinkles = ExtractFile(var.SYS_FOLDER + fl.SPRINKLES).rstrip("\\/") + "\\"
+    sprinkles = "D:\\GitHub\\Bootleg\\utils\\sprinkles\\"
+    if not os.path.isfile(sprinkles + fl.AALI_OPENGL):
+        log.logger("WARN_NO_AALI", type="error")
+        exit()
+    inst = fn.chk_existing_install()
+    if not inst:
+        exit()
+    if var.FFVII_IMAGE:
+        fn.extract_image()
+    log.logger("INST_AALIS_DRIVER")
+    ExtractFile(sprinkles + fl.AALI_OPENGL, "OpenGL")
+    CopyFolder(var.BOOTLEG_TEMP + "OpenGL", var.FFVII_PATH, True)
+    # add the registry keys
+    reg.add()
+    log.logger("", "AALI_INSTALLED")
 
 # September 16th, 2014 - note to self
 # ***
