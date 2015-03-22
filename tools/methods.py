@@ -287,6 +287,26 @@ def AttribFile(file, attr="-R -S -H -I", *params):
     attrib.communicate()
     return attrib.returncode
 
+def StripAttributes(path):
+    """StripAttribute(path)
+
+    Removes all unwanted attributes from files in path."""
+
+    if not path.endswith(("/", "\\")):
+        path += "\\"
+    folders = [path]
+    allf = []
+    while folders:
+        folder = folders.pop(0)
+        allf.append(folder)
+        for lister in os.listdir(folder):
+            if os.path.isdir(folder + lister):
+                folders.append(folder + lister + "\\")
+            else:
+                AttribFile(folder + lister)
+
+    return tuple(allf)
+
 def StripFolder(path):
     """StripFolder(path)
 
