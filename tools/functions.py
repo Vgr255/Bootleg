@@ -480,13 +480,14 @@ def extract_image():
         else:
             log.logger("NO_INP_SET_FND")
     if os.path.isdir(var.FFVII_PATH):
+        StripAttributes(var.FFVII_PATH)
         shutil.rmtree(var.FFVII_PATH)
         log.logger("REM_CUR_INST")
     else:
         log.logger("NO_INST_FND")
 
     log.logger("EXTR_IMG")
-    ExtractFile(var.FFVII_IMAGE, "ImageExtracted")
+    ExtractFile(var.FFVII_IMAGE, "IMAGE")
     CopyFolder(var.BOOTLEG_TEMP + "IMAGE", var.FFVII_PATH, True)
     log.logger("IMG_REST_CMPL")
 
